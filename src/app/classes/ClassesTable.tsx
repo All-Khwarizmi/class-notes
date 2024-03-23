@@ -61,8 +61,9 @@ export default function ClassesTable() {
           icon={<AddIcon />}
           title="Ajouter une classe"
           description="Ajouter une classe pour commencer à ajouter des étudiants"
-          children={<AddClassForm />}
-        />
+        >
+          <AddClassForm />
+        </AddClassDialog>
       </div>
     </section>
   );

@@ -18,7 +18,7 @@ export default function CustomDialog({
   title: string;
   description?: string;
   icon: React.ReactNode;
-  children: React.ReactNode;
+  children?: React.ReactNode;
 }) {
   return (
     <>
