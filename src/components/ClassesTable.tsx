@@ -12,8 +12,11 @@ import Image from "next/image";
 import { api } from "../../convex/_generated/api";
 import { Button } from "./ui/button";
 import AddClassDialog from "./AddClassDialog";
+import { useRouter } from "next/navigation";
+
 export default function ClassesTable() {
   const classes = useQuery(api.classes.getClasses);
+  const router = useRouter();
 
   return (
     <section className="mt-12 px-4">
@@ -28,7 +31,12 @@ export default function ClassesTable() {
         </TableHeader>
         <TableBody>
           {classes?.map((c) => (
-            <TableRow key={c._id}>
+            <TableRow
+              onClick={() => {
+                router.push(`/class/${c._id}`);
+              }}
+              key={c._id}
+            >
               <TableCell>{c.name}</TableCell>
               <TableCell>{c.description}</TableCell>
               <TableCell>

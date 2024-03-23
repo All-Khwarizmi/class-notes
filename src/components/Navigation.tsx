@@ -8,28 +8,22 @@ import {
   NavigationMenuTrigger,
   NavigationMenuViewport,
 } from "@/components/ui/navigation-menu";
+import Link from "next/link";
 
 export default function Navigation() {
   return (
     <NavigationMenu>
       <NavigationMenuList>
         <NavigationMenuItem>
-          <NavigationMenuTrigger>Accueil</NavigationMenuTrigger>
+          <NavigationMenuTrigger>Naviguer</NavigationMenuTrigger>
           <NavigationMenuContent>
             <NavigationMenuLink>
-              <button>
-                <article className="py-2 px-4">Classes</article>
-              </button>
-            </NavigationMenuLink>
-            <NavigationMenuLink>
-              <button>
-                <article className="py-2 px-4">Planner</article>
-              </button>
-            </NavigationMenuLink>
-            <NavigationMenuLink>
-              <button>
-                <article className="py-2 px-4">AI</article>
-              </button>
+              <div className="py-2"></div>
+
+              <Link className=" mt-2 py-2 px-4" href={"/"}>
+                Accueil
+              </Link>
+              <div className="py-2"></div>
             </NavigationMenuLink>
           </NavigationMenuContent>
         </NavigationMenuItem>
