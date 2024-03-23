@@ -9,14 +9,14 @@ import {
 
 import AddClassForm from "./AddClassForm";
 import { Button } from "./ui/button";
-export default function AddClassDialog({
+export default function CustomDialog({
   icon,
   title,
-  description,
+  description = "",
   children,
 }: {
   title: string;
-  description: string;
+  description?: string;
   icon: React.ReactNode;
   children: React.ReactNode;
 }) {

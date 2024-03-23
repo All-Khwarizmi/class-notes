@@ -13,7 +13,9 @@ export default function ClassPage({ params }: { params: { slug: string } }) {
       <Header />
       {classe ? (
         <main>
-          <h1>{} </h1>
+          <header className="flex justify-center pt-8">
+            <h1 className="font-bold text-xl">{classe.name} </h1>
+          </header>
           <StudentsTable classId={params.slug} />
         </main>
       ) : (
