@@ -9,7 +9,9 @@ export default function Header() {
   return (
     <header className="flex flex-row gap-4 border-b items-center justify-between border-b-slate-300 p-4">
       <Navigation />
-      <h1>ClassAI</h1>
+      <h1 className="text-2xl font-bold bg-gradient-to-r from-orange-700 via-blue-500 to-green-400 text-transparent bg-clip-text animate-gradient">
+        ClassAI
+      </h1>
       <div className="flex flex-row gap-4 items-center">
         <div>
           {isSignedIn ? (
