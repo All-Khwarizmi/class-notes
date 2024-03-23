@@ -4,9 +4,9 @@ import { v } from "convex/values";
 export const createClass = mutation({
   args: {
     name: v.string(),
-    description: v.string(),
-    imageUrl: v.string(),
-    students: v.array(v.string()),
+    description: v.optional(v.string()),
+    imageUrl: v.optional(v.string()),
+    students: v.optional(v.array(v.string())),
   },
   handler: async (ctx, args) => {
     const id = await ctx.db.insert("Classes", {

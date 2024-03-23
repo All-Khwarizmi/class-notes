@@ -34,7 +34,7 @@ export default function ClassesTable() {
               <TableCell>
                 <Image
                   className="img-class "
-                  src="/images/fredrik-ohlander-s9NttXGehL4-unsplash.jpg"
+                  src={c.imageUrl}
                   alt=""
                   width={32}
                   height={32}

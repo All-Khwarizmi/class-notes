@@ -7,14 +7,13 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "./ui/button";
-
+import { Form } from "./ui/form";
+import AddClassForm from "./AddClassForm";
 export default function AddClassDialog() {
   return (
     <>
       <Dialog>
-        <DialogTrigger>
-          <Button className="btn btn-primary">+</Button>
-        </DialogTrigger>
+        <DialogTrigger>+</DialogTrigger>
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Ajouter une classe</DialogTitle>
@@ -22,17 +21,7 @@ export default function AddClassDialog() {
               Remplissez les champs ci-dessous pour ajouter une classe
             </DialogDescription>
           </DialogHeader>
-          <form>
-            <label htmlFor="name">Nom</label>
-            <input type="text" id="name" />
-            <label htmlFor="description">Description</label>
-            <textarea id="description" />
-            <label htmlFor="imageUrl">URL de l'image</label>
-            <input type="text" id="imageUrl" />
-            <button type="submit" className="btn btn-primary">
-              Ajouter
-            </button>
-          </form>
+          <AddClassForm />
         </DialogContent>
       </Dialog>
     </>
