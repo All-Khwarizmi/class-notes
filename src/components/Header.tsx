@@ -2,11 +2,13 @@
 import { UserButton, SignInButton, useSession } from "@clerk/nextjs";
 import { ModeToggle } from "./ModeToggle";
 import { Button } from "./ui/button";
+import Navigation from "./Navigation";
 
 export default function Header() {
   const { isSignedIn } = useSession();
   return (
     <header className="flex flex-row gap-4 border-b justify-between border-b-slate-300 p-4">
+      <Navigation />
       <h1>ClassAI</h1>
       <div className="flex flex-row gap-4 items-center">
         <div>
