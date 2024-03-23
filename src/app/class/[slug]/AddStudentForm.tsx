@@ -48,7 +48,7 @@ export default function AddStudentForm({
                 <FormControl>
                   <Input placeholder="Jean Dupont" {...field} />
                 </FormControl>
-                <FormDescription>Le nom de l'élève</FormDescription>
+                <FormDescription>Le nom de l&apos;élève</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
@@ -56,7 +56,7 @@ export default function AddStudentForm({
           <div className="py-2 flex justify-end">
             {" "}
             <Button type="submit" className="btn">
-              Ajouter l'élève
+              Ajouter l&apos;élève
             </Button>
           </div>
         </form>

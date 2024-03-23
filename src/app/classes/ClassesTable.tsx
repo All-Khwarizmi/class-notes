@@ -9,11 +9,11 @@ import {
 } from "@/components/ui/table";
 import { useQuery } from "convex/react";
 import Image from "next/image";
-import { api } from "../../convex/_generated/api";
-import AddClassDialog from "./CustomDialog";
+import { api } from "../../../convex/_generated/api";
+import AddClassDialog from "../../components/CustomDialog";
 import { useRouter } from "next/navigation";
 import AddClassForm from "./AddClassForm";
-import AddIcon from "./icons/AddIcon";
+import AddIcon from "../../components/icons/AddIcon";
 
 export default function ClassesTable() {
   const classes = useQuery(api.classes.getClasses);

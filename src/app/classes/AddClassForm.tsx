@@ -14,8 +14,8 @@ import classSchema from "@/utils/class-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ClassType } from "@/utils/class-schema";
 import { useForm } from "react-hook-form";
-import { Textarea } from "./ui/textarea";
-import { api } from "../../convex/_generated/api";
+import { Textarea } from "../../components/ui/textarea";
+import { api } from "../../../convex/_generated/api";
 import { useMutation } from "convex/react";
 const BASE_IMAGE_URL = "https://source.unsplash.com/random/800x600";
 export default function AddClassForm() {
@@ -80,7 +80,9 @@ export default function AddClassForm() {
                 <FormControl>
                   <Input placeholder="URL" {...field} />
                 </FormControl>
-                <FormDescription>L&apos;URL de l&apos;image de la classe</FormDescription>
+                <FormDescription>
+                  L&apos;URL de l&apos;image de la classe
+                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
