@@ -30,3 +30,15 @@ export const getClasses = query({
     return ctx.db.query("Classes").collect();
   },
 });
+
+export const getClass = query({
+  args: {
+    id: v.string(),
+  },
+  handler: async (ctx, args) => {
+    return ctx.db
+      .query("Classes")
+      .filter((q) => q.eq(q.field("_id"), args.id))
+      .first();
+  },
+});
