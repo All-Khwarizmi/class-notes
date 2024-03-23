@@ -7,10 +7,9 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useMutation, useQuery } from "convex/react";
+import { useQuery } from "convex/react";
 import Image from "next/image";
 import { api } from "../../convex/_generated/api";
-import { Button } from "./ui/button";
 import AddClassDialog from "./AddClassDialog";
 import { useRouter } from "next/navigation";
 
@@ -42,7 +41,9 @@ export default function ClassesTable() {
               <TableCell>
                 <Image
                   className="img-class "
-                  src={c.imageUrl}
+                  src={
+                    c.imageUrl || "/images/mos-design-Io433E805vo-unsplash.jpg"
+                  }
                   alt=""
                   width={32}
                   height={32}

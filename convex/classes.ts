@@ -9,7 +9,12 @@ export const createClass = mutation({
     students: v.optional(v.array(v.string())),
   },
   handler: async (ctx, args) => {
+    const isAuthenticated = await ctx.auth.getUserIdentity();
+    if (!isAuthenticated) {
+      throw new Error("Not authenticated");
+    }
     const id = await ctx.db.insert("Classes", {
+      userId: isAuthenticated.subject,
       name: args.name,
       description: args.description,
       imageUrl: args.imageUrl,
