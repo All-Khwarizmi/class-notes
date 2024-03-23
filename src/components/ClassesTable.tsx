@@ -8,6 +8,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useMutation, useQuery } from "convex/react";
+import Image from "next/image";
 import { api } from "../../convex/_generated/api";
 import { Button } from "./ui/button";
 export default function ClassesTable() {
@@ -30,7 +31,13 @@ export default function ClassesTable() {
               <TableCell>{c.name}</TableCell>
               <TableCell>{c.description}</TableCell>
               <TableCell>
-                <img src={c.imageUrl} alt={c.name} />
+                <Image
+                  className="img-class "
+                  src="/images/fredrik-ohlander-s9NttXGehL4-unsplash.jpg"
+                  alt=""
+                  width={32}
+                  height={32}
+                />
               </TableCell>
             </TableRow>
           ))}
