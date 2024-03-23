@@ -19,7 +19,11 @@ export default function StudentsTable({ classId }: { classId: string }) {
   return (
     <section className="mt-12 px-4">
       <Table>
-        <TableCaption>Voici vos étudiants</TableCaption>
+        <TableCaption>
+          {students?.length
+            ? "Liste des étudiants"
+            : "Pas d'étudiants inscrits"}
+        </TableCaption>
         <TableHeader>
           <TableRow>
             <TableHead>Nom</TableHead>
