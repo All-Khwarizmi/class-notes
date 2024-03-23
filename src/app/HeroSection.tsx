@@ -15,8 +15,11 @@ export default function Hero() {
           <Title size="5-xl" />, votre nouveau carnet de notes.
         </h1>
         <p className="max-w-[700px] text-center text-gray-500 md:text-xl dark:text-gray-400">
-          Avec <Title size="text-lg" />, le suivi de vos notes n'a jamais été
-          aussi simple.
+          Avec{" "}
+          <span>
+            <Title size="text-lg" />
+          </span>
+          , le suivi de vos notes n&apos;a jamais été aussi simple.
         </p>
         {isSignedIn ? (
           <Link href="/classes">
