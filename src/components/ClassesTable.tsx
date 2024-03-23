@@ -11,6 +11,7 @@ import { useMutation, useQuery } from "convex/react";
 import Image from "next/image";
 import { api } from "../../convex/_generated/api";
 import { Button } from "./ui/button";
+import AddClassDialog from "./AddClassDialog";
 export default function ClassesTable() {
   const classes = useQuery(api.classes.getClasses);
 
@@ -45,7 +46,7 @@ export default function ClassesTable() {
       </Table>
       <div className="flex justify-center pt-4">
         {" "}
-        <Button>+</Button>
+        <AddClassDialog />
       </div>
     </section>
   );
