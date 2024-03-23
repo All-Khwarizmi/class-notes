@@ -80,7 +80,7 @@ export default function AddClassForm() {
                 <FormControl>
                   <Input placeholder="URL" {...field} />
                 </FormControl>
-                <FormDescription>L'URL de l'image de la classe</FormDescription>
+                <FormDescription>L&apos;URL de l&apos;image de la classe</FormDescription>
                 <FormMessage />
               </FormItem>
             )}
