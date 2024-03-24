@@ -46,7 +46,8 @@ export default function ClassesTable() {
                   src={
                     c.imageUrl || "/images/mos-design-Io433E805vo-unsplash.jpg"
                   }
-                  alt=""
+                  alt={`
+                  Image de la classe: ${c.name}`}
                   width={32}
                   height={32}
                 />
