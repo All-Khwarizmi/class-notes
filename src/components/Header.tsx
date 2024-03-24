@@ -5,8 +5,11 @@ import { Button } from "./ui/button";
 import Navigation from "./Navigation";
 import { usePathname } from "next/navigation";
 import Title from "@/app/Title";
+import { useLandingRedirect } from "@/app/hooks/useLandingRedirect";
+
 
 export default function Header() {
+
   const { isSignedIn } = useSession();
   const pathName = usePathname();
   return (
