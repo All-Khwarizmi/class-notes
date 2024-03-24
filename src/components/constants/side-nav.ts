@@ -14,14 +14,5 @@ export const NavItems: NavItem[] = [
     icon: CopyClipboard(),
     href: "/classes",
     color: "text-orange-500",
-    isChidren: true,
-    children: [
-      {
-        title: "Example-01",
-        icon: CopyClipboard(),
-        color: "text-red-500",
-        href: "/example/employees",
-      },
-    ],
   },
 ];

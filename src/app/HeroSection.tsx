@@ -4,8 +4,11 @@ import Link from "next/link";
 import Title from "./Title";
 import { SignInButton, useSession } from "@clerk/nextjs";
 import { Button } from "@/components/ui/button";
+import { useLandingRedirect } from "@/hooks/useLandingRedirect";
 
 export default function Hero() {
+  useLandingRedirect();
+
   const { isSignedIn } = useSession();
 
   return (

@@ -1,17 +1,18 @@
-"use client";
-import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
 import { ThemeProvider } from "@/components/theme-provider";
 import Header from "@/components/Header";
 import Sidebar from "@/components/layout/Sidebar";
+import { Metadata } from "next";
 const inter = Inter({ subsets: ["latin"] });
 
-// export const metadata: Metadata = {
-//   title: "ClassAI",
-//   description: "ClassAI is a platform for AI-powered education.",
-// };
+
+export const metadata: Metadata = {
+  title: "ClassAI - Votre nouveau carnet de notes.",
+  description:
+    "ClassAI est un carnet de notes intelligent qui vous permet de suivre la progression de vos élèves. ",
+};
 
 export default function RootLayout({
   children,
@@ -19,7 +20,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="fr" suppressHydrationWarning>
       <Providers>
         <body className={inter.className}>
           <ThemeProvider
