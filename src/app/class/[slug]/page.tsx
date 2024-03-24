@@ -10,7 +10,6 @@ export default function ClassPage({ params }: { params: { slug: string } }) {
 
   return (
     <>
-      <Header />
       {classe ? (
         <main>
           <header className="flex justify-center pt-8">

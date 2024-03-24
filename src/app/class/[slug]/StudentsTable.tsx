@@ -38,13 +38,13 @@ export default function StudentsTable({ classId }: { classId: string }) {
               <TableCell>{s.name}</TableCell>
             </TableRow>
           ))}
-          <div className=" flex justify-center pt-8">
-            <CustomDialog icon={<AddIcon />} title="Ajouter un étudiant">
-              <AddStudentForm classId={classId as Id<"Classes">} />
-            </CustomDialog>
-          </div>
         </TableBody>
       </Table>
+      <div className=" flex justify-center pt-8">
+        <CustomDialog icon={<AddIcon />} title="Ajouter un étudiant">
+          <AddStudentForm classId={classId as Id<"Classes">} />
+        </CustomDialog>
+      </div>
     </section>
   );
 }

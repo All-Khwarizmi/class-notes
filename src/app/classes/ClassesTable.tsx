@@ -10,7 +10,7 @@ import {
 import { useQuery } from "convex/react";
 import Image from "next/image";
 import { api } from "../../../convex/_generated/api";
-import AddClassDialog from "../../components/CustomDialog";
+import CustomDialog from "../../components/CustomDialog";
 import { useRouter } from "next/navigation";
 import AddClassForm from "./AddClassForm";
 import AddIcon from "../../components/icons/AddIcon";
@@ -57,13 +57,13 @@ export default function ClassesTable() {
       </Table>
       <div className="flex justify-center pt-4">
         {" "}
-        <AddClassDialog
+        <CustomDialog
           icon={<AddIcon />}
           title="Ajouter une classe"
           description="Ajouter une classe pour commencer à ajouter des étudiants"
         >
           <AddClassForm />
-        </AddClassDialog>
+        </CustomDialog>
       </div>
     </section>
   );

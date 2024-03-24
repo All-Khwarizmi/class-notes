@@ -9,6 +9,7 @@ import {
 
 import AddClassForm from "../app/classes/AddClassForm";
 import { Button } from "./ui/button";
+
 export default function CustomDialog({
   icon,
   title,
@@ -23,7 +24,7 @@ export default function CustomDialog({
   return (
     <>
       <Dialog>
-        <DialogTrigger>
+        <DialogTrigger asChild>
           <Button className="btn btn-primary">{icon}</Button>
         </DialogTrigger>
         <DialogContent>
