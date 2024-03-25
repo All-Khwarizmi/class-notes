@@ -21,6 +21,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "cypress/e2e/app/app.cy.js", "cypress/support/commands.js", "cypress/support/e2e.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "cypress/e2e/class-creation.cy.ts", "cypress/support/commands.ts", "cypress/support/e2e.js"],
   "exclude": ["node_modules"]
 }

@@ -15,17 +15,21 @@ export default function CustomDialog({
   title,
   description = "",
   children,
+  testId,
 }: {
   title: string;
   description?: string;
   icon: React.ReactNode;
   children?: React.ReactNode;
+  testId?: string;
 }) {
   return (
     <>
       <Dialog>
         <DialogTrigger asChild>
-          <Button className="btn btn-primary">{icon}</Button>
+          <Button data-testid={testId} className="btn btn-primary">
+            {icon}
+          </Button>
         </DialogTrigger>
         <DialogContent>
           <DialogHeader>

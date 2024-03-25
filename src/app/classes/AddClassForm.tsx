@@ -52,7 +52,11 @@ export default function AddClassForm() {
               <FormItem>
                 <FormLabel htmlFor={field.name}>Nom</FormLabel>
                 <FormControl>
-                  <Input placeholder="2de 8" {...field} />
+                  <Input
+                    data-testid="class-name-input"
+                    placeholder="2de 8"
+                    {...field}
+                  />
                 </FormControl>
                 <FormDescription>Le nom de la classe</FormDescription>
                 <FormMessage />
@@ -67,7 +71,11 @@ export default function AddClassForm() {
               <FormItem>
                 <FormLabel htmlFor={field.name}>Description</FormLabel>
                 <FormControl>
-                  <Textarea placeholder="Description" {...field} />
+                  <Textarea
+                    data-testid="class-description-input"
+                    placeholder="Description"
+                    {...field}
+                  />
                 </FormControl>
                 <FormDescription>La description de la classe</FormDescription>
                 <FormMessage />
@@ -83,7 +91,11 @@ export default function AddClassForm() {
               <FormItem>
                 <FormLabel htmlFor={field.name}>Image</FormLabel>
                 <FormControl>
-                  <Input placeholder="URL" {...field} />
+                  <Input
+                    data-testid="class-image-url-input"
+                    placeholder="URL"
+                    {...field}
+                  />
                 </FormControl>
                 <FormDescription>
                   L&apos;URL de l&apos;image de la classe
@@ -94,7 +106,7 @@ export default function AddClassForm() {
           />
 
           <div className="flex justify-end">
-            <Button className="mt-8" type="submit">
+            <Button data-testid="submit-class" className="mt-8" type="submit">
               Submit
             </Button>
           </div>
