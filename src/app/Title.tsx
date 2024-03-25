@@ -9,6 +9,7 @@ export default function Title({
 }) {
   return (
     <Link
+    role="ClassAI"
       href={"/"}
       className={`${
         size ? size : "text-2xl"
