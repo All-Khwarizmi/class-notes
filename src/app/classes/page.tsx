@@ -8,7 +8,11 @@ export default function Home() {
   return (
     <>
       {isSignedIn ? (
-        <ClassesTable />
+        <>
+          <h1 className="text-3xl font-bold text-center mt-8">Vos classes</h1>
+
+          <ClassesTable />
+        </>
       ) : (
         <MessageFullScreen message="Chargement..." />
       )}

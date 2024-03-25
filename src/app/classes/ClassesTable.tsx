@@ -22,7 +22,7 @@ export default function ClassesTable() {
   return (
     <section className="mt-12 px-4">
       <Table>
-        <TableCaption>Voici vos classes</TableCaption>
+        <TableCaption>Ajouter classe</TableCaption>
         <TableHeader>
           <TableRow>
             <TableHead>Name</TableHead>
