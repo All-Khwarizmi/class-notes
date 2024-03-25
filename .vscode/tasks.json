@@ -1,0 +1,24 @@
+
+
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "run dev",
+            "type": "shell",
+            "command": "npm run dev",
+            "runOptions": {
+                "runOn": "folderOpen"
+            },
+        },
+        {
+            "label": "run convex dashboard",
+            "type": "shell",
+            "command": "npx convex dashboard",
+            "runOptions": {
+                "runOn": "folderOpen"
+            },
+        }
+    ]
+
+}
