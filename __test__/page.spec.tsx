@@ -1,5 +1,4 @@
 import { it, expect, describe, vi } from "vitest";
-import { UserButton, SignInButton, useSession } from "@clerk/nextjs";
 
 import { render, screen } from "@testing-library/react";
 import Home from "../src/app/page";

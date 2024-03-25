@@ -2,6 +2,9 @@ name: Build and Vitest
 
 on: [push, pull_request]
 
+env:
+  CONVEX_API_KEY: ${{ vars.CONVEX_API_KEY }}
+
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
@@ -20,6 +23,6 @@ jobs:
 
       - name: Build application
         run: npx convex deploy --cmd 'npm run build'
-      
+
       - name: Run tests
         run: npm test
