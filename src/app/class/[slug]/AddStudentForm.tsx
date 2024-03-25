@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 
 export default function AddStudentForm({
   classId,
@@ -29,10 +30,14 @@ export default function AddStudentForm({
       classId,
     },
   });
-  function onSubmit(values: Student) {
+  async function onSubmit(values: Student) {
     console.log(values);
     const { name } = values;
-    addStudent({ name, classId });
+    const id = await addStudent({ name, classId });
+    if (id) {
+      form.reset();
+      toast.success("Élève ajouté avec succès");
+    } else toast.error("Erreur lors de l'ajout de l'élève");
   }
 
   return (

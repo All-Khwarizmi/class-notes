@@ -6,7 +6,7 @@ import Header from "@/components/Header";
 import Sidebar from "@/components/layout/Sidebar";
 import { Metadata } from "next";
 const inter = Inter({ subsets: ["latin"] });
-
+import { Toaster } from "@/components/ui/sonner";
 
 export const metadata: Metadata = {
   title: "ClassAI - Votre nouveau carnet de notes.",
@@ -34,6 +34,7 @@ export default function RootLayout({
               <Sidebar />
               <div className="flex-1 overflow-y-auto overflow-x-hidden pt-16 bg-secondary/10 pb-1">
                 {children}
+                <Toaster richColors expand />
               </div>
             </div>
           </ThemeProvider>

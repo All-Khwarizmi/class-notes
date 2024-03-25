@@ -17,6 +17,7 @@ import { useForm } from "react-hook-form";
 import { Textarea } from "../../components/ui/textarea";
 import { api } from "../../../convex/_generated/api";
 import { useMutation } from "convex/react";
+import { toast } from "sonner";
 const BASE_IMAGE_URL = "https://source.unsplash.com/random/800x600";
 export default function AddClassForm() {
   const addClass = useMutation(api.classes.createClass);
@@ -32,9 +33,13 @@ export default function AddClassForm() {
     },
   });
 
-  function onSubmit(values: ClassType) {
+  async function onSubmit(values: ClassType) {
     console.log(values);
-    addClass(values);
+    const id = await addClass(values);
+    if (id) {
+      form.reset();
+      toast.success("Classe ajoutée avec succès");
+    } else toast.error("Erreur lors de l'ajout de la classe");
   }
   return (
     <>
