@@ -3,7 +3,8 @@ name: Build and Vitest
 on: [push, pull_request]
 
 env:
-   CONVEX_DEPLOY_KEY: ${{ vars.CONVEX_DEPLOY_KEY }}
+  CONVEX_DEPLOY_KEY: ${{ vars.CONVEX_DEPLOY_KEY }}
+  CONVEX_URL: ${{ secrets.CONVEX_URL }}
 
 jobs:
   build-and-test:
@@ -22,7 +23,7 @@ jobs:
         run: npm install
 
       - name: Build application
-        run: npx convex deploy --cmd 'npm run build'
+        run: npm build
 
       - name: Run tests
         run: npm test
