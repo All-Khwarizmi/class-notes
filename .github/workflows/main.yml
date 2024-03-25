@@ -3,7 +3,7 @@ name: Build and Vitest
 on: [push, pull_request]
 
 env:
-  CONVEX_API_KEY: ${{ vars.CONVEX_API_KEY }}
+   CONVEX_DEPLOY_KEY: ${{ vars.CONVEX_DEPLOY_KEY }}
 
 jobs:
   build-and-test:
