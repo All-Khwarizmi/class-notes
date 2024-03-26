@@ -35,6 +35,9 @@
     "class-variance-authority": "0.7.0",
     "clsx": "2.1.0",
     "convex": "1.10.0",
+    "fp-ts": "^2.16.5",
+    "immutable": "5.0.0-beta.5",
+    "lodash": "^4.17.21",
     "next": "14.1.4",
     "next-themes": "0.3.0",
     "react": "18",
@@ -49,6 +52,7 @@
   "devDependencies": {
     "@faker-js/faker": "^8.4.1",
     "@testing-library/react": "^14.2.2",
+    "@types/lodash": "^4.17.0",
     "@types/node": "20",
     "@types/react": "18",
     "@types/react-dom": "18",

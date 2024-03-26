@@ -8,7 +8,6 @@ const classSchema = z.object({
   imageUrl: z.string().optional(),
   students: z.array(z.string()).optional(),
 });
-
 export default classSchema;
 
 export type ClassType = z.infer<typeof classSchema>;
