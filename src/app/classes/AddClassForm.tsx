@@ -10,9 +10,9 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import classSchema from "@/domain/class-schema";
+import classSchema from "@/domain/class/class-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ClassType } from "@/domain/class-schema";
+import { ClassType } from "@/domain/class/class-schema";
 import { useForm } from "react-hook-form";
 import { Textarea } from "../../components/ui/textarea";
 import { api } from "../../../convex/_generated/api";

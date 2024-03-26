@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 const classSchema = z.object({
+  id: z.string().optional(),
   name: z
     .string()
     .min(2, { message: "Le nom doit faire au moins 2 caractères" }),
