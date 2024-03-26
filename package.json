@@ -17,6 +17,10 @@
     "component": "cypress open --component",
     "component:headless": "cypress run --component"
   },
+  "pre-commit": [
+    "test",
+    "e2e:headless"
+  ],
   "dependencies": {
     "@clerk/nextjs": "4.29.9",
     "@hookform/resolvers": "3.3.4",
@@ -55,6 +59,7 @@
     "eslint-config-next": "14.1.4",
     "jsdom": "^24.0.0",
     "postcss": "8",
+    "pre-commit": "^1.2.2",
     "start-server-and-test": "^2.0.3",
     "tailwindcss": "3.3.0",
     "typescript": "5",
