@@ -1,6 +1,6 @@
 import { Inter } from "next/font/google";
-import { Providers } from "./providers";
-import "./globals.css";
+import "../globals.css";
+import { Providers } from "../providers";
 import { ThemeProvider } from "@/components/theme-provider";
 import Header from "@/components/Header";
 import Sidebar from "@/components/layout/Sidebar";
@@ -20,26 +20,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="fr" suppressHydrationWarning>
-      <head>
-        <meta
-          name="viewport"
-          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover"
-        />
-      </head>
-      <Providers>
-        <body className={inter.className}>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            {children}
-            <Toaster richColors expand />
-          </ThemeProvider>
-        </body>
-      </Providers>
-    </html>
+    <>
+      <Header />
+      <div className="flex h-screen border-collapse overflow-hidden">
+        <Sidebar />
+        <div className="flex-1 overflow-y-auto overflow-x-hidden pt-8 bg-secondary/10 pb-1">
+          {children}
+        </div>
+      </div>
+    </>
   );
 }

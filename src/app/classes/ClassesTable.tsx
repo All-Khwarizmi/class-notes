@@ -15,6 +15,7 @@ import AddIcon from "../../components/icons/AddIcon";
 import useGetClasses from "@/hooks/class/useGetClasses";
 import MessageFullScreen from "@/components/MessageFullScreen";
 import { isRight } from "fp-ts/lib/Either";
+import Link from "next/link";
 
 export default function ClassesTable() {
   const { classes, error, loading } = useGetClasses();
@@ -51,29 +52,29 @@ export default function ClassesTable() {
                   imageUrl: "Invalid",
                 };
             return (
-              <TableRow
-                onClick={() => {
-                  router.push(`/class/${classe.id}`);
-                }}
+              <Link
                 key={classe.id}
-                className="cursor-pointer "
+                href={`/classes/class/${classe.id}`}
+                legacyBehavior
               >
-                <TableCell>{classe.name}</TableCell>
-                <TableCell>{classe.description}</TableCell>
-                <TableCell>
-                  <Image
-                    className="img-class "
-                    src={
-                      classe.imageUrl ||
-                      "/images/mos-design-Io433E805vo-unsplash.jpg"
-                    }
-                    alt={`
+                <TableRow className="cursor-pointer ">
+                  <TableCell>{classe.name}</TableCell>
+                  <TableCell>{classe.description}</TableCell>
+                  <TableCell>
+                    <Image
+                      className="img-class "
+                      src={
+                        classe.imageUrl ||
+                        "/images/mos-design-Io433E805vo-unsplash.jpg"
+                      }
+                      alt={`
                   Image de la classe: ${classe.name}`}
-                    width={32}
-                    height={32}
-                  />
-                </TableCell>
-              </TableRow>
+                      width={32}
+                      height={32}
+                    />
+                  </TableCell>
+                </TableRow>
+              </Link>
             );
           })}
         </TableBody>

@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { useLandingRedirect } from "@/hooks/useLandingRedirect";
 
 export default function Hero() {
-  useLandingRedirect();
+  // useLandingRedirect();
 
   const { isSignedIn } = useSession();
 

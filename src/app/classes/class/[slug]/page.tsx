@@ -1,7 +1,7 @@
 "use client";
 import StudentsTable from "./StudentsTable";
 import { useQuery } from "convex/react";
-import { api } from "../../../../convex/_generated/api";
+import { api } from "../../../../../convex/_generated/api";
 import MessageFullScreen from "@/components/MessageFullScreen";
 
 export default function ClassPage({ params }: { params: { slug: string } }) {

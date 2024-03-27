@@ -10,8 +10,8 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useQuery } from "convex/react";
-import { api } from "../../../../convex/_generated/api";
-import { Id } from "../../../../convex/_generated/dataModel";
+import { api } from "../../../../../convex/_generated/api";
+import { Id } from "../../../../../convex/_generated/dataModel";
 import CustomDialog from "@/components/CustomDialog";
 import AddStudentForm from "./AddStudentForm";
 import AddIcon from "@/components/icons/AddIcon";
