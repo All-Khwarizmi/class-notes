@@ -1,23 +1,22 @@
 "use client";
-
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
 import { useQuery } from "convex/react";
-import { api } from "../../../../convex/_generated/api";
-import { Id } from "../../../../convex/_generated/dataModel";
+import { api } from "../../../../../convex/_generated/api";
+import { Id } from "../../../../../convex/_generated/dataModel";
 import CustomDialog from "@/components/CustomDialog";
 import AddStudentForm from "./AddStudentForm";
 import AddIcon from "@/components/icons/AddIcon";
-import { memo, useMemo } from "react";
+import { useMemo } from "react";
 
 export default function StudentsTable({ classId }: { classId: string }) {
+  //! TODO: refactor this to use the new api hook
   const students = useQuery(api.students.getStudents, { classId });
   const isStudents = useMemo(
     () => (students?.length ? true : false),
@@ -25,9 +24,8 @@ export default function StudentsTable({ classId }: { classId: string }) {
   );
 
   return (
-    <section className="mt-4 px-4">
+    <section className="flex flex-col justify-between h-full px-4 py-4">
       <Table>
-        <TableCaption>Ajouter un étudiant</TableCaption>
         {isStudents && (
           <>
             <TableHeader>
@@ -37,7 +35,7 @@ export default function StudentsTable({ classId }: { classId: string }) {
             </TableHeader>
             <TableBody>
               {students?.map((s) => (
-                <TableRow key={s._id}>
+                <TableRow key={s._id} className="cursor-pointer">
                   <TableCell>{s.name}</TableCell>
                 </TableRow>
               ))}
@@ -45,7 +43,12 @@ export default function StudentsTable({ classId }: { classId: string }) {
           </>
         )}
       </Table>
-      <div className=" flex justify-center pt-8">
+      <div className=" flex justify-between ">
+        <footer className="flex h-full items-center">
+          <h1 className="font-bold text-sm py-1 px-4 dark:bg-gray-600 rounded ">
+            {students?.length} élèves
+          </h1>
+        </footer>
         <CustomDialog icon={<AddIcon />} title="Ajouter un étudiant">
           <AddStudentForm classId={classId as Id<"Classes">} />
         </CustomDialog>

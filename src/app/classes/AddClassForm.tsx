@@ -10,17 +10,16 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import classSchema from "@/utils/class-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ClassType } from "@/utils/class-schema";
 import { useForm } from "react-hook-form";
 import { Textarea } from "../../components/ui/textarea";
-import { api } from "../../../convex/_generated/api";
-import { useMutation } from "convex/react";
-import { toast } from "sonner";
+import classSchema, { ClassType } from "@/domain/class/class-schema";
 const BASE_IMAGE_URL = "https://source.unsplash.com/random/800x600";
+import useCreateClasse from "@/hooks/class/useCreateClasse";
+import { useEffect } from "react";
+
 export default function AddClassForm() {
-  const addClass = useMutation(api.classes.createClass);
+  const { setClasse, createdClassId } = useCreateClasse();
   const form = useForm<ClassType>({
     resolver: zodResolver(classSchema),
     defaultValues: {
@@ -33,13 +32,14 @@ export default function AddClassForm() {
     },
   });
 
-  async function onSubmit(values: ClassType) {
-    console.log(values);
-    const id = await addClass(values);
-    if (id) {
+  useEffect(() => {
+    if (createdClassId) {
       form.reset();
-      toast.success("Classe ajoutée avec succès");
-    } else toast.error("Erreur lors de l'ajout de la classe");
+    }
+  }, [createdClassId]);
+
+  async function onSubmit(values: ClassType) {
+    setClasse(values);
   }
   return (
     <>

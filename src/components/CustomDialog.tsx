@@ -27,7 +27,12 @@ export default function CustomDialog({
     <>
       <Dialog>
         <DialogTrigger asChild>
-          <Button data-testid={testId} className="btn btn-primary">
+          <Button
+            variant={"outline"}
+            size={"icon"}
+            data-testid={testId}
+            className="p-0 "
+          >
             {icon}
           </Button>
         </DialogTrigger>

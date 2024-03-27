@@ -1,12 +1,12 @@
 import { Inter } from "next/font/google";
-import "./globals.css";
 import { Providers } from "./providers";
+import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
-import Header from "@/components/Header";
-import Sidebar from "@/components/layout/Sidebar";
+
 import { Metadata } from "next";
 const inter = Inter({ subsets: ["latin"] });
 import { Toaster } from "@/components/ui/sonner";
+import Footer from "@/components/layout/Footer";
 
 export const metadata: Metadata = {
   title: "ClassAI - Votre nouveau carnet de notes.",
@@ -35,14 +35,12 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            <Header />
-            <div className="flex h-screen border-collapse overflow-hidden">
-              <Sidebar />
-              <div className="flex-1 overflow-y-auto overflow-x-hidden pt-8 bg-secondary/10 pb-1">
-                {children}
-                <Toaster richColors expand />
-              </div>
-            </div>
+            <main className="flex fixed h-screen w-screen flex-col border-collapse overflow-scroll">
+              {children}
+              <Footer />
+            </main>
+
+            <Toaster richColors expand />
           </ThemeProvider>
         </body>
       </Providers>
