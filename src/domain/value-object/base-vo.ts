@@ -65,33 +65,41 @@ export abstract class ValueObject<T> implements immutableVO {
 
   public static shortString(value: string): Either<Failure, string> {
     return isEmpty(value)
-      ? left(Failure.invalidValue(value, "A String must not be empty"))
+      ? left(
+          Failure.invalidValue({
+            invalidValue: value,
+            message: "A String must not be empty",
+          })
+        )
       : right(value);
   }
   public static longString(value: string): Either<Failure, string> {
     return value.length < 10
       ? left(
-          Failure.invalidValue(
-            value,
-            "A String must not be at least 10 chars long"
-          )
+          Failure.invalidValue({
+            invalidValue: value,
+            message: "A String must be at least 10 chars long",
+          })
         )
       : right(value);
   }
   public static idFromString(value: string): Either<Failure, string> {
     return value.length < 5
       ? left(
-          Failure.invalidValue(value, "An ID must not be at least 5 chars long")
+          Failure.invalidValue({
+            invalidValue: value,
+            message: "An ID must be at least 5 chars long",
+          })
         )
       : right(value);
   }
   public static number(value: number): Either<Failure, number> {
     return value < 0
       ? left(
-          Failure.invalidValue(
-            value,
-            "A number must not be greater than or equal to 0"
-          )
+          Failure.invalidValue({
+            invalidValue: value,
+            message: "A number must be greater than 0",
+          })
         )
       : right(value);
   }
@@ -102,16 +110,13 @@ export abstract class ValueObject<T> implements immutableVO {
     const isAllStr = value.every((e) => isString(e) && !isEmpty(e));
     return !isArr || !isAllStr
       ? left(
-          Failure.invalidValue(
-            value,
-            "Value must be an array and contain only strings"
-          )
+          Failure.invalidValue({
+            invalidValue: value,
+            message: "A list of strings must not be empty",
+          })
         )
       : right(value);
   }
-
-
- 
 }
 
 export default ValueObject;
