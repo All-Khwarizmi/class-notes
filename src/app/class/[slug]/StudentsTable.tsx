@@ -25,7 +25,7 @@ export default function StudentsTable({ classId }: { classId: string }) {
   );
 
   return (
-    <section className="mt-4 px-4">
+    <section className=" px-4">
       <Table>
         <TableCaption>Ajouter un étudiant</TableCaption>
         {isStudents && (
