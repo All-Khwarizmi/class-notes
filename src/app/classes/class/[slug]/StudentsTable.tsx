@@ -47,7 +47,7 @@ export default function StudentsTable({ classId }: { classId: string }) {
       <div className=" flex justify-between ">
         <footer className="flex h-full items-center">
           <h1 className="font-bold text-sm py-1 px-4 dark:bg-gray-600 rounded ">
-            Vous avez {students?.length} élèves
+          {students?.length} élèves
           </h1>
         </footer>
         <CustomDialog icon={<AddIcon />} title="Ajouter un étudiant">
