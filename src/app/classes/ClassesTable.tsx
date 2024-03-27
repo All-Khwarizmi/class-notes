@@ -56,6 +56,7 @@ export default function ClassesTable() {
                   router.push(`/class/${classe.id}`);
                 }}
                 key={classe.id}
+                className="cursor-pointer "
               >
                 <TableCell>{classe.name}</TableCell>
                 <TableCell>{classe.description}</TableCell>
