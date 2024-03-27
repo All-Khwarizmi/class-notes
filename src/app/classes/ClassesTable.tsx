@@ -15,22 +15,13 @@ import MessageFullScreen from "@/components/MessageFullScreen";
 import { isRight } from "fp-ts/lib/Either";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { useMutation } from "convex/react";
-import { api } from "../../../convex/_generated/api";
-import { toast } from "sonner";
+import useDeleteClasse from "@/hooks/class/useDeleteClasse";
 
 export default function ClassesTable() {
   const { classes, error, loading } = useGetClasses();
-  //! TODO: Refactor the delete mutation to use the new api
-  const deleteClass = useMutation(api.classes.deleteClass);
+  const { setClasseId, loading: loadindDeleteClasses } = useDeleteClasse();
   const handleDelete = async (id: string) => {
-    try {
-      await deleteClass({
-        id,
-      });
-    } catch (error) {
-      toast.error("Erreur lors de la suppression de la classe");
-    }
+    setClasseId(id);
   };
 
   if (loading) {
