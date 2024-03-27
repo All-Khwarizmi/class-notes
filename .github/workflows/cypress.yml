@@ -5,8 +5,15 @@ jobs:
     if: github.event.deployment_status.state == 'success'
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 6.32.9
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "18.x"
+          cache: 'pnpm'
+      - run: pnpm install
       - name: Run Cypress
         uses: cypress-io/github-action@v6
         env:
