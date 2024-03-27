@@ -37,7 +37,7 @@ export default function StudentsTable({ classId }: { classId: string }) {
             </TableHeader>
             <TableBody>
               {students?.map((s) => (
-                <TableRow key={s._id} >
+                <TableRow key={s._id} className="cursor-pointer">
                   <TableCell>{s.name}</TableCell>
                 </TableRow>
               ))}
