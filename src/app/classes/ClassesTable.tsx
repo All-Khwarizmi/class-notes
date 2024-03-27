@@ -12,16 +12,21 @@ import CustomDialog from "../../components/CustomDialog";
 import { useRouter } from "next/navigation";
 import AddClassForm from "./AddClassForm";
 import AddIcon from "../../components/icons/AddIcon";
-import { classUsecases } from "@/usecases/dependency-injection.usecases";
+import useGetClasses from "@/hooks/class/useGetClasses";
+import MessageFullScreen from "@/components/MessageFullScreen";
+import { isRight } from "fp-ts/lib/Either";
 
 export default function ClassesTable() {
-  const stateClasses = classUsecases.useGetClasses();
+  const { classes, error, loading } = useGetClasses();
 
   const router = useRouter();
-
-  if (stateClasses.state === "failure") {
-    return <div>{stateClasses.error}</div>;
+  if (loading) {
+    return <MessageFullScreen message={"Chargement..."} />;
   }
+  if (error) {
+    return <MessageFullScreen message={error} />;
+  }
+
   return (
     <section className="mt-12 px-4">
       <Table>
@@ -34,8 +39,17 @@ export default function ClassesTable() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {stateClasses.data?.map((c, index) => {
-            const classe = c.getOrCrash();
+          {/* //! TODO :make  the failure to have an id 
+          //! TODO : make an adapter for the class entity to show in the UI */}
+          {classes?.map((c, index) => {
+            const classe = isRight(c.values)
+              ? c.values.right
+              : {
+                  id: c.values.left.code || index,
+                  name: "Invalid",
+                  description: "Invalid",
+                  imageUrl: "Invalid",
+                };
             return (
               <TableRow
                 onClick={() => {

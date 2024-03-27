@@ -22,11 +22,11 @@ export class Failure {
     this.message = props.message;
     this.code = props.code;
   }
-  public static invalidValue<T>(
-    invalidValue: T,
-    message: string,
-    code?: string
-  ): Failure {
+  public static invalidValue<T>({
+    invalidValue,
+    message,
+    code,
+  }: FailureProps): Failure {
     const str = JSON.stringify(invalidValue);
     return new Failure({
       invalidValue: str,

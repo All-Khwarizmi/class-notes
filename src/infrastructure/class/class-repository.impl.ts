@@ -1,17 +1,37 @@
 import Failure from "@/core/failures/failures";
-import ClassRepository from "@/usecases/class/class-repository";
+import ClassRepository, { IdCustom } from "@/usecases/class/class-repository";
 import { Either, right } from "fp-ts/lib/Either";
 import { api } from "../../../convex/_generated/api";
-import { useQuery } from "convex/react";
+import { useMutation,  } from "convex/react";
 import ClassEntity from "@/domain/class/class-entity";
 import { Id } from "../../../convex/_generated/dataModel";
-import { Option, isSome, none, some } from "fp-ts/lib/Option";
 import { left } from "fp-ts/lib/Either";
-import { optionPiper } from "@/core/piper";
+import { ClassType } from "@/domain/class/class-schema";
 
 export default class ClassRepositoryImpl extends ClassRepository {
-  useCreateClass(props: any): Promise<any> {
-    throw new Error("Method not implemented.");
+  async useCreateClass(props: ClassType): Promise<Either<Failure, IdCustom>> {
+    try {
+      const addClass = useMutation(api.classes.createClass);
+      const id = await addClass(props);
+      if (id) {
+        let isCustomId = id as unknown;
+
+        return right(isCustomId as IdCustom);
+      }
+      return left(
+        Failure.invalidValue({
+          invalidValue: id,
+          message: "Error while creating class: invalid value",
+        })
+      );
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: error,
+          message: "Error while creating class",
+        })
+      );
+    }
   }
   updateClass(props: any): Promise<any> {
     throw new Error("Method not implemented.");
@@ -23,35 +43,35 @@ export default class ClassRepositoryImpl extends ClassRepository {
     throw new Error("Method not implemented.");
   }
   useGetClasses(): Either<Failure, ClassEntity[]> {
-    const classes = useQuery(api.classes.getClasses);
-    const classEntities = ClassEntityDto.toDomain(classes);
-    const isClasses = isSome(classEntities);
-    if (!isClasses) {
-      return left(Failure.invalidValue(classes, "No classes found"));
-    }
-    const pippedClasses = optionPiper(classEntities);
-
-    return right(pippedClasses);
+    throw new Error("Method not implemented.");
   }
 }
 
 export class ClassEntityDto {
-  static toDomain(props: ClassInfra): Option<ClassEntity[]> {
+  static toDomain(props: ClassInfra): Either<Failure, ClassEntity> {
     if (!props) {
-      return none;
+      return left(
+        Failure.invalidValue({
+          invalidValue: props,
+          message: "No class found",
+        })
+      );
     }
-    return some(
-      props.map((c) => {
-        const props = {
-          id: c._id,
-          description: c.description,
-          imageUrl: c.imageUrl,
-          students: c.students,
-          name: c.name,
-        };
-        return ClassEntity.create(props);
-      })
-    );
+    const classEntity = ClassEntity.create({
+      id: props._id,
+      name: props.name,
+      description: props.description,
+      imageUrl: props.imageUrl,
+    });
+    if (classEntity.values._tag === "Left") {
+      return left(
+        Failure.invalidValue({
+          invalidValue: classEntity.values.left,
+          message: "Invalid value",
+        })
+      );
+    }
+    return right(classEntity);
   }
 }
 
@@ -64,5 +84,5 @@ type ClassInfra =
       students?: any[] | undefined;
       name: string;
       userId: string;
-    }[]
+    }
   | undefined;
