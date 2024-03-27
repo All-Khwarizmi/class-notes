@@ -5,7 +5,7 @@ import { isRight } from "fp-ts/lib/Either";
 import ClassEntity from "@/domain/class/class-entity";
 import { useEffect, useState } from "react";
 
-export default function useGetClasse() {
+export default function useGetClasses() {
   const [error, setError] = useState<string>();
   const [loading, setLoading] = useState<boolean>(true);
   const [classes, setClasses] = useState<ClassEntity[] | null>(null);
