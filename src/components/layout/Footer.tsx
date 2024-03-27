@@ -2,7 +2,7 @@ import Title from "@/app/Title";
 
 export default function Footer() {
   return (
-    <footer className="bg-gray-800 h-[20vh] flex flex-col justify-center text-gray-400 text-sm text-center p-4">
+    <footer className="bg-gray-800 h-[10vh] flex flex-col justify-center text-gray-400 text-sm text-center p-4">
       <p>
         <Title size="sm" /> © {new Date().getFullYear()}
       </p>

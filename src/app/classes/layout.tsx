@@ -1,12 +1,6 @@
-import { Inter } from "next/font/google";
-import "../globals.css";
-import { Providers } from "../providers";
-import { ThemeProvider } from "@/components/theme-provider";
 import Header from "@/components/Header";
 import Sidebar from "@/components/layout/Sidebar";
 import { Metadata } from "next";
-const inter = Inter({ subsets: ["latin"] });
-import { Toaster } from "@/components/ui/sonner";
 
 export const metadata: Metadata = {
   title: "ClassAI - Votre nouveau carnet de notes.",
@@ -22,11 +16,11 @@ export default function RootLayout({
   return (
     <>
       <Header />
-      <section className="flex border-collapse overflow-hidden">
+      <section className="flex h-full w-full border-collapse overflow-hidden">
         <Sidebar />
-        <div className="flex-1  h-full overflow-x-hidden pt-8  pb-1">
+        <section className="flex-1 h-[75vh] overflow-x-hidden">
           {children}
-        </div>
+        </section>
       </section>
     </>
   );

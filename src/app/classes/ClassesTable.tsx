@@ -1,7 +1,6 @@
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
@@ -9,7 +8,6 @@ import {
 } from "@/components/ui/table";
 import Image from "next/image";
 import CustomDialog from "../../components/CustomDialog";
-import { useRouter } from "next/navigation";
 import AddClassForm from "./AddClassForm";
 import AddIcon from "../../components/icons/AddIcon";
 import useGetClasses from "@/hooks/class/useGetClasses";
@@ -20,7 +18,6 @@ import Link from "next/link";
 export default function ClassesTable() {
   const { classes, error, loading } = useGetClasses();
 
-  const router = useRouter();
   if (loading) {
     return <MessageFullScreen message={"Chargement..."} />;
   }
@@ -29,9 +26,8 @@ export default function ClassesTable() {
   }
 
   return (
-    <section className="p-4 pt-0">
-      <Table>
-        <TableCaption>Ajouter classe</TableCaption>
+    <section className="flex flex-col  justify-between p-4  h-[100%]">
+      <Table className="">
         <TableHeader>
           <TableRow>
             <TableHead>Name</TableHead>
@@ -79,17 +75,23 @@ export default function ClassesTable() {
           })}
         </TableBody>
       </Table>
-      <div className="flex justify-center pt-4">
-        {" "}
-        <CustomDialog
-          icon={<AddIcon />}
-          title="Ajouter une classe"
-          description="Ajouter une classe pour commencer à ajouter des étudiants"
-          testId="add-class"
-        >
-          <AddClassForm />
-        </CustomDialog>
-      </div>
+      <section className="flex justify-between items-center py-2 ">
+        <footer className="flex h-full items-center">
+          <h1 className="font-bold text-sm py-1 px-4 dark:bg-gray-600 rounded ">
+            Vous avez {classes?.length} classes
+          </h1>
+        </footer>
+        <article className="flex flex-col gap-y-2">
+          <CustomDialog
+            icon={<AddIcon />}
+            title="Ajouter une classe"
+            description="Ajouter une classe pour commencer à ajouter des étudiants"
+            testId="add-class"
+          >
+            <AddClassForm />
+          </CustomDialog>
+        </article>
+      </section>
     </section>
   );
 }

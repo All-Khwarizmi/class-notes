@@ -2,8 +2,7 @@ import { Inter } from "next/font/google";
 import { Providers } from "./providers";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
-import Header from "@/components/Header";
-import Sidebar from "@/components/layout/Sidebar";
+
 import { Metadata } from "next";
 const inter = Inter({ subsets: ["latin"] });
 import { Toaster } from "@/components/ui/sonner";
@@ -36,7 +35,7 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            <main className="flex fixed h-screen flex-col border-collapse overflow-scroll">
+            <main className="flex fixed h-screen w-screen flex-col border-collapse overflow-scroll">
               {children}
               <Footer />
             </main>

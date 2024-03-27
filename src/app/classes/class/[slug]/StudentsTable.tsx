@@ -25,9 +25,8 @@ export default function StudentsTable({ classId }: { classId: string }) {
   );
 
   return (
-    <section className=" px-4">
+    <section className="flex flex-col justify-between h-full px-4 py-4">
       <Table>
-        <TableCaption>Ajouter un étudiant</TableCaption>
         {isStudents && (
           <>
             <TableHeader>
@@ -45,7 +44,12 @@ export default function StudentsTable({ classId }: { classId: string }) {
           </>
         )}
       </Table>
-      <div className=" flex justify-center pt-4">
+      <div className=" flex justify-between ">
+        <footer className="flex h-full items-center">
+          <h1 className="font-bold text-sm py-1 px-4 dark:bg-gray-600 rounded ">
+            Vous avez {students?.length} élèves
+          </h1>
+        </footer>
         <CustomDialog icon={<AddIcon />} title="Ajouter un étudiant">
           <AddStudentForm classId={classId as Id<"Classes">} />
         </CustomDialog>

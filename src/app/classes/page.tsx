@@ -9,11 +9,6 @@ export default function Home() {
     <>
       {isSignedIn ? (
         <>
-          <header className="flex justify-end pr-4  ">
-            <h1 className="font-bold text-lg py-1 px-4 dark:bg-gray-600 rounded ">
-              Vos classes{" "}
-            </h1>
-          </header>
           <ClassesTable />
         </>
       ) : (
