@@ -22,12 +22,12 @@ export default function RootLayout({
   return (
     <>
       <Header />
-      <div className="flex h-screen border-collapse overflow-hidden">
+      <section className="flex border-collapse overflow-hidden">
         <Sidebar />
-        <div className="flex-1 overflow-y-auto overflow-x-hidden pt-8 bg-secondary/10 pb-1">
+        <div className="flex-1  h-full overflow-x-hidden pt-8  pb-1">
           {children}
         </div>
-      </div>
+      </section>
     </>
   );
 }

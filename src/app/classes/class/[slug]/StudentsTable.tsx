@@ -45,7 +45,7 @@ export default function StudentsTable({ classId }: { classId: string }) {
           </>
         )}
       </Table>
-      <div className=" flex justify-center pt-8">
+      <div className=" flex justify-center pt-4">
         <CustomDialog icon={<AddIcon />} title="Ajouter un étudiant">
           <AddStudentForm classId={classId as Id<"Classes">} />
         </CustomDialog>

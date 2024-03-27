@@ -7,6 +7,7 @@ import Sidebar from "@/components/layout/Sidebar";
 import { Metadata } from "next";
 const inter = Inter({ subsets: ["latin"] });
 import { Toaster } from "@/components/ui/sonner";
+import Footer from "@/components/layout/Footer";
 
 export const metadata: Metadata = {
   title: "ClassAI - Votre nouveau carnet de notes.",
@@ -35,7 +36,11 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            {children}
+            <main className="flex fixed h-screen flex-col border-collapse overflow-scroll">
+              {children}
+              <Footer />
+            </main>
+
             <Toaster richColors expand />
           </ThemeProvider>
         </body>
