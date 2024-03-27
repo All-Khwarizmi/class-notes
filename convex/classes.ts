@@ -1,3 +1,4 @@
+import { ar } from "@faker-js/faker";
 import { mutation, query } from "./_generated/server";
 import { v } from "convex/values";
 
@@ -21,6 +22,21 @@ export const createClass = mutation({
       students: args.students,
     });
     return { id };
+  },
+});
+
+export const deleteClass = mutation({
+  args: {
+    id: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const classe = await ctx.db
+      .query("Classes")
+      .filter((q) => q.eq(q.field("_id"), args.id))
+      .first();
+    if (classe) {
+      return ctx.db.delete(classe._id);
+    }
   },
 });
 

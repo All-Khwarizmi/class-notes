@@ -14,9 +14,22 @@ import useGetClasses from "@/hooks/class/useGetClasses";
 import MessageFullScreen from "@/components/MessageFullScreen";
 import { isRight } from "fp-ts/lib/Either";
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { useMutation } from "convex/react";
+import { api } from "../../../convex/_generated/api";
 
 export default function ClassesTable() {
   const { classes, error, loading } = useGetClasses();
+  const deleteClass = useMutation(api.classes.deleteClass);
+  const handleDelete = async (id: string) => {
+    try {
+      await deleteClass({
+        id,
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   if (loading) {
     return <MessageFullScreen message={"Chargement..."} />;
@@ -33,6 +46,7 @@ export default function ClassesTable() {
             <TableHead>Name</TableHead>
             <TableHead>Description</TableHead>
             <TableHead>Image</TableHead>
+            <TableHead>Actions</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -48,29 +62,44 @@ export default function ClassesTable() {
                   imageUrl: "Invalid",
                 };
             return (
-              <Link
-                key={classe.id}
-                href={`/classes/class/${classe.id}`}
-                legacyBehavior
-              >
-                <TableRow className="cursor-pointer ">
-                  <TableCell>{classe.name}</TableCell>
-                  <TableCell>{classe.description}</TableCell>
-                  <TableCell>
-                    <Image
-                      className="img-class "
-                      src={
-                        classe.imageUrl ||
-                        "/images/mos-design-Io433E805vo-unsplash.jpg"
-                      }
-                      alt={`
+              <TableRow key={classe.id} className="cursor-pointer ">
+                <TableCell>{classe.name}</TableCell>
+                <TableCell>{classe.description}</TableCell>
+                <TableCell>
+                  <Image
+                    className="img-class "
+                    src={
+                      classe.imageUrl ||
+                      "/images/mos-design-Io433E805vo-unsplash.jpg"
+                    }
+                    alt={`
                   Image de la classe: ${classe.name}`}
-                      width={32}
-                      height={32}
-                    />
-                  </TableCell>
-                </TableRow>
-              </Link>
+                    width={32}
+                    height={32}
+                  />
+                </TableCell>
+                <TableCell className="flex justify-center">
+                  {/* Delete */}
+                  <Button
+                    data-testid="delete-class"
+                    className="mr-2"
+                    onClick={async () => {
+                      await handleDelete(classe.id?.toString() || "");
+                    }}
+                    variant="destructive"
+                  >
+                    -
+                  </Button>
+
+                  {/* Edit */}
+
+                  <Link href={`/classes/class/${classe.id}`}>
+                    <Button data-testid="edit-class" variant="link">
+                      Edit
+                    </Button>
+                  </Link>
+                </TableCell>
+              </TableRow>
             );
           })}
         </TableBody>
