@@ -17,9 +17,11 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { useMutation } from "convex/react";
 import { api } from "../../../convex/_generated/api";
+import { toast } from "sonner";
 
 export default function ClassesTable() {
   const { classes, error, loading } = useGetClasses();
+  //! TODO: Refactor the delete mutation to use the new api
   const deleteClass = useMutation(api.classes.deleteClass);
   const handleDelete = async (id: string) => {
     try {
@@ -27,7 +29,7 @@ export default function ClassesTable() {
         id,
       });
     } catch (error) {
-      console.error(error);
+      toast.error("Erreur lors de la suppression de la classe");
     }
   };
 
