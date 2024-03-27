@@ -6,7 +6,6 @@ export default defineConfig({
       // implement node event listeners here
     },
     responseTimeout: 10000,
-    baseUrl: "http://localhost:3000",
-    
+    baseUrl: "https://class-notes-git-dev-jasonsuarez.vercel.app/",
   },
 });

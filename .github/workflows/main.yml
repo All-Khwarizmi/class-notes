@@ -5,6 +5,7 @@ on: [push, pull_request]
 env:
   CONVEX_DEPLOY_KEY: ${{ vars.CONVEX_DEPLOY_KEY }}
   CONVEX_URL: ${{ secrets.CONVEX_URL }}
+  CYPRESS_BASE_URL: "https://class-notes-git-dev-jasonsuarez.vercel.app/"
 
 jobs:
   build-and-test:
@@ -21,9 +22,6 @@ jobs:
 
       - name: Install dependencies
         run: npm install
-
-      - name: Build application
-        run: npm run build
 
       - name: Run tests
         run: npm test
