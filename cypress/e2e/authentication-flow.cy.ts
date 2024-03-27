@@ -4,10 +4,10 @@ describe("Authentication Flow", () => {
       cy.signIn();
     });
   });
-
+  const baseUrl = Cypress.env("CYPRESS_BASE_URL");
   context("Should be able to avigate to classes dashboard", () => {
     it("navigate to the classe's dashboard", () => {
-      cy.visit("/classes", {
+      cy.visit(`${baseUrl}/classes`, {
         timeout: 10000,
         failOnStatusCode: false,
       });

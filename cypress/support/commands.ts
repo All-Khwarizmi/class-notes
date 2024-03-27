@@ -1,14 +1,11 @@
 /// <reference types="cypress" />
 
-
 export {};
 declare global {
   namespace Cypress {
     interface Window {
       Clerk: any;
-     
     }
-    
 
     interface Chainable {
       /**
@@ -34,11 +31,10 @@ Cypress.Commands.add("getByTestId", (testId) => {
   return cy.get(`[data-testid="${testId}"]`);
 });
 
-
-
 Cypress.Commands.add(`signIn`, () => {
   cy.log(`Signing in.`);
-  cy.visit(`/`, {
+  const baseUrl = Cypress.env("CYPRESS_BASE_URL");
+  cy.visit(baseUrl, {
     timeout: 10000,
     failOnStatusCode: false,
   });
@@ -52,8 +48,8 @@ Cypress.Commands.add(`signIn`, () => {
       const domain = window.location.hostname;
       cy.clearCookies({ domain });
       const res = await window.Clerk.client.signIn.create({
-        identifier: Cypress.env(`test_email`),
-        password: Cypress.env(`test_password`),
+        identifier: Cypress.env(`TEST_EMAIL`),
+        password: Cypress.env(`TEST_PASSWORD`),
       });
 
       await window.Clerk.setActive({
