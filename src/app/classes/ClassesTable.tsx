@@ -38,7 +38,6 @@ export default function ClassesTable() {
           <TableRow>
             <TableHead>Name</TableHead>
             <TableHead>Description</TableHead>
-            <TableHead>Image</TableHead>
             <TableHead>Actions</TableHead>
           </TableRow>
         </TableHeader>
@@ -58,19 +57,7 @@ export default function ClassesTable() {
               <TableRow key={classe.id} className="cursor-pointer ">
                 <TableCell>{classe.name}</TableCell>
                 <TableCell>{classe.description}</TableCell>
-                <TableCell>
-                  <Image
-                    className="img-class "
-                    src={
-                      classe.imageUrl ||
-                      "/images/mos-design-Io433E805vo-unsplash.jpg"
-                    }
-                    alt={`
-                  Image de la classe: ${classe.name}`}
-                    width={32}
-                    height={32}
-                  />
-                </TableCell>
+
                 <TableCell className="flex justify-center">
                   {/* Delete */}
                   <Button
