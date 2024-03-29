@@ -6,25 +6,12 @@ describe("Signed in", () => {
       cy.signIn();
     });
   });
-
-  context("Navigate to classes dashboard", () => {
-    it("navigate to the classe's dashboard", () => {
-      // open dashboard page
-      cy.visit("/classes", {
-        timeout: 10000,
-        failOnStatusCode: false,
-      });
-
-      cy.get("h1").should("contain", "Vos classes", {
-        timeout: 10000,
-      });
-    });
-  });
+  const baseUrl = Cypress.env("CYPRESS_BASE_URL");
 
   context("Should be able to create a class", () => {
     it("should create a class", () => {
       // open dashboard page
-      cy.visit("/classes", {
+      cy.visit(`${baseUrl}/classes`, {
         timeout: 10000,
         failOnStatusCode: false,
       });

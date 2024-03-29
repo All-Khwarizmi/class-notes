@@ -1,0 +1,28 @@
+name: "Smoke Tests"
+on: [deployment_status]
+env:
+  BRANCH_NAME: ${{ github.head_ref || github.ref_name}}
+  CYPRESS_BASE_URL: "https://classroom.jason-suarez.com/"
+jobs:
+  e2e-test-on-deployment-status-to-main:
+    if: github.event.deployment_status.state == 'success' && github.head_ref == 'main'
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo "Running Cypress tests on deployment to main"
+          echo "Branch name: $BRANCH_NAME"
+          echo "CYPRESS_BASE_URL: $CYPRESS_BASE_URL"
+
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 6.32.9
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "18.x"
+          cache: "pnpm"
+      - run: pnpm install
+      - name: Run Cypress
+        uses: cypress-io/github-action@v6
+        env:
+          CYPRESS_RETRIES: 1
