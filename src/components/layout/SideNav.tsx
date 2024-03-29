@@ -15,6 +15,7 @@ import {
 } from "@/components/layout/SubNavAccordion";
 import { useEffect, useState } from "react";
 import { ChevronDownIcon } from "@radix-ui/react-icons";
+import useNavItems from "@/hooks/useNavItems";
 
 interface SideNavProps {
   items: NavItem[];
@@ -26,7 +27,7 @@ export function SideNav({ items, setOpen, className }: SideNavProps) {
   const path = usePathname();
   const { isOpen } = useSidebar();
   const [openItem, setOpenItem] = useState("");
-  const [lastOpenItem, setLastOpenItem] = useState("");
+  const [lastOpenItem, setLastOpenItem] = useState("")
 
   useEffect(() => {
     if (isOpen) {

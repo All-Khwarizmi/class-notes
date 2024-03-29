@@ -6,6 +6,7 @@ import { NavItems } from "@/components/constants/side-nav";
 import { cn } from "@/lib/utils";
 import { useSidebar } from "@/hooks/useSidebar";
 import ArrowLeft from "../icons/ArrowLeft";
+import useNavItems from "@/hooks/useNavItems";
 
 interface SidebarProps {
   className?: string;
@@ -14,6 +15,7 @@ interface SidebarProps {
 export default function Sidebar({ className }: SidebarProps) {
   const { isOpen, toggle } = useSidebar();
   const [status, setStatus] = useState(false);
+  const { navItems } = useNavItems();
 
   const handleToggle = () => {
     setStatus(true);
@@ -41,7 +43,7 @@ export default function Sidebar({ className }: SidebarProps) {
           <div className="mt-3 space-y-1">
             <SideNav
               className="text-background opacity-0 transition-all duration-300 group-hover:z-50 group-hover:ml-4 group-hover:rounded group-hover:bg-foreground group-hover:p-2 group-hover:opacity-100"
-              items={NavItems}
+              items={navItems || NavItems}
             />
           </div>
         </div>
