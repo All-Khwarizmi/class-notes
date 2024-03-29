@@ -12,6 +12,7 @@ jobs:
           echo "Running Cypress tests on deployment to main"
           echo "Branch name: $BRANCH_NAME"
           echo "CYPRESS_BASE_URL: $CYPRESS_BASE_URL"
+          echo "Deployment ref: ${{ github.event.deployment.ref }}"
 
   e2e-test-on-deployment-status-to-main:
     if: github.event.deployment_status.state == 'success' && github.event.deployment.ref == 'main'
