@@ -1,7 +1,7 @@
 name: "Smoke Tests"
 on: [deployment_status]
 env:
-  BRANCH_NAME: $GITHUB_REF_NAME
+  BRANCH_NAME: ${{ github.head_ref }}
   CYPRESS_BASE_URL: "https://classroom.jason-suarez.com/"
 
 jobs:
@@ -10,16 +10,16 @@ jobs:
     steps:
       - run: |
           echo "Running Cypress tests on deployment to main"
-          echo "Branch name: $BRANCH_NAME"
+          echo "GITHUB_REF_NAME: $GITHUB_REF_NAME"
           echo "CYPRESS_BASE_URL: $CYPRESS_BASE_URL"
           echo "Deployment ref: ${{ github.event.deployment.ref }}"
       - name: Get branch name
         id: branch-name
         uses: tj-actions/branch-names@v7
-
+        
       - name: Show the current branch name
         run: |
-          echo "current_branch: ${{ steps.branch-name.outputs.current_branch }}"
+          echo "Current branch: ${{ steps.branch-name.outputs.current_branch }}"
 
   e2e-test-on-deployment-status-to-main:
     if: github.event.deployment_status.state == 'success' && github.event.deployment.ref == 'main'
