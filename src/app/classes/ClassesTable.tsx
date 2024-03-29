@@ -6,7 +6,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import Image from "next/image";
 import CustomDialog from "../../components/CustomDialog";
 import AddClassForm from "./AddClassForm";
 import AddIcon from "../../components/icons/AddIcon";
@@ -33,7 +32,7 @@ export default function ClassesTable() {
 
   return (
     <section className="flex flex-col  justify-between p-4  h-[100%]">
-      <Table className="">
+      <Table data-testid="classes-table" className="">
         <TableHeader>
           <TableRow>
             <TableHead>Name</TableHead>
