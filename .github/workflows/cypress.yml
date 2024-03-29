@@ -15,21 +15,6 @@ jobs:
           echo "BRANCH_NAME: $BRANCH_NAME"
           echo "Deployment ref: ${{ github.event.deployment.ref }}"
 
-  replace-job:
-    runs-on: ubuntu-latest
-    name: "Find and replace"
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Remove refs/heads/ from string
-        uses: mad9000/actions-find-and-replace-string@1
-        id: findandreplace
-        with:
-          source: ${{ github.ref }}
-          find: "refs/heads/"
-          replace: ""
-      - name: Branch name
-        run: echo "The branch name is ${{ steps.findandreplace.outputs.value }}"
 
   e2e-test-on-deployment-status-to-main:
     if: github.event.deployment_status.state == 'success' 

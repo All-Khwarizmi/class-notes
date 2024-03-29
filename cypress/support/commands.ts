@@ -33,8 +33,8 @@ Cypress.Commands.add("getByTestId", (testId) => {
 
 Cypress.Commands.add(`signIn`, () => {
   cy.log(`Signing in.`);
-  const baseUrl = Cypress.env("CYPRESS_BASE_URL");
-  cy.visit(baseUrl, {
+  // const baseUrl = Cypress.env("CYPRESS_BASE_URL");
+  cy.visit("/", {
     timeout: 10000,
     failOnStatusCode: false,
   });

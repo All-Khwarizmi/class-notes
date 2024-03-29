@@ -1,8 +1,8 @@
 describe("Landing Page", () => {
-  const baseUrl = Cypress.env("CYPRESS_BASE_URL");
+  // const baseUrl = Cypress.env("CYPRESS_BASE_URL");
 
   it("should display the landing page", () => {
-    cy.visit(`${baseUrl}`, {
+    cy.visit(`/`, {
       timeout: 10000,
       failOnStatusCode: false,
     });

@@ -6,12 +6,12 @@ describe("Signed in", () => {
       cy.signIn();
     });
   });
-  const baseUrl = Cypress.env("CYPRESS_BASE_URL");
+  // const baseUrl = Cypress.env("CYPRESS_BASE_URL");
 
   context("Should be able to create a class", () => {
     it("should create a class", () => {
       // open dashboard page
-      cy.visit(`${baseUrl}/classes`, {
+      cy.visit(`/classes`, {
         timeout: 10000,
         failOnStatusCode: false,
       });
