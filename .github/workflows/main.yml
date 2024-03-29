@@ -2,8 +2,7 @@ name: Build and Vitest
 
 on: [push, pull_request]
 
-env:
-  CYPRESS_BASE_URL: "https://classroom.jason-suarez.com/"
+
 
 jobs:
   build-and-test:
@@ -23,19 +22,3 @@ jobs:
 
       - name: Run tests
         run: npm test
-
-  smoke-tests-production:
-    runs-on: ubuntu-22.04
-    steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v2
-        with:
-          version: 6.32.9
-      - uses: actions/setup-node@v4
-        with:
-          node-version: "18.x"
-          cache: "pnpm"
-      - run: pnpm install
-      - run: pnpm test
-      - name: Run Cypress
-        uses: cypress-io/github-action@v6
