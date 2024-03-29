@@ -1,8 +1,9 @@
 name: "Smoke Tests"
 on: [deployment_status]
 env:
-  BRANCH_NAME: ${{ github.head_ref || github.ref_name}}
+  BRANCH_NAME: ${{ github.ref_name }}
   CYPRESS_BASE_URL: "https://classroom.jason-suarez.com/"
+  
 jobs:
   test-conditions:
     runs-on: ubuntu-latest
