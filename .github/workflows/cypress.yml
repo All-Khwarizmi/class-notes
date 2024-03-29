@@ -14,6 +14,16 @@ jobs:
           echo "CYPRESS_BASE_URL: $CYPRESS_BASE_URL"
           echo "BRANCH_NAME: $BRANCH_NAME"
           echo "Deployment ref: ${{ github.event.deployment.ref }}"
+      - name: Extract branch name
+        shell: bash
+        run: echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
+        id: extract_branch
+
+      - name: Set branch name
+        id: set_branch
+        run: |
+          echo "BRANCH_NAME=${{ steps.extract_branch.outputs.branch }}" >> $GITHUB_ENV
+          echo "Branch name: $BRANCH_NAME"
 
 
   e2e-test-on-deployment-status-to-main:
