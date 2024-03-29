@@ -54,8 +54,16 @@ export default function ClassesTable() {
                 };
             return (
               <TableRow key={classe.id} className="cursor-pointer ">
-                <TableCell>{classe.name}</TableCell>
-                <TableCell>{classe.description}</TableCell>
+                <Link href={`/classes/class/${classe.id}`} legacyBehavior>
+                  <TableCell>{classe.name}</TableCell>
+                </Link>
+                <Link
+                  className="cursor-pointer "
+                  href={`/classes/class/${classe.id}`}
+                  legacyBehavior
+                >
+                  <TableCell>{classe.description}</TableCell>
+                </Link>
 
                 <TableCell className="flex justify-center">
                   {/* Delete */}
