@@ -1,7 +1,7 @@
 name: "Smoke Tests"
 on: [deployment_status]
 env:
-  BRANCH_NAME: ${{ github.head_ref }}
+  BRANCH_NAME: ${{ github.ref }}
   CYPRESS_BASE_URL: "https://classroom.jason-suarez.com/"
 
 jobs:
@@ -17,7 +17,7 @@ jobs:
 
   replace-job:
     runs-on: ubuntu-latest
-    name: 'Find and replace'
+    name: "Find and replace"
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -26,11 +26,10 @@ jobs:
         id: findandreplace
         with:
           source: ${{ github.ref }}
-          find: 'refs/heads/'
-          replace: ''
+          find: "refs/heads/"
+          replace: ""
       - name: Branch name
         run: echo "The branch name is ${{ steps.findandreplace.outputs.value }}"
-
 
   e2e-test-on-deployment-status-to-main:
     if: github.event.deployment_status.state == 'success' && github.event.deployment.ref == 'main'
