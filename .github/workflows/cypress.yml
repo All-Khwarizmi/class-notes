@@ -4,6 +4,14 @@ env:
   BRANCH_NAME: ${{ github.head_ref || github.ref_name}}
   CYPRESS_BASE_URL: "https://classroom.jason-suarez.com/"
 jobs:
+  test-conditions:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo "Running Cypress tests on deployment to main"
+          echo "Branch name: $BRANCH_NAME"
+          echo "CYPRESS_BASE_URL: $CYPRESS_BASE_URL"
+
   e2e-test-on-deployment-status-to-main:
     if: github.event.deployment_status.state == 'success' && github.head_ref == 'main'
     runs-on: ubuntu-latest
