@@ -13,6 +13,13 @@ jobs:
           echo "Branch name: $BRANCH_NAME"
           echo "CYPRESS_BASE_URL: $CYPRESS_BASE_URL"
           echo "Deployment ref: ${{ github.event.deployment.ref }}"
+      - name: Get branch name
+        id: branch-name
+        uses: tj-actions/branch-names@v7
+        
+      - name: Show the current branch name
+        run: |
+          echo "Current branch: ${{ steps.branch-name.outputs.current_branch }}"
 
   e2e-test-on-deployment-status-to-main:
     if: github.event.deployment_status.state == 'success' && github.event.deployment.ref == 'main'
