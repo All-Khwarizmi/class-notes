@@ -15,4 +15,10 @@ export const NavItems: NavItem[] = [
     href: "/classes",
     color: "text-orange-500",
   },
+  {
+    title: "Evaluations",
+    icon: CopyClipboard(),
+    href: "/evaluations",
+    color: "text-green-500",
+  },
 ];
