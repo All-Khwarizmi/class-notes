@@ -44,16 +44,18 @@ export const updateDynamicField = mutation({
 });
 
 export const listDynamicFieldsByCreator = query({
-  args: {},
+  args: {
+    userId: v.string(),
+  },
   handler: async (ctx, args) => {
-    const isAuthenticated = await ctx.auth.getUserIdentity();
-    if (!isAuthenticated) {
-      throw new Error("Not authenticated");
-    }
     const user = await ctx.db
       .query("Users")
-      .filter((q) => q.eq(q.field("userId"), isAuthenticated.subject))
+      .filter((q) => q.eq(q.field("userId"), args.userId))
       .first();
+
+    if (!user) {
+      throw new Error("User not found");
+    }
 
     const dynamicFields = await ctx.db
       .query("DynamicFields")

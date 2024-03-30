@@ -1,16 +1,38 @@
+"use client";
 import { ScrollArea } from "@/components/ui/scroll-area";
-
+import { useQuery } from "convex/react";
+import { api } from "../../../convex/_generated/api";
+import {
+  Card,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { useSession } from "@clerk/nextjs";
 export default function Criteria() {
+  const { isSignedIn, session } = useSession();
+  const criterias = useQuery(api.criteria.listCriteriaByCreator, {
+    userId: session?.user.id || "",
+  });
+
   return (
-    <ScrollArea className="h-[200px] w-full rounded-md border p-4">
-      Loremipsum dolor sit amet, consectetur adipiscing elit. Nulla nec dui
-      ligula. Integer euismod, purus nec ultricies luctus, nunc libero fermentum
-      risus, nec fermentum nunc libero eu sapien. Quisque consectetur, turpis
-      eget ultricies fermentum, metus velit ultricies turpis, sit amet ultricies
-      turpis purus nec odio. Integer euismod ultricies fermentum. Nullam eget
-      libero vitae libero ultricies fermentum. Nam nec sapien eu sapien
-      fermentum fermentum. Nullam fermentum, libero nec fermentum fermentum,
-      purus libero fermentum
-    </ScrollArea>
+    <>
+      {criterias && (
+        <ScrollArea className="h-[200px] w-full rounded-md border p-4">
+          <h2 className="py-2 text-lg">Critères d'évaluation</h2>
+          {criterias?.map((criteria, index) => (
+            <Card key={criteria._id}>
+              <CardHeader>
+                <CardTitle>
+                  {" "}
+                  {index + 1}- {criteria.name}
+                </CardTitle>
+                <CardDescription>{criteria.description}</CardDescription>
+              </CardHeader>
+            </Card>
+          ))}
+        </ScrollArea>
+      )}
+    </>
   );
 }

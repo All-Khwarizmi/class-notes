@@ -1,7 +1,5 @@
-import { ar } from "@faker-js/faker";
 import { mutation, query } from "./_generated/server";
 import { v } from "convex/values";
-import { cons } from "fp-ts/lib/ReadonlyNonEmptyArray";
 
 export const createClass = mutation({
   args: {
@@ -63,20 +61,17 @@ export const deleteClass = mutation({
 });
 
 export const getClasses = query({
-  args: {},
-  handler: async (ctx) => {
-    const isAuthenticated = await ctx.auth.getUserIdentity();
-    if (!isAuthenticated) {
-      throw new Error("Not authenticated");
-    }
+  args: {
+    id: v.string(),
+  },
+  handler: async (ctx, args) => {
     const user = await ctx.db
       .query("Users")
-      .filter((q) => q.eq(q.field("userId"), isAuthenticated.subject))
+      .filter((q) => q.eq(q.field("userId"), args.id))
       .first();
     if (!user) {
       throw new Error("User not found");
     }
-
     const classes = await ctx.db
       .query("Classes")
       .filter((q) => q.eq(q.field("userId"), user._id))

@@ -23,7 +23,6 @@ export const createCriterion = mutation({
   },
 });
 
-
 export const updateCriterion = mutation({
   args: {
     criterionId: v.id("Criteria"),
@@ -40,20 +39,26 @@ export const updateCriterion = mutation({
   },
 });
 
-
-
 export const listCriteriaByCreator = query({
-  args: { createdBy: v.id("Users") },
+  args: {
+    userId: v.string(),
+  },
   handler: async (ctx, args) => {
+    const user = await ctx.db
+      .query("Users")
+      .filter((q) => q.eq(q.field("userId"), args.userId))
+      .first();
+
+    if (!user) {
+      throw new Error("User not found");
+    }
     const criteria = await ctx.db
       .query("Criteria")
-      .filter((q) => q.eq(q.field("createdBy"), args.createdBy))
+      .filter((q) => q.eq(q.field("createdBy"), user?._id))
       .collect();
     return criteria;
   },
 });
-
-
 
 export const deleteCriterion = mutation({
   args: { criterionId: v.id("Criteria") },
