@@ -6,7 +6,7 @@ export const NavItems: NavItem[] = [
   {
     title: "Dashboard",
     icon: Dashboard(),
-    href: "/classes",
+    href: "/dashboard",
     color: "text-sky-500",
   },
   {
@@ -14,5 +14,11 @@ export const NavItems: NavItem[] = [
     icon: CopyClipboard(),
     href: "/classes",
     color: "text-orange-500",
+  },
+  {
+    title: "Evaluations",
+    icon: CopyClipboard(),
+    href: "/evaluations",
+    color: "text-green-500",
   },
 ];

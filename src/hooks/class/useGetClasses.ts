@@ -4,13 +4,21 @@ import { ClassEntityDto } from "@/infrastructure/class/class-repository.impl";
 import { isRight } from "fp-ts/lib/Either";
 import ClassEntity from "@/domain/class/class-entity";
 import { useEffect, useState } from "react";
+import { useSession } from "@clerk/nextjs";
+
 
 export default function useGetClasses() {
+  const { isSignedIn, session } = useSession();
   const [error, setError] = useState<string>();
   const [loading, setLoading] = useState<boolean>(true);
   const [classes, setClasses] = useState<ClassEntity[] | null>(null);
-  const rawClasses = useQuery(api.classes.getClasses);
+  const rawClasses = useQuery(api.classes.getClasses, {
+    id: session?.user.id || "",
+  });
   useEffect(() => {
+    if (isSignedIn === false) {
+      return;
+    }
     if (rawClasses) {
       //!TODO: refactor this. -Now we are using the Either monad to handle the error by filtering the invalid values. But we should do something about the fault classes if any
       const classeEntities = rawClasses.map((c) => {
@@ -34,6 +42,13 @@ export default function useGetClasses() {
     }
   }, [rawClasses]);
 
+  if (isSignedIn === false) {
+    return {
+      classes: [],
+      error: "You need to sign in to view classes",
+      loading: false,
+    };
+  }
   return {
     classes,
     error,
