@@ -45,7 +45,7 @@ export default defineSchema({
     criteriaId: v.id("Criteria"),
     // This table allows you to associate multiple criteria with a single evaluation.
   }),
-  CriteriaDynamicFields: defineTable({
+  CriteriaDynamicFieldsLink: defineTable({
     criteriaId: v.id("Criteria"),
     dynamicFieldId: v.id("DynamicFields"),
     // Additional fields as necessary, e.g., order or relevance
