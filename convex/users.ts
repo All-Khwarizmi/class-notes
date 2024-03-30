@@ -3,24 +3,27 @@ import { v } from "convex/values";
 
 export const ensureUserExists = mutation({
   args: {
-    userId: v.string(), // Assuming this is the unique ID from the auth provider
+    userId: v.string(),
   },
   handler: async (ctx, args) => {
-    // Check if the user already exists
+    const isAuthenticated = await ctx.auth.getUserIdentity();
+    if (!isAuthenticated) {
+      throw new Error("Not authenticated");
+    }
     const existingUser = await ctx.db
       .query("Users")
-      .filter((q) => q.eq(q.field("userId"), args.userId))
+      .filter((q) => q.eq(q.field("userId"), isAuthenticated.subject))
       .first();
 
     // If the user doesn't exist, create a new entry
     if (!existingUser) {
-      await ctx.db.insert("Users", {
-        userId: args.userId,
+      const userId = await ctx.db.insert("Users", {
+        userId: isAuthenticated.subject,
         // Initialize any additional fields as necessary
       });
-    }
 
-    // Return a confirmation or the user's details
-    return { userId: args.userId, isNewUser: !existingUser };
+      // Return a confirmation or the user's details
+      return { userId, isNewUser: !existingUser };
+    }
   },
 });

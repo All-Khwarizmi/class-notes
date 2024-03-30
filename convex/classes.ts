@@ -1,6 +1,7 @@
 import { ar } from "@faker-js/faker";
 import { mutation, query } from "./_generated/server";
 import { v } from "convex/values";
+import { cons } from "fp-ts/lib/ReadonlyNonEmptyArray";
 
 export const createClass = mutation({
   args: {
@@ -11,11 +12,32 @@ export const createClass = mutation({
   },
   handler: async (ctx, args) => {
     const isAuthenticated = await ctx.auth.getUserIdentity();
+    console.log(isAuthenticated);
     if (!isAuthenticated) {
       throw new Error("Not authenticated");
     }
+    const existingUser = await ctx.db
+      .query("Users")
+      .filter((q) => q.eq(q.field("userId"), isAuthenticated.subject))
+      .first();
+
+    // If the user doesn't exist, create a new entry
+    if (!existingUser) {
+      const userId = await ctx.db.insert("Users", {
+        userId: isAuthenticated.subject,
+        // Initialize any additional fields as necessary
+      });
+      const id = await ctx.db.insert("Classes", {
+        userId: userId,
+        name: args.name,
+        description: args.description,
+        imageUrl: args.imageUrl,
+        students: args.students,
+      });
+      return { id };
+    }
     const id = await ctx.db.insert("Classes", {
-      userId: isAuthenticated.subject,
+      userId: existingUser!._id,
       name: args.name,
       description: args.description,
       imageUrl: args.imageUrl,
@@ -43,7 +65,24 @@ export const deleteClass = mutation({
 export const getClasses = query({
   args: {},
   handler: async (ctx) => {
-    return ctx.db.query("Classes").collect();
+    const isAuthenticated = await ctx.auth.getUserIdentity();
+    if (!isAuthenticated) {
+      throw new Error("Not authenticated");
+    }
+    const user = await ctx.db
+      .query("Users")
+      .filter((q) => q.eq(q.field("userId"), isAuthenticated.subject))
+      .first();
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    const classes = await ctx.db
+      .query("Classes")
+      .filter((q) => q.eq(q.field("userId"), user._id))
+      .collect();
+
+    return classes;
   },
 });
 

@@ -7,9 +7,10 @@ import { Button } from "@/components/ui/button";
 import { useLandingRedirect } from "@/hooks/useLandingRedirect";
 
 export default function Hero() {
-  // useLandingRedirect();
+  useLandingRedirect();
 
   const { isSignedIn } = useSession();
+  console.log("isSignedIn", isSignedIn);
 
   return (
     <section className="w-full h-screen py-6 md:py-12 flex items-center">

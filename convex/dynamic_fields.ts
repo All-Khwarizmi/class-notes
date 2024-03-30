@@ -1,3 +1,4 @@
+import { api } from "./_generated/api";
 import { mutation, query } from "./_generated/server";
 import { v } from "convex/values";
 
@@ -42,19 +43,25 @@ export const updateDynamicField = mutation({
   },
 });
 
-
-
 export const listDynamicFieldsByCreator = query({
-  args: { createdBy: v.id("Users") },
+  args: {},
   handler: async (ctx, args) => {
+    const isAuthenticated = await ctx.auth.getUserIdentity();
+    if (!isAuthenticated) {
+      throw new Error("Not authenticated");
+    }
+    const user = await ctx.db
+      .query("Users")
+      .filter((q) => q.eq(q.field("userId"), isAuthenticated.subject))
+      .first();
+
     const dynamicFields = await ctx.db
       .query("DynamicFields")
-      .filter((q) => q.eq(q.field("createdBy"), args.createdBy))
+      .filter((q) => q.eq(q.field("createdBy"), user?._id))
       .collect();
     return dynamicFields;
   },
 });
-
 
 export const deleteDynamicField = mutation({
   args: { dynamicFieldId: v.id("DynamicFields") },
