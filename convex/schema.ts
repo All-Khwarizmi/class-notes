@@ -2,6 +2,10 @@ import { defineSchema, defineTable } from "convex/server";
 import { v } from "convex/values";
 
 export default defineSchema({
+  Users: defineTable({
+    userId: v.string(), // Unique identifier from your authentication provider
+    // Add additional fields as needed, e.g., name, email, profilePictureUrl
+  }),
   Classes: defineTable({
     userId: v.string(),
     description: v.optional(v.string()),

@@ -15,7 +15,12 @@ import type {
   FunctionReference,
 } from "convex/server";
 import type * as classes from "../classes.js";
+import type * as criteria from "../criteria.js";
+import type * as dynamic_fields from "../dynamic_fields.js";
+import type * as evaluation_template from "../evaluation_template.js";
+import type * as evaluation_with_grades from "../evaluation_with_grades.js";
 import type * as students from "../students.js";
+import type * as users from "../users.js";
 
 /**
  * A utility for referencing Convex functions in your app's API.
@@ -27,7 +32,12 @@ import type * as students from "../students.js";
  */
 declare const fullApi: ApiFromModules<{
   classes: typeof classes;
+  criteria: typeof criteria;
+  dynamic_fields: typeof dynamic_fields;
+  evaluation_template: typeof evaluation_template;
+  evaluation_with_grades: typeof evaluation_with_grades;
   students: typeof students;
+  users: typeof users;
 }>;
 export declare const api: FilterApi<
   typeof fullApi,
