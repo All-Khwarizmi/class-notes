@@ -56,7 +56,7 @@ export default defineSchema({
     name: v.string(),
     description: v.string(),
     createdBy: v.id("Users"), // The user who created this template
-    createdAt: v.int64(), // Timestamp for when the template was created
+    createdAt: v.float64(), // Timestamp for when the template was created
     gradeType: v.string(), // Grading scale type ("numeric", "letter", "pass/fail")
     criteriaIds: v.array(v.id("Criteria")), // Array of Criteria IDs associated with this template
   }).index("by_createdBy", ["createdBy"]), // Index for fetching templates by creator
@@ -64,7 +64,7 @@ export default defineSchema({
     templateId: v.id("EvaluationTemplates"), // Link to the evaluation template this is based on
     classId: v.id("Classes"), // The class this evaluation is associated with
     conductedBy: v.id("Users"), // The user (teacher) who conducted this evaluation
-    conductedAt: v.int64(), // Timestamp for when the evaluation was conducted
+    conductedAt: v.float64(), // Timestamp for when the evaluation was conducted
     overallGrade: v.optional(v.union(v.string(), v.number())), // Overall grade, if applicable
     feedback: v.optional(v.string()), // General feedback for the evaluation
     studentGrades: v.array(
