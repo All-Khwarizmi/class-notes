@@ -1,6 +1,6 @@
 import { twMerge } from "tailwind-merge";
-import Criteria from "./Criteria";
-import Evaluations from "./Evaluations";
+import Criteria from "./CriteriaCard";
+import Evaluations from "./EvaluationsCard";
 
 export default function Main() {
   return (
