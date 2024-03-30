@@ -17,7 +17,7 @@ export default function Fields() {
     <>
       {fields && (
         <ScrollArea className="h-[200px] w-full rounded-md border p-4">
-          <h2 className="py-2 text-lg">Sous-critères d'évaluation</h2>
+          <h2 className="py-2 text-lg">Sous-critères d&apos;évaluation</h2>
           {fields?.map((field) => (
             <Card key={field._id}>
               <h3>{field.fieldKey}</h3>

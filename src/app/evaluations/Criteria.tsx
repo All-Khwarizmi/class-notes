@@ -17,24 +17,24 @@ export default function Criteria() {
     return <p>Loading...</p>;
   }
 
-  return (
+return (
     <>
-      {criterias && (
-        <ScrollArea className="h-[200px] w-full rounded-md border p-4">
-          <h2 className="py-2 text-lg">Critères d'évaluation</h2>
-          {criterias?.map((criteria, index) => (
-            <Card key={criteria._id} className="mb-2">
-              <CardHeader>
-                <CardTitle>
-                  {" "}
-                  {index + 1}- {criteria.name}
-                </CardTitle>
-                <CardDescription>{criteria.description}</CardDescription>
-              </CardHeader>
-            </Card>
-          ))}
-        </ScrollArea>
-      )}
+        {criterias && (
+            <ScrollArea className="h-[200px] w-full rounded-md border p-4">
+                <h2 className="py-2 text-lg">Critères d&apos;évaluation</h2>
+                {criterias?.map((criteria, index) => (
+                    <Card key={criteria._id} className="mb-2">
+                        <CardHeader>
+                            <CardTitle>
+                                {" "}
+                                {index + 1}- {criteria.name}
+                            </CardTitle>
+                            <CardDescription>{criteria.description}</CardDescription>
+                        </CardHeader>
+                    </Card>
+                ))}
+            </ScrollArea>
+        )}
     </>
-  );
+);
 }

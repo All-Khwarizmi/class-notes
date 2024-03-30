@@ -1,7 +1,6 @@
 import { twMerge } from "tailwind-merge";
 import Criteria from "./Criteria";
 import Evaluations from "./Evaluations";
-import Fields from "./Fields";
 
 export default function Main() {
   return (
@@ -12,7 +11,6 @@ export default function Main() {
       {" "}
       <Evaluations />
       <Criteria />
-      <Fields />
     </div>
   );
 }
