@@ -47,11 +47,20 @@ export const updateEvaluationTemplate = mutation({
 });
 
 export const listEvaluationTemplatesByCreator = query({
-  args: { createdBy: v.id("Users") },
+  args: { userId: v.string() },
   handler: async (ctx, args) => {
+    const user = await ctx.db
+      .query("Users")
+      .filter((q) => q.eq(q.field("userId"), args.userId))
+      .first();
+
+    if (!user) {
+      throw new Error("User not found");
+    }
+
     const templates = await ctx.db
       .query("EvaluationTemplates")
-      .filter((q) => q.eq(q.field("createdBy"), args.createdBy))
+      .filter((q) => q.eq(q.field("createdBy"), user._id))
       .collect();
     return templates;
   },
