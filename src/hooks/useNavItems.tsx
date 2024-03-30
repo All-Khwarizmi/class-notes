@@ -8,7 +8,6 @@ import { useEffect, useState } from "react";
 export default function useNavItems() {
   const { classes: eitherClasses } = useGetClasses();
   const [navItems, setNavItems] = useState<NavItem[] | null>(null);
-
   useEffect(() => {
     if (eitherClasses) {
       //! TODO: refactor this. -Now we are using the Either monad to handle the error by filtering the invalid values. But we should do something about the fault classes if any

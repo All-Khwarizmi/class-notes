@@ -9,11 +9,13 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { useSession } from "@clerk/nextjs";
+import useGetCriterias from "@/hooks/criteria/useGetCriterias";
 export default function Criteria() {
   const { isSignedIn, session } = useSession();
-  const criterias = useQuery(api.criteria.listCriteriaByCreator, {
-    userId: session?.user.id || "",
-  });
+  const { criteriaList: criterias, loading } = useGetCriterias();
+  if (loading) {
+    return <p>Loading...</p>;
+  }
 
   return (
     <>
@@ -21,7 +23,7 @@ export default function Criteria() {
         <ScrollArea className="h-[200px] w-full rounded-md border p-4">
           <h2 className="py-2 text-lg">Critères d'évaluation</h2>
           {criterias?.map((criteria, index) => (
-            <Card key={criteria._id}>
+            <Card key={criteria._id} className="mb-2">
               <CardHeader>
                 <CardTitle>
                   {" "}

@@ -5,7 +5,7 @@ import { isRight } from "fp-ts/lib/Either";
 import ClassEntity from "@/domain/class/class-entity";
 import { useEffect, useState } from "react";
 import { useSession } from "@clerk/nextjs";
-import { toast } from "sonner";
+
 
 export default function useGetClasses() {
   const { isSignedIn, session } = useSession();
@@ -16,10 +16,7 @@ export default function useGetClasses() {
     id: session?.user.id || "",
   });
   useEffect(() => {
-    if (!isSignedIn) {
-      toast.error("You need to sign in to view classes");
-      setLoading(false);
-      setError("You need to sign in to view classes");
+    if (isSignedIn === false) {
       return;
     }
     if (rawClasses) {
@@ -45,7 +42,7 @@ export default function useGetClasses() {
     }
   }, [rawClasses]);
 
-  if (!isSignedIn) {
+  if (isSignedIn === false) {
     return {
       classes: [],
       error: "You need to sign in to view classes",

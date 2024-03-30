@@ -21,11 +21,11 @@ const NonGradedCriteria = z.object({
 
 export const CriteriaSchema = z
   .object({
-    id: z.string(),
-    evaluationId: z.string(),
+    _id: z.string(),
+    evaluationId: z.string().optional(),
     name: z.string().min(1),
     description: z.string().min(1),
-    dynamicFields: z.array(DynamicFieldSchema),
+    dynamicFields: z.array(DynamicFieldSchema).optional(),
   })
   .and(GradedCriteria.or(NonGradedCriteria)); // Combine base with graded or non-graded extensions
 
