@@ -14,11 +14,11 @@ import MessageFullScreen from "@/components/MessageFullScreen";
 import { isRight } from "fp-ts/lib/Either";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import useDeleteClasse from "@/application/classe/useDeleteClasse";
+import { classeRepository } from "@/application/classe/repository/classe-repository";
 
 export default function ClassesTable() {
   const { classes, error, loading } = useGetClasses();
-  const { setClasseId, loading: loadindDeleteClasses } = useDeleteClasse();
+  const { setClasseId } = classeRepository.useDeleteClasse();
   const handleDelete = async (id: string) => {
     setClasseId(id);
   };
