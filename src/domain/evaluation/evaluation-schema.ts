@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { CriteriaSchema } from "../criteria/criteria-schema";
+import { CriteriaSchema, CriteriaType } from "../criteria/criteria-schema";
 import { GradeSchema } from "../grades/grade-schema";
 
 // Define the EvaluationType schema
@@ -14,5 +14,12 @@ export const EvaluationSchema = z.object({
   criteria: z.array(CriteriaSchema).optional(),
 });
 
+export const EvaluationSchemaWithCriteria = EvaluationSchema.extend({
+  criteria: z.array(CriteriaSchema).optional(),
+});
 // Export the TypeScript type derived from the Zod schema
 export type EvaluationType = z.infer<typeof EvaluationSchema>;
+
+export type EvaluationTypeWithCriteria = z.infer<
+  typeof EvaluationSchemaWithCriteria
+>;

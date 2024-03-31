@@ -47,11 +47,20 @@ export const updateEvaluationTemplate = mutation({
 });
 
 export const listEvaluationTemplatesByCreator = query({
-  args: { createdBy: v.id("Users") },
+  args: { userId: v.string() },
   handler: async (ctx, args) => {
+    const user = await ctx.db
+      .query("Users")
+      .filter((q) => q.eq(q.field("userId"), args.userId))
+      .first();
+
+    if (!user) {
+      throw new Error("User not found");
+    }
+
     const templates = await ctx.db
       .query("EvaluationTemplates")
-      .filter((q) => q.eq(q.field("createdBy"), args.createdBy))
+      .filter((q) => q.eq(q.field("createdBy"), user._id))
       .collect();
     return templates;
   },
@@ -61,5 +70,34 @@ export const deleteEvaluationTemplate = mutation({
   args: { templateId: v.id("EvaluationTemplates") },
   handler: async (ctx, args) => {
     await ctx.db.delete(args.templateId);
+  },
+});
+
+export const getEvaluationTemplateWithCriteria = query({
+  args: { templateId: v.string() },
+  handler: async (ctx, args) => {
+    const template = await ctx.db
+      .query("EvaluationTemplates")
+      .filter((q) => q.eq(q.field("_id"), args.templateId))
+      .first();
+
+    if (!template) {
+      return null;
+    }
+
+    const criteria = await Promise.allSettled(
+      template.criteriaIds.map(async (criteriaId) => {
+        const criteria = await ctx.db
+          .query("Criteria")
+          .filter((q) => q.eq(q.field("_id"), criteriaId))
+          .first();
+        return criteria;
+      })
+    );
+    if (criteria.some((c) => c.status === "rejected")) {
+      return null;
+    }
+
+    return { ...template, criteria };
   },
 });
