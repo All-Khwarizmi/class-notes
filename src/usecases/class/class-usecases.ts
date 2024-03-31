@@ -1,7 +1,7 @@
 import { isRight } from "fp-ts/lib/Either";
 import ClassRepository from "./class-repository";
-import ClassEntity from "@/domain/class/class-entity";
-import { UseCaseResult } from "@/types/usecase";
+import ClassEntity from "@/domain/classe/class-entity";
+import { UseCaseResult } from "@/lib/types/usecase";
 
 export default class ClassUsecases {
   private classRepository: ClassRepository;

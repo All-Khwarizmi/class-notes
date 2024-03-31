@@ -9,12 +9,12 @@ import {
 import CustomDialog from "../../components/CustomDialog";
 import AddClassForm from "./AddClassForm";
 import AddIcon from "../../components/icons/AddIcon";
-import useGetClasses from "@/hooks/class/useGetClasses";
+import useGetClasses from "@/application/classe/useGetClasses";
 import MessageFullScreen from "@/components/MessageFullScreen";
 import { isRight } from "fp-ts/lib/Either";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import useDeleteClasse from "@/hooks/class/useDeleteClasse";
+import useDeleteClasse from "@/application/classe/useDeleteClasse";
 
 export default function ClassesTable() {
   const { classes, error, loading } = useGetClasses();

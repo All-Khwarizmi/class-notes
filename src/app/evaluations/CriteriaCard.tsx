@@ -6,7 +6,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import useGetCriterias from "@/hooks/criteria/useGetCriterias";
+import useGetCriterias from "@/application/criteria/useGetCriterias";
 
 export default function Criteria() {
   const { criteriaList: criterias, loading } = useGetCriterias();

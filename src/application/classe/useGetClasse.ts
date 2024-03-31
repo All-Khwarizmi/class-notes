@@ -1,10 +1,10 @@
 import { useQuery } from "convex/react";
 import { useEffect, useState } from "react";
 import { api } from "../../../convex/_generated/api";
-import { ClassEntityDto } from "@/infrastructure/class/class-repository.impl";
-import {  isRight } from "fp-ts/lib/Either";
+import { ClasseEntityDto } from "@/infrastructure/classe/classe-dto";
+import { isRight } from "fp-ts/lib/Either";
 import { toast } from "sonner";
-import ClassEntity from "@/domain/class/class-entity";
+import ClassEntity from "@/domain/classe/class-entity";
 
 export default function useGetClasse(id: { id: string }) {
   const [loading, setLoading] = useState<boolean>(true);
@@ -13,7 +13,7 @@ export default function useGetClasse(id: { id: string }) {
 
   useEffect(() => {
     if (classeInfra) {
-      const eitherClasse = ClassEntityDto.toDomain(classeInfra);
+      const eitherClasse = ClasseEntityDto.toDomain(classeInfra);
       if (isRight(eitherClasse)) {
         const classe = eitherClasse.right;
         setClasse(classe);

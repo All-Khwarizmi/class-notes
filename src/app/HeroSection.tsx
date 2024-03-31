@@ -4,7 +4,7 @@ import Link from "next/link";
 import Title from "./Title";
 import { SignInButton, useSession } from "@clerk/nextjs";
 import { Button } from "@/components/ui/button";
-import { useLandingRedirect } from "@/hooks/useLandingRedirect";
+import { useLandingRedirect } from "@/application/common/useLandingRedirect";
 
 export default function Hero() {
   useLandingRedirect();
