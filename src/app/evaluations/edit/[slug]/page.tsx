@@ -56,7 +56,7 @@ export default function EditEvaluation({
   }
   return (
     <section className="h-ful w-full p-8">
-      <h1>Édition de l'évaluation {evaluationTemplate?.name} </h1>
+      <h1>Édition de l&apos;évaluation {evaluationTemplate?.name} </h1>
       <Form {...templateForm}>
         <form onSubmit={templateForm.handleSubmit(onSubmit)}>
           <FormField
@@ -95,14 +95,15 @@ export default function EditEvaluation({
         </form>
       </Form>
       <h2> Critères </h2>
-      {criteria && criteria.map((c) => {
-       return (
-          <div key={c?._id}>
-            <h3> {c?.name} </h3>
-            <p> {c?.description} </p>
-          </div>
-       )
-      })}
+      {criteria &&
+        criteria.map((c) => {
+          return (
+            <div key={c?._id}>
+              <h3> {c?.name} </h3>
+              <p> {c?.description} </p>
+            </div>
+          );
+        })}
     </section>
   );
 }
