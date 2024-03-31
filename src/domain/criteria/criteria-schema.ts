@@ -29,4 +29,5 @@ export const CriteriaSchema = z
   })
   .and(GradedCriteria.or(NonGradedCriteria)); // Combine base with graded or non-graded extensions
 
+  export const CriteriaSchemaArray = z.array(CriteriaSchema);
 export type CriteriaType = z.infer<typeof CriteriaSchema>;

@@ -14,8 +14,10 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import EditIcon from "@/components/icons/EditIcon";
+import { useRouter } from "next/navigation";
 
 export default function Main() {
+  const router = useRouter();
   const { isSignedIn, session } = useSession();
   const templates = useQuery(
     api.evaluation_template.listEvaluationTemplatesByCreator,
@@ -23,6 +25,7 @@ export default function Main() {
       userId: session?.user.id || "",
     }
   );
+  //! Add loading skeleton
   return (
     <section className="h-full w-full flex flex-col gap-4 md:justify-between justify-around p-4">
       <div className={twMerge(`flex md:flex-row flex-col p-4 gap-4 w-full`)}>
@@ -44,7 +47,12 @@ export default function Main() {
                   <CardDescription>{template.description}</CardDescription>
                 </CardContent>
                 <CardFooter className=" h-max  justify-center flex flex-row ">
-                  <Button variant="link">
+                  <Button
+                    onClick={() => {
+                      router.push(`/evaluations/edit/${template._id}`);
+                    }}
+                    variant="link"
+                  >
                     <EditIcon />
                   </Button>
                   <Button variant="link">Assigner</Button>

@@ -72,3 +72,32 @@ export const deleteEvaluationTemplate = mutation({
     await ctx.db.delete(args.templateId);
   },
 });
+
+export const getEvaluationTemplateWithCriteria = query({
+  args: { templateId: v.string() },
+  handler: async (ctx, args) => {
+    const template = await ctx.db
+      .query("EvaluationTemplates")
+      .filter((q) => q.eq(q.field("_id"), args.templateId))
+      .first();
+
+    if (!template) {
+      return null;
+    }
+
+    const criteria = await Promise.allSettled(
+      template.criteriaIds.map(async (criteriaId) => {
+        const criteria = await ctx.db
+          .query("Criteria")
+          .filter((q) => q.eq(q.field("_id"), criteriaId))
+          .first();
+        return criteria;
+      })
+    );
+    if (criteria.some((c) => c.status === "rejected")) {
+      return null;
+    }
+
+    return { ...template, criteria };
+  },
+});
