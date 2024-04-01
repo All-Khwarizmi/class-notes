@@ -4,6 +4,8 @@ import useDeleteClasseInfra from "@/infrastructure/classe/useDeleteClasseInfra";
 import useDeleteClasseUsecase from "../usecases/useDeleteClasseUsecase";
 import useGetClasseUsecase from "../usecases/useGetClasseUsecase";
 import useGetClasseInfra from "@/infrastructure/classe/useGetClasseInfra";
+import useGetClassesInfra from "@/infrastructure/classe/useGetClassesInfra";
+import useGetClassesUsecase from "../usecases/useGetClassesUsecase";
 
 export const classeRepository = {
   useCreateClasse: useCreateClasseUsecase.bind(null, { useCreateClasseInfra }),
@@ -11,5 +13,6 @@ export const classeRepository = {
   useGetClasse: ({ id }: { id: string }) =>
     useGetClasseUsecase.bind(null, { useGetClasseInfra, id }),
   useUpdateClasse: {},
-  useGetClasses: {},
+  useGetClasses: ({ id }: { id: string }) =>
+    useGetClassesUsecase.bind(null, { id, useGetClassesInfra }),
 };

@@ -7,10 +7,14 @@ import { usePathname } from "next/navigation";
 import Title from "@/app/Title";
 import { cn } from "@/lib/utils";
 import { MobileSidebar } from "./layout/MobileSidebar";
+import { useAuthStore } from "@/core/auth/auth-store";
 
 export default function Header() {
-  const { isSignedIn } = useSession();
+  const { isLoggedIn } = useAuthStore((state) => ({
+    isLoggedIn: state.isLoggedIn,
+  }));
   const pathName = usePathname();
+
   return (
     <header className="flex flex-row gap-4 border-b items-center justify-between border-b-slate-300 p-4">
       <Navigation />
@@ -21,7 +25,7 @@ export default function Header() {
 
       <div className="flex flex-row gap-4 items-center">
         <div>
-          {isSignedIn ? (
+          {isLoggedIn() ? (
             <UserButton />
           ) : (
             <SignInButton>

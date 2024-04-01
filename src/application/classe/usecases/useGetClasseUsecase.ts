@@ -1,5 +1,4 @@
 import { UseGetClasseInfra } from "@/infrastructure/classe/useGetClasseInfra";
-import { use } from "chai";
 import { useEffect, useState } from "react";
 
 export default function useGetClasseUsecase({
