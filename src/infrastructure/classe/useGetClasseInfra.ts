@@ -3,13 +3,12 @@ import { useEffect, useState } from "react";
 import { api } from "../../../convex/_generated/api";
 import { ClasseEntityDto } from "@/infrastructure/classe/classe-dto";
 import { isRight } from "fp-ts/lib/Either";
-import { toast } from "sonner";
 import ClassEntity from "@/domain/classe/class-entity";
 
-export default function useGetClasse(id: { id: string }) {
-  const [loading, setLoading] = useState<boolean>(true);
+export default function useGetClasseInfra(id: { id: string }) {
   const [classe, setClasse] = useState<ClassEntity | null>(null);
   const classeInfra = useQuery(api.classes.getClass, { id: id.id });
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (classeInfra) {
@@ -17,15 +16,15 @@ export default function useGetClasse(id: { id: string }) {
       if (isRight(eitherClasse)) {
         const classe = eitherClasse.right;
         setClasse(classe);
-        setLoading(false);
       } else {
-        toast.error("Erreur lors de la récupération de la classe", {
-          duration: 5000,
-        });
-        setLoading(false);
+        setError(
+          "Une erreur est survenue lors de la récupération de la classe"
+        );
       }
     }
   }, [classeInfra]);
 
-  return { loading, classe };
+  return { classe, error };
 }
+
+export type UseGetClasseInfra = typeof useGetClasseInfra;

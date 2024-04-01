@@ -8,10 +8,8 @@ export default function useDeleteClasseUsecase({
   useDeleteClasseInfra: () => UseDeleteClasseInfraReturn;
 }) {
   const { setClasseId, error, ok } = useDeleteClasseInfra();
-  console.log("log in useDeleteClasseUsecase", error, ok);
 
   useEffect(() => {
-    console.log("log in useDeleteClasseUsecase useEffect", error, ok);
     if (error) {
       toast.error(
         "Une erreur est survenue lors de la suppression de la classe"
