@@ -1,18 +1,14 @@
 import { useUser } from "@clerk/nextjs";
 import { useAuthStore } from "./auth-store";
 import { useEffect } from "react";
+import { userRepositry } from "@/app/user/repository/user-repository";
 
 export default function useAuth() {
-  const { user } = useUser();
-  const {
-    setUser,
-    logout,
-    isLoggedIn,
-    onboarding,
-    setOnboarding,
-    preferences,
-    setPreferences,
-  } = useAuthStore((state) => ({
+  const { user: userAuth } = useUser();
+  const { user, error } = userRepositry.useGetUser({
+    id: userAuth?.id || "",
+  })();
+  const { setUser, logout, setOnboarding } = useAuthStore((state) => ({
     setUser: state.setUser,
     logout: state.logout,
     isLoggedIn: state.isLoggedIn,
@@ -21,13 +17,21 @@ export default function useAuth() {
     setPreferences: state.setPreferences,
     setOnboarding: state.setOnboarding,
   }));
+
   useEffect(() => {
     console.log("user", user);
-    if (user) {
-      setUser({ user: { id: user.id } });
+    if (userAuth) {
+      setUser({ user: { id: userAuth.id } });
     } else {
       logout();
     }
+  }, [userAuth]);
+
+  useEffect(() => {
+    if (user && !user.onboarding) {
+      setOnboarding(true);
+    } else {
+      setOnboarding(false);
+    }
   }, [user]);
-  return { isLoggedIn, onboarding, setOnboarding, preferences, setPreferences };
 }
