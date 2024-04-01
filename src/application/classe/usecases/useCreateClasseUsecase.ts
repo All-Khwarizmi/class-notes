@@ -5,7 +5,9 @@ import { toast } from "sonner";
 
 export default function useCreateClasseUsecase({
   useCreateClasseInfra,
+  id,
 }: {
+  id: string;
   useCreateClasseInfra: () => UseCreateClasseInfraReturn;
 }) {
   const [classe, setClasse] = useState<ClassType | null>(null);
@@ -13,9 +15,11 @@ export default function useCreateClasseUsecase({
     setClasse: addClasse,
     createdClassId,
     error,
+    setUserId,
   } = useCreateClasseInfra();
   useEffect(() => {
     if (classe) {
+      setUserId(id);
       addClasse(classe);
     }
 

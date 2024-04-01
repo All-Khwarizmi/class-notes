@@ -9,10 +9,11 @@ export default function useCreateClasseInfra() {
   const [createdClassId, setCreatedClassId] = useState<IdCustom | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [classe, setClasse] = useState<ClassType | null>(null);
+  const [userId, setUserId] = useState<string | null>(null);
 
   useEffect(() => {
-    if (classe) {
-      addClass(classe)
+    if (classe && userId) {
+      addClass({ ...classe, userId })
         .then((id) => {
           if (id) {
             setCreatedClassId(id.id);
@@ -30,6 +31,7 @@ export default function useCreateClasseInfra() {
     createdClassId,
     setClasse,
     error,
+    setUserId,
   };
 }
 
