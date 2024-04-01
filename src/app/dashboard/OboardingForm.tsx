@@ -11,8 +11,16 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { userRepositry } from "@/application/user/repository/user-repository";
+import { useAuthStore } from "@/core/auth/auth-store";
+import { toast } from "sonner";
+import { useEffect } from "react";
 
 export default function OnboardingForm() {
+  const { userId } = useAuthStore((state) => ({
+    userId: state.user?.user?.id,
+  }));
+  const { user, error, setOnBoardingData } = userRepositry.useOnboardUser();
   const form = useForm({
     resolver: zodResolver(onboardingSchema),
     defaultValues: {
@@ -20,8 +28,34 @@ export default function OnboardingForm() {
       name: "Pablo",
     },
   });
+  useEffect(() => {
+    if (user) {
+      toast.success(`
+        Bienvenue ${form.getValues(
+          "name"
+        )}, vous êtes désormais inscrit sur la plateforme !`);
+      form.reset();
+    }
+    if (error) {
+      toast.error(
+        `${form.getValues(
+          "name"
+        )}, une erreur est survenue lors de l'enregistrement de vos informations. Mais pas de panique, vous pouvez réessayer !`
+      );
+    }
+  }, [user, error]);
   function onSubmit(data: OnboardingType) {
-    console.log(data);
+    if (!userId) {
+      toast.error(
+        "Une erreur est survenue lors de la récupération de votre identifiant"
+      );
+      return;
+    }
+    setOnBoardingData({
+      userId: userId || "",
+      schoolSubject: data.materia,
+      name: data.name,
+    });
   }
   return (
     <>

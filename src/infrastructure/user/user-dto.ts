@@ -3,7 +3,6 @@ import { Either, left, right } from "fp-ts/Either";
 import Failure from "@/core/failures/failures";
 import type { UserType } from "../../domain/user/user-schema";
 
-
 export type UserInfra = ReturnType<typeof useGetUserInfra>["user"];
 
 export default class UserDto {
@@ -12,7 +11,14 @@ export default class UserDto {
   }: {
     userInfra: UserInfra;
   }): Either<Failure, UserType> {
-    if (userInfra) {
+    if (userInfra === "NO USER") {
+      return left(
+        Failure.invalidValue({
+          invalidValue: userInfra,
+          message: "User not found",
+        })
+      );
+    } else if (userInfra) {
       return right({
         id: userInfra._id,
         schoolSubject: userInfra.schoolSubject,

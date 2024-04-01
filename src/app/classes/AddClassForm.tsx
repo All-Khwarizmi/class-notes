@@ -19,7 +19,7 @@ import { useEffect } from "react";
 import { classeRepository } from "@/application/classe/repository/classe-repository";
 
 export default function AddClassForm() {
-  const { setClasse, createdClassId } = classeRepository.useCreateClasse();
+  const { setClasse, createdClassId, } = classeRepository.useCreateClasse();
   const form = useForm<ClassType>({
     resolver: zodResolver(classSchema),
     defaultValues: {
@@ -28,7 +28,7 @@ export default function AddClassForm() {
         new Date().getFullYear() + 1
       }`,
       imageUrl: BASE_IMAGE_URL,
-      students: [],
+    
     },
   });
 

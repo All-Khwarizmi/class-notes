@@ -4,20 +4,26 @@ import useAuth from "@/core/auth/useAuth";
 import OnboardingForm from "./OboardingForm";
 import { useEffect, useState } from "react";
 import { useAuthStore } from "@/core/auth/auth-store";
-import { userRepositry } from "../../application/user/repository/user-repository";
+import { userRepositry } from "@/application/user/repository/user-repository";
 
 export default function Page() {
   const [open, setOpen] = useState(false);
   useAuth();
+  const { user, isLoading } = userRepositry.useGetUser();
   const { onboarding } = useAuthStore((state) => ({
     onboarding: state.onboarding,
   }));
 
   useEffect(() => {
-    if (!onboarding) {
-      setTimeout(() => setOpen(true), 3000);
+    console.log({
+      user,
+      isLoading,
+      onboarding,
+    });
+    if (!isLoading && !user && !onboarding) {
+      setOpen(true);
     }
-  }, []);
+  }, [user, isLoading, onboarding]);
   return (
     <div>
       <h1>Dashboard</h1>
