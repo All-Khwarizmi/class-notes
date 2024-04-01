@@ -3,8 +3,10 @@ import { v } from "convex/values";
 
 export default defineSchema({
   Users: defineTable({
-    userId: v.string(), // Unique identifier from your authentication provider
-    // Add additional fields as needed, e.g., name, email, profilePictureUrl
+    userId: v.string(),
+    schoolSubject: v.string(),
+    name: v.string(),
+    onboarding: v.boolean(),
   }),
   Classes: defineTable({
     userId: v.string(),
