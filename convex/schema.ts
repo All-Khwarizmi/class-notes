@@ -20,21 +20,10 @@ export default defineSchema({
     name: v.string(),
     classId: v.id("Classes"),
     observations: v.array(v.string()),
-    evaluationsResults: v.array(v.id("studentEvaluationResult")),
+    evaluationsResults: v.array(v.id("StudentEvaluationGrades")),
   }),
-  rapportStudent: defineTable({
-    studentId: v.id("Students"),
-    rapport: v.string(),
-    details: v.string(),
-    updatedAt: v.float64(),
-  }),
-  rapportClasse: defineTable({
-    studentId: v.id("Classes"),
-    rapport: v.string(),
-    details: v.string(),
-    updatedAt: v.float64(),
-  }),
-  studentEvaluationGrades: defineTable({
+
+  StudentEvaluationGrades: defineTable({
     studentId: v.id("Students"),
     evaluationGradesId: v.id("EvaluationsWithGrades"),
     criteriaId: v.id("Criteria"),
@@ -82,31 +71,16 @@ export default defineSchema({
   })
     .index("by_classId", ["classId"])
     .index("by_conductedBy", ["conductedBy"]),
-  CriteriaDynamicFieldsLink: defineTable({
-    criteriaId: v.id("Criteria"),
-    dynamicFieldId: v.id("DynamicFields"),
-    // Additional fields as necessary, e.g., order or relevance
+  RapportStudent: defineTable({
+    studentId: v.id("Students"),
+    rapport: v.string(),
+    details: v.string(),
+    updatedAt: v.float64(),
   }),
-
-  EvaluationDynamicFields: defineTable({
-    evaluationId: v.id("Evaluations"),
-    dynamicFieldId: v.id("DynamicFields"),
-    // This table links dynamic fields to evaluations, potentially via criteria.
-  }),
-  DynamicFields: defineTable({
-    fieldKey: v.string(),
-    fieldValue: v.string(), // Storing as JSON string for flexibility
-    fieldType: v.string(), // Could help interpret the JSON string
-    isGraded: v.boolean(),
-    grade: v.optional(v.union(v.string(), v.number())), // Optional
-    feedback: v.string(), // Feedback is always included
-    createdBy: v.id("Users"),
-  })
-    .index("by_fieldType", ["fieldType"]) // Useful for fetching by type
-    .index("by_createdBy", ["createdBy"]),
-  // Indexing by creator,
-  EvaluationCriteria: defineTable({
-    evaluationId: v.id("Evaluations"),
-    criteriaId: v.id("Criteria"),
+  RapportClasse: defineTable({
+    studentId: v.id("Classes"),
+    rapport: v.string(),
+    details: v.string(),
+    updatedAt: v.float64(),
   }),
 });
