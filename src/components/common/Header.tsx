@@ -1,12 +1,12 @@
 "use client";
 import { UserButton, SignInButton, useSession } from "@clerk/nextjs";
 import { ModeToggle } from "./ModeToggle";
-import { Button } from "./ui/button";
+import { Button } from "../ui/button";
 import Navigation from "./Navigation";
 import { usePathname } from "next/navigation";
-import Title from "@/app/Title";
+import Title from "@/components/common/Title";
 import { cn } from "@/lib/utils";
-import { MobileSidebar } from "./layout/MobileSidebar";
+import { MobileSidebar } from "../layout/MobileSidebar";
 import { useAuthStore } from "@/core/auth/auth-store";
 
 export default function Header() {

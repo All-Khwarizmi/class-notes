@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import Title from "./Title";
-import { SignInButton,  } from "@clerk/nextjs";
+import Title from "../components/common/Title";
+import { SignInButton } from "@clerk/nextjs";
 import { Button } from "@/components/ui/button";
 import { useLandingRedirect } from "@/application/common/useLandingRedirect";
 import useAuth from "@/core/auth/useAuth";

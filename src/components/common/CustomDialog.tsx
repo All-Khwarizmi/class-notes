@@ -7,8 +7,8 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 
-import AddClassForm from "../app/classes/AddClassForm";
-import { Button } from "./ui/button";
+import AddClassForm from "../../app/classes/AddClassForm";
+import { Button } from "../ui/button";
 
 export default function CustomDialog({
   icon,

@@ -6,10 +6,10 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import CustomDialog from "../../components/CustomDialog";
+import CustomDialog from "../../components/common/CustomDialog";
 import AddClassForm from "./AddClassForm";
 import AddIcon from "../../components/icons/AddIcon";
-import MessageFullScreen from "@/components/MessageFullScreen";
+import MessageFullScreen from "@/components/common/MessageFullScreen";
 import { isRight } from "fp-ts/lib/Either";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
