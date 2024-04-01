@@ -6,7 +6,6 @@ export const createClass = mutation({
     name: v.string(),
     description: v.optional(v.string()),
     imageUrl: v.optional(v.string()),
-    students: v.optional(v.array(v.string())),
   },
   handler: async (ctx, args) => {
     const isAuthenticated = await ctx.auth.getUserIdentity();
@@ -30,7 +29,8 @@ export const createClass = mutation({
         name: args.name,
         description: args.description,
         imageUrl: args.imageUrl,
-        students: args.students,
+        observations: [],
+        evaluationsTemplatesId: [],
       });
       return { id };
     }
@@ -39,7 +39,8 @@ export const createClass = mutation({
       name: args.name,
       description: args.description,
       imageUrl: args.imageUrl,
-      students: args.students,
+      observations: [],
+      evaluationsTemplatesId: [],
     });
     return { id };
   },
