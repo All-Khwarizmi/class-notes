@@ -11,7 +11,6 @@ export default function Hero() {
   useLandingRedirect();
 
   const { isLoggedIn } = useAuth();
-  console.log("isLoggedIn", isLoggedIn());
 
   return (
     <section className="w-full h-screen py-6 md:py-12 flex items-center">
@@ -27,7 +26,7 @@ export default function Hero() {
           , le suivi de vos notes n&apos;a jamais été aussi simple.
         </p>
         {isLoggedIn() ? (
-          <Link href="/classes">
+          <Link href="/dashboard">
             <Button>Acceder</Button>
           </Link>
         ) : (
