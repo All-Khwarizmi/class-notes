@@ -1,7 +1,7 @@
 import { useUser } from "@clerk/nextjs";
 import { useAuthStore } from "./auth-store";
 import { useEffect } from "react";
-import { userRepositry } from "@/app/user/repository/user-repository";
+import { userRepositry } from "@/application/user/repository/user-repository";
 
 export default function useAuth() {
   const { user: userAuth } = useUser();
@@ -11,10 +11,6 @@ export default function useAuth() {
   const { setUser, logout, setOnboarding } = useAuthStore((state) => ({
     setUser: state.setUser,
     logout: state.logout,
-    isLoggedIn: state.isLoggedIn,
-    onboarding: state.onboarding,
-    preferences: state.preferences,
-    setPreferences: state.setPreferences,
     setOnboarding: state.setOnboarding,
   }));
 

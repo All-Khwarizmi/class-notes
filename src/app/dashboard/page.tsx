@@ -4,13 +4,13 @@ import useAuth from "@/core/auth/useAuth";
 import OnboardingForm from "./OboardingForm";
 import { useEffect, useState } from "react";
 import { useAuthStore } from "@/core/auth/auth-store";
-import { userRepositry } from "../user/repository/user-repository";
+import { userRepositry } from "../../application/user/repository/user-repository";
 
 export default function Page() {
   const [open, setOpen] = useState(false);
   useAuth();
   const { onboarding } = useAuthStore((state) => ({
-    onboarding : state.onboarding,
+    onboarding: state.onboarding,
   }));
 
   useEffect(() => {
