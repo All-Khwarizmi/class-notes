@@ -4,10 +4,22 @@ import { useEffect } from "react";
 
 export default function useAuth() {
   const { user } = useUser();
-  const { setUser, logout, isLoggedIn } = useAuthStore((state) => ({
+  const {
+    setUser,
+    logout,
+    isLoggedIn,
+    onboarding,
+    setOnboarding,
+    preferences,
+    setPreferences,
+  } = useAuthStore((state) => ({
     setUser: state.setUser,
     logout: state.logout,
     isLoggedIn: state.isLoggedIn,
+    onboarding: state.onboarding,
+    preferences: state.preferences,
+    setPreferences: state.setPreferences,
+    setOnboarding: state.setOnboarding,
   }));
   useEffect(() => {
     console.log("user", user);
@@ -17,5 +29,5 @@ export default function useAuth() {
       logout();
     }
   }, [user]);
-  return { isLoggedIn };
+  return { isLoggedIn, onboarding, setOnboarding, preferences, setPreferences };
 }

@@ -15,7 +15,11 @@ export default function CustomDialog({
   description = "",
   children,
   testId,
+  open,
+  displayButton = true,
 }: {
+  displayButton?: boolean;
+  open?: boolean;
   title: string;
   description?: string;
   icon: React.ReactNode;
@@ -24,16 +28,18 @@ export default function CustomDialog({
 }) {
   return (
     <>
-      <Dialog>
+      <Dialog open={open}>
         <DialogTrigger asChild>
-          <Button
-            variant={"outline"}
-            size={"icon"}
-            data-testid={testId}
-            className="p-0 "
-          >
-            {icon}
-          </Button>
+          {displayButton && (
+            <Button
+              variant={"outline"}
+              size={"icon"}
+              data-testid={testId}
+              className="p-0 "
+            >
+              {icon}
+            </Button>
+          )}
         </DialogTrigger>
         <DialogContent>
           <DialogHeader>
