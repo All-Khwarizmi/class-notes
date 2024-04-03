@@ -1,10 +1,10 @@
-import useCreateClasseInfra from "@/features/classe/infra/useCreateClasseInfra";
+import useCreateClasseInfra from "@/features/classe/infra/services/useCreateClasseInfra";
 import useCreateClasseUsecase from "../usecases/useCreateClasseUsecase";
-import useDeleteClasseInfra from "@/features/classe/infra/useDeleteClasseInfra";
+import useDeleteClasseInfra from "@/features/classe/infra/services/useDeleteClasseInfra";
 import useDeleteClasseUsecase from "../usecases/useDeleteClasseUsecase";
 import useGetClasseUsecase from "../usecases/useGetClasseUsecase";
-import useGetClasseInfra from "@/features/classe/infra/useGetClasseInfra";
-import useGetClassesInfra from "@/features/classe/infra/useGetClassesInfra";
+import useGetClasseInfra from "@/features/classe/infra/services/useGetClasseInfra";
+import useGetClassesInfra from "@/features/classe/infra/services/useGetClassesInfra";
 import useGetClassesUsecase from "../usecases/useGetClassesUsecase";
 
 export const classeRepository = {

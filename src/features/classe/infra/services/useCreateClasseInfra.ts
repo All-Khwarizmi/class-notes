@@ -1,8 +1,8 @@
 import { useMutation } from "convex/react";
-import { api } from "../../../../convex/_generated/api";
+import { api } from "../../../../../convex/_generated/api";
 import { ClassType } from "@/features/classe/domain/class-schema";
 import { useEffect, useState } from "react";
-import { Id } from "../../../../convex/_generated/dataModel";
+import { Id } from "../../../../../convex/_generated/dataModel";
 
 export type IdCustom = Id<"Classes">;
 export default function useCreateClasseInfra() {

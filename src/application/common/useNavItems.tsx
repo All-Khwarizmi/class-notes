@@ -1,5 +1,5 @@
 import { NavItem } from "@/lib/types";
-import useGetClassesInfra from "../../features/classe/infra/useGetClassesInfra";
+import useGetClassesInfra from "../../features/classe/infra/services/useGetClassesInfra";
 
 import { NavItems } from "@/components/constants/side-nav";
 import { isRight } from "fp-ts/lib/Either";

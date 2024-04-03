@@ -1,6 +1,6 @@
 import { useQuery } from "convex/react";
-import { api } from "../../../../convex/_generated/api";
-import { ClasseEntityDto } from "@/features/classe/infra/classe-dto";
+import { api } from "../../../../../convex/_generated/api";
+import { ClasseEntityDto } from "@/features/classe/infra/dtos/classe-dto";
 import { isRight } from "fp-ts/lib/Either";
 import ClassEntity from "@/features/classe/domain/class-entity";
 import { useEffect, useState } from "react";
