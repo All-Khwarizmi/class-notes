@@ -1,17 +1,16 @@
-import { useAuthStore } from "@/core/auth/auth-store";
-import { useSession, useUser } from "@clerk/nextjs";
+import authRepositoy from "@/features/auth/application/repository/auth-repository";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 export function useLandingRedirect() {
   const router = useRouter();
-  const { user } = useUser();
+  const { authUserId } = authRepositoy.useGetUserId();
 
   useEffect(() => {
-    if (user) {
-      router.push("/classes");
+    if (authUserId) {
+      router.push("/dashboard");
     } else {
       router.push("/");
     }
-  }, []);
+  }, [authUserId]);
 }

@@ -1,11 +1,11 @@
-import { useUser } from "@clerk/nextjs";
 import { useAuthStore } from "./auth-store";
 import { useEffect } from "react";
 import { userRepositry } from "@/application/user/repository/user-repository";
 import { toast } from "sonner";
+import authRepositoy from "@/features/auth/application/repository/auth-repository";
 
 export default function useAuth() {
-  const { user: userAuth } = useUser();
+  const { authUserId } = authRepositoy.useGetUserId();
   const { user, error } = userRepositry.useGetUser();
   const { setUser, logout, setOnboarding, onboarding } = useAuthStore(
     (state) => ({
@@ -17,12 +17,12 @@ export default function useAuth() {
   );
 
   useEffect(() => {
-    if (userAuth) {
-      setUser({ user: { id: userAuth.id } });
+    if (authUserId) {
+      setUser({ user: { id: authUserId } });
     } else {
       logout();
     }
-  }, [userAuth]);
+  }, [authUserId]);
 
   useEffect(() => {
     if (!onboarding) {
