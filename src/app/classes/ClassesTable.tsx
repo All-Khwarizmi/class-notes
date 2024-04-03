@@ -6,19 +6,25 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import CustomDialog from "../../components/CustomDialog";
+import CustomDialog from "../../components/common/CustomDialog";
 import AddClassForm from "./AddClassForm";
 import AddIcon from "../../components/icons/AddIcon";
-import useGetClasses from "@/hooks/class/useGetClasses";
-import MessageFullScreen from "@/components/MessageFullScreen";
+import MessageFullScreen from "@/components/common/MessageFullScreen";
 import { isRight } from "fp-ts/lib/Either";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import useDeleteClasse from "@/hooks/class/useDeleteClasse";
+import { classeRepository } from "@/application/classe/repository/classe-repository";
+import { useAuthStore } from "@/core/auth/auth-store";
 
 export default function ClassesTable() {
-  const { classes, error, loading } = useGetClasses();
-  const { setClasseId, loading: loadindDeleteClasses } = useDeleteClasse();
+  const { user } = useAuthStore((state) => ({
+    user: state.user,
+  }));
+  const getClasses = classeRepository.useGetClasses({
+    id: user.user?.id || "",
+  });
+  const { loading, classes, error } = getClasses();
+  const { setClasseId } = classeRepository.useDeleteClasse();
   const handleDelete = async (id: string) => {
     setClasseId(id);
   };

@@ -1,4 +1,4 @@
-import { type NavItem } from "@/types";
+import { type NavItem } from "@/lib/types";
 import CopyClipboard from "../icons/CopyClipboard";
 import Dashboard from "../icons/Dashboard";
 

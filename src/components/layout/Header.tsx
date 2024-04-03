@@ -1,16 +1,20 @@
 "use client";
 import { UserButton, SignInButton, useSession } from "@clerk/nextjs";
-import { ModeToggle } from "./ModeToggle";
-import { Button } from "./ui/button";
-import Navigation from "./Navigation";
+import { ModeToggle } from "../common/ModeToggle";
+import { Button } from "../ui/button";
+import Navigation from "../common/Navigation";
 import { usePathname } from "next/navigation";
-import Title from "@/app/Title";
+import Title from "@/components/common/Title";
 import { cn } from "@/lib/utils";
-import { MobileSidebar } from "./layout/MobileSidebar";
+import { MobileSidebar } from "./MobileSidebar";
+import { useAuthStore } from "@/core/auth/auth-store";
 
 export default function Header() {
-  const { isSignedIn } = useSession();
+  const { isLoggedIn } = useAuthStore((state) => ({
+    isLoggedIn: state.isLoggedIn,
+  }));
   const pathName = usePathname();
+
   return (
     <header className="flex flex-row gap-4 border-b items-center justify-between border-b-slate-300 p-4">
       <Navigation />
@@ -21,7 +25,7 @@ export default function Header() {
 
       <div className="flex flex-row gap-4 items-center">
         <div>
-          {isSignedIn ? (
+          {isLoggedIn() ? (
             <UserButton />
           ) : (
             <SignInButton>

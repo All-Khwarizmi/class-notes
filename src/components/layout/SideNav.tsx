@@ -1,10 +1,10 @@
 "use client";
 import Link from "next/link";
 
-import { type NavItem } from "@/types";
+import { type NavItem } from "@/lib/types";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { useSidebar } from "@/hooks/useSidebar";
+import { useSidebar } from "@/application/common/useSidebar";
 import { buttonVariants } from "@/components/ui/button";
 
 import {
@@ -15,7 +15,7 @@ import {
 } from "@/components/layout/SubNavAccordion";
 import { useEffect, useState } from "react";
 import { ChevronDownIcon } from "@radix-ui/react-icons";
-import useNavItems from "@/hooks/useNavItems";
+import useNavItems from "@/application/common/useNavItems";
 
 interface SideNavProps {
   items: NavItem[];
@@ -27,7 +27,7 @@ export function SideNav({ items, setOpen, className }: SideNavProps) {
   const path = usePathname();
   const { isOpen } = useSidebar();
   const [openItem, setOpenItem] = useState("");
-  const [lastOpenItem, setLastOpenItem] = useState("")
+  const [lastOpenItem, setLastOpenItem] = useState("");
 
   useEffect(() => {
     if (isOpen) {

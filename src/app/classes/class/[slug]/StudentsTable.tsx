@@ -10,7 +10,7 @@ import {
 import { useQuery } from "convex/react";
 import { api } from "../../../../../convex/_generated/api";
 import { Id } from "../../../../../convex/_generated/dataModel";
-import CustomDialog from "@/components/CustomDialog";
+import CustomDialog from "@/components/common/CustomDialog";
 import AddStudentForm from "./AddStudentForm";
 import AddIcon from "@/components/icons/AddIcon";
 import { useMemo } from "react";

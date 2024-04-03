@@ -24,7 +24,7 @@ export const createEvaluationWithGrades = mutation({
       conductedAt: Date.now(),
       overallGrade: args.overallGrade,
       feedback: args.feedback,
-      studentGrades: args.studentGrades,
+      criterias: [],
     });
     return evaluationId;
   },

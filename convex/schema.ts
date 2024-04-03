@@ -3,83 +3,86 @@ import { v } from "convex/values";
 
 export default defineSchema({
   Users: defineTable({
-    userId: v.string(), // Unique identifier from your authentication provider
-    // Add additional fields as needed, e.g., name, email, profilePictureUrl
+    userId: v.string(),
+    schoolSubject: v.string(),
+    name: v.string(),
+    onboarding: v.boolean(),
   }),
   Classes: defineTable({
     userId: v.string(),
     description: v.optional(v.string()),
     imageUrl: v.optional(v.string()),
     name: v.string(),
-    students: v.optional(v.array(v.any())),
+    observations: v.array(v.string()),
+    studentsId: v.optional(v.array(v.id("Students"))),
+    evaluationsTemplatesId: v.array(v.id("EvaluationTemplates")),
   }),
+
   Students: defineTable({
     name: v.string(),
     classId: v.id("Classes"),
+    observations: v.array(v.string()),
+    evaluationsResults: v.array(v.id("StudentEvaluationGrades")),
   }),
+
+  StudentEvaluationGrades: defineTable({
+    studentId: v.id("Students"),
+    evaluationGradesId: v.id("EvaluationsWithGrades"),
+    criteriaId: v.id("Criteria"),
+    grade: v.union(v.string(), v.number()),
+    feedback: v.string(),
+    updatedAt: v.float64(),
+  }),
+
   Criteria: defineTable({
     name: v.string(),
+    wheight: v.optional(v.number()),
     description: v.string(),
     isGraded: v.boolean(),
     gradeType: v.optional(v.string()), // Optional, not applicable if not graded
     grade: v.optional(v.union(v.string(), v.number())), // Grade, optional
     feedback: v.string(), // Feedback is always included
     createdBy: v.id("Users"),
-  })
-    .index("by_createdBy", ["createdBy"]) // Indexing by creator
-    .index("by_gradeType", ["gradeType"]), // Indexing by gradeType for quick filtering,
-  DynamicFields: defineTable({
-    fieldKey: v.string(),
-    fieldValue: v.string(), // Storing as JSON string for flexibility
-    fieldType: v.string(), // Could help interpret the JSON string
-    isGraded: v.boolean(),
-    grade: v.optional(v.union(v.string(), v.number())), // Optional
-    feedback: v.string(), // Feedback is always included
-    createdBy: v.id("Users"),
-  })
-    .index("by_fieldType", ["fieldType"]) // Useful for fetching by type
-    .index("by_createdBy", ["createdBy"]),
-  // Indexing by creator,
-  EvaluationCriteria: defineTable({
-    evaluationId: v.id("Evaluations"),
-    criteriaId: v.id("Criteria"),
-    // This table allows you to associate multiple criteria with a single evaluation.
-  }),
-  CriteriaDynamicFieldsLink: defineTable({
-    criteriaId: v.id("Criteria"),
-    dynamicFieldId: v.id("DynamicFields"),
-    // Additional fields as necessary, e.g., order or relevance
-  }),
-
-  EvaluationDynamicFields: defineTable({
-    evaluationId: v.id("Evaluations"),
-    dynamicFieldId: v.id("DynamicFields"),
-    // This table links dynamic fields to evaluations, potentially via criteria.
-  }),
-  EvaluationTemplates: defineTable({
-    name: v.string(),
-    description: v.string(),
-    createdBy: v.id("Users"), // The user who created this template
-    createdAt: v.float64(), // Timestamp for when the template was created
-    gradeType: v.string(), // Grading scale type ("numeric", "letter", "pass/fail")
-    criteriaIds: v.array(v.id("Criteria")), // Array of Criteria IDs associated with this template
-  }).index("by_createdBy", ["createdBy"]), // Index for fetching templates by creator
-  EvaluationsWithGrades: defineTable({
-    templateId: v.id("EvaluationTemplates"), // Link to the evaluation template this is based on
-    classId: v.id("Classes"), // The class this evaluation is associated with
-    conductedBy: v.id("Users"), // The user (teacher) who conducted this evaluation
-    conductedAt: v.float64(), // Timestamp for when the evaluation was conducted
-    overallGrade: v.optional(v.union(v.string(), v.number())), // Overall grade, if applicable
-    feedback: v.optional(v.string()), // General feedback for the evaluation
-    studentGrades: v.array(
+    subFields: v.optional(
       v.object({
-        // Array of objects holding student IDs and their grades
-        studentId: v.id("Students"),
-        grade: v.union(v.string(), v.number()),
-        feedback: v.optional(v.string()),
+        name: v.string(),
+        description: v.string(),
+        grade: v.optional(v.union(v.string(), v.number())), // Optional, not applicable if not graded
       })
     ),
   })
-    .index("by_classId", ["classId"]) // Index for fetching evaluations by class
-    .index("by_conductedBy", ["conductedBy"]), // Index for fetching evaluations conducted by a user
+    .index("by_createdBy", ["createdBy"]) // Indexing by creator
+    .index("by_gradeType", ["gradeType"]), // Indexing by gradeType for quick filtering,
+
+  EvaluationTemplates: defineTable({
+    name: v.string(),
+    description: v.string(),
+    createdBy: v.id("Users"),
+    createdAt: v.float64(),
+    gradeType: v.string(),
+    criteriaIds: v.array(v.id("Criteria")),
+  }).index("by_createdBy", ["createdBy"]),
+  EvaluationsWithGrades: defineTable({
+    templateId: v.id("EvaluationTemplates"),
+    classId: v.id("Classes"),
+    conductedBy: v.id("Users"),
+    conductedAt: v.float64(),
+    overallGrade: v.optional(v.union(v.string(), v.number())),
+    feedback: v.optional(v.string()),
+    criterias: v.array(v.id("Criteria")),
+  })
+    .index("by_classId", ["classId"])
+    .index("by_conductedBy", ["conductedBy"]),
+  RapportStudent: defineTable({
+    studentId: v.id("Students"),
+    rapport: v.string(),
+    details: v.string(),
+    updatedAt: v.float64(),
+  }),
+  RapportClasse: defineTable({
+    studentId: v.id("Classes"),
+    rapport: v.string(),
+    details: v.string(),
+    updatedAt: v.float64(),
+  }),
 });

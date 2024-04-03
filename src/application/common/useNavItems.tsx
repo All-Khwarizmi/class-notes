@@ -1,12 +1,19 @@
-import { NavItem } from "@/types";
-import useGetClasses from "./class/useGetClasses";
+import { NavItem } from "@/lib/types";
+import useGetClassesInfra from "../../infrastructure/classe/useGetClassesInfra";
 
 import { NavItems } from "@/components/constants/side-nav";
 import { isRight } from "fp-ts/lib/Either";
 import ClassIcon from "@/components/icons/ClassIcon";
 import { useEffect, useState } from "react";
+import { use } from "chai";
+import { useAuthStore } from "@/core/auth/auth-store";
 export default function useNavItems() {
-  const { classes: eitherClasses } = useGetClasses();
+  const { user } = useAuthStore((state) => ({
+    user: state.user,
+  }));
+  const { classes: eitherClasses } = useGetClassesInfra({
+    id: user.user?.id || "",
+  });
   const [navItems, setNavItems] = useState<NavItem[] | null>(null);
   useEffect(() => {
     if (eitherClasses) {

@@ -13,6 +13,7 @@ export const createCriterion = mutation({
   handler: async (ctx, args) => {
     const criterionId = await ctx.db.insert("Criteria", {
       name: args.name,
+      wheight: 1,
       description: args.description,
       isGraded: args.isGraded,
       gradeType: args.gradeType,

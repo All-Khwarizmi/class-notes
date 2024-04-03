@@ -4,9 +4,9 @@ import { SideNav } from "@/components/layout/SideNav";
 import { NavItems } from "@/components/constants/side-nav";
 
 import { cn } from "@/lib/utils";
-import { useSidebar } from "@/hooks/useSidebar";
+import { useSidebar } from "@/application/common/useSidebar";
 import ArrowLeft from "../icons/ArrowLeft";
-import useNavItems from "@/hooks/useNavItems";
+import useNavItems from "@/application/common/useNavItems";
 
 interface SidebarProps {
   className?: string;

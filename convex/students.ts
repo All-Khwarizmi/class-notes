@@ -14,6 +14,8 @@ export const createStudent = mutation({
     const id = await ctx.db.insert("Students", {
       name: args.name,
       classId: args.classId,
+      observations: [],
+      evaluationsResults: [],
     });
     return { id };
   },

@@ -1,4 +1,4 @@
-import Header from "@/components/Header";
+import Header from "@/components/layout/Header";
 import Sidebar from "@/components/layout/Sidebar";
 import { Metadata } from "next";
 
@@ -18,9 +18,7 @@ export default function RootLayout({
       <Header />
       <section className="flex h-full w-full border-collapse overflow-hidden">
         <Sidebar />
-        <section className="flex-1  overflow-x-hidden">
-          {children}
-        </section>
+        <section className="flex-1  overflow-x-hidden">{children}</section>
       </section>
     </>
   );

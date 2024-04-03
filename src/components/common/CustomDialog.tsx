@@ -7,8 +7,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 
-import AddClassForm from "../app/classes/AddClassForm";
-import { Button } from "./ui/button";
+import { Button } from "../ui/button";
 
 export default function CustomDialog({
   icon,
@@ -16,7 +15,11 @@ export default function CustomDialog({
   description = "",
   children,
   testId,
+  open,
+  displayButton = true,
 }: {
+  displayButton?: boolean;
+  open?: boolean;
   title: string;
   description?: string;
   icon: React.ReactNode;
@@ -25,16 +28,18 @@ export default function CustomDialog({
 }) {
   return (
     <>
-      <Dialog>
+      <Dialog open={open}>
         <DialogTrigger asChild>
-          <Button
-            variant={"outline"}
-            size={"icon"}
-            data-testid={testId}
-            className="p-0 "
-          >
-            {icon}
-          </Button>
+          {displayButton && (
+            <Button
+              variant={"outline"}
+              size={"icon"}
+              data-testid={testId}
+              className="p-0 "
+            >
+              {icon}
+            </Button>
+          )}
         </DialogTrigger>
         <DialogContent>
           <DialogHeader>
