@@ -5,7 +5,6 @@ import { NavItems } from "@/components/constants/side-nav";
 import { isRight } from "fp-ts/lib/Either";
 import ClassIcon from "@/components/icons/ClassIcon";
 import { useEffect, useState } from "react";
-import { use } from "chai";
 import { useAuthStore } from "@/core/auth/auth-store";
 export default function useNavItems() {
   const { user } = useAuthStore((state) => ({

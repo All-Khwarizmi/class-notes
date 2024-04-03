@@ -15,7 +15,6 @@ import {
 } from "@/components/layout/SubNavAccordion";
 import { useEffect, useState } from "react";
 import { ChevronDownIcon } from "@radix-ui/react-icons";
-import useNavItems from "@/application/common/useNavItems";
 
 interface SideNavProps {
   items: NavItem[];
@@ -72,6 +71,28 @@ export function SideNav({ items, setOpen, className }: SideNavProps) {
                 )}
               </AccordionTrigger>
               <AccordionContent className="mt-2 space-y-4 pb-1">
+                {" "}
+                <Link
+                  href={item.href}
+                  onClick={() => {
+                    if (setOpen) setOpen(false);
+                  }}
+                  className={cn(
+                    buttonVariants({ variant: "ghost" }),
+                    "group relative flex h-12 justify-start gap-x-3",
+                    path === item.href && "bg-muted font-bold hover:bg-muted"
+                  )}
+                >
+                  {item.icon}
+                  <div
+                    className={cn(
+                      "absolute left-12 text-base duration-200",
+                      !isOpen && className
+                    )}
+                  >
+                    {item.title}
+                  </div>
+                </Link>
                 {item.children?.map((child) => (
                   <Link
                     key={child.title}

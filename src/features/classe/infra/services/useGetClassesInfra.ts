@@ -13,7 +13,6 @@ export default function useGetClassesInfra({ id }: { id: string }) {
     id,
   });
   useEffect(() => {
-    console.log("rawClasses", rawClasses);
     if (rawClasses) {
       //!TODO: refactor this. -Now we are using the Either monad to handle the error by filtering the invalid values. But we should do something about the fault classes if any
       const classeEntities = rawClasses.map((c) => {
