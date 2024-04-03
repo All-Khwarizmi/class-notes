@@ -5,14 +5,14 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
-import CustomDialog from "../../../../components/common/CustomDialog";
+} from "@/core/components/ui/table";
+import CustomDialog from "../../../../core/components/common/CustomDialog";
 import AddClassForm from "./AddClassForm";
-import AddIcon from "../../../../components/icons/AddIcon";
-import MessageFullScreen from "@/components/common/MessageFullScreen";
+import AddIcon from "../../../../core/components/icons/AddIcon";
+import MessageFullScreen from "@/core/components/common/MessageFullScreen";
 import { isRight } from "fp-ts/lib/Either";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/core/components/ui/button";
 import { classeRepository } from "@/features/classe/application/repository/classe-repository";
 import { useAuthStore } from "@/core/auth/auth-store";
 

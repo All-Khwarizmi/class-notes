@@ -1,17 +1,19 @@
 "use client";
 
 import Link from "next/link";
-import Title from "../components/common/Title";
+import Title from "../core/components/common/Title";
 import { SignInButton } from "@clerk/nextjs";
-import { Button } from "@/components/ui/button";
-import { useLandingRedirect } from "@/application/common/useLandingRedirect";
+import { Button } from "@/core/components/ui/button";
+import { useLandingRedirect } from "@/core/application/common/useLandingRedirect";
 import useAuth from "@/core/auth/useAuth";
 import { useAuthStore } from "@/core/auth/auth-store";
 
 export default function Hero() {
   useLandingRedirect();
   useAuth();
-  const {isLoggedIn} = useAuthStore((state) => ({ isLoggedIn: state.isLoggedIn }));
+  const { isLoggedIn } = useAuthStore((state) => ({
+    isLoggedIn: state.isLoggedIn,
+  }));
 
   return (
     <section className="w-full h-screen py-6 md:py-12 flex items-center">

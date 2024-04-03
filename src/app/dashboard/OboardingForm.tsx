@@ -8,10 +8,10 @@ import {
   FormItem,
   FormLabel,
   FormControl,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { userRepositry } from "@/application/user/repository/user-repository";
+} from "@/core/components/ui/form";
+import { Input } from "@/core/components/ui/input";
+import { Button } from "@/core/components/ui/button";
+import { userRepositry } from "@/features/user/application/repository/user-repository";
 import { useAuthStore } from "@/core/auth/auth-store";
 import { toast } from "sonner";
 import { useEffect } from "react";

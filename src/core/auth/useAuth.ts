@@ -1,6 +1,6 @@
 import { useAuthStore } from "./auth-store";
 import { useEffect } from "react";
-import { userRepositry } from "@/application/user/repository/user-repository";
+import { userRepositry } from "@/features/user/application/repository/user-repository";
 import { toast } from "sonner";
 import authRepositoy from "@/features/auth/application/repository/auth-repository";
 

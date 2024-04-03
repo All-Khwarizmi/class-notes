@@ -1,4 +1,4 @@
-import { Entity } from "../../../domain/entity/entity-generic-class";
+import { Entity } from "../../../core/domain/entity/entity-generic-class";
 import classSchema, { ClassType } from "./class-schema";
 import { Either, left, right } from "fp-ts/lib/Either";
 import Failure from "@/core/failures/failures";

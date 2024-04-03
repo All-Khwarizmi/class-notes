@@ -1,5 +1,5 @@
 "use client";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/core/components/ui/button";
 import {
   Form,
   FormControl,
@@ -8,11 +8,11 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+} from "@/core/components/ui/form";
+import { Input } from "@/core/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { Textarea } from "../../../../components/ui/textarea";
+import { Textarea } from "../../../../core/components/ui/textarea";
 import classSchema, { ClassType } from "@/features/classe/domain/class-schema";
 const BASE_IMAGE_URL = "https://source.unsplash.com/random/800x600";
 import { useEffect } from "react";

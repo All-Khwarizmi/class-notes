@@ -6,13 +6,13 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
+} from "@/core/components/ui/table";
 import { useQuery } from "convex/react";
 import { api } from "../../../../../convex/_generated/api";
 import { Id } from "../../../../../convex/_generated/dataModel";
-import CustomDialog from "@/components/common/CustomDialog";
+import CustomDialog from "@/core/components/common/CustomDialog";
 import AddStudentForm from "./AddStudentForm";
-import AddIcon from "@/components/icons/AddIcon";
+import AddIcon from "@/core/components/icons/AddIcon";
 import { useMemo } from "react";
 
 export default function StudentsTable({ classId }: { classId: string }) {

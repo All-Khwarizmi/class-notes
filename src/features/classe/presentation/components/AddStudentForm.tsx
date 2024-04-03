@@ -12,9 +12,9 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+} from "@/core/components/ui/form";
+import { Input } from "@/core/components/ui/input";
+import { Button } from "@/core/components/ui/button";
 import { toast } from "sonner";
 
 export default function AddStudentForm({
