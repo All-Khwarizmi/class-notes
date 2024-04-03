@@ -13,7 +13,6 @@ export const createClass = mutation({
       .query("Users")
       .filter((q) => q.eq(q.field("userId"), args.userId))
       .first();
-    console.log("existingUser", existingUser);
 
     if (existingUser) {
       const id = await ctx.db.insert("Classes", {

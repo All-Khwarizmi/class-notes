@@ -2,34 +2,39 @@ import { useEffect, useState } from "react";
 import { useMutation } from "convex/react";
 import { api } from "../../../convex/_generated/api";
 import { OnboarUserDataType } from "@/application/user/usecases/useOnboardUserUsecase";
+import { Id } from "../../../convex/_generated/dataModel";
 
+export type IUserInfra =
+  | {
+      userId: Id<"Users">;
+      error: boolean;
+    }
+  | { userId: boolean; error: boolean };
 export default function useOnboardUserInfra() {
   const onboardUser = useMutation(api.users.onboarding);
-  type OnboardUserReturnType = Awaited<ReturnType<typeof onboardUser>>;
-  const [user, setUser] = useState<OnboardUserReturnType | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  const [userBoardingData, setUserBoardingData] =
+  const [payload, setPayload] = useState<IUserInfra>({
+    userId: false,
+    error: false,
+  });
+  const [userBoardingDataInfra, setUserBoardingDataInfra] =
     useState<OnboarUserDataType | null>();
 
   useEffect(() => {
-    console.log({ userBoardingData });
-    if (userBoardingData) {
-      onboardUser(userBoardingData)
+    console.log({ userBoardingData: userBoardingDataInfra });
+    if (userBoardingDataInfra) {
+      onboardUser(userBoardingDataInfra)
         .then((userInfra) => {
-          setUser(userInfra);
+          setPayload(userInfra);
         })
         .catch((error) => {
-          setError(
-            "Une erreur est survenue lors de l'onboarding de l'utilisateur"
-          );
+          setPayload({ userId: false, error: true });
         });
     }
-  }, [userBoardingData]);
+  }, [userBoardingDataInfra]);
 
   return {
-    error,
-    setUserBoardingData,
-    user,
+    payload,
+    setUserBoardingDataInfra,
   };
 }
 

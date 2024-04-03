@@ -14,27 +14,27 @@ export default function useOnboardUserUsecase({
 }) {
   const [onBoardingData, setOnBoardingData] =
     useState<OnboarUserDataType | null>();
-  const { error, setUserBoardingData, user } = useOnboardUserInfra();
-  const { setOnboarding } = useAuthStore((state) => ({
-    setOnboarding: state.setOnboarding,
+  const { payload, setUserBoardingDataInfra } = useOnboardUserInfra();
+  const { setOnboardingAppState: setOnboarding } = useAuthStore((state) => ({
+    setOnboardingAppState: state.setOnboarding,
   }));
 
   useEffect(() => {
-    console.log({ user, onBoardingData });
+    console.log({ payload });
     if (onBoardingData) {
-      setUserBoardingData(onBoardingData);
+      setUserBoardingDataInfra(onBoardingData);
     }
   }, [onBoardingData]);
   useEffect(() => {
-    if (user) {
+    if (payload.userId) {
       setOnboarding(true);
     }
-    if (error) {
+    if (payload.error) {
       toast.error(
         "Une erreur est survenue lors de l'onboarding de l'utilisateur"
       );
     }
-  }, [user, error]);
+  }, [payload]);
 
-  return { error, user, setOnBoardingData };
+  return { error: payload.error, user: payload.userId, setOnBoardingData };
 }

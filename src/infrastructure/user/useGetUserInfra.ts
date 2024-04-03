@@ -10,7 +10,6 @@ export default function useGetUserInfra() {
   const [error, setError] = useState<string | null>(null);
   const [user, setUser] = useState<UserExistReturnType | "NO USER">(null);
   useEffect(() => {
-    console.log("id", id);
     if (id) {
       getUser({ userId: id })
         .then((user) => {

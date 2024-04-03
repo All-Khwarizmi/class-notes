@@ -15,13 +15,11 @@ export default function Page() {
   }));
 
   useEffect(() => {
-    console.log({
-      user,
-      isLoading,
-      onboarding,
-    });
+    console.log({ user, isLoading, onboarding });
     if (!isLoading && !user && !onboarding) {
       setOpen(true);
+    } else {
+      setOpen(false);
     }
   }, [user, isLoading, onboarding]);
   return (

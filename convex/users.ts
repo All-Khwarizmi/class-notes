@@ -1,3 +1,4 @@
+import { Id } from "./_generated/dataModel";
 import { mutation } from "./_generated/server";
 import { v } from "convex/values";
 
@@ -13,9 +14,11 @@ export const onboarding = mutation({
       .filter((q) => q.eq(q.field("userId"), args.userId))
       .first();
 
+    let userId: Id<"Users"> | false = false;
+    let userCreated: boolean = false;
     // If the user doesn't exist, create a new entry
     if (!existingUser) {
-      const userId = await ctx.db.insert("Users", {
+      userId = await ctx.db.insert("Users", {
         userId: args.userId,
         schoolSubject: args.schoolSubject,
         name: args.name,
@@ -23,8 +26,16 @@ export const onboarding = mutation({
       });
 
       // Return a confirmation or the user's details
-      return { userId, isNewUser: !existingUser };
+      return { userId, error: false };
     }
+
+    // Check if the user has been added to db in the previous bloc
+    if (!userId) {
+      return { userId, error: true };
+    }
+
+    //! If arrived that far, the user has not been created
+    return { userId, error: true };
   },
 });
 
