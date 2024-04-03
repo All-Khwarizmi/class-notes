@@ -7,4 +7,5 @@ const authRepositoy = {
   }),
 };
 
+export type AuthRepository = typeof authRepositoy;
 export default authRepositoy;

@@ -5,40 +5,54 @@ import { useEffect, useState } from "react";
 import { Id } from "../../../../../convex/_generated/dataModel";
 
 export type IdCustom = Id<"Classes">;
+type ICreateClasseInfraPayload =
+  | {
+      id: IdCustom;
+      error: boolean;
+    }
+  | {
+      id: boolean;
+      error: boolean;
+    };
 export default function useCreateClasseInfra() {
   const addClass = useMutation(api.classes.createClass);
-  const [createdClassId, setCreatedClassId] = useState<IdCustom | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  const [data, setData] = useState<{
+  const [createClasseInfraPayload, setCreateClasseInfraPayload] =
+    useState<ICreateClasseInfraPayload>({
+      id: false,
+      error: false,
+    });
+  const [dataForClasseCreationInfra, setDataForclasseCreationInfra] = useState<{
     classe: ClassType;
     userId: string;
   } | null>(null);
 
   useEffect(() => {
-    if (data?.classe && data?.userId) {
-      console.log("data", data);
+    if (
+      dataForClasseCreationInfra?.classe &&
+      dataForClasseCreationInfra?.userId
+    ) {
+      console.log("data", dataForClasseCreationInfra);
 
       addClass({
-        name: data.classe.name,
-        description: data.classe.description,
-        imageUrl: data.classe.imageUrl,
-
-        userId: data.userId,
+        name: dataForClasseCreationInfra.classe.name,
+        description: dataForClasseCreationInfra.classe.description,
+        imageUrl: dataForClasseCreationInfra.classe.imageUrl,
+        userId: dataForClasseCreationInfra.userId,
       })
-        .then((id) => {
-          console.log("id", id);
-          setCreatedClassId(id?.id || null);
+        .then((data) => {
+          console.log("id", data);
+          setCreateClasseInfraPayload({ ...data });
         })
         .catch((error) => {
-          setError("Error while creating class");
+          console.error("error", error);
+          setCreateClasseInfraPayload({ id: false, error: true });
         });
     }
-  }, [data]);
+  }, [dataForClasseCreationInfra]);
 
   return {
-    createdClassId,
-    error,
-    setData,
+ createClasseInfraPayload,
+    setDataForclasseCreationInfra,
   };
 }
 

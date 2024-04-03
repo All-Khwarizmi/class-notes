@@ -23,8 +23,9 @@ export const createClass = mutation({
         observations: [],
         evaluationsTemplatesId: [],
       });
-      return { id };
+      return { id, error: false };
     }
+    return { id: false, error: true };
   },
 });
 
