@@ -1,10 +1,10 @@
-import { IdCustom } from "@/usecases/class/class-repository";
 import { useMutation } from "convex/react";
-import { api } from "../../../convex/_generated/api";
-import { ClassType } from "@/domain/classe/class-schema";
+import { api } from "../../../../convex/_generated/api";
+import { ClassType } from "@/features/classe/domain/class-schema";
 import { useEffect, useState } from "react";
-import { cons } from "fp-ts/lib/ReadonlyNonEmptyArray";
+import { Id } from "../../../../convex/_generated/dataModel";
 
+export type IdCustom = Id<"Classes">;
 export default function useCreateClasseInfra() {
   const addClass = useMutation(api.classes.createClass);
   const [createdClassId, setCreatedClassId] = useState<IdCustom | null>(null);

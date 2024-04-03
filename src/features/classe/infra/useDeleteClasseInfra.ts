@@ -1,6 +1,6 @@
 import { useMutation } from "convex/react";
 import { useCallback, useEffect, useState } from "react";
-import { api } from "../../../convex/_generated/api";
+import { api } from "../../../../convex/_generated/api";
 
 export default function useDeleteClasseInfra() {
   const [classeId, setClasseId] = useState<string>("");

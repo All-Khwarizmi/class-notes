@@ -1,9 +1,9 @@
 import { useQuery } from "convex/react";
 import { useEffect, useState } from "react";
-import { api } from "../../../convex/_generated/api";
-import { ClasseEntityDto } from "@/infrastructure/classe/classe-dto";
+import { api } from "../../../../convex/_generated/api";
+import { ClasseEntityDto } from "@/features/classe/infra/classe-dto";
 import { isRight } from "fp-ts/lib/Either";
-import ClassEntity from "@/domain/classe/class-entity";
+import ClassEntity from "@/features/classe/domain/class-entity";
 
 export default function useGetClasseInfra(id: { id: string }) {
   const [classe, setClasse] = useState<ClassEntity | null>(null);

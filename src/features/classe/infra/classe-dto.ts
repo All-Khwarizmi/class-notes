@@ -1,7 +1,7 @@
 import Failure from "@/core/failures/failures";
 import { Either, right } from "fp-ts/lib/Either";
-import ClasseEntity from "@/domain/classe/class-entity";
-import { Id } from "../../../convex/_generated/dataModel";
+import ClasseEntity from "@/features/classe/domain/class-entity";
+import { Id } from "../../../../convex/_generated/dataModel";
 import { left } from "fp-ts/lib/Either";
 
 export class ClasseEntityDto {

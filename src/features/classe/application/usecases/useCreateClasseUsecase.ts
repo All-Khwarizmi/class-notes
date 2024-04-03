@@ -1,6 +1,6 @@
 import { useAuthStore } from "@/core/auth/auth-store";
-import { ClassType } from "@/domain/classe/class-schema";
-import { UseCreateClasseInfraReturn } from "@/infrastructure/classe/useCreateClasseInfra";
+import { ClassType } from "@/features/classe/domain/class-schema";
+import { UseCreateClasseInfraReturn } from "@/features/classe/infra/useCreateClasseInfra";
 import { useUser } from "@clerk/nextjs";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";

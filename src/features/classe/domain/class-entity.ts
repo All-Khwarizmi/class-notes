@@ -1,4 +1,4 @@
-import { Entity } from "../entity/entity-generic-class";
+import { Entity } from "../../../domain/entity/entity-generic-class";
 import classSchema, { ClassType } from "./class-schema";
 import { Either, left, right } from "fp-ts/lib/Either";
 import Failure from "@/core/failures/failures";
@@ -7,9 +7,9 @@ import Failure from "@/core/failures/failures";
  * Represents a ClassEntity, which is a subclass of the Entity class.
  * The ClassEntity is used to validate the properties of a class.
  * @extends Entity
- * @method create - Creates a new ClassEntity instance. 
+ * @method create - Creates a new ClassEntity instance.
  * @method validator - Validates the properties of the ClassEntity.
- * 
+ *
  */
 export default class ClassEntity extends Entity<ClassType> {
   /**

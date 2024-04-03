@@ -1,4 +1,4 @@
-import { UseDeleteClasseInfraReturn } from "@/infrastructure/classe/useDeleteClasseInfra";
+import { UseDeleteClasseInfraReturn } from "@/features/classe/infra/useDeleteClasseInfra";
 import { useEffect } from "react";
 import { toast } from "sonner";
 

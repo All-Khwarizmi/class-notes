@@ -1,4 +1,4 @@
-import { GetClassesInfra } from "@/infrastructure/classe/useGetClassesInfra";
+import { GetClassesInfra } from "@/features/classe/infra/useGetClassesInfra";
 import { useEffect, useState } from "react";
 
 export default function useGetClassesUsecase({

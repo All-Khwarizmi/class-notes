@@ -6,14 +6,14 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import CustomDialog from "../../components/common/CustomDialog";
+import CustomDialog from "../../../../components/common/CustomDialog";
 import AddClassForm from "./AddClassForm";
-import AddIcon from "../../components/icons/AddIcon";
+import AddIcon from "../../../../components/icons/AddIcon";
 import MessageFullScreen from "@/components/common/MessageFullScreen";
 import { isRight } from "fp-ts/lib/Either";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { classeRepository } from "@/application/classe/repository/classe-repository";
+import { classeRepository } from "@/features/classe/application/repository/classe-repository";
 import { useAuthStore } from "@/core/auth/auth-store";
 
 export default function ClassesTable() {

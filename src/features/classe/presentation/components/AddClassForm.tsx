@@ -12,14 +12,14 @@ import {
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { Textarea } from "../../components/ui/textarea";
-import classSchema, { ClassType } from "@/domain/classe/class-schema";
+import { Textarea } from "../../../../components/ui/textarea";
+import classSchema, { ClassType } from "@/features/classe/domain/class-schema";
 const BASE_IMAGE_URL = "https://source.unsplash.com/random/800x600";
 import { useEffect } from "react";
-import { classeRepository } from "@/application/classe/repository/classe-repository";
+import { classeRepository } from "@/features/classe/application/repository/classe-repository";
 
 export default function AddClassForm() {
-  const { setClasse, createdClassId, } = classeRepository.useCreateClasse();
+  const { setClasse, createdClassId } = classeRepository.useCreateClasse();
   const form = useForm<ClassType>({
     resolver: zodResolver(classSchema),
     defaultValues: {
@@ -28,7 +28,6 @@ export default function AddClassForm() {
         new Date().getFullYear() + 1
       }`,
       imageUrl: BASE_IMAGE_URL,
-    
     },
   });
 

@@ -1,6 +1,5 @@
 "use client";
-import ClassesTable from "@/app/classes/ClassesTable";
-import { useLandingRedirect } from "@/application/common/useLandingRedirect";
+import ClassesTable from "@/features/classe/presentation/components/ClassesTable";
 
 export default function Home() {
   return <ClassesTable />;
