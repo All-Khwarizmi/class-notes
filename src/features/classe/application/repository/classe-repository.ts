@@ -9,7 +9,10 @@ import useGetClassesUsecase from "../usecases/useGetClassesUsecase";
 import authRepository from "@/features/auth/application/repository/auth-repository";
 
 export const classeRepository = {
-  useCreateClasse: useCreateClasseUsecase.bind(null, { useCreateClasseInfra, authRepository }),
+  useCreateClasse: useCreateClasseUsecase.bind(null, {
+    useCreateClasseInfra,
+    authRepository,
+  }),
   useDeleteClasse: useDeleteClasseUsecase.bind(null, { useDeleteClasseInfra }),
   useGetClasse: ({ id }: { id: string }) =>
     useGetClasseUsecase.bind(null, { useGetClasseInfra, id }),
@@ -17,3 +20,5 @@ export const classeRepository = {
   useGetClasses: ({ id }: { id: string }) =>
     useGetClassesUsecase.bind(null, { id, useGetClassesInfra }),
 };
+
+export type ClasseRepository = typeof classeRepository;

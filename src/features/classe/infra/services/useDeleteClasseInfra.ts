@@ -2,34 +2,34 @@ import { useMutation } from "convex/react";
 import { useCallback, useEffect, useState } from "react";
 import { api } from "../../../../../convex/_generated/api";
 
+
+export type DeleteClassePayload = {
+  error: boolean;
+  success: boolean;
+};
 export default function useDeleteClasseInfra() {
-  const [classeId, setClasseId] = useState<string>("");
-  const [error, setError] = useState<string | null>(null);
+  const [classeToDeleteId, setClasseToDeleteId] = useState<string>("");
   const deleteClasse = useMutation(api.classes.deleteClass);
-  const [ok, setOk] = useState<"Classe supprimée avec success" | null>(null);
+  const [deleteClassePayload, setDeleteClassePayload] =
+    useState<DeleteClassePayload>();
 
   const handleDeleteMemoized = useCallback(async () => {
-    await deleteClasse({ id: classeId });
-    setOk("Classe supprimée avec success");
-  }, [classeId]);
+    await deleteClasse({ id: classeToDeleteId });
+  }, [classeToDeleteId]);
 
   useEffect(() => {
-    if (classeId) {
+    if (classeToDeleteId) {
       handleDeleteMemoized()
         .then(() => {
-          setOk("Classe supprimée avec success");
-          setError(null);
+          setDeleteClassePayload({ error: false, success: true });
         })
         .catch(() => {
-          setError(
-            "Une erreur est survenue lors de la suppression de la classe"
-          );
-          setOk(null);
+          setDeleteClassePayload({ error: true, success: false });
         });
     }
-  }, [classeId]);
+  }, [classeToDeleteId]);
 
-  return { setClasseId, error, ok };
+  return { setClasseToDeleteId, deleteClassePayload };
 }
 
 export type UseDeleteClasseInfraReturn = ReturnType<

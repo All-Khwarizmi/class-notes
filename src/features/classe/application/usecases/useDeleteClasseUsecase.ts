@@ -7,23 +7,20 @@ export default function useDeleteClasseUsecase({
 }: {
   useDeleteClasseInfra: () => UseDeleteClasseInfraReturn;
 }) {
-  const { setClasseId, error, ok } = useDeleteClasseInfra();
+  const { setClasseToDeleteId, deleteClassePayload } = useDeleteClasseInfra();
+
+  
 
   useEffect(() => {
-    if (error) {
-      toast.error(
-        "Une erreur est survenue lors de la suppression de la classe"
-      );
+    if (deleteClassePayload?.error) {
+      toast.error("La classe n'a pas pu être supprimée");
+    } 
+    if (deleteClassePayload?.success) {
+      toast.success("La classe a été supprimée avec succès");
     }
-  }, [error]);
-
-  useEffect(() => {
-    if (ok === "Classe supprimée avec success") {
-      toast.success("Classe supprimée avec success");
-    }
-  }, [ok]);
+  }, [deleteClassePayload]);
 
   return {
-    setClasseId,
+    setClasseId: setClasseToDeleteId,
   };
 }

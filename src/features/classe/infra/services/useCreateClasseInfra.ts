@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { Id } from "../../../../../convex/_generated/dataModel";
 
 export type IdCustom = Id<"Classes">;
-type ICreateClasseInfraPayload =
+export type ICreateClasseInfraPayload =
   | {
       id: IdCustom;
       error: boolean;
@@ -31,7 +31,6 @@ export default function useCreateClasseInfra() {
       dataForClasseCreationInfra?.classe &&
       dataForClasseCreationInfra?.userId
     ) {
-      console.log("data", dataForClasseCreationInfra);
 
       addClass({
         name: dataForClasseCreationInfra.classe.name,
@@ -40,7 +39,6 @@ export default function useCreateClasseInfra() {
         userId: dataForClasseCreationInfra.userId,
       })
         .then((data) => {
-          console.log("id", data);
           setCreateClasseInfraPayload({ ...data });
         })
         .catch((error) => {
