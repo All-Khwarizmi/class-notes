@@ -8,24 +8,22 @@ import {
   FormItem,
   FormLabel,
   FormControl,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { userRepositry } from "@/application/user/repository/user-repository";
-import { useAuthStore } from "@/core/auth/auth-store";
+} from "@/core/components/ui/form";
+import { Input } from "@/core/components/ui/input";
+import { Button } from "@/core/components/ui/button";
+import { userRepositry } from "@/features/user/application/repository/user-repository";
 import { toast } from "sonner";
 import { useEffect } from "react";
+import authRepositoy from "@/features/auth/application/repository/auth-repository";
 
 export default function OnboardingForm() {
-  const { userId } = useAuthStore((state) => ({
-    userId: state.user?.user?.id,
-  }));
+ const {authUserId} = authRepositoy.useGetUserId()
   const { user, error, setOnBoardingData } = userRepositry.useOnboardUser();
   const form = useForm({
     resolver: zodResolver(onboardingSchema),
     defaultValues: {
-      materia: "maths",
-      name: "Pablo",
+      materia: "",
+      name: "",
     },
   });
   useEffect(() => {
@@ -45,14 +43,14 @@ export default function OnboardingForm() {
     }
   }, [user, error]);
   function onSubmit(data: OnboardingType) {
-    if (!userId) {
+    if (!authUserId) {
       toast.error(
         "Une erreur est survenue lors de la récupération de votre identifiant"
       );
       return;
     }
     setOnBoardingData({
-      userId: userId || "",
+      userId: authUserId || "",
       schoolSubject: data.materia,
       name: data.name,
     });
@@ -61,6 +59,7 @@ export default function OnboardingForm() {
     <>
       <Form {...form}>
         <form
+          data-testid="onboarding-form"
           onSubmit={form.handleSubmit(onSubmit)}
           className="flex flex-col gap-4"
         >
@@ -73,7 +72,7 @@ export default function OnboardingForm() {
                   Quelle matière enseignez-vous ?
                 </FormLabel>
                 <FormControl>
-                  <Input {...field} />
+                  <Input {...field} data-testid="matiere-input" />
                 </FormControl>
               </FormItem>
             )}
@@ -87,12 +86,12 @@ export default function OnboardingForm() {
                   Par quel nom souhaitez-vous être appelé ?
                 </FormLabel>
                 <FormControl>
-                  <Input {...field} />
+                  <Input {...field} data-testid="name-input" />
                 </FormControl>
               </FormItem>
             )}
           />
-          <Button type="submit">Valider</Button>
+          <Button data-testid="submit-onboarding-form" type="submit">Valider</Button>
         </form>
       </Form>
     </>

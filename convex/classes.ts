@@ -23,8 +23,9 @@ export const createClass = mutation({
         observations: [],
         evaluationsTemplatesId: [],
       });
-      return { id };
+      return { id, error: false };
     }
+    return { id: false, error: true };
   },
 });
 
@@ -38,8 +39,10 @@ export const deleteClass = mutation({
       .filter((q) => q.eq(q.field("_id"), args.id))
       .first();
     if (classe) {
-      return ctx.db.delete(classe._id);
+      ctx.db.delete(classe._id);
+      return { error: false, success: true };
     }
+    return { error: true, success: false };
   },
 });
 

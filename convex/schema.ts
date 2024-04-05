@@ -53,6 +53,29 @@ export default defineSchema({
   })
     .index("by_createdBy", ["createdBy"]) // Indexing by creator
     .index("by_gradeType", ["gradeType"]), // Indexing by gradeType for quick filtering,
+  CriteriaWithGrades: defineTable({
+    name: v.string(),
+    classId: v.id("Classes"),
+    studentId: v.id("Students"),
+    wheight: v.optional(v.number()),
+    description: v.string(),
+    isGraded: v.boolean(),
+    gradeType: v.optional(v.string()), // Optional, not applicable if not graded
+    grade: v.optional(v.union(v.string(), v.number())), // Grade, optional
+    feedback: v.string(), // Feedback is always included
+    createdBy: v.id("Users"),
+    subFields: v.optional(
+      v.object({
+        name: v.string(),
+        description: v.string(),
+        grade: v.optional(v.union(v.string(), v.number())), // Optional, not applicable if not graded
+      })
+    ),
+  })
+    .index("by_classId", ["classId"])
+    .index("by_studentId", ["studentId"])
+    .index("by_createdBy", ["createdBy"]) // Indexing by creator
+    .index("by_gradeType", ["gradeType"]), // Indexing by gradeType for quick filtering,
 
   EvaluationTemplates: defineTable({
     name: v.string(),
@@ -65,13 +88,15 @@ export default defineSchema({
   EvaluationsWithGrades: defineTable({
     templateId: v.id("EvaluationTemplates"),
     classId: v.id("Classes"),
+    studentId: v.id("Students"),
     conductedBy: v.id("Users"),
     conductedAt: v.float64(),
     overallGrade: v.optional(v.union(v.string(), v.number())),
     feedback: v.optional(v.string()),
-    criterias: v.array(v.id("Criteria")),
+    criterias: v.array(v.id("CriteriaWithGrades")),
   })
     .index("by_classId", ["classId"])
+    .index("by_studentId", ["studentId"])
     .index("by_conductedBy", ["conductedBy"]),
   RapportStudent: defineTable({
     studentId: v.id("Students"),

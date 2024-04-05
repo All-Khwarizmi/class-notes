@@ -1,16 +1,15 @@
 import { useAuthStore } from "./auth-store";
 import { useEffect } from "react";
-import { userRepositry } from "@/application/user/repository/user-repository";
+import { userRepositry } from "@/features/user/application/repository/user-repository";
 import { toast } from "sonner";
 import authRepositoy from "@/features/auth/application/repository/auth-repository";
 
 export default function useAuth() {
   const { authUserId } = authRepositoy.useGetUserId();
   const { user, error } = userRepositry.useGetUser();
-  const { setUser, logout, setOnboarding, onboarding } = useAuthStore(
+  const { setUser, setOnboarding, onboarding } = useAuthStore(
     (state) => ({
       setUser: state.setUser,
-      logout: state.logout,
       setOnboarding: state.setOnboarding,
       onboarding: state.onboarding,
     })
@@ -19,9 +18,7 @@ export default function useAuth() {
   useEffect(() => {
     if (authUserId) {
       setUser({ user: { id: authUserId } });
-    } else {
-      logout();
-    }
+    } 
   }, [authUserId]);
 
   useEffect(() => {
@@ -32,6 +29,7 @@ export default function useAuth() {
     }
 
     if (error) {
+      console.log({ error });
       toast.error(
         "Une erreur est survenue lors de la récupération de vos informations"
       );

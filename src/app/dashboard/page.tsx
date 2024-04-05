@@ -1,29 +1,38 @@
 "use client";
-import CustomDialog from "@/components/common/CustomDialog";
-import useAuth from "@/core/auth/useAuth";
+import CustomDialog from "@/core/components/common/CustomDialog";
 import OnboardingForm from "./OboardingForm";
 import { useEffect, useState } from "react";
 import { useAuthStore } from "@/core/auth/auth-store";
-import { userRepositry } from "@/application/user/repository/user-repository";
+import useAuth from "@/core/auth/useAuth";
+import { userRepositry } from "@/features/user/application/repository/user-repository";
+import { use } from "chai";
 
 export default function Page() {
   const [open, setOpen] = useState(false);
   useAuth();
-  const { user, isLoading } = userRepositry.useGetUser();
-  const { onboarding } = useAuthStore((state) => ({
+  const { onboarding, user, setOnboarding } = useAuthStore((state) => ({
     onboarding: state.onboarding,
+    user: state.user,
+    setOnboarding: state.setOnboarding,
   }));
+  const { user: userFromDb, isLoading } = userRepositry.useGetUser();
 
   useEffect(() => {
-    console.log({ user, isLoading, onboarding });
-    if (!isLoading && !user && !onboarding) {
+    console.log({ user, onboarding });
+    if (!user || !onboarding) {
       setOpen(true);
     } else {
       setOpen(false);
     }
-  }, [user, isLoading, onboarding]);
+  }, [user, onboarding]);
+
+  useEffect(() => {
+    if (!isLoading && !userFromDb) {
+      setOnboarding(false);
+    }
+  }, [userFromDb, isLoading]);
   return (
-    <div>
+    <section data-testid="dashboard">
       <h1>Dashboard</h1>
       <CustomDialog
         open={open}
@@ -33,6 +42,6 @@ export default function Page() {
       >
         <OnboardingForm />
       </CustomDialog>
-    </div>
+    </section>
   );
 }

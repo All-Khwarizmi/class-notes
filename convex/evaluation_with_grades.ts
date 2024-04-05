@@ -5,6 +5,7 @@ export const createEvaluationWithGrades = mutation({
   args: {
     templateId: v.id("EvaluationTemplates"),
     classId: v.id("Classes"),
+    studentId: v.id("Students"),
     conductedBy: v.id("Users"),
     overallGrade: v.optional(v.union(v.string(), v.number())),
     feedback: v.optional(v.string()),
@@ -25,11 +26,11 @@ export const createEvaluationWithGrades = mutation({
       overallGrade: args.overallGrade,
       feedback: args.feedback,
       criterias: [],
+      studentId: args.studentId,
     });
     return evaluationId;
   },
 });
-
 
 export const updateEvaluationWithGrades = mutation({
   args: {
@@ -61,8 +62,6 @@ export const updateEvaluationWithGrades = mutation({
   },
 });
 
-
-
 export const listEvaluationsByClassOrTeacher = query({
   args: {
     classId: v.optional(v.id("Classes")),
@@ -87,8 +86,6 @@ export const listEvaluationsByClassOrTeacher = query({
     return evaluations;
   },
 });
-
-
 
 export const deleteEvaluationWithGrades = mutation({
   args: { evaluationId: v.id("EvaluationsWithGrades") },

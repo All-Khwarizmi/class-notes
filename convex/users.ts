@@ -14,28 +14,20 @@ export const onboarding = mutation({
       .filter((q) => q.eq(q.field("userId"), args.userId))
       .first();
 
-    let userId: Id<"Users"> | false = false;
-    let userCreated: boolean = false;
-    // If the user doesn't exist, create a new entry
-    if (!existingUser) {
+    let userId: Id<"Users"> | false | string = existingUser?.userId || false;
+    if (userId) {
+   
+      return { userId, error: false };
+    } else {
+     
       userId = await ctx.db.insert("Users", {
         userId: args.userId,
         schoolSubject: args.schoolSubject,
         name: args.name,
         onboarding: true,
       });
-
-      // Return a confirmation or the user's details
       return { userId, error: false };
     }
-
-    // Check if the user has been added to db in the previous bloc
-    if (!userId) {
-      return { userId, error: true };
-    }
-
-    //! If arrived that far, the user has not been created
-    return { userId, error: true };
   },
 });
 

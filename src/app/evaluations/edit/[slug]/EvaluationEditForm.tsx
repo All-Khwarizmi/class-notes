@@ -1,14 +1,19 @@
 import {
   EvaluationType,
   EvaluationSchema,
-} from "@/domain/evaluation/evaluation-schema";
+} from "@/core/domain/evaluation/evaluation-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, useForm } from "react-hook-form";
 import { api } from "../../../../../convex/_generated/api";
-import { Button } from "@/components/ui/button";
-import { FormField, FormItem, FormLabel, FormControl } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/core/components/ui/button";
+import {
+  FormField,
+  FormItem,
+  FormLabel,
+  FormControl,
+} from "@/core/components/ui/form";
+import { Input } from "@/core/components/ui/input";
+import { Textarea } from "@/core/components/ui/textarea";
 
 export default function EvaluationEditForm(
   template: typeof api.evaluation_template.getEvaluationTemplateWithCriteria._returnType

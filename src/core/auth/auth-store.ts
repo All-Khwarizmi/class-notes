@@ -1,4 +1,3 @@
-import { get } from "lodash";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
@@ -28,7 +27,7 @@ interface AuthState {
 export const useAuthStore = create<AuthState>()(
   persist(
     (set, get) => ({
-      onboarding: false,
+      onboarding: true,
       setOnboarding: (onboarding) => set({ onboarding }),
       setPreferences: (preferences) =>
         set(() => ({

@@ -1,26 +1,22 @@
 "use client";
-
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
   FormLabel,
-} from "@/components/ui/form";
+} from "@/core/components/ui/form";
 import { api } from "../../../../../convex/_generated/api";
 import { useQuery } from "convex/react";
 import { useForm } from "react-hook-form";
 import {
   EvaluationSchema,
   EvaluationType,
-  EvaluationSchemaWithCriteria,
-} from "@/domain/evaluation/evaluation-schema";
+} from "@/core/domain/evaluation/evaluation-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { format } from "path";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { CriteriaSchema, CriteriaSchemaArray, CriteriaType } from "@/domain/criteria/criteria-schema";
+import { Button } from "@/core/components/ui/button";
+import { Input } from "@/core/components/ui/input";
+import { Textarea } from "@/core/components/ui/textarea";
 
 export default function EditEvaluation({
   params,
@@ -42,15 +38,13 @@ export default function EditEvaluation({
     },
   });
   const criteria = evaluationTemplate?.criteria.map((c) => {
-    if (c.status === 'fulfilled') {
+    if (c.status === "fulfilled") {
       return c.value;
     } else {
       return null;
     }
-    
-  }
-  )
-  
+  });
+
   async function onSubmit(values: EvaluationType) {
     console.log(values);
   }

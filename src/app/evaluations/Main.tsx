@@ -11,9 +11,9 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import EditIcon from "@/components/icons/EditIcon";
+} from "@/core/components/ui/card";
+import { Button } from "@/core/components/ui/button";
+import EditIcon from "@/core/components/icons/EditIcon";
 import { useRouter } from "next/navigation";
 
 export default function Main() {

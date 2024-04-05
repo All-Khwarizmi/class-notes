@@ -1,12 +1,12 @@
 import { Inter } from "next/font/google";
 import { Providers } from "./providers";
 import "./globals.css";
-import { ThemeProvider } from "@/components/common/theme-provider";
+import { ThemeProvider } from "@/core/components/common/theme-provider";
 
 import { Metadata } from "next";
 const inter = Inter({ subsets: ["latin"] });
-import { Toaster } from "@/components/ui/sonner";
-import Footer from "@/components/layout/Footer";
+import { Toaster } from "@/core/components/ui/sonner";
+import Footer from "@/core/components/layout/Footer";
 
 export const metadata: Metadata = {
   title: "ClassAI - Votre nouveau carnet de notes.",
