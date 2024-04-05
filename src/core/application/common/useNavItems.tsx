@@ -1,11 +1,8 @@
 import { NavItem } from "@/lib/types";
-import useGetClassesInfra from "../../../features/classe/infra/services/useGetClassesInfra";
-
 import { NavItems } from "@/core/components/constants/side-nav";
 import { isRight } from "fp-ts/lib/Either";
 import ClassIcon from "@/core/components/icons/ClassIcon";
 import { useEffect, useState } from "react";
-import { useAuthStore } from "@/core/auth/auth-store";
 import { classeRepository } from "@/features/classe/application/repository/classe-repository";
 import { userRepositry } from "@/features/user/application/repository/user-repository";
 export default function useNavItems() {

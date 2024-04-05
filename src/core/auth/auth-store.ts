@@ -27,7 +27,7 @@ interface AuthState {
 export const useAuthStore = create<AuthState>()(
   persist(
     (set, get) => ({
-      onboarding: false,
+      onboarding: true,
       setOnboarding: (onboarding) => set({ onboarding }),
       setPreferences: (preferences) =>
         set(() => ({

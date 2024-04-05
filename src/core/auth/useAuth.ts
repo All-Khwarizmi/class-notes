@@ -7,10 +7,9 @@ import authRepositoy from "@/features/auth/application/repository/auth-repositor
 export default function useAuth() {
   const { authUserId } = authRepositoy.useGetUserId();
   const { user, error } = userRepositry.useGetUser();
-  const { setUser, logout, setOnboarding, onboarding } = useAuthStore(
+  const { setUser, setOnboarding, onboarding } = useAuthStore(
     (state) => ({
       setUser: state.setUser,
-      logout: state.logout,
       setOnboarding: state.setOnboarding,
       onboarding: state.onboarding,
     })
@@ -19,9 +18,7 @@ export default function useAuth() {
   useEffect(() => {
     if (authUserId) {
       setUser({ user: { id: authUserId } });
-    } else {
-      logout();
-    }
+    } 
   }, [authUserId]);
 
   useEffect(() => {
