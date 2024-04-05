@@ -8,20 +8,19 @@ export default function useGetClasseUsecase({
   useGetClasseInfra: UseGetClasseInfra;
   id: string;
 }) {
-  const { classe, error: errorInfra } = useGetClasseInfra({ id });
+  const { getClassePayloadInfra } = useGetClasseInfra({ id });
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   useEffect(() => {
-    if (classe) {
+    if (getClassePayloadInfra) {
       setLoading(false);
     }
-  }, [classe]);
+     if (getClassePayloadInfra?.error) {
+       setError("Une erreur est survenue lors de la récupération de la classe");
+       setLoading(false);
+     }
+  }, [getClassePayloadInfra]);
 
-  useEffect(() => {
-    if (error) {
-      setError("Une erreur est survenue lors de la récupération de la classe");
-      setLoading(false);
-    }
-  }, [errorInfra]);
-  return { loading, classe, error };
+ 
+  return { loading, classe: getClassePayloadInfra?.classe, error };
 }
