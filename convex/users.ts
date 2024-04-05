@@ -1,29 +1,46 @@
+import { Id } from "./_generated/dataModel";
 import { mutation } from "./_generated/server";
 import { v } from "convex/values";
 
-export const ensureUserExists = mutation({
+export const onboarding = mutation({
+  args: {
+    userId: v.string(),
+    schoolSubject: v.string(),
+    name: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const existingUser = await ctx.db
+      .query("Users")
+      .filter((q) => q.eq(q.field("userId"), args.userId))
+      .first();
+
+    let userId: Id<"Users"> | false | string = existingUser?.userId || false;
+    if (userId) {
+   
+      return { userId, error: false };
+    } else {
+     
+      userId = await ctx.db.insert("Users", {
+        userId: args.userId,
+        schoolSubject: args.schoolSubject,
+        name: args.name,
+        onboarding: true,
+      });
+      return { userId, error: false };
+    }
+  },
+});
+
+export const getUser = mutation({
   args: {
     userId: v.string(),
   },
   handler: async (ctx, args) => {
-    const isAuthenticated = await ctx.auth.getUserIdentity();
-    if (!isAuthenticated) {
-      throw new Error("Not authenticated");
-    }
-    const existingUser = await ctx.db
+    const user = await ctx.db
       .query("Users")
-      .filter((q) => q.eq(q.field("userId"), isAuthenticated.subject))
+      .filter((q) => q.eq(q.field("userId"), args.userId))
       .first();
 
-    // If the user doesn't exist, create a new entry
-    if (!existingUser) {
-      const userId = await ctx.db.insert("Users", {
-        userId: isAuthenticated.subject,
-        // Initialize any additional fields as necessary
-      });
-
-      // Return a confirmation or the user's details
-      return { userId, isNewUser: !existingUser };
-    }
+    return user;
   },
 });

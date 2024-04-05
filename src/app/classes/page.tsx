@@ -1,7 +1,5 @@
 "use client";
-import { useSession } from "@clerk/nextjs";
-import ClassesTable from "@/app/classes/ClassesTable";
-import MessageFullScreen from "@/components/MessageFullScreen";
+import ClassesTable from "@/features/classe/presentation/components/ClassesTable";
 
 export default function Home() {
   return <ClassesTable />;

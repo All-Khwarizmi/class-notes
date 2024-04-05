@@ -1,16 +1,19 @@
 "use client";
 
 import Link from "next/link";
-import Title from "./Title";
-import { SignInButton, useSession } from "@clerk/nextjs";
-import { Button } from "@/components/ui/button";
-import { useLandingRedirect } from "@/hooks/useLandingRedirect";
+import Title from "../core/components/common/Title";
+import { SignInButton } from "@clerk/nextjs";
+import { Button } from "@/core/components/ui/button";
+import { useLandingRedirect } from "@/core/application/common/useLandingRedirect";
+import useAuth from "@/core/auth/useAuth";
+import { useAuthStore } from "@/core/auth/auth-store";
 
 export default function Hero() {
   useLandingRedirect();
-
-  const { isSignedIn } = useSession();
-  console.log("isSignedIn", isSignedIn);
+  useAuth();
+  const { isLoggedIn } = useAuthStore((state) => ({
+    isLoggedIn: state.isLoggedIn,
+  }));
 
   return (
     <section className="w-full h-screen py-6 md:py-12 flex items-center">
@@ -25,8 +28,8 @@ export default function Hero() {
           </span>
           , le suivi de vos notes n&apos;a jamais été aussi simple.
         </p>
-        {isSignedIn ? (
-          <Link href="/classes">
+        {isLoggedIn() ? (
+          <Link href="/dashboard">
             <Button>Acceder</Button>
           </Link>
         ) : (
