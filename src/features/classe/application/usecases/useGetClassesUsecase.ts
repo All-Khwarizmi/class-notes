@@ -9,15 +9,15 @@ export default function useGetClassesUsecase({
   useGetClassesInfra: GetClassesInfra;
 }) {
   const [loading, setLoading] = useState<boolean>(true);
-  const { classes, error } = useGetClassesInfra({ id });
+  const { getGlassesPayloadInfra } = useGetClassesInfra({ id });
   useEffect(() => {
-    if (classes) {
+    if (getGlassesPayloadInfra) {
       setLoading(false);
     }
-  }, [classes]);
+  }, [getGlassesPayloadInfra]);
   return {
     loading,
-    classes,
-    error,
+    classes: getGlassesPayloadInfra?.classes,
+    error: getGlassesPayloadInfra?.error,
   };
 }

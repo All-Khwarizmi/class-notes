@@ -5,10 +5,14 @@ import { isRight } from "fp-ts/lib/Either";
 import ClassEntity from "@/features/classe/domain/class-entity";
 import { useEffect, useState } from "react";
 
-export default function useGetClassesInfra({ id }: { id: string }) {
-  const [error, setError] = useState<string>();
-  const [classes, setClasses] = useState<ClassEntity[] | null>(null);
+export type GetClassesPayload = {
+  classes: ClassEntity[] | null;
+  error: boolean;
+} | null;
 
+export default function useGetClassesInfra({ id }: { id: string }) {
+  const [getGlassesPayloadInfra, setGetClassesPayloadInfra] =
+    useState<GetClassesPayload>(null);
   const rawClasses = useQuery(api.classes.getClasses, {
     id,
   });
@@ -26,17 +30,14 @@ export default function useGetClassesInfra({ id }: { id: string }) {
           imageUrl: "Invalid",
         });
       });
-      setClasses(classeEntities);
-
-      setError(undefined);
+      setGetClassesPayloadInfra({ classes: classeEntities, error: false });
     } else {
-      setError("Error while fetching classes");
+      setGetClassesPayloadInfra({ classes: null, error: true });
     }
   }, [rawClasses]);
 
   return {
-    classes,
-    error,
+    getGlassesPayloadInfra,
   };
 }
 
