@@ -15,8 +15,10 @@ export default function useOnboardUserUsecase({
   const [onBoardingData, setOnBoardingData] =
     useState<OnboarUserDataType | null>();
   const { payload, setUserBoardingDataInfra } = useOnboardUserInfra();
-  const { setOnboardingAppState: setOnboarding } = useAuthStore((state) => ({
+  const { setOnboardingAppState: setOnboarding, setUser } = useAuthStore((state) => ({
     setOnboardingAppState: state.setOnboarding,
+    setUser: state.setUser,
+    user : state.user
   }));
 
   useEffect(() => {
@@ -28,6 +30,11 @@ export default function useOnboardUserUsecase({
   useEffect(() => {
     if (payload.userId) {
       setOnboarding(true);
+      const user = {
+        id: payload.userId,
+        onboarding: true,
+      };
+     setUser({user});
     }
     if (payload.error) {
       toast.error(
