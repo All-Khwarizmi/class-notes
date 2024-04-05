@@ -1,9 +1,7 @@
-import { useAuthStore } from "@/core/auth/auth-store";
 import { UserType } from "@/features/user/domain/entities/user-schema";
 import { UseGetUserInfra } from "@/features/user/infra/services/useGetUserInfra";
 import UserDto from "@/features/user/infra/dto/user-dto";
 import { useUser } from "@clerk/nextjs";
-import { use } from "chai";
 import { isLeft, isRight } from "fp-ts/lib/Either";
 import { useEffect, useState } from "react";
 
@@ -29,8 +27,7 @@ export default function useGetUserUsecase({
       const eitherUser = UserDto.fromInfra({ userInfra });
       if (isLeft(eitherUser)) {
         setIsLoading(false);
-      }
-      if (isRight(eitherUser)) {
+      } else if (isRight(eitherUser)) {
         setIsLoading(false);
         setError(null);
         setUser(eitherUser.right);

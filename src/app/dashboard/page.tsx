@@ -8,22 +8,22 @@ import { userRepositry } from "@/features/user/application/repository/user-repos
 
 export default function Page() {
   const [open, setOpen] = useState(false);
-  useAuth();
-  const { user, isLoading } = userRepositry.useGetUser();
-  const { onboarding } = useAuthStore((state) => ({
+ 
+  const { onboarding, user } = useAuthStore((state) => ({
     onboarding: state.onboarding,
+    user: state.user,
   }));
 
   useEffect(() => {
-    console.log({ user, isLoading, onboarding });
-    if (!isLoading && !user && !onboarding) {
+    console.log({ user, onboarding });
+    if (!user || !onboarding) {
       setOpen(true);
     } else {
       setOpen(false);
     }
-  }, [user, isLoading, onboarding]);
+  }, [user, onboarding]);
   return (
-    <div>
+    <section data-testid="dashboard">
       <h1>Dashboard</h1>
       <CustomDialog
         open={open}
@@ -33,6 +33,6 @@ export default function Page() {
       >
         <OnboardingForm />
       </CustomDialog>
-    </div>
+    </section>
   );
 }
