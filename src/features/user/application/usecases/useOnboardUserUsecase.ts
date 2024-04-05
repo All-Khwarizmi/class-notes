@@ -22,7 +22,6 @@ export default function useOnboardUserUsecase({
   }));
 
   useEffect(() => {
-    console.log({ payload });
     if (onBoardingData) {
       setUserBoardingDataInfra(onBoardingData);
     }

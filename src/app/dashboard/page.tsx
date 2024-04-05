@@ -1,10 +1,8 @@
 "use client";
 import CustomDialog from "@/core/components/common/CustomDialog";
-import useAuth from "@/core/auth/useAuth";
 import OnboardingForm from "./OboardingForm";
 import { useEffect, useState } from "react";
 import { useAuthStore } from "@/core/auth/auth-store";
-import { userRepositry } from "@/features/user/application/repository/user-repository";
 
 export default function Page() {
   const [open, setOpen] = useState(false);
@@ -15,7 +13,6 @@ export default function Page() {
   }));
 
   useEffect(() => {
-    console.log({ user, onboarding });
     if (!user || !onboarding) {
       setOpen(true);
     } else {

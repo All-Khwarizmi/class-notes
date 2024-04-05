@@ -1,4 +1,3 @@
-import { use } from "chai";
 import { Id } from "./_generated/dataModel";
 import { mutation } from "./_generated/server";
 import { v } from "convex/values";
@@ -17,14 +16,10 @@ export const onboarding = mutation({
 
     let userId: Id<"Users"> | false | string = existingUser?.userId || false;
     if (userId) {
-      console.log("User already exists", {
-        userId,
-      });
+   
       return { userId, error: false };
     } else {
-      console.log("Creating new user", {
-        userId,
-      });
+     
       userId = await ctx.db.insert("Users", {
         userId: args.userId,
         schoolSubject: args.schoolSubject,
