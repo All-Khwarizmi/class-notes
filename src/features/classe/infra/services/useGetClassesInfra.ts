@@ -31,9 +31,7 @@ export default function useGetClassesInfra({ id }: { id: string }) {
         });
       });
       setGetClassesPayloadInfra({ classes: classeEntities, error: false });
-    } else {
-      setGetClassesPayloadInfra({ classes: null, error: true });
-    }
+    } 
   }, [rawClasses]);
 
   return {
