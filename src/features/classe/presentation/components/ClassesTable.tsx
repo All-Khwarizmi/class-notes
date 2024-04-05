@@ -33,7 +33,11 @@ export default function ClassesTable() {
     return <MessageFullScreen message={"Chargement..."} />;
   }
   if (error) {
-    return <MessageFullScreen message={error} />;
+    return (
+      <MessageFullScreen
+        message={"Une erreur s'est produite lors du chargement des classes"}
+      />
+    );
   }
 
   return (

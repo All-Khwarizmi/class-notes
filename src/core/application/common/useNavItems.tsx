@@ -6,13 +6,13 @@ import { isRight } from "fp-ts/lib/Either";
 import ClassIcon from "@/core/components/icons/ClassIcon";
 import { useEffect, useState } from "react";
 import { useAuthStore } from "@/core/auth/auth-store";
+import { classeRepository } from "@/features/classe/application/repository/classe-repository";
+import { userRepositry } from "@/features/user/application/repository/user-repository";
 export default function useNavItems() {
-  const { user } = useAuthStore((state) => ({
-    user: state.user,
-  }));
-  const { classes: eitherClasses } = useGetClassesInfra({
-    id: user.user?.id || "",
-  });
+  const { user } = userRepositry.useGetUser();
+  const { classes: eitherClasses } = classeRepository.useGetClasses({
+    id: user?.id || "",
+  })();
   const [navItems, setNavItems] = useState<NavItem[] | null>(null);
   useEffect(() => {
     if (eitherClasses) {
