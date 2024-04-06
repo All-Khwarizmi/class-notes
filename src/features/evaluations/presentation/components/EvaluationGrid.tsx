@@ -10,15 +10,34 @@ import { twMerge } from "tailwind-merge";
 import EditIcon from "@/core/components/icons/EditIcon";
 import { Button } from "@/core/components/ui/button";
 import { useRouter } from "next/navigation";
-
+import { evaluationsRepository } from "../../application/repository/evaluations-repository";
+import { useEffect } from "react";
+import { is } from "immutable";
+import { isRight } from "fp-ts/lib/Either";
 
 //! Remove any type when refactoring
-export default function EvaluationGrid({ templates }: { templates: any }) {
+export default function EvaluationGrid({ userId }: { userId: string }) {
+  const { templates, loading } =
+    evaluationsRepository.useGetEvaluationTemplatesByCreator({
+      userId,
+    })();
   const router = useRouter();
+
+  if (loading) return <div>Loading...</div>;
+  if (templates === "NO DATA")
+    return (
+      <div>
+        <h1>Vous n'avez pas encore d&apos;évaluations</h1>
+      </div>
+    );
   return (
     <div className={twMerge(`flex md:flex-row flex-col p-4 gap-4 w-full`)}>
       {templates &&
-        templates.map((template: any) => {
+        templates.map((eitherTemplate) => {
+          const template = isRight(eitherTemplate.values)
+            ? eitherTemplate.values.right
+            : null;
+          if (!template) return null;
           return (
             <Card
               key={template._id}

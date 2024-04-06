@@ -1,20 +1,17 @@
 import { z } from "zod";
-import {
-  CriteriaSchema,
-} from "../../../../core/domain/criteria/criteria-schema";
+import { CriteriaSchema } from "../../../../core/domain/criteria/criteria-schema";
 import { GradeSchema } from "../../../../core/domain/grades/grade-schema";
 
 export const EvaluationSchema = z.object({
-  id: z.string(),
+  _id: z.string(),
   name: z.string().min(2, "Name cannot be empty"),
   description: z.string().min(5, "Description cannot be empty"),
-  classId: z.string(),
+
   gradeType: GradeSchema, // Defines how the evaluation is graded
-  overallGrade: z.union([z.string(), z.number(), z.null()]), // Grade could be a number, letter, or null if not graded yet
-  feedback: z.string().optional(),
+  // Grade could be a number, letter, or null if not graded yet
   criteriaIds: z.array(CriteriaSchema).optional(),
   createdBy: z.string(),
-  _createdAt: z.string(),
+  createdAt: z.number(),
 });
 
 export const EvaluationSchemaWithCriteria = EvaluationSchema.extend({

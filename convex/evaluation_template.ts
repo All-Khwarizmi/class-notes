@@ -6,6 +6,7 @@ export const createEvaluationTemplate = mutation({
     name: v.string(),
     description: v.string(),
     createdBy: v.id("Users"),
+    overallGrade: v.optional(v.string()),
     gradeType: v.string(),
     criteriaIds: v.array(v.id("Criteria")),
   },
@@ -53,16 +54,18 @@ export const listEvaluationTemplatesByCreator = query({
       .query("Users")
       .filter((q) => q.eq(q.field("userId"), args.userId))
       .first();
-
     if (!user) {
-      throw new Error("User not found");
+      return {
+        error: true,
+        templates: null,
+      };
     }
 
     const templates = await ctx.db
       .query("EvaluationTemplates")
       .filter((q) => q.eq(q.field("createdBy"), user._id))
       .collect();
-    return templates;
+    return { templates, error: false };
   },
 });
 
