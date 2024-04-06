@@ -3,7 +3,7 @@ import { persist } from "zustand/middleware";
 
 type EvaluationCreationState = {
   isCreating: boolean;
-  setIsCreating: (isCreating: boolean) => void;
+  setIsCreating: () => void;
 };
 
 export const useEvaluationCreationStore = create<EvaluationCreationState>()(
