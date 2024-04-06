@@ -1,7 +1,7 @@
-import { Entity } from "../entity/entity-generic-class";
+import { Entity } from "../../../../core/domain/entity/entity-generic-class";
 import { EvaluationSchema, EvaluationType } from "./evaluation-schema";
 import { Either, left, right } from "fp-ts/lib/Either";
-import Failure from "../../failures/failures";
+import Failure from "../../../../core/failures/failures";
 
 /**
  * Represents an EvaluationEntity, which is a subclass of the Entity class.

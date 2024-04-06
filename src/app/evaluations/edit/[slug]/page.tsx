@@ -12,7 +12,7 @@ import { useForm } from "react-hook-form";
 import {
   EvaluationSchema,
   EvaluationType,
-} from "@/core/domain/evaluation/evaluation-schema";
+} from "@/features/evaluations/domain/entities/evaluation-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/core/components/ui/button";
 import { Input } from "@/core/components/ui/input";

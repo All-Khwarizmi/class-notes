@@ -2,7 +2,7 @@
 import { twMerge } from "tailwind-merge";
 
 import { useQuery } from "convex/react";
-import { api } from "../../../convex/_generated/api";
+import { api } from "../../../../../convex/_generated/api";
 import { useSession } from "@clerk/nextjs";
 import {
   Card,

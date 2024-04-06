@@ -1,7 +1,7 @@
 import {
   EvaluationType,
   EvaluationSchema,
-} from "@/core/domain/evaluation/evaluation-schema";
+} from "@/features/evaluations/domain/entities/evaluation-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, useForm } from "react-hook-form";
 import { api } from "../../../../../convex/_generated/api";

@@ -1,8 +1,9 @@
 import { z } from "zod";
-import { CriteriaSchema, CriteriaType } from "../criteria/criteria-schema";
-import { GradeSchema } from "../grades/grade-schema";
+import {
+  CriteriaSchema,
+} from "../../../../core/domain/criteria/criteria-schema";
+import { GradeSchema } from "../../../../core/domain/grades/grade-schema";
 
-// Define the EvaluationType schema
 export const EvaluationSchema = z.object({
   id: z.string(),
   name: z.string().min(2, "Name cannot be empty"),
