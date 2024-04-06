@@ -12,7 +12,9 @@ export const EvaluationSchema = z.object({
   gradeType: GradeSchema, // Defines how the evaluation is graded
   overallGrade: z.union([z.string(), z.number(), z.null()]), // Grade could be a number, letter, or null if not graded yet
   feedback: z.string().optional(),
-  criteria: z.array(CriteriaSchema).optional(),
+  criteriaIds: z.array(CriteriaSchema).optional(),
+  createdBy: z.string(),
+  _createdAt: z.string(),
 });
 
 export const EvaluationSchemaWithCriteria = EvaluationSchema.extend({
