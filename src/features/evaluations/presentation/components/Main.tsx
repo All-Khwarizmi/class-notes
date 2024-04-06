@@ -6,16 +6,16 @@ import { useSession } from "@clerk/nextjs";
 import { Button } from "@/core/components/ui/button";
 import EvaluationGrid from "./EvaluationGrid";
 import { evaluationsRepository } from "../../application/repository/evaluations-repository";
+import authRepositoy from "@/features/auth/application/repository/auth-repository";
 
 export default function Main() {
-  //! Remove useSession call and replace it with new authStore or userRepository method when refactoring
-  const { isSignedIn, session } = useSession();
+  const { authUserId } = authRepositoy.useGetUserId();
   const { setIsCreating } = evaluationsRepository.useStartEvaluationCreation();
-
+  //!Refactor to use useEvaluationTemplatesByCreator
   const templates = useQuery(
     api.evaluation_template.listEvaluationTemplatesByCreator,
     {
-      userId: session?.user.id || "",
+      userId: authUserId || "",
     }
   );
   //! Add loading skeleton
