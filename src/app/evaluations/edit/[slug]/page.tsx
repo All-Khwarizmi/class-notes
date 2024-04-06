@@ -29,7 +29,6 @@ export default function EditEvaluation({
       templateId: params.slug,
     }
   );
-  console.log(evaluationTemplate);
   const templateForm = useForm<EvaluationType>({
     resolver: zodResolver(EvaluationSchema),
     defaultValues: {

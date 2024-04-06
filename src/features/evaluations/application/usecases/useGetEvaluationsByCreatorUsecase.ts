@@ -20,7 +20,6 @@ export default function useGetEvaluationsByCreatorUsecase({
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    console.log(getEvaluationsByCratorPayload);
     if (getEvaluationsByCratorPayload?.error) {
       setLoading(false);
       toast.error(
@@ -41,5 +40,3 @@ export default function useGetEvaluationsByCreatorUsecase({
   return { templates, loading };
 }
 
-//"jd76wvdtq5ryt4zs0nrynv6nb96p9h89"
-// jd77rtjw8e4nvybmwbj9aydb396pm2a7
