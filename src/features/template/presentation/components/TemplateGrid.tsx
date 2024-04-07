@@ -10,17 +10,16 @@ import { twMerge } from "tailwind-merge";
 import EditIcon from "@/core/components/icons/EditIcon";
 import { Button } from "@/core/components/ui/button";
 import { useRouter } from "next/navigation";
-import { evaluationsRepository } from "../../application/repository/evaluations-repository";
+import { templatesRepository } from "../../application/repository/templates-repository";
 import { useEffect } from "react";
 import { is } from "immutable";
 import { isRight } from "fp-ts/lib/Either";
 
 //! Remove any type when refactoring
 export default function EvaluationGrid({ userId }: { userId: string }) {
-  const { templates, loading } =
-    evaluationsRepository.useGetEvaluationTemplatesByCreator({
-      userId,
-    })();
+  const { templates, loading } = templatesRepository.useGetTemplatesByCreator({
+    userId,
+  })();
   const router = useRouter();
 
   if (loading) return <div>Loading...</div>;

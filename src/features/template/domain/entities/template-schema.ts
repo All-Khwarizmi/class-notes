@@ -2,7 +2,7 @@ import { z } from "zod";
 import { CriteriaSchema } from "../../../../core/domain/criteria/criteria-schema";
 import { GradeSchema } from "../../../../core/domain/grades/grade-schema";
 
-export const EvaluationSchema = z.object({
+export const TemplateSchema = z.object({
   _id: z.string(),
   name: z.string().min(2, "Name cannot be empty"),
   description: z.string().min(5, "Description cannot be empty"),
@@ -14,11 +14,11 @@ export const EvaluationSchema = z.object({
   createdAt: z.number(),
 });
 
-export const EvaluationSchemaWithCriteria = EvaluationSchema.extend({
+export const EvaluationSchemaWithCriteria = TemplateSchema.extend({
   criteria: z.array(CriteriaSchema).optional(),
 });
 // Export the TypeScript type derived from the Zod schema
-export type EvaluationType = z.infer<typeof EvaluationSchema>;
+export type TemplateType = z.infer<typeof TemplateSchema>;
 
 export type EvaluationTypeWithCriteria = z.infer<
   typeof EvaluationSchemaWithCriteria

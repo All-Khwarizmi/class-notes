@@ -1,7 +1,7 @@
 import { query, mutation } from "./_generated/server";
 import { v } from "convex/values";
 
-export const createEvaluationTemplate = mutation({
+export const createTemplate = mutation({
   args: {
     name: v.string(),
     description: v.string(),
@@ -23,7 +23,7 @@ export const createEvaluationTemplate = mutation({
   },
 });
 
-export const updateEvaluationTemplate = mutation({
+export const updateTemplate = mutation({
   args: {
     templateId: v.id("EvaluationTemplates"),
     updates: v.object({
@@ -47,7 +47,7 @@ export const updateEvaluationTemplate = mutation({
   },
 });
 
-export const listEvaluationTemplatesByCreator = query({
+export const listTemplatesByCreator = query({
   args: { userId: v.string() },
   handler: async (ctx, args) => {
     const user = await ctx.db
@@ -69,14 +69,14 @@ export const listEvaluationTemplatesByCreator = query({
   },
 });
 
-export const deleteEvaluationTemplate = mutation({
+export const deleteTemplate = mutation({
   args: { templateId: v.id("EvaluationTemplates") },
   handler: async (ctx, args) => {
     await ctx.db.delete(args.templateId);
   },
 });
 
-export const getEvaluationTemplateWithCriteria = query({
+export const getTemplateWithCriteria = query({
   args: { templateId: v.string() },
   handler: async (ctx, args) => {
     const template = await ctx.db

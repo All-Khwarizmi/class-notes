@@ -10,9 +10,9 @@ import { api } from "../../../../../convex/_generated/api";
 import { useQuery } from "convex/react";
 import { useForm } from "react-hook-form";
 import {
-  EvaluationSchema,
-  EvaluationType,
-} from "@/features/evaluations/domain/entities/evaluation-schema";
+  TemplateSchema,
+  TemplateType,
+} from "@/features/template/domain/entities/template-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/core/components/ui/button";
 import { Input } from "@/core/components/ui/input";
@@ -29,8 +29,8 @@ export default function EditEvaluation({
       templateId: params.slug,
     }
   );
-  const templateForm = useForm<EvaluationType>({
-    resolver: zodResolver(EvaluationSchema),
+  const templateForm = useForm<TemplateType>({
+    resolver: zodResolver(TemplateSchema),
     defaultValues: {
       name: evaluationTemplate?.name,
       description: evaluationTemplate?.description,
@@ -44,7 +44,7 @@ export default function EditEvaluation({
     }
   });
 
-  async function onSubmit(values: EvaluationType) {
+  async function onSubmit(values: TemplateType) {
     console.log(values);
   }
   return (

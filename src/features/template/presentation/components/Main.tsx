@@ -1,12 +1,12 @@
 "use client";
 import { Button } from "@/core/components/ui/button";
-import EvaluationGrid from "./EvaluationGrid";
-import { evaluationsRepository } from "../../application/repository/evaluations-repository";
+import EvaluationGrid from "./TemplateGrid";
+import { templatesRepository } from "../../application/repository/templates-repository";
 import authRepositoy from "@/features/auth/application/repository/auth-repository";
 
 export default function Main() {
   const { authUserId } = authRepositoy.useGetUserId();
-  const { setIsCreating } = evaluationsRepository.useStartEvaluationCreation();
+  const { setIsCreating } = templatesRepository.useStartTemplateCreation();
 
   //! Add loading skeleton
   return (

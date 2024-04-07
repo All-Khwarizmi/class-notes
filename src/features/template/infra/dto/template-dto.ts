@@ -1,14 +1,10 @@
 import { Either, left, right } from "fp-ts/lib/Either";
-import EvaluationEntity from "../../domain/entities/evaluation-entity";
+import TemplateEntity from "../../domain/entities/template-entity";
 import Failure from "@/core/failures/failures";
-import { EvaluationSchema } from "../../domain/entities/evaluation-schema";
+import { TemplateSchema } from "../../domain/entities/template-schema";
 
-export default class EvaluationDto {
-  static toDomain({
-    props,
-  }: {
-    props: any;
-  }): Either<Failure, EvaluationEntity> {
+export default class TemplateDto {
+  static toDomain({ props }: { props: any }): Either<Failure, TemplateEntity> {
     if (!props) {
       return left(
         Failure.invalidValue({
@@ -17,9 +13,9 @@ export default class EvaluationDto {
         })
       );
     } else {
-      const evaluationParsed = EvaluationSchema.safeParse(props);
+      const evaluationParsed = TemplateSchema.safeParse(props);
       if (evaluationParsed.success) {
-        return right(EvaluationEntity.create(evaluationParsed.data));
+        return right(TemplateEntity.create(evaluationParsed.data));
       } else {
         return left(
           Failure.invalidValue({
@@ -28,6 +24,6 @@ export default class EvaluationDto {
           })
         );
       }
-    } // Implementation here
+    }
   }
 }

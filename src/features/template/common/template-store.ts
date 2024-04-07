@@ -1,19 +1,19 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
-type EvaluationCreationState = {
+type TemplateCreationState = {
   isCreating: boolean;
   setIsCreating: () => void;
 };
 
-export const useEvaluationCreationStore = create<EvaluationCreationState>()(
+export const useTemplateCreationStore = create<TemplateCreationState>()(
   persist(
     (set, get) => ({
       isCreating: false,
       setIsCreating: () => set((state) => ({ isCreating: !state.isCreating })),
     }),
     {
-      name: "evaluation-creation",
+      name: "template-creation",
       skipHydration: true,
     }
   )
