@@ -26,7 +26,7 @@ export default function EvaluationGrid({ userId }: { userId: string }) {
   if (templates === "NO DATA")
     return (
       <div>
-        <h1>Vous n'avez pas encore d&apos;évaluations</h1>
+        <h1>Vous n&apos;avez pas encore d&apos;évaluations</h1>
       </div>
     );
   return (
