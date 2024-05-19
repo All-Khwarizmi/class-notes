@@ -4,7 +4,11 @@ import Failure from "@/core/failures/failures";
 import { TemplateSchema } from "../../domain/entities/template-schema";
 
 export default class TemplateDto {
-  static toDomain({ props }: { props: any }): Either<Failure, TemplateEntity> {
+  static toDomain({
+    props,
+  }: {
+    props: any;
+  }): Either<Failure<string>, TemplateEntity> {
     if (!props) {
       return left(
         Failure.invalidValue({

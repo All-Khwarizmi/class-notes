@@ -8,9 +8,9 @@ import Failure from "../../../../core/failures/failures";
  * The EvaluationEntity is used to encapsulate and validate the properties of an evaluation.
  */
 export default class TemplateEntity extends Entity<TemplateType> {
-  readonly values: Either<Failure, TemplateType>;
+  readonly values: Either<Failure<string>, TemplateType>;
 
-  private constructor(props: Either<Failure, TemplateType>) {
+  private constructor(props: Either<Failure<string>, TemplateType>) {
     super();
     this.values = props;
   }
