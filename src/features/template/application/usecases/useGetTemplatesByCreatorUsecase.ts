@@ -28,7 +28,7 @@ export default function useGetEvaluationsByCreatorUsecase({
       getTemplatesByCratorPayload?.templates !== "NO DATA" &&
       getTemplatesByCratorPayload?.templates !== false
     ) {
-      setTemplates(getTemplatesByCratorPayload.templates);
+      setTemplates(getTemplatesByCratorPayload?.templates ?? "NO DATA");
       setLoading(false);
     } else if (getTemplatesByCratorPayload?.templates === "NO DATA") {
       setTemplates("NO DATA");
