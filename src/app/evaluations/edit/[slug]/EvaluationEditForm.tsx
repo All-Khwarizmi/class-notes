@@ -16,7 +16,7 @@ import { Input } from "@/core/components/ui/input";
 import { Textarea } from "@/core/components/ui/textarea";
 
 export default function EvaluationEditForm(
-  template: typeof api.evaluation_template.getEvaluationTemplateWithCriteria._returnType
+  template: typeof api.template.getTemplateWithCriteria._returnType
 ) {
   const form = useForm<TemplateType>({
     resolver: zodResolver(TemplateSchema),
