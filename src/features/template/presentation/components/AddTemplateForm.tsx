@@ -24,8 +24,6 @@ import { GradeType } from "@/core/domain/grades/grade-schema";
 import { useEffect } from "react";
 import { useTemplateCreationStore } from "../../common/template-store";
 import { Button } from "@/core/components/ui/button";
-import { on } from "events";
-let renderCount = 0;
 export default function AddTemplateForm() {
   const { setTemplateCreation, templateCreation, setIsCreating } =
     useTemplateCreationStore((state) => {
