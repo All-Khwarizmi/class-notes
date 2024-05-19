@@ -24,7 +24,7 @@ export default function EditEvaluation({
   params: { slug: string };
 }) {
   const evaluationTemplate = useQuery(
-    api.evaluation_template.getEvaluationTemplateWithCriteria,
+    api.template.getTemplateWithCriteria,
     {
       templateId: params.slug,
     }
