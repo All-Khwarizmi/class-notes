@@ -21,7 +21,7 @@ export abstract class ValueObject<T> implements immutableVO {
    * @returns Either `T` or a `Failure`
    * @advise You should not access the value, nor try to modify it. Create an other object value instead. To check for validity, use the {@link isValid} method.
    */
-  abstract readonly value: Either<Failure, T>;
+  abstract readonly value: Either<Failure<T>, T>;
 
   /**
    *
@@ -63,7 +63,7 @@ export abstract class ValueObject<T> implements immutableVO {
 
   /* =================== VALIDATORS =================== */
 
-  public static shortString(value: string): Either<Failure, string> {
+  public static shortString(value: string): Either<Failure<string>, string> {
     return isEmpty(value)
       ? left(
           Failure.invalidValue({
@@ -73,7 +73,7 @@ export abstract class ValueObject<T> implements immutableVO {
         )
       : right(value);
   }
-  public static longString(value: string): Either<Failure, string> {
+  public static longString(value: string): Either<Failure<string>, string> {
     return value.length < 10
       ? left(
           Failure.invalidValue({
@@ -83,7 +83,7 @@ export abstract class ValueObject<T> implements immutableVO {
         )
       : right(value);
   }
-  public static idFromString(value: string): Either<Failure, string> {
+  public static idFromString(value: string): Either<Failure<string>, string> {
     return value.length < 5
       ? left(
           Failure.invalidValue({
@@ -93,7 +93,7 @@ export abstract class ValueObject<T> implements immutableVO {
         )
       : right(value);
   }
-  public static number(value: number): Either<Failure, number> {
+  public static number(value: number): Either<Failure<string>, number> {
     return value < 0
       ? left(
           Failure.invalidValue({
@@ -105,7 +105,7 @@ export abstract class ValueObject<T> implements immutableVO {
   }
   public static stringList(
     value: Array<string>
-  ): Either<Failure, Array<string>> {
+  ): Either<Failure<string>, Array<string>> {
     const isArr = isArray(value);
     const isAllStr = value.every((e) => isString(e) && !isEmpty(e));
     return !isArr || !isAllStr

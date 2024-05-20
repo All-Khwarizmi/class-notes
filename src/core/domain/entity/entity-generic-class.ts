@@ -14,7 +14,7 @@ export abstract class Entity<T> {
    * @returns Either `T` or a `Failure`
    * @advise You should not access the value, nor try to modify it. Create an other object value instead. To check for validity, use the {@link isValid} method.
    */
-  abstract values: Either<Failure, T>;
+  abstract values: Either<Failure<string>, T>;
 
   /**
    *

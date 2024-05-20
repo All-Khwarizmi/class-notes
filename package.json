@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "cvx": "npx convex dashboard & npx convex dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",

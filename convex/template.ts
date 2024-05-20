@@ -1,11 +1,12 @@
 import { query, mutation } from "./_generated/server";
 import { v } from "convex/values";
 
-export const createEvaluationTemplate = mutation({
+export const createTemplate = mutation({
   args: {
     name: v.string(),
     description: v.string(),
     createdBy: v.id("Users"),
+    overallGrade: v.optional(v.string()),
     gradeType: v.string(),
     criteriaIds: v.array(v.id("Criteria")),
   },
@@ -22,7 +23,7 @@ export const createEvaluationTemplate = mutation({
   },
 });
 
-export const updateEvaluationTemplate = mutation({
+export const updateTemplate = mutation({
   args: {
     templateId: v.id("EvaluationTemplates"),
     updates: v.object({
@@ -46,34 +47,36 @@ export const updateEvaluationTemplate = mutation({
   },
 });
 
-export const listEvaluationTemplatesByCreator = query({
+export const listTemplatesByCreator = query({
   args: { userId: v.string() },
   handler: async (ctx, args) => {
     const user = await ctx.db
       .query("Users")
       .filter((q) => q.eq(q.field("userId"), args.userId))
       .first();
-
     if (!user) {
-      throw new Error("User not found");
+      return {
+        error: true,
+        templates: null,
+      };
     }
 
     const templates = await ctx.db
       .query("EvaluationTemplates")
       .filter((q) => q.eq(q.field("createdBy"), user._id))
       .collect();
-    return templates;
+    return { templates, error: false };
   },
 });
 
-export const deleteEvaluationTemplate = mutation({
+export const deleteTemplate = mutation({
   args: { templateId: v.id("EvaluationTemplates") },
   handler: async (ctx, args) => {
     await ctx.db.delete(args.templateId);
   },
 });
 
-export const getEvaluationTemplateWithCriteria = query({
+export const getTemplateWithCriteria = query({
   args: { templateId: v.string() },
   handler: async (ctx, args) => {
     const template = await ctx.db

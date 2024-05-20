@@ -5,7 +5,7 @@ import { Id } from "../../../../../convex/_generated/dataModel";
 import { left } from "fp-ts/lib/Either";
 
 export class ClasseEntityDto {
-  static toDomain(props: ClasseInfra): Either<Failure, ClasseEntity> {
+  static toDomain(props: ClasseInfra): Either<Failure<string>, ClasseEntity> {
     if (!props) {
       return left(
         Failure.invalidValue({

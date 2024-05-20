@@ -1,7 +1,7 @@
 import {
-  EvaluationType,
-  EvaluationSchema,
-} from "@/core/domain/evaluation/evaluation-schema";
+  TemplateType,
+  TemplateSchema,
+} from "@/features/template/domain/entities/template-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, useForm } from "react-hook-form";
 import { api } from "../../../../../convex/_generated/api";
@@ -16,16 +16,16 @@ import { Input } from "@/core/components/ui/input";
 import { Textarea } from "@/core/components/ui/textarea";
 
 export default function EvaluationEditForm(
-  template: typeof api.evaluation_template.getEvaluationTemplateWithCriteria._returnType
+  template: typeof api.template.getTemplateWithCriteria._returnType
 ) {
-  const form = useForm<EvaluationType>({
-    resolver: zodResolver(EvaluationSchema),
+  const form = useForm<TemplateType>({
+    resolver: zodResolver(TemplateSchema),
     defaultValues: {
       name: template?.name,
       description: template?.description,
     },
   });
-  function onSubmit(values: EvaluationType) {
+  function onSubmit(values: TemplateType) {
     console.log(values);
   }
   return (

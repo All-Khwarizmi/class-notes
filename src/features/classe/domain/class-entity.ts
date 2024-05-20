@@ -15,13 +15,13 @@ export default class ClassEntity extends Entity<ClassType> {
   /**
    * The values of the ClassEntity, which can be either a success or a failure.
    */
-  readonly values: Either<Failure, ClassType>;
+  readonly values: Either<Failure<string>, ClassType>;
 
   /**
    * Private constructor for creating a new ClassEntity instance.
    * @param props - The values of the ClassEntity.
    */
-  private constructor(props: Either<Failure, ClassType>) {
+  private constructor(props: Either<Failure<string>, ClassType>) {
     super();
     this.values = props;
   }
