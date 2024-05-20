@@ -25,6 +25,7 @@ export default function CustomDialog({
   icon: React.ReactNode;
   children?: React.ReactNode;
   testId?: string;
+  badge?: string;
 }) {
   return (
     <>
@@ -37,7 +38,7 @@ export default function CustomDialog({
               data-testid={testId}
               className="p-0 "
             >
-              {icon}
+              {icon} 
             </Button>
           )}
         </DialogTrigger>

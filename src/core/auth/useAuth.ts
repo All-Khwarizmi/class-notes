@@ -29,7 +29,6 @@ export default function useAuth() {
     }
 
     if (error) {
-      console.log({ error });
       toast.error(
         "Une erreur est survenue lors de la récupération de vos informations"
       );

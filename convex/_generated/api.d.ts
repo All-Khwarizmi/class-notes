@@ -16,9 +16,9 @@ import type {
 } from "convex/server";
 import type * as classes from "../classes.js";
 import type * as criteria from "../criteria.js";
-import type * as evaluation_template from "../evaluation_template.js";
 import type * as evaluation_with_grades from "../evaluation_with_grades.js";
 import type * as students from "../students.js";
+import type * as template from "../template.js";
 import type * as users from "../users.js";
 
 /**
@@ -32,9 +32,9 @@ import type * as users from "../users.js";
 declare const fullApi: ApiFromModules<{
   classes: typeof classes;
   criteria: typeof criteria;
-  evaluation_template: typeof evaluation_template;
   evaluation_with_grades: typeof evaluation_with_grades;
   students: typeof students;
+  template: typeof template;
   users: typeof users;
 }>;
 export declare const api: FilterApi<

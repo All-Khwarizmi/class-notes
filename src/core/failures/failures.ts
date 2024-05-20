@@ -1,5 +1,5 @@
-export interface FailureProps {
-  invalidValue: any;
+export interface FailureProps<T> {
+  invalidValue: T;
   code?: string;
   message: string;
 }
@@ -13,11 +13,11 @@ export interface FailureProps {
  * @method parseFailure
  * @method databaseFailure
  */
-export class Failure {
-  readonly invalidValue: any;
+export class Failure<T> {
+  readonly invalidValue: T;
   readonly message: string;
   readonly code?: string;
-  private constructor(props: FailureProps) {
+  private constructor(props: FailureProps<T>) {
     this.invalidValue = props.invalidValue;
     this.message = props.message;
     this.code = props.code;
@@ -26,7 +26,7 @@ export class Failure {
     invalidValue,
     message,
     code,
-  }: FailureProps): Failure {
+  }: FailureProps<T>): Failure<string> {
     const str = JSON.stringify(invalidValue);
     return new Failure({
       invalidValue: str,

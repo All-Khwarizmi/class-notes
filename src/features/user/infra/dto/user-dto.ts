@@ -10,7 +10,7 @@ export default class UserDto {
     userInfra,
   }: {
     userInfra: UserInfra;
-  }): Either<Failure, UserType> {
+  }): Either<Failure<string>, UserType> {
     if (userInfra === "NO USER") {
       return left(
         Failure.invalidValue({

@@ -11,7 +11,7 @@ export function optionPiper<T>(x: Option<T>) {
     })
   );
 }
-export function eitherPiper<T>(x: Either<Failure, T>) {
+export function eitherPiper<T>(x: Either<Failure<string>, T>) {
   return pipe(
     x,
     gOEW(() => {
