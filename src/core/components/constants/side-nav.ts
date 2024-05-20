@@ -10,6 +10,12 @@ export const NavItems: NavItem[] = [
     color: "text-sky-500",
   },
   {
+    title: "Competences",
+    icon: Dashboard(),
+    href: "/competences",
+    color: "text-sky-500",
+  },
+  {
     title: "Classes",
     icon: CopyClipboard(),
     href: "/classes",
