@@ -1,3 +1,4 @@
+import { clerkAuth } from "@/core/auth/clerk/auth-impl";
 import IAuth from "@/core/auth/i-auth";
 
 export interface AuthRepositoryOptons {
@@ -14,3 +15,5 @@ export default class AuthRepository {
     return this._auth.getUserAuthInfra();
   }
 }
+
+export const authRepository = new AuthRepository({ auth: clerkAuth });

@@ -1,10 +1,11 @@
+import { authUseCases } from "@/features/auth/application/usecases/auth-usecases";
 import { profileUseCases } from "@/features/profile/application/usecases/profile-usecases";
 import { currentUser } from "@clerk/nextjs";
 import { isLeft } from "fp-ts/lib/Either";
 export default async function Page() {
-  const authUser = await currentUser();
+  const authUser = await authUseCases.getUserAuth();
   const user = await profileUseCases.getUser({
-    userId: authUser?.id || "",
+    userId: isLeft(authUser) ? "" : authUser.right.userId,
   });
 
   if (isLeft(user)) {

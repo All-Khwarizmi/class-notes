@@ -1,11 +1,11 @@
 import useGetUserAuthInfra from "../../infra/useGetUserAuthInfra";
 import useGetUserAuthUsecase from "../usecases/useGetUserAuthUsecase";
 
-const authRepositoy = {
+const oldAuthRepositoy = {
   useGetUserId: useGetUserAuthUsecase.bind(null, {
     useGetUserAuthInfra,
   }),
 };
 
-export type AuthRepository = typeof authRepositoy;
-export default authRepositoy;
+export type AuthRepository = typeof oldAuthRepositoy;
+export default oldAuthRepositoy;
