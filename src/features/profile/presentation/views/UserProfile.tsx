@@ -15,7 +15,13 @@ import {
   FormLabel,
 } from "@/core/components/ui/form";
 import { Input } from "@/core/components/ui/input";
+import useSaveUser from "../../application/adapters/services/useSaveUser";
 export default function UserProfile({ user }: { user: UserType }) {
+  const {
+    setSaveUserOptions,
+    loading,
+    error,
+  } = useSaveUser()
   const form = useForm<UserType>({
     resolver: zodResolver(
       userSchema.omit({
@@ -26,7 +32,12 @@ export default function UserProfile({ user }: { user: UserType }) {
   });
 
   function onSubmit(data: UserType) {
-    console.log(data);
+    console.log({ data })
+    setSaveUserOptions({
+      userId: user._id,
+      ...data,
+    
+    });
   }
 
   return (
