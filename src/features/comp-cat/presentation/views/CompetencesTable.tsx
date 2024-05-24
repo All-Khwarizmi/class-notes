@@ -1,4 +1,3 @@
-"use client";
 import {
   Table,
   TableBody,
@@ -11,6 +10,8 @@ import {
 } from "@/core/components/ui/table";
 
 import { Category, Competence } from "../../domain/entities/schemas";
+import { Button } from "@/core/components/ui/button";
+import Link from "next/link";
 
 export default function CompetencesTable({
   competences,
@@ -47,8 +48,13 @@ export default function CompetencesTable({
             );
           })}
         </TableBody>
-       
       </Table>
+      {/* Add Competence button */}
+      <div className="flex justify-center py-4">
+        <Button>
+          <Link href={"/competences/add"}>Add Competence</Link>
+        </Button>
+      </div>
     </>
   );
 }
