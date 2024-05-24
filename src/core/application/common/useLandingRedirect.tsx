@@ -1,10 +1,10 @@
-import authRepositoy from "@/features/auth/application/repository/auth-repository";
+import oldAuthRepositoy from "@/features/auth/application/repository/old-auth-repository";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 export function useLandingRedirect() {
   const router = useRouter();
-  const { authUserId } = authRepositoy.useGetUserId();
+  const { authUserId } = oldAuthRepositoy.useGetUserId();
 
   useEffect(() => {
     if (authUserId) {
