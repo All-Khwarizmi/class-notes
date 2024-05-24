@@ -2,10 +2,10 @@ import { useAuthStore } from "./auth-store";
 import { useEffect } from "react";
 import { userRepositry } from "@/features/user/application/repository/user-repository";
 import { toast } from "sonner";
-import authRepositoy from "@/features/auth/application/repository/auth-repository";
+import oldAuthRepositoy from "@/features/auth/application/repository/old-auth-repository";
 
 export default function useAuth() {
-  const { authUserId } = authRepositoy.useGetUserId();
+  const { authUserId } = oldAuthRepositoy.useGetUserId();
   const { user, error } = userRepositry.useGetUser();
   const { setUser, setOnboarding, onboarding } = useAuthStore(
     (state) => ({

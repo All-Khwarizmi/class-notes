@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 export const userSchema = z.object({
-  id: z.string(),
+  _id: z.string(),
   schoolSubject: z.string(),
   name: z.string(),
   onboarding: z.boolean(),

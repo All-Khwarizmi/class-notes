@@ -1,5 +1,5 @@
 import { Id } from "./_generated/dataModel";
-import { mutation } from "./_generated/server";
+import { mutation, query } from "./_generated/server";
 import { v } from "convex/values";
 
 export const onboarding = mutation({
@@ -16,10 +16,8 @@ export const onboarding = mutation({
 
     let userId: Id<"Users"> | false | string = existingUser?.userId || false;
     if (userId) {
-   
       return { userId, error: false };
     } else {
-     
       userId = await ctx.db.insert("Users", {
         userId: args.userId,
         schoolSubject: args.schoolSubject,
@@ -31,7 +29,7 @@ export const onboarding = mutation({
   },
 });
 
-export const getUser = mutation({
+export const getUserMutation = mutation({
   args: {
     userId: v.string(),
   },
@@ -42,5 +40,44 @@ export const getUser = mutation({
       .first();
 
     return user;
+  },
+});
+
+export const getUserQuery = query({
+  args: {
+    userId: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const user = await ctx.db
+      .query("Users")
+      .filter((q) => q.eq(q.field("userId"), args.userId))
+      .first();
+
+    return user;
+  },
+});
+
+export const saveUserMutation = mutation({
+  args: {
+    userId: v.string(),
+    schoolSubject: v.string(),
+    name: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const user = await ctx.db
+      .query("Users")
+      .filter((q) => q.eq(q.field("_id"), args.userId))
+      .first();
+
+    if (user) {
+      await ctx.db.patch(user._id, {
+        schoolSubject: args.schoolSubject,
+        name: args.name,
+        onboarding: true,
+      });
+      return user;
+    } else {
+      return false;
+    }
   },
 });
