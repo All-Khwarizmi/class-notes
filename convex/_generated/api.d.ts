@@ -16,6 +16,7 @@ import type {
 } from "convex/server";
 import type * as category from "../category.js";
 import type * as classes from "../classes.js";
+import type * as competences from "../competences.js";
 import type * as criteria from "../criteria.js";
 import type * as evaluation_with_grades from "../evaluation_with_grades.js";
 import type * as students from "../students.js";
@@ -33,6 +34,7 @@ import type * as users from "../users.js";
 declare const fullApi: ApiFromModules<{
   category: typeof category;
   classes: typeof classes;
+  competences: typeof competences;
   criteria: typeof criteria;
   evaluation_with_grades: typeof evaluation_with_grades;
   students: typeof students;
