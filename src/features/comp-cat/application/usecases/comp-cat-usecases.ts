@@ -30,9 +30,7 @@ export default class CompCatUsecases {
     const categories: Category[] = [];
     const errorMessages: string[] = [];
     for (const category of eitherCategories.right) {
-      console.log(category);
       const categoryValidation = categorySchema.safeParse(category);
-      console.log({ categoryValidation });
       if (categoryValidation.success) {
         categories.push(categoryValidation.data);
       } else {
@@ -41,7 +39,6 @@ export default class CompCatUsecases {
     }
 
     if (errorMessages.length > 0) {
-     
       return left(
         Failure.invalidValue({
           invalidValue: errorMessages.join("\n"),
