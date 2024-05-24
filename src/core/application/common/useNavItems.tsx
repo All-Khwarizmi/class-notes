@@ -8,7 +8,7 @@ import { userRepositry } from "@/features/user/application/repository/user-repos
 export default function useNavItems() {
   const { user } = userRepositry.useGetUser();
   const { classes: eitherClasses } = classeRepository.useGetClasses({
-    id: user?.id || "",
+    id: user?._id || "",
   })();
   const [navItems, setNavItems] = useState<NavItem[] | null>(null);
   useEffect(() => {

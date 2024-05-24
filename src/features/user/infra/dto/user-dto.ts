@@ -20,7 +20,7 @@ export default class UserDto {
       );
     } else if (userInfra) {
       return right({
-        id: userInfra._id,
+        _id: userInfra._id,
         schoolSubject: userInfra.schoolSubject,
         name: userInfra.name,
         onboarding: userInfra.onboarding,

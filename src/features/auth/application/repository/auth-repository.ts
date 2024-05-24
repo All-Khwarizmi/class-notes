@@ -1,11 +1,19 @@
-import useGetUserAuthInfra from "../../infra/useGetUserAuthInfra";
-import useGetUserAuthUsecase from "../usecases/useGetUserAuthUsecase";
+import { clerkAuth } from "@/core/auth/clerk/auth-impl";
+import IAuth from "@/core/auth/i-auth";
 
-const authRepositoy = {
-  useGetUserId: useGetUserAuthUsecase.bind(null, {
-    useGetUserAuthInfra,
-  }),
-};
+export interface AuthRepositoryOptons {
+  auth: IAuth;
+}
+export default class AuthRepository {
+  private readonly _auth: IAuth;
 
-export type AuthRepository = typeof authRepositoy;
-export default authRepositoy;
+  constructor(options: AuthRepositoryOptons) {
+    this._auth = options.auth;
+  }
+
+  async getUserAuth() {
+    return this._auth.getUserAuthInfra();
+  }
+}
+
+export const authRepository = new AuthRepository({ auth: clerkAuth });

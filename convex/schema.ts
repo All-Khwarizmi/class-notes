@@ -8,6 +8,22 @@ export default defineSchema({
     name: v.string(),
     onboarding: v.boolean(),
   }),
+  Category: defineTable({
+    name: v.string(),
+    description: v.string(),
+    createdBy: v.id("Users"),
+    createdAt: v.float64(),
+  }).index("by_createdBy", ["createdBy"]),
+  Competences: defineTable({
+    name: v.string(),
+    description: v.string(),
+    createdBy: v.id("Users"),
+    createdAt: v.float64(),
+    category: v.id("Category"),
+    criteriaIds: v.array(v.id("Criteria")),
+  })
+    .index("by_createdBy", ["createdBy"])
+    .index("by_category", ["category"]),
   Classes: defineTable({
     userId: v.string(),
     description: v.optional(v.string()),

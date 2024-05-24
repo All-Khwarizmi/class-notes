@@ -1,4 +1,4 @@
-import { AuthRepository } from "@/features/auth/application/repository/auth-repository";
+import { AuthRepository } from "@/features/auth/application/repository/old-auth-repository";
 import { ClassType } from "@/features/classe/domain/class-schema";
 import { UseCreateClasseInfraReturn } from "@/features/classe/infra/services/useCreateClasseInfra";
 import { useEffect, useState } from "react";

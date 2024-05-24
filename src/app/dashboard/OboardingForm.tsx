@@ -14,10 +14,10 @@ import { Button } from "@/core/components/ui/button";
 import { userRepositry } from "@/features/user/application/repository/user-repository";
 import { toast } from "sonner";
 import { useEffect } from "react";
-import authRepositoy from "@/features/auth/application/repository/auth-repository";
+import oldAuthRepositoy from "@/features/auth/application/repository/old-auth-repository";
 
 export default function OnboardingForm() {
- const {authUserId} = authRepositoy.useGetUserId()
+ const {authUserId} = oldAuthRepositoy.useGetUserId()
   const { user, error, setOnBoardingData } = userRepositry.useOnboardUser();
   const form = useForm({
     resolver: zodResolver(onboardingSchema),

@@ -4,7 +4,7 @@ import { api } from "../../../../../convex/_generated/api";
 
 export default function useGetUserInfra() {
   const [id, setId] = useState<string | null>(null);
-  const getUser = useMutation(api.users.getUser);
+  const getUser = useMutation(api.users.getUserMutation);
   type UserExistReturnType = Awaited<ReturnType<typeof getUser>>;
 
   const [error, setError] = useState<string | null>(null);
