@@ -24,12 +24,10 @@ export default class CompCatRepository {
 
   async getCompetences({
     userId,
-    categoryId,
   }: {
     userId: string;
-    categoryId: string;
   }) {
-    return this._db.getCompetences({ userId, categoryId });
+    return this._db.getCompetences({ userId });
   }
 
   async addCompetence({

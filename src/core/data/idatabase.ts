@@ -35,10 +35,8 @@ export default abstract class IDatabase {
 
   abstract getCompetences({
     userId,
-    categoryId,
   }: {
     userId: string;
-    categoryId: string;
   }): Promise<Either<Failure<string>, DocumentData[]>>;
 
   abstract addCompetence({
