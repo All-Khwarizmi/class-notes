@@ -44,6 +44,10 @@ export default class ConvexDatabase extends IDatabase {
     user: UserType;
   }): Promise<Either<Failure<string>, void>> {
     try {
+      console.log({
+        userId,
+        user,
+      });
       const result = await fetchMutation(this._db.users.saveUserMutation, {
         userId,
         name: user.name,
