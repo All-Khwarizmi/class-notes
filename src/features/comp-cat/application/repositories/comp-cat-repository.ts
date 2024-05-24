@@ -21,6 +21,28 @@ export default class CompCatRepository {
   }) {
     return this._db.addCategory({ userId, category });
   }
+
+  async getCompetences({
+    userId,
+    categoryId,
+  }: {
+    userId: string;
+    categoryId: string;
+  }) {
+    return this._db.getCompetences({ userId, categoryId });
+  }
+
+  async addCompetence({
+    userId,
+    categoryId,
+    competence,
+  }: {
+    userId: string;
+    categoryId: string;
+    competence: any;
+  }) {
+    return this._db.addCompetence({ userId, categoryId, competence });
+  }
 }
 
 export const compCatRepository = new CompCatRepository({ db: convexDatabase });

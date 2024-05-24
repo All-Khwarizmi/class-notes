@@ -5,7 +5,7 @@ import { DocumentData } from "../database-types";
 import { api } from "../../../../convex/_generated/api";
 import { fetchQuery, fetchMutation } from "convex/nextjs";
 import { UserType } from "@/features/user/domain/entities/user-schema";
-import { Category } from "@/features/comp-cat/domain/entities/schemas";
+import { Category, Competence } from "@/features/comp-cat/domain/entities/schemas";
 
 export interface ConvexDatabaseOptions {
   db: typeof api;
@@ -123,6 +123,62 @@ export default class ConvexDatabase extends IDatabase {
       );
     }
     return right(docs);
+  }
+
+  async getCompetences({
+    userId,
+  }: {
+    userId: string;
+  }): Promise<Either<Failure<string>, DocumentData[]>> {
+    const docs = await fetchQuery(this._db.competences.getCompetences, {
+      userId,
+    });
+    if (!docs) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: userId,
+          message: `
+          Competences not found with userId: ${userId}`,
+        })
+      );
+    }
+    return right(docs);
+  }
+
+  async addCompetence({
+    userId,
+    competence,
+  }: {
+    userId: string;
+    competence: Competence;
+  }): Promise<Either<Failure<string>, void>> {
+    try {
+      const result = await fetchMutation(
+        this._db.competences.createCompetence,
+        {
+          userId,
+          name: competence.name,
+          description: competence.description,
+          category: competence.category,
+        }
+      );
+      if (!result) {
+        return left(
+          Failure.invalidValue({
+            invalidValue: competence,
+            message: "Error adding competence",
+          })
+        );
+      }
+      return right(undefined);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: competence,
+          message: "Error adding competence",
+        })
+      );
+    }
   }
 }
 
