@@ -15,6 +15,10 @@ export class ProfileRepository {
   async getUser({ userId }: { userId: string }) {
     return this._db.getUser({ userId });
   }
+
+  async saveUser({ userId, user }: { userId: string; user: any }) {
+    return this._db.saveUser({ userId, user });
+  }
 }
 
 export const profileRepository = new ProfileRepository({ db: convexDatabase });
