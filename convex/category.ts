@@ -32,7 +32,7 @@ export const getCategories = query({
   handler: async (ctx, args) => {
     const user = await ctx.db
       .query("Users")
-      .filter((q) => q.eq(q.field("_id"), args.userId))
+      .filter((q) => q.eq(q.field("userId"), args.userId))
       .first();
 
     if (user) {
