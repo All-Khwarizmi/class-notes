@@ -1,18 +1,18 @@
 import { z } from "zod";
 
 export const categorySchema = z.object({
-  id: z.string(),
+  _id: z.string(),
   name: z.string(),
   description: z.string(),
-  userId: z.string(),
+  createdBy: z.string(),
 });
 
 export const competenceSchema = z.object({
-  id: z.string(),
+  _id: z.string(),
   name: z.string(),
   description: z.string(),
   category: z.string(),
-  userId: z.string(),
+  createdBy: z.string(),
 });
 
 export type Category = z.infer<typeof categorySchema>;
