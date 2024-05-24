@@ -28,12 +28,10 @@ export default class ProfileUseCases {
     const eitherUser = await this._repository.getUser({ userId });
 
     if (isLeft(eitherUser)) {
-      console.log(eitherUser);
       return eitherUser;
     }
     const user = userSchema.safeParse(eitherUser.right);
     if (!user.success) {
-      console.log(user.error);
       return left(
         Failure.invalidValue({
           invalidValue: eitherUser.right,
@@ -42,6 +40,22 @@ export default class ProfileUseCases {
       );
     }
     return right(user.data);
+  }
+
+  async saveUser({
+    userId,
+    user,
+  }: {
+    userId: string;
+    user: Pick<UserType, "name" | "schoolSubject">;
+  }): Promise<Either<Failure<string>, void>> {
+    const eitherUser = await this._repository.saveUser({ userId, user });
+
+    if (isLeft(eitherUser)) {
+      return eitherUser;
+    }
+
+    return right(undefined);
   }
 }
 
