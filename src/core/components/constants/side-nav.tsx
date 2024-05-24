@@ -1,8 +1,7 @@
 import { type NavItem } from "@/lib/types";
 import CopyClipboard from "../icons/CopyClipboard";
 import Dashboard from "../icons/Dashboard";
-import { User } from "lucide-react";
-
+import { User, BookmarkCheck } from "lucide-react";
 export const NavItems: NavItem[] = [
   {
     title: "Dashboard",
@@ -18,7 +17,7 @@ export const NavItems: NavItem[] = [
   },
   {
     title: "Competences",
-    icon: Dashboard(),
+    icon: <BookmarkCheck size={24} />,
     href: "/competences",
     color: "text-sky-500",
   },

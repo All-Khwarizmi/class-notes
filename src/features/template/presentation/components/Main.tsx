@@ -1,16 +1,14 @@
 "use client";
-import { Button } from "@/core/components/ui/button";
 import EvaluationGrid from "./TemplateGrid";
-import { templatesRepository } from "../../application/repository/templates-repository";
-import authRepositoy from "@/features/auth/application/repository/auth-repository";
 import CustomDialog from "@/core/components/common/CustomDialog";
 import AddIcon from "@/core/components/icons/AddIcon";
 import AddTemplateForm from "./AddTemplateForm";
 import { useTemplateCreationStore } from "../../common/template-store";
 import WarningIcon from "@/core/components/icons/WarningIcon";
+import oldAuthRepositoy from "@/features/auth/application/repository/old-auth-repository";
 
 export default function Main() {
-  const { authUserId } = authRepositoy.useGetUserId();
+  const { authUserId } = oldAuthRepositoy.useGetUserId();
   const { isCreating } = useTemplateCreationStore((state) => ({
     isCreating: state.isCreating,
   }));

@@ -6,7 +6,7 @@ import useCreateClasseUsecase from "../usecases/useCreateClasseUsecase";
 import useDeleteClasseUsecase from "../usecases/useDeleteClasseUsecase";
 import useGetClasseUsecase from "../usecases/useGetClasseUsecase";
 import useGetClassesUsecase from "../usecases/useGetClassesUsecase";
-import authRepository from "@/features/auth/application/repository/auth-repository";
+import authRepository from "@/features/auth/application/repository/old-auth-repository";
 
 export const classeRepository = {
   useCreateClasse: useCreateClasseUsecase.bind(null, {
