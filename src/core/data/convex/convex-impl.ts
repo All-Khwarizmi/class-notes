@@ -5,6 +5,7 @@ import { DocumentData } from "../database-types";
 import { api } from "../../../../convex/_generated/api";
 import { fetchQuery, fetchMutation } from "convex/nextjs";
 import { UserType } from "@/features/user/domain/entities/user-schema";
+import { Category } from "@/features/comp-cat/domain/entities/schemas";
 
 export interface ConvexDatabaseOptions {
   db: typeof api;
@@ -70,6 +71,58 @@ export default class ConvexDatabase extends IDatabase {
         })
       );
     }
+  }
+
+  async addCategory({
+    userId,
+    category,
+  }: {
+    userId: string;
+    category: Omit<Category, "id">;
+  }): Promise<Either<Failure<string>, void>> {
+    try {
+      const result = await fetchMutation(this._db.category.createCategory, {
+        userId,
+        name: category.name,
+        description: category.description,
+      });
+      if (!result) {
+        return left(
+          Failure.invalidValue({
+            invalidValue: category,
+            message: "Error adding category",
+          })
+        );
+      }
+      return right(undefined);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: category,
+          message: "Error adding category",
+        })
+      );
+    }
+  }
+
+  async getCategories({
+    userId,
+  }: {
+    userId: string;
+  }): Promise<Either<Failure<string>, DocumentData[]>> {
+    const docs = await fetchQuery(this._db.category.getCategories, {
+      userId,
+    });
+    if (!docs) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: userId,
+          message: `
+          Categories not found with userId: ${userId}`,
+        })
+      );
+    }
+    return right(docs);
   }
 }
 
