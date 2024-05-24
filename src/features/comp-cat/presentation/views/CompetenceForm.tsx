@@ -1,5 +1,4 @@
 "use client";
-
 import { useForm } from "react-hook-form";
 import {
   Form,
@@ -27,6 +26,8 @@ import {
 } from "@/core/components/ui/select";
 import { useEffect, useState } from "react";
 import useCreateCompetence from "../../application/usecases/services/useCreateCompetence";
+import CustomDialog from "@/core/components/common/CustomDialog";
+import CategoryForm from "../components/CategoryForm";
 
 export default function CompetenceForm({
   categories,
@@ -36,6 +37,7 @@ export default function CompetenceForm({
   userId: string;
 }) {
   const [category, setCategory] = useState<string>(categories[0].name);
+  const [open, setOpen] = useState(false);
   const { setCreateCompetenceOptions } = useCreateCompetence();
   const form = useForm<Competence>({
     resolver: zodResolver(competenceSchema),
@@ -47,7 +49,6 @@ export default function CompetenceForm({
   });
 
   function onSubmit(data: Competence) {
-    console.log({ data });
     setCreateCompetenceOptions({
       competence: {
         ...data,
@@ -97,26 +98,31 @@ export default function CompetenceForm({
           }}
         />
 
-        <Select
-          value={category}
-          onValueChange={(value) => {
-            form.setValue("category", value);
-            setCategory(value);
-          }}
-        >
-          <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="Select a category" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectGroup>
-              {categories.map((category) => (
-                <SelectItem key={category._id} value={category.name}>
-                  {category.name}
-                </SelectItem>
-              ))}
-            </SelectGroup>
-          </SelectContent>
-        </Select>
+        <div className="flex gap-2">
+          <Select
+            value={category}
+            onValueChange={(value) => {
+              form.setValue("category", value);
+              setCategory(value);
+            }}
+          >
+            <SelectTrigger className="w-[180px]">
+              <SelectValue placeholder="Select a category" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                {categories.map((category) => (
+                  <SelectItem key={category._id} value={category.name}>
+                    {category.name}
+                  </SelectItem>
+                ))}
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+          <CustomDialog open={open} setOpen={setOpen} title="Add new category">
+            <CategoryForm userId={userId} />
+          </CustomDialog>
+        </div>
 
         <Button
           onClick={() => {
