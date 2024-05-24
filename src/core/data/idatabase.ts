@@ -2,7 +2,10 @@ import { Either } from "fp-ts/lib/Either";
 import { DocumentData } from "./database-types";
 import Failure from "../failures/failures";
 import { UserType } from "@/features/user/domain/entities/user-schema";
-import { Category, Competence } from "@/features/comp-cat/domain/entities/schemas";
+import {
+  Category,
+  Competence,
+} from "@/features/comp-cat/domain/entities/schemas";
 
 export default abstract class IDatabase {
   abstract getUser({
@@ -41,11 +44,11 @@ export default abstract class IDatabase {
 
   abstract addCompetence({
     userId,
-    categoryId,
+    category,
     competence,
   }: {
     userId: string;
-    categoryId: string;
+    category: string;
     competence: Competence;
   }): Promise<Either<Failure<string>, void>>;
 }
