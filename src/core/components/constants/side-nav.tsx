@@ -1,6 +1,7 @@
 import { type NavItem } from "@/lib/types";
 import CopyClipboard from "../icons/CopyClipboard";
 import Dashboard from "../icons/Dashboard";
+import { User } from "lucide-react";
 
 export const NavItems: NavItem[] = [
   {
@@ -11,7 +12,7 @@ export const NavItems: NavItem[] = [
   },
   {
     title: "Profile",
-    icon: Dashboard(),
+    icon: <User size={24} />,
     href: "/profile",
     color: "text-sky-500",
   },
