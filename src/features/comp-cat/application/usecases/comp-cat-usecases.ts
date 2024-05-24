@@ -93,14 +93,14 @@ export default class CompCatUsecases {
 
   async addCompetence({
     userId,
-    categoryId,
+    category,
     competence,
   }: {
     userId: string;
-    categoryId: string;
+    category: string;
     competence: any;
   }) {
-    return this._repository.addCompetence({ userId, categoryId, competence });
+    return this._repository.addCompetence({ userId, category, competence });
   }
 
   async getCategoriesAndCompetences({
