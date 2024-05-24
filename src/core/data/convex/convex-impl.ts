@@ -3,7 +3,8 @@ import Failure from "@/core/failures/failures";
 import { Either, left, right } from "fp-ts/lib/Either";
 import { DocumentData } from "../database-types";
 import { api } from "../../../../convex/_generated/api";
-import { fetchQuery } from "convex/nextjs";
+import { fetchQuery, fetchMutation } from "convex/nextjs";
+import { UserType } from "@/features/user/domain/entities/user-schema";
 
 export interface ConvexDatabaseOptions {
   db: typeof api;
@@ -34,6 +35,37 @@ export default class ConvexDatabase extends IDatabase {
       );
     }
     return right(doc);
+  }
+  async saveUser({
+    userId,
+    user,
+  }: {
+    userId: string;
+    user: UserType;
+  }): Promise<Either<Failure<string>, void>> {
+    try {
+      const result = await fetchMutation(this._db.users.saveUserMutation, {
+        userId,
+        name: user.name,
+        schoolSubject: user.schoolSubject,
+      });
+      if (!result) {
+        return left(
+          Failure.invalidValue({
+            invalidValue: user,
+            message: "Error saving user",
+          })
+        );
+      }
+      return right(undefined);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: user,
+          message: "Error saving user",
+        })
+      );
+    }
   }
 }
 
