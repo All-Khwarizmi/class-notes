@@ -43,7 +43,6 @@ export const getUserMutation = mutation({
   },
 });
 
-
 export const getUserQuery = query({
   args: {
     userId: v.string(),
@@ -55,5 +54,30 @@ export const getUserQuery = query({
       .first();
 
     return user;
+  },
+});
+
+export const saveUserMutation = mutation({
+  args: {
+    userId: v.string(),
+    schoolSubject: v.string(),
+    name: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const user = await ctx.db
+      .query("Users")
+      .filter((q) => q.eq(q.field("userId"), args.userId))
+      .first();
+
+    if (user) {
+      await ctx.db.patch(user._id, {
+        schoolSubject: args.schoolSubject,
+        name: args.name,
+        onboarding: true,
+      });
+      return user;
+    } else {
+      return false;
+    }
   },
 });
