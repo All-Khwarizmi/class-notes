@@ -33,7 +33,7 @@ export default abstract class IDatabase {
     category,
   }: {
     userId: string;
-    category: Category;
+    category: Omit<Category, "_id">;
   }): Promise<Either<Failure<string>, void>>;
 
   abstract getCompetences({

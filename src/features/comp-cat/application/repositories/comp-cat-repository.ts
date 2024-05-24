@@ -17,16 +17,12 @@ export default class CompCatRepository {
     category,
   }: {
     userId: string;
-    category: Category;
+    category: Omit<Category, "_id">;
   }) {
     return this._db.addCategory({ userId, category });
   }
 
-  async getCompetences({
-    userId,
-  }: {
-    userId: string;
-  }) {
+  async getCompetences({ userId }: { userId: string }) {
     return this._db.getCompetences({ userId });
   }
 

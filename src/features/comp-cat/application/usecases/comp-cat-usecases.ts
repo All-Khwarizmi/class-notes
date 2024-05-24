@@ -55,7 +55,7 @@ export default class CompCatUsecases {
     category,
   }: {
     userId: string;
-    category: Category;
+    category: Omit<Category, "_id">;
   }) {
     return this._repository.addCategory({ userId, category });
   }
