@@ -1,6 +1,6 @@
 import { authUseCases } from "@/features/auth/application/usecases/auth-usecases";
 import { profileUseCases } from "@/features/profile/application/usecases/profile-usecases";
-import { currentUser } from "@clerk/nextjs";
+import UserProfile from "@/features/profile/presentation/views/UserProfile";
 import { isLeft } from "fp-ts/lib/Either";
 export default async function Page() {
   const authUser = await authUseCases.getUserAuth();
@@ -11,9 +11,5 @@ export default async function Page() {
   if (isLeft(user)) {
     return <h1>User not found</h1>;
   }
-  return (
-    <div>
-      <h1>{user.right.name}</h1>
-    </div>
-  );
+  return <UserProfile user={user.right} />;
 }
