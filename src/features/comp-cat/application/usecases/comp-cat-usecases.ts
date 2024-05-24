@@ -5,7 +5,9 @@ import {
   categorySchema,
   competenceSchema,
 } from "../../domain/entities/schemas";
-import CompCatRepository from "../repositories/comp-cat-repository";
+import CompCatRepository, {
+  compCatRepository,
+} from "../repositories/comp-cat-repository";
 import Failure from "@/core/failures/failures";
 
 export default class CompCatUsecases {
@@ -28,7 +30,9 @@ export default class CompCatUsecases {
     const categories: Category[] = [];
     const errorMessages: string[] = [];
     for (const category of eitherCategories.right) {
+      console.log(category);
       const categoryValidation = categorySchema.safeParse(category);
+      console.log({ categoryValidation });
       if (categoryValidation.success) {
         categories.push(categoryValidation.data);
       } else {
@@ -37,6 +41,7 @@ export default class CompCatUsecases {
     }
 
     if (errorMessages.length > 0) {
+     
       return left(
         Failure.invalidValue({
           invalidValue: errorMessages.join("\n"),
@@ -129,7 +134,7 @@ export default class CompCatUsecases {
       return left(
         Failure.invalidValue({
           invalidValue: userId,
-          message: "Error getting categories and competences",
+          message: "Error getting categories and competences: error in batch",
         })
       );
     }
@@ -177,3 +182,7 @@ export default class CompCatUsecases {
     return right({ categories, competences });
   }
 }
+
+export const compCatUsecases = new CompCatUsecases({
+  repository: compCatRepository,
+});
