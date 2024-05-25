@@ -74,4 +74,22 @@ export default abstract class IDatabase {
     userId: string;
     cours: Omit<Cours, "_id" | "createdAt">;
   }): Promise<Either<Failure<string>, string>>;
+
+  abstract updateCours({
+    userId,
+    cours,
+  }: {
+    userId: string;
+    cours: Cours;
+  }): Promise<Either<Failure<string>, void>>;
+
+  abstract updateCoursBody({
+    userId,
+    coursId,
+    body,
+  }: {
+    userId: string;
+    coursId: string;
+    body: string;
+  }): Promise<Either<Failure<string>, void>>;
 }

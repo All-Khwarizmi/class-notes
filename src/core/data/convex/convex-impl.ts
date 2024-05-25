@@ -260,6 +260,72 @@ export default class ConvexDatabase extends IDatabase {
       );
     }
   }
+
+  async  updateCours({ userId, cours, }: { userId: string; cours: { _id: string; name: string; body: string; lessons: string[]; competences: string[]; description: string; createdBy: string; createdAt: number; category: string; }; }): Promise<Either<Failure<string>, void>> {
+    try {
+      const result = await fetchMutation(this._db.cours.updateCours, {
+        userId,
+        coursId: cours._id,
+        name: cours.name,
+        body: cours.body,
+        lessons: cours.lessons,
+        competences: cours.competences,
+        description: cours.description,
+        category: cours.category,
+      });
+      if (!result) {
+        return left(
+          Failure.invalidValue({
+            invalidValue: cours,
+            message: "Error updating cours",
+          })
+        );
+      }
+      return right(undefined);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: cours,
+          message: "Error updating cours",
+        })
+      );
+    }
+  
+  }
+
+  async updateCoursBody({
+    userId,
+    coursId,
+    body,
+  }: {
+    userId: string;
+    coursId: string;
+    body: string;
+  }): Promise<Either<Failure<string>, void>> {
+    try {
+      const result = await fetchMutation(this._db.cours.updateCoursBody, {
+        userId,
+        coursId,
+        body,
+      });
+      if (!result) {
+        return left(
+          Failure.invalidValue({
+            invalidValue: body,
+            message: "Error updating cours body",
+          })
+        );
+      }
+      return right(undefined);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: body,
+          message: "Error updating cours body",
+        })
+      );
+    }
+  }
 }
 
 export const convexDatabase = new ConvexDatabase({ db: api });
