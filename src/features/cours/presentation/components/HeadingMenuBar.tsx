@@ -10,6 +10,7 @@ import {
 } from "@/core/components/ui/dropdown-menu";
 import { useCurrentEditor } from "@tiptap/react";
 import { Level } from "@tiptap/extension-heading";
+import { cn } from "@/lib/utils";
 
 export function HeadingMenuBar() {
   const { editor } = useCurrentEditor();
@@ -25,7 +26,14 @@ export function HeadingMenuBar() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline">Paragraph</Button>
+        <button
+          className={cn(
+            editor.isActive("bold") ? "is-active" : "",
+            "bg-slate-400 rounded-md p-1 px-2"
+          )}
+        >
+          Paragraph
+        </button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">
         <DropdownMenuLabel>Paragraph</DropdownMenuLabel>
