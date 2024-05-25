@@ -23,6 +23,19 @@ export default defineSchema({
   })
     .index("by_createdBy", ["createdBy"])
     .index("by_category", ["category"]),
+  Cours: defineTable({
+    name: v.string(),
+    body: v.string(),
+    lessons: v.array(v.string()),
+    competences: v.array(v.id("Competences")),
+    
+    description: v.string(),
+    createdBy: v.id("Users"),
+    createdAt: v.float64(),
+    category: v.string(),
+  })
+    .index("by_createdBy", ["createdBy"])
+    .index("by_category", ["category"]),
   Classes: defineTable({
     userId: v.string(),
     description: v.optional(v.string()),
