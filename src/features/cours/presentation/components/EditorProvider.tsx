@@ -6,9 +6,16 @@ import { Color } from "@tiptap/extension-color";
 import ListItem from "@tiptap/extension-list-item";
 import TextStyle from "@tiptap/extension-text-style";
 import { MenuBar } from "./MenuBar";
-
+import Image from "@tiptap/extension-image";
 
 const extensions = [
+  Image,
+  Image.configure({
+    inline: true,
+    HTMLAttributes: {
+      class: "w-max-72",
+    },
+  }),
   Color.configure({ types: [TextStyle.name, ListItem.name] }),
   TextStyle.configure({ types: [ListItem.name] }),
   StarterKit.configure({
@@ -28,7 +35,25 @@ export default function EditorProviderWrapper({
   children: React.ReactNode;
 }) {
   return (
-    <EditorProvider slotBefore={<MenuBar />} extensions={extensions}>
+    <EditorProvider
+      autofocus
+      content={`
+    <h1>Heading 1</h1>
+    <p>This is a paragraph</p>
+    <ul>
+      <li>This is a bullet list</li>
+    </ul>
+    <ol>
+      <li>This is an ordered list</li>
+    </ol>
+
+     <img src="https://source.unsplash.com/8xznAGy4HcY/800x400" />
+
+
+    `}
+      slotBefore={<MenuBar />}
+      extensions={extensions}
+    >
       {children}
     </EditorProvider>
   );
