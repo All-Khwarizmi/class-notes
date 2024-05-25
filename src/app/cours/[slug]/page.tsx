@@ -1,6 +1,5 @@
 import NotFound from "@/app/not-found";
 import { authUseCases } from "@/features/auth/application/usecases/auth-usecases";
-import { compCatUsecases } from "@/features/comp-cat/application/usecases/comp-cat-usecases";
 import { coursUsecases } from "@/features/cours/application/usecases/cours-usecases";
 import CoursView from "@/features/cours/presentation/views/CoursView";
 import { isLeft } from "fp-ts/lib/Either";
@@ -22,5 +21,5 @@ export default async function Page({ params }: { params: { slug: string } }) {
     return <NotFound />;
   }
   const cours = eitherCours.right;
-  return <CoursView />;
+  return <CoursView cours={cours} userId={authUser.right.userId} />;
 }
