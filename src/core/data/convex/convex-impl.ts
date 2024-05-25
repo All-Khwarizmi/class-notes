@@ -261,7 +261,23 @@ export default class ConvexDatabase extends IDatabase {
     }
   }
 
-  async  updateCours({ userId, cours, }: { userId: string; cours: { _id: string; name: string; body: string; lessons: string[]; competences: string[]; description: string; createdBy: string; createdAt: number; category: string; }; }): Promise<Either<Failure<string>, void>> {
+  async updateCours({
+    userId,
+    cours,
+  }: {
+    userId: string;
+    cours: {
+      _id: string;
+      name: string;
+      body: string;
+      lessons: string[];
+      competences: string[];
+      description: string;
+      createdBy: string;
+      createdAt: number;
+      category: string;
+    };
+  }): Promise<Either<Failure<string>, void>> {
     try {
       const result = await fetchMutation(this._db.cours.updateCours, {
         userId,
@@ -290,7 +306,6 @@ export default class ConvexDatabase extends IDatabase {
         })
       );
     }
-  
   }
 
   async updateCoursBody({
@@ -303,25 +318,19 @@ export default class ConvexDatabase extends IDatabase {
     body: string;
   }): Promise<Either<Failure<string>, void>> {
     try {
-      const result = await fetchMutation(this._db.cours.updateCoursBody, {
+      await fetchMutation(this._db.cours.updateCoursBody, {
         userId,
         coursId,
         body,
       });
-      if (!result) {
-        return left(
-          Failure.invalidValue({
-            invalidValue: body,
-            message: "Error updating cours body",
-          })
-        );
-      }
+     
       return right(undefined);
     } catch (error) {
+      console.log({ error }); 
       return left(
         Failure.invalidValue({
           invalidValue: body,
-          message: "Error updating cours body",
+          message: "Error updating cours body: unknown",
         })
       );
     }
