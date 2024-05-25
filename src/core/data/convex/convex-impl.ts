@@ -207,9 +207,9 @@ export default class ConvexDatabase extends IDatabase {
   }: {
     userId: string;
     cours: Omit<Cours, "_id" | "createdAt">;
-  }): Promise<Either<Failure<string>, void>> {
+  }): Promise<Either<Failure<string>, string>> {
     try {
-      const result = fetchMutation(this._db.cours.createCours, {
+      const result = await fetchMutation(this._db.cours.createCours, {
         userId,
         name: cours.name,
         body: cours.body,
@@ -227,7 +227,7 @@ export default class ConvexDatabase extends IDatabase {
           })
         );
       }
-      return right(undefined);
+      return right(result);
     } catch (error) {
       return left(
         Failure.invalidValue({
