@@ -57,6 +57,18 @@ export default class CoursUsecases {
   }) {
     return this._repository.addCours({ userId, cours });
   }
+
+  async updateCourseBody({
+    userId,
+    coursId,
+    body,
+  }: {
+    userId: string;
+    coursId: string;
+    body: string;
+  }) {
+    return this._repository.updateCoursBody({ userId, coursId, body });
+  }
 }
 
 export const coursUsecases = new CoursUsecases({ repository: coursRepository });

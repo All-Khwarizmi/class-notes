@@ -80,7 +80,7 @@ export default abstract class IDatabase {
     cours,
   }: {
     userId: string;
-    cours: Cours;
+    cours: Partial<Omit<Cours, "_id" | "createdAt">>;
   }): Promise<Either<Failure<string>, void>>;
 
   abstract updateCoursBody({

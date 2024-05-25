@@ -32,6 +32,30 @@ export default class CoursRepository {
   }) {
     return this._db.addCours({ userId, cours });
   }
+
+  // async updateCours({
+  //   userId,
+  //   coursId,
+  //   cours,
+  // }: {
+  //   userId: string;
+  //   coursId: string;
+  //   cours: Partial<Omit<Cours, "_id" | "createdAt">>;
+  // }) {
+  //   return this._db.updateCours({ userId, coursId, cours });
+  // }
+
+  async updateCoursBody({
+    userId,
+    coursId,
+    body,
+  }: {
+    userId: string;
+    coursId: string;
+    body: string;
+  }) {
+    return this._db.updateCoursBody({ userId, coursId, body });
+  }
 }
 
 export const coursRepository = new CoursRepository({ db: convexDatabase });
