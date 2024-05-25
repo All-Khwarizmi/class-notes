@@ -28,9 +28,9 @@ export default defineSchema({
     body: v.string(),
     lessons: v.array(v.string()),
     competences: v.array(v.id("Competences")),
-    
+
     description: v.string(),
-    createdBy: v.id("Users"),
+    createdBy: v.string(),
     createdAt: v.float64(),
     category: v.string(),
   })

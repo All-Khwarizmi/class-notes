@@ -6,7 +6,7 @@ export const createCours = mutation({
     name: v.string(),
     body: v.string(),
     lessons: v.array(v.string()),
-    competences: v.array(v.id("Competences")),
+    competences: v.array(v.string()),
     description: v.string(),
     userId: v.string(),
     category: v.string(),
@@ -18,11 +18,17 @@ export const createCours = mutation({
       .first();
 
     if (existingUser) {
+      // get all competences
+      const competences = await ctx.db
+        .query("Competences")
+        .filter((q) => q.eq(q.field("createdBy"), existingUser!._id))
+        .collect();
+
       const categoryId = await ctx.db.insert("Cours", {
         name: args.name,
         body: args.body,
         lessons: args.lessons,
-        competences: args.competences,
+        competences: competences.map((c) => c._id),
         description: args.description,
         createdBy: existingUser!._id,
         createdAt: Date.now(),
