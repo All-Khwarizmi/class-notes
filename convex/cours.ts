@@ -129,22 +129,27 @@ export const updateCoursBody = mutation({
     body: v.string(),
   },
   handler: async (ctx, args) => {
-    const user = await ctx.db
-      .query("Users")
-      .filter((q) => q.eq(q.field("userId"), args.userId))
-      .first();
-
-    if (user) {
-      const existingCours = await ctx.db
-        .query("Cours")
-        .filter((q) => q.eq(q.field("_id"), args.coursId))
+    try {
+      const user = await ctx.db
+        .query("Users")
+        .filter((q) => q.eq(q.field("userId"), args.userId))
         .first();
 
-      if (existingCours) {
-        await ctx.db.patch(existingCours._id, {
-          body: args.body,
-        });
+      if (user) {
+        const existingCours = await ctx.db
+          .query("Cours")
+          .filter((q) => q.eq(q.field("_id"), args.coursId))
+          .first();
+
+        if (existingCours) {
+          await ctx.db.patch(existingCours._id, {
+            body: args.body,
+          });
+        }
       }
+    } catch (error) {
+      console.log(error);
+      return error;
     }
   },
 });
