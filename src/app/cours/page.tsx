@@ -1,5 +1,5 @@
-import CoursView from "@/features/cours/presentation/views/CoursView";
+import AllCoursView from "@/features/cours/presentation/views/AllCoursView";
 
 export default async function Page() {
-  return <CoursView />;
+  return <AllCoursView />;
 }
