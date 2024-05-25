@@ -6,6 +6,7 @@ import {
   Category,
   Competence,
 } from "@/features/comp-cat/domain/entities/schemas";
+import { Cours } from "@/features/cours/domain/entities/cours-schemas";
 
 export default abstract class IDatabase {
   abstract getUser({
@@ -50,5 +51,27 @@ export default abstract class IDatabase {
     userId: string;
     category: string;
     competence: Competence;
+  }): Promise<Either<Failure<string>, void>>;
+
+  abstract getAllCours({
+    userId,
+  }: {
+    userId: string;
+  }): Promise<Either<Failure<string>, DocumentData[]>>;
+
+  abstract getSingleCours({
+    userId,
+    coursId,
+  }: {
+    userId: string;
+    coursId: string;
+  }): Promise<Either<Failure<string>, DocumentData>>;
+
+  abstract addCours({
+    userId,
+    cours,
+  }: {
+    userId: string;
+    cours: Cours;
   }): Promise<Either<Failure<string>, void>>;
 }
