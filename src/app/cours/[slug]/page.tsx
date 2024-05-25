@@ -1,3 +1,26 @@
+import NotFound from "@/app/not-found";
+import { authUseCases } from "@/features/auth/application/usecases/auth-usecases";
+import { compCatUsecases } from "@/features/comp-cat/application/usecases/comp-cat-usecases";
+import { coursUsecases } from "@/features/cours/application/usecases/cours-usecases";
+import CoursView from "@/features/cours/presentation/views/CoursView";
+import { isLeft } from "fp-ts/lib/Either";
+import { redirect } from "next/navigation";
+
 export default async function Page({ params }: { params: { slug: string } }) {
-  return <div>Cours Page: {params.slug}</div>;
+  if (!params.slug) {
+    return <NotFound />;
+  }
+  const authUser = await authUseCases.getUserAuth();
+  if (isLeft(authUser)) {
+    redirect("/login");
+  }
+  const eitherCours = await coursUsecases.getSingleCours({
+    userId: authUser.right.userId,
+    coursId: params.slug,
+  });
+  if (isLeft(eitherCours)) {
+    return <NotFound />;
+  }
+  const cours = eitherCours.right;
+  return <CoursView />;
 }
