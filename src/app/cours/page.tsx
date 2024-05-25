@@ -1,7 +1,5 @@
+import CoursView from "@/features/cours/presentation/views/CoursView";
+
 export default async function Page() {
-  return (
-    <div>
-      <h1>Cours</h1>
-    </div>
-  );
+  return <CoursView />;
 }
