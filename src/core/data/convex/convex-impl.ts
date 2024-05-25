@@ -5,7 +5,10 @@ import { DocumentData } from "../database-types";
 import { api } from "../../../../convex/_generated/api";
 import { fetchQuery, fetchMutation } from "convex/nextjs";
 import { UserType } from "@/features/user/domain/entities/user-schema";
-import { Category, Competence } from "@/features/comp-cat/domain/entities/schemas";
+import {
+  Category,
+  Competence,
+} from "@/features/comp-cat/domain/entities/schemas";
 
 export interface ConvexDatabaseOptions {
   db: typeof api;
@@ -176,6 +179,68 @@ export default class ConvexDatabase extends IDatabase {
         Failure.invalidValue({
           invalidValue: competence,
           message: "Error adding competence",
+        })
+      );
+    }
+  }
+
+  getAllCours({
+    userId,
+  }: {
+    userId: string;
+  }): Promise<Either<Failure<string>, DocumentData[]>> {
+    throw new Error("Method not implemented.");
+  }
+  getSingleCours({
+    userId,
+    coursId,
+  }: {
+    userId: string;
+    coursId: string;
+  }): Promise<Either<Failure<string>, DocumentData>> {
+    throw new Error("Method not implemented.");
+  }
+  async addCours({
+    userId,
+    cours,
+  }: {
+    userId: string;
+    cours: {
+      name: string;
+      body: string;
+      lessons: string[];
+      competences: string[];
+      description: string;
+      createdBy: string;
+      createdAt: number;
+      category: string;
+    };
+  }): Promise<Either<Failure<string>, void>> {
+    try {
+      const result = fetchMutation(this._db.cours.createCours, {
+        userId,
+        name: cours.name,
+        body: cours.body,
+        lessons: cours.lessons,
+        description: cours.description,
+        competences: cours.competences,
+
+        category: cours.category,
+      });
+      if (!result) {
+        return left(
+          Failure.invalidValue({
+            invalidValue: cours,
+            message: "Error adding cours",
+          })
+        );
+      }
+      return right(undefined);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: cours,
+          message: "Error adding cours",
         })
       );
     }
