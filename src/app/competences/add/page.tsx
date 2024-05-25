@@ -1,6 +1,6 @@
 import { authUseCases } from "@/features/auth/application/usecases/auth-usecases";
 import { compCatUsecases } from "@/features/comp-cat/application/usecases/comp-cat-usecases";
-import CompetencesTable from "@/features/comp-cat/presentation/views/CompetencesTable";
+import CompetenceForm from "@/features/comp-cat/presentation/views/CompetenceForm";
 import { isLeft } from "fp-ts/lib/Either";
 import { redirect } from "next/navigation";
 
@@ -9,21 +9,15 @@ export default async function Page() {
   if (isLeft(authUser)) {
     redirect("/login");
   }
-  const compAndCat = await compCatUsecases.getCategoriesAndCompetences({
+  const categories = await compCatUsecases.getCategories({
     userId: authUser.right.userId,
   });
-  if (isLeft(compAndCat)) {
-    console.error(compAndCat.left);
+  if (isLeft(categories)) {
+    console.error(categories.left);
     return <div>Something went wrong</div>;
   }
 
   return (
-    <>
-      <CompetencesTable
-        competences={compAndCat.right.competences}
-        categories={compAndCat.right.categories}
-        userId={authUser.right.userId}
-      />
-    </>
+   <CompetenceForm categories={categories.right} userId={authUser.right.userId} />  
   );
 }
