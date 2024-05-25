@@ -9,6 +9,7 @@ import {
   Category,
   Competence,
 } from "@/features/comp-cat/domain/entities/schemas";
+import { Cours } from "@/features/cours/domain/entities/cours-schemas";
 
 export interface ConvexDatabaseOptions {
   db: typeof api;
@@ -205,16 +206,7 @@ export default class ConvexDatabase extends IDatabase {
     cours,
   }: {
     userId: string;
-    cours: {
-      name: string;
-      body: string;
-      lessons: string[];
-      competences: string[];
-      description: string;
-      createdBy: string;
-      createdAt: number;
-      category: string;
-    };
+    cours: Omit<Cours, "_id" | "createdAt">;
   }): Promise<Either<Failure<string>, void>> {
     try {
       const result = fetchMutation(this._db.cours.createCours, {
