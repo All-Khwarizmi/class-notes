@@ -192,14 +192,37 @@ export default class ConvexDatabase extends IDatabase {
   }): Promise<Either<Failure<string>, DocumentData[]>> {
     throw new Error("Method not implemented.");
   }
-  getSingleCours({
+  async getSingleCours({
     userId,
     coursId,
   }: {
     userId: string;
     coursId: string;
   }): Promise<Either<Failure<string>, DocumentData>> {
-    throw new Error("Method not implemented.");
+    try {
+      const result = await fetchQuery(this._db.cours.getSingleCours, {
+        userId,
+        coursId,
+      });
+      if (!result) {
+        return left(
+          Failure.invalidValue({
+            invalidValue: coursId,
+            message: `
+          Cours not found with id: ${coursId}
+          `,
+          })
+        );
+      }
+      return right(result);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: coursId,
+          message: "Error getting single cours",
+        })
+      );
+    }
   }
   async addCours({
     userId,
