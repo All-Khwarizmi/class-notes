@@ -1,8 +1,20 @@
 "use clent";
 import { Button } from "@/core/components/ui/button";
 import { useCurrentEditor } from "@tiptap/react";
+import useUpdateCoursBody from "../../application/usecases/services/useUpdateCoursBody";
+import { Cours } from "../../domain/entities/cours-schemas";
 
-export default function EditorChild() {
+export default function EditorChild({
+    cours,
+    userId
+}:
+{
+    cours: Cours
+    userId: string
+}) {
+    const {
+        setUpdateCoursBodyOptions
+    } = useUpdateCoursBody();
   const { editor } = useCurrentEditor();
 
   if (!editor) {
@@ -11,12 +23,18 @@ export default function EditorChild() {
 
   return (
     <>
-      <Button>Save</Button>
-      <Button>Show Content</Button>
-      <h2>Content</h2>
-      <div>
-        <p>{editor.getHTML()}</p>
-      </div>
+      <Button
+      className="mt-2"
+      onClick={() => {
+
+        setUpdateCoursBodyOptions({
+            userId,
+            coursId: cours._id,
+            body: editor.getHTML()
+        });
+    }}
+       >Save</Button>
+      
     </>
   );
 }

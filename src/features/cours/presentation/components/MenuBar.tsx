@@ -1,21 +1,7 @@
 import { cn } from "@/lib/utils";
 import { useCurrentEditor } from "@tiptap/react";
-import { Bold, Heading, Italic, Menu } from "lucide-react";
-import { Button } from "@/core/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuPortal,
-  DropdownMenuSeparator,
-  DropdownMenuShortcut,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
-  DropdownMenuTrigger,
-} from "@/core/components/ui/dropdown-menu";
+import { Italic } from "lucide-react";
+
 import ButtonMenuBar from "./ButtonMunuBar";
 import { HeadingMenuBar } from "./HeadingMenuBar";
 import MenuTextColor from "./MenuTextColor";

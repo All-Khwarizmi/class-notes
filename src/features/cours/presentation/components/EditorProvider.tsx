@@ -7,6 +7,7 @@ import ListItem from "@tiptap/extension-list-item";
 import TextStyle from "@tiptap/extension-text-style";
 import { MenuBar } from "./MenuBar";
 import Image from "@tiptap/extension-image";
+import { Cours } from "../../domain/entities/cours-schemas";
 
 const extensions = [
   Image,
@@ -31,26 +32,15 @@ const extensions = [
 ];
 export default function EditorProviderWrapper({
   children,
+  cours
 }: {
+  cours: Cours;
   children: React.ReactNode;
 }) {
   return (
     <EditorProvider
       autofocus
-      content={`
-    <h1>Heading 1</h1>
-    <p>This is a paragraph</p>
-    <ul>
-      <li>This is a bullet list</li>
-    </ul>
-    <ol>
-      <li>This is an ordered list</li>
-    </ol>
-
-     <img src="https://source.unsplash.com/8xznAGy4HcY/800x400" />
-
-
-    `}
+      content={cours.body}
       slotBefore={<MenuBar />}
       extensions={extensions}
     >
