@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { coursUsecases } from "../cours-usecases";
 import { isLeft } from "fp-ts/lib/Either";
-
+import { useRouter } from "next/navigation";
 export type CoursMetadata = Pick<
   Cours,
   "description" | "category" | "name" | "competences"
@@ -17,7 +17,7 @@ export interface SaveCoursMetadataOptions {
 export default function useSaveCoursMetadata() {
   const [saveCoursMetadata, setSaveCoursMetadata] =
     useState<SaveCoursMetadataOptions | null>(null);
-
+  const router = useRouter();
   useEffect(() => {
     if (!saveCoursMetadata) {
       return;
@@ -32,8 +32,6 @@ export default function useSaveCoursMetadata() {
           body: "",
           lessons: [],
           createdBy: saveCoursMetadata.userId,
-
-
         },
         userId: saveCoursMetadata.userId,
       })
@@ -47,6 +45,7 @@ export default function useSaveCoursMetadata() {
         toast.success("Cours metadata saved", {
           id: loadingToast,
         });
+        router.push(`/cours/${eitherCours.right}`);
       });
   }, [saveCoursMetadata]);
 
