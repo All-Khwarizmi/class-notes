@@ -1,0 +1,13 @@
+{
+  "folders": [
+	{
+		"name": "class-notes",
+		"path": "."
+	}
+],
+  "settings": {
+    "exportall.config.folderListener": [
+      "/src/features/classe/application/usecases"
+    ]
+  }
+}

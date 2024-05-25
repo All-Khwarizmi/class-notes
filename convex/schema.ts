@@ -19,8 +19,7 @@ export default defineSchema({
     description: v.string(),
     createdBy: v.id("Users"),
     createdAt: v.float64(),
-    category: v.id("Category"),
-    criteriaIds: v.array(v.id("Criteria")),
+    category: v.string(),
   })
     .index("by_createdBy", ["createdBy"])
     .index("by_category", ["category"]),
