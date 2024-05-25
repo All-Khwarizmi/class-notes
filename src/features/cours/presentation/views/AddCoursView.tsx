@@ -22,7 +22,7 @@ export default async function AddCoursView() {
 
   return (
     <div>
-      <AddCoursForm competences={competences} />
+      <AddCoursForm competences={competences} userId={authUser.right.userId} />
     </div>
   );
 }
