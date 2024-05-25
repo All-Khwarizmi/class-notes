@@ -73,5 +73,5 @@ export default abstract class IDatabase {
   }: {
     userId: string;
     cours: Omit<Cours, "_id" | "createdAt">;
-  }): Promise<Either<Failure<string>, void>>;
+  }): Promise<Either<Failure<string>, string>>;
 }
