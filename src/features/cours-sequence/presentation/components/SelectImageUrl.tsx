@@ -89,6 +89,7 @@ export default function SelectImageUrl({
             <Input
               id="file"
               disabled
+              
               onClick={() => {
                 alert("This feature is not yet implemented");
               }}
@@ -103,6 +104,7 @@ export default function SelectImageUrl({
                 placeholder="https://example.com/image.jpg"
                 type="text"
                 value={userImageUrl}
+                onChange={(e) => setUserImageUrl(e.target.value)}
               />
               <Button
                 onClick={() => {
