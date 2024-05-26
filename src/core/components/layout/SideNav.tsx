@@ -27,6 +27,7 @@ export function SideNav({ items, setOpen, className }: SideNavProps) {
   const { isOpen } = useSidebar();
   const [openItem, setOpenItem] = useState("");
   const [lastOpenItem, setLastOpenItem] = useState("");
+  const [liveHref, setLiveHref] = useState(path);
 
   useEffect(() => {
     if (isOpen) {
@@ -36,6 +37,10 @@ export function SideNav({ items, setOpen, className }: SideNavProps) {
       setOpenItem("");
     }
   }, [isOpen]);
+
+  useEffect(() => {
+    setLiveHref(path);
+  }, [path]);
 
   return (
     <nav className="space-y-2">
@@ -53,6 +58,7 @@ export function SideNav({ items, setOpen, className }: SideNavProps) {
               <AccordionTrigger
                 className={cn(
                   buttonVariants({ variant: "ghost" }),
+
                   "group relative flex h-12 justify-between px-4 py-2 text-base duration-200 hover:bg-muted hover:no-underline"
                 )}
               >
@@ -130,7 +136,8 @@ export function SideNav({ items, setOpen, className }: SideNavProps) {
             className={cn(
               buttonVariants({ variant: "ghost" }),
               "group relative flex h-12 justify-start",
-              path === item.href && "bg-muted font-bold hover:bg-muted"
+
+              path === item.href && "bg-secondary font-bold hover:bg-muted"
             )}
           >
             {item.icon}
