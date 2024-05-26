@@ -14,7 +14,7 @@
         {
             "label": "run convex dashboard",
             "type": "shell",
-            "command": "npx convex dashboard",
+            "command": "npx convex dashboard && npx convex dev",
             "runOptions": {
                 "runOn": "folderOpen"
             },
