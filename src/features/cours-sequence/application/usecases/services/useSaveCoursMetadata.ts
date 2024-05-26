@@ -6,7 +6,7 @@ import { isLeft } from "fp-ts/lib/Either";
 import { useRouter } from "next/navigation";
 export type CoursMetadata = Pick<
   Cours,
-  "description" | "category" | "name" | "competences"
+  "description" | "category" | "name" | "competences" | "imageUrl"
 >;
 
 export interface SaveCoursMetadataOptions {

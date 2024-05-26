@@ -36,6 +36,10 @@ export default function useSaveSequenceMetadata() {
         if (isLeft(eitherSequence)) {
           toast.error("Failed to save sequence metadata", {
             id: loadingToast,
+            description: `
+           ${eitherSequence.left.message} \n
+           Error code: ${eitherSequence.left.code}
+              `,
           });
           return;
         }
