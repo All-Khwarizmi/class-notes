@@ -7,7 +7,6 @@ import ListItem from "@tiptap/extension-list-item";
 import TextStyle from "@tiptap/extension-text-style";
 import { MenuBar } from "./MenuBar";
 import Image from "@tiptap/extension-image";
-import { Cours } from "../../domain/entities/cours-schemas";
 
 const extensions = [
   Image,
