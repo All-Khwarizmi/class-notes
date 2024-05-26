@@ -479,6 +479,39 @@ export default class ConvexDatabase extends IDatabase {
       );
     }
   }
+
+  async getAllCoursFromSequence({
+    userId,
+    sequenceId,
+  }: {
+    userId: string;
+    sequenceId: string;
+  }): Promise<Either<Failure<string>, DocumentData[]>> {
+    try {
+      const result = await fetchQuery(this._db.sequence.getAllCoursInSequence, {
+        userId,
+        sequenceId,
+      });
+      if (!result) {
+        return left(
+          Failure.invalidValue({
+            invalidValue: sequenceId,
+            message: "Error getting all cours from sequence",
+            code: "INF103",
+          })
+        );
+      }
+      return right(result);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: sequenceId,
+          message: "Error getting all cours from sequence",
+          code: "INF101",
+        })
+      );
+    }
+  }
 }
 
 export const convexDatabase = new ConvexDatabase({ db: api });

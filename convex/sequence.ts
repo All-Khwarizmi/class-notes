@@ -179,3 +179,28 @@ export const addBodyToSequence = mutation({
     }
   },
 });
+
+export const getAllCoursInSequence = query({
+  args: {
+    userId: v.string(),
+    sequenceId: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const user = await ctx.db
+      .query("Users")
+      .filter((q) => q.eq(q.field("userId"), args.userId))
+      .first();
+
+    if (user) {
+      const sequence = await ctx.db
+        .query("Sequences")
+        .filter((q) => q.eq(q.field("_id"), args.sequenceId))
+        .first();
+
+      if (sequence) {
+        const cours = await ctx.db.query("Cours").withIndex("by_sequenceId").filter((q) => q.eq(q.field("sequenceId"), sequence._id)).collect();
+        return cours;
+      }
+    }
+  },
+});

@@ -137,4 +137,12 @@ export default abstract class IDatabase {
     sequenceId: string;
     body: string;
   }): Promise<Either<Failure<string>, void>>;
+
+  abstract getAllCoursFromSequence({
+    userId,
+    sequenceId,
+  }: {
+    userId: string;
+    sequenceId: string;
+  }): Promise<Either<Failure<string>, DocumentData[]>>;
 }
