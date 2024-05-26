@@ -7,18 +7,21 @@ import { useState } from "react";
 import { Cours } from "../../domain/entities/cours-schemas";
 import { useForm } from "react-hook-form";
 import useSaveSequenceMetadata from "../../application/usecases/services/useSaveSequenceMetadata";
+import { th } from "@faker-js/faker";
 export interface CoursSequenceForm
   extends Pick<Cours, "description" | "category" | "name" | "competences"> {}
 export default function AddCoursOrSequenceView({
   competences,
   authUser,
   type,
-  title
+  title,
+  sequenceId,
 }: {
   competences: Competence[];
   authUser: UserAuth;
   type: "cours" | "sequence";
   title: string;
+  sequenceId?: string;
 }) {
   const [selectedCompetences, setSelectedCompetences] = useState<Competence[]>(
     []
@@ -57,6 +60,7 @@ export default function AddCoursOrSequenceView({
       competences: selectedCompetences.map((c) => c._id),
     };
     setSaveCoursMetadata({
+      sequenceId: sequenceId!,
       cours: newData,
       userId: authUser.userId,
     });
@@ -81,7 +85,15 @@ export default function AddCoursOrSequenceView({
         setOpen={setOpen}
         selectedCompetences={selectedCompetences}
         setSelectedCompetences={selectCompetences}
-        onSubmit={type === "cours" ? onSubmitCours : onSubmitSequence}
+        onSubmit={
+          type === "cours"
+            ? sequenceId !== null
+              ? onSubmitCours
+              : () => {
+                  throw new Error("sequenceId is required for cours");
+                }
+            : onSubmitSequence
+        }
         title={title}
       />
     </div>
