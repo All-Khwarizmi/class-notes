@@ -15,7 +15,7 @@ export const MenuBar = () => {
   }
 
   return (
-    <div className="flex gap-1 flex-wrap py-4">
+    <div className="flex gap-1 flex-wrap p-2 bg-muted border boder-gray-2OO rounded-tr-lg rounded-tl-lg">
       <ButtonMenuBar />
 
       <HeadingMenuBar />
