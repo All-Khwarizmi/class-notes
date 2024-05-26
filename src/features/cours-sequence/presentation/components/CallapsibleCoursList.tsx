@@ -30,6 +30,8 @@ function CallapsibleCoursList({ cours }: { cours: Cours[] }) {
                 imageUrl={cours.imageUrl}
                 tags={cours.category}
                 path={`/cours/${cours._id}`}
+                showViewButton={true}
+                pathToView={`/sequences/show/${cours.sequenceId}`}
               />
             ))}
           </div>
