@@ -5,36 +5,17 @@ import useUpdateCoursBody from "../../application/usecases/services/useUpdateCou
 import { Cours } from "../../domain/entities/cours-schemas";
 
 export default function EditorChild({
-    cours,
-    userId
-}:
-{
-    cours: Cours
-    userId: string
+ 
+  children,
+}: {
+  children: React.ReactNode;
+  
 }) {
-    const {
-        setUpdateCoursBodyOptions
-    } = useUpdateCoursBody();
   const { editor } = useCurrentEditor();
 
   if (!editor) {
     return null;
   }
 
-  return (
-    <>
-      <Button
-      className="mt-2"
-      onClick={() => {
-
-        setUpdateCoursBodyOptions({
-            userId,
-            coursId: cours._id,
-            body: editor.getHTML()
-        });
-    }}
-       >Save</Button>
-      
-    </>
-  );
+  return <>{children}</>;
 }
