@@ -15,17 +15,13 @@ export default function CompetenceSelectorDialog({
   setOpen: (open: boolean) => void;
   competences: Competence[];
   selectedCompetences: Competence[];
-  setSelectedCompetences: Dispatch<
-    SetStateAction<
-      {
-        category: string;
-        name: string;
-        description: string;
-        createdBy: string;
-        _id: string;
-      }[]
-    >
-  >;
+  setSelectedCompetences: ({
+    competence,
+    remove,
+  }: {
+    competence: Competence;
+    remove?: boolean;
+  }) => void;
 }) {
   return (
     <FormItem>
@@ -40,9 +36,7 @@ export default function CompetenceSelectorDialog({
                   {competence.name}
                   <button
                     onClick={() => {
-                      setSelectedCompetences((prev) =>
-                        prev.filter((c) => c._id !== competence._id)
-                      );
+                      setSelectedCompetences({ competence });
                     }}
                     className="bg-red-500 dark:bg-red-600 py-1 px-2 rounded-full text-white absolute top-0 right-0 -mt-2 -mr-2"
                   >
@@ -68,11 +62,9 @@ export default function CompetenceSelectorDialog({
                   value={competence._id}
                   onChange={(e) => {
                     if (e.target.checked) {
-                      setSelectedCompetences((prev) => [...prev, competence]);
+                      setSelectedCompetences({ competence });
                     } else {
-                      setSelectedCompetences((prev) =>
-                        prev.filter((c) => c._id !== competence._id)
-                      );
+                      setSelectedCompetences({ competence, remove: true });
                     }
                   }}
                 />
