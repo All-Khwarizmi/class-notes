@@ -335,6 +335,83 @@ export default class ConvexDatabase extends IDatabase {
       );
     }
   }
+
+  async addSequence({
+    userId,
+    sequence,
+  }: {
+    userId: string;
+    sequence: Omit<
+      {
+        category: string;
+        name: string;
+        description: string;
+        createdBy: string;
+        createdAt: number;
+        body: string;
+        competencesIds: string[];
+        _id: string;
+      },
+      "createdAt" | "_id"
+    >;
+  }): Promise<Either<Failure<string>, string>> {
+    try {
+      const result = await fetchMutation(this._db.sequence.createSequence, {
+        userId,
+        name: sequence.name,
+        body: sequence.body,
+        description: sequence.description,
+        category: sequence.category,
+        competencesIds: sequence.competencesIds,
+      });
+      if (!result) {
+        return left(
+          Failure.invalidValue({
+            invalidValue: sequence,
+            message: "Error adding sequence",
+            code: "INF103",
+          })
+        );
+      }
+
+      return right(result);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: sequence,
+          message: "Error adding sequence",
+          code: "INF101",
+        })
+      );
+    }
+  }
+  getSequences({
+    userId,
+  }: {
+    userId: string;
+  }): Promise<Either<Failure<string>, DocumentData[]>> {
+    throw new Error("Method not implemented.");
+  }
+  getSingleSequence({
+    userId,
+    sequenceId,
+  }: {
+    userId: string;
+    sequenceId: string;
+  }): Promise<Either<Failure<string>, DocumentData>> {
+    throw new Error("Method not implemented.");
+  }
+  addCoursToSequence({
+    userId,
+    sequenceId,
+    coursId,
+  }: {
+    userId: string;
+    sequenceId: string;
+    coursId: string[];
+  }): Promise<Either<Failure<string>, void>> {
+    throw new Error("Method not implemented.");
+  }
 }
 
 export const convexDatabase = new ConvexDatabase({ db: api });
