@@ -9,7 +9,7 @@ import {
   Category,
   Competence,
 } from "@/features/comp-cat/domain/entities/schemas";
-import { Cours } from "@/features/cours-sequence/domain/entities/cours-schemas";
+import { Cours, Sequence } from "@/features/cours-sequence/domain/entities/cours-schemas";
 
 export interface ConvexDatabaseOptions {
   db: typeof api;
@@ -234,6 +234,7 @@ export default class ConvexDatabase extends IDatabase {
     try {
       const result = await fetchMutation(this._db.cours.createCours, {
         sequenceId: cours.sequenceId,
+        imageUrl: cours.imageUrl,
         userId,
         name: cours.name,
         body: cours.body,
@@ -343,22 +344,14 @@ export default class ConvexDatabase extends IDatabase {
   }: {
     userId: string;
     sequence: Omit<
-      {
-        category: string;
-        name: string;
-        description: string;
-        createdBy: string;
-        createdAt: number;
-        body: string;
-        competencesIds: string[];
-        _id: string;
-      },
+      Sequence,
       "createdAt" | "_id"
     >;
   }): Promise<Either<Failure<string>, string>> {
     try {
       const result = await fetchMutation(this._db.sequence.createSequence, {
         userId,
+        imageUrl: sequence.imageUrl,
         name: sequence.name,
         body: sequence.body,
         description: sequence.description,
