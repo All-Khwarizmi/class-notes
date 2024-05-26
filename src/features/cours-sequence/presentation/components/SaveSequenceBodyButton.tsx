@@ -18,7 +18,6 @@ function SaveSequenceBodyButton({
   }
   return (
     <Button
-      className="mt-2"
       onClick={() => {
         setUpdateSequenceBodyOptions({
           userId,
