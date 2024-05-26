@@ -128,6 +128,28 @@ export default class CoursUsecases {
   }) {
     return this._repository.addBodyToSequence({ userId, sequenceId, body });
   }
+
+  async getAllSequences({ userId }: { userId: string }) {
+    const eitherSequences = await this._repository.getAllSequences({ userId });
+
+    if (isLeft(eitherSequences)) {
+      return eitherSequences;
+    }
+    const validateSequences = SequenceSchema.safeParse(eitherSequences.right);
+    if (!validateSequences.success) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: eitherSequences.right,
+          message: `
+          Unable to validate sequences
+          
+            ${JSON.stringify(validateSequences.error)}
+          `,
+          code: "APP203",
+        })
+      );
+    }
+  }
 }
 
 export const coursUsecases = new CoursUsecases({ repository: coursRepository });

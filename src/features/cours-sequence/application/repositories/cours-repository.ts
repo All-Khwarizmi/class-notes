@@ -88,6 +88,10 @@ export default class CoursRepository {
   }) {
     return this._db.addBodyToSequence({ userId, sequenceId, body });
   }
+
+  async getAllSequences({ userId }: { userId: string }) {
+    return this._db.getSequences({ userId });
+  }
 }
 
 export const coursRepository = new CoursRepository({ db: convexDatabase });

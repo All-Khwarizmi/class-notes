@@ -9,7 +9,10 @@ import {
   Category,
   Competence,
 } from "@/features/comp-cat/domain/entities/schemas";
-import { Cours, Sequence } from "@/features/cours-sequence/domain/entities/cours-schemas";
+import {
+  Cours,
+  Sequence,
+} from "@/features/cours-sequence/domain/entities/cours-schemas";
 
 export interface ConvexDatabaseOptions {
   db: typeof api;
@@ -343,10 +346,7 @@ export default class ConvexDatabase extends IDatabase {
     sequence,
   }: {
     userId: string;
-    sequence: Omit<
-      Sequence,
-      "createdAt" | "_id"
-    >;
+    sequence: Omit<Sequence, "createdAt" | "_id">;
   }): Promise<Either<Failure<string>, string>> {
     try {
       const result = await fetchMutation(this._db.sequence.createSequence, {
@@ -379,12 +379,35 @@ export default class ConvexDatabase extends IDatabase {
       );
     }
   }
-  getSequences({
+  async getSequences({
     userId,
   }: {
     userId: string;
   }): Promise<Either<Failure<string>, DocumentData[]>> {
-    throw new Error("Method not implemented.");
+    try {
+      const result = await fetchQuery(this._db.sequence.getAllSequences, {
+        userId,
+      });
+      if (!result) {
+        return left(
+          Failure.invalidValue({
+            invalidValue: userId,
+            message: "Error getting sequences",
+            code: "INF103",
+          })
+        );
+      }
+
+      return right(result);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: userId,
+          message: "Error getting sequences",
+          code: "INF101",
+        })
+      );
+    }
   }
   async getSingleSequence({
     userId,
