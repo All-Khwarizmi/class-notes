@@ -6,6 +6,7 @@ import SaveSequenceBodyButton from "../components/SaveSequenceBodyButton";
 import { Button } from "@mui/material";
 import Link from "next/link";
 import CollapsibleCoursList from "../components/CallapsibleCoursList";
+import { Eye } from "lucide-react";
 
 export default function CoursSequenceView({
   cours,
@@ -49,9 +50,13 @@ export default function CoursSequenceView({
               <Button variant="contained" color="primary">
                 <Link href={`/cours/add/${sequence._id}`}>Add Cours</Link>
               </Button>
+              <Button variant="contained" color="primary">
+                <Link href={`/sequences/show/${sequence._id}`}>
+                  <Eye />
+                </Link>
+              </Button>
             </div>
             <section>
-             
               <CollapsibleCoursList cours={coursFromSequence} />
             </section>
           </div>
