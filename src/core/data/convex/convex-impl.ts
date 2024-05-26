@@ -233,6 +233,7 @@ export default class ConvexDatabase extends IDatabase {
   }): Promise<Either<Failure<string>, string>> {
     try {
       const result = await fetchMutation(this._db.cours.createCours, {
+        sequenceId: cours.sequenceId,
         userId,
         name: cours.name,
         body: cours.body,
