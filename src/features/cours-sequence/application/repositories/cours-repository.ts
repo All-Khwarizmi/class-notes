@@ -66,6 +66,16 @@ export default class CoursRepository {
   }) {
     return this._db.addSequence({ userId, sequence });
   }
+
+  async getSingleSequence({
+    userId,
+    sequenceId,
+  }: {
+    userId: string;
+    sequenceId: string;
+  }) {
+    return this._db.getSingleSequence({ userId, sequenceId });
+  }
 }
 
 export const coursRepository = new CoursRepository({ db: convexDatabase });

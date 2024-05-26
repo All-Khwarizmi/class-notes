@@ -1,10 +1,16 @@
-import { isLeft, left } from "fp-ts/lib/Either";
-import { Cours, CoursSchema, Sequence } from "../../domain/entities/cours-schemas";
+import { Either, isLeft, left } from "fp-ts/lib/Either";
+import {
+  Cours,
+  CoursSchema,
+  Sequence,
+  SequenceSchema,
+} from "../../domain/entities/cours-schemas";
 import CoursRepository, {
   coursRepository,
 } from "../repositories/cours-repository";
 import { right } from "fp-ts/lib/Either";
 import Failure from "@/core/failures/failures";
+import { E } from "vitest/dist/reporters-P7C2ytIv.js";
 
 export default class CoursUsecases {
   private readonly _repository: CoursRepository;
@@ -78,6 +84,38 @@ export default class CoursUsecases {
     sequence: Omit<Sequence, "_id" | "createdAt" | "coursIds">;
   }) {
     return this._repository.addSequence({ userId, sequence });
+  }
+
+  async getSingleSequence({
+    userId,
+    sequenceId,
+  }: {
+    userId: string;
+    sequenceId: string;
+  }): Promise<Either<Failure<string>, Sequence>> {
+    const eitherSequence = await this._repository.getSingleSequence({
+      userId,
+      sequenceId,
+    });
+
+    if (isLeft(eitherSequence)) {
+      return eitherSequence;
+    }
+    const validateSequence = SequenceSchema.safeParse(eitherSequence.right);
+    if (!validateSequence.success) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: eitherSequence.right,
+          message: `
+          Unable to validate sequence with id: ${sequenceId}
+          
+            ${JSON.stringify(validateSequence.error)}
+          `,
+          code: "APP203",
+        })
+      );
+    }
+    return right(validateSequence.data);
   }
 }
 
