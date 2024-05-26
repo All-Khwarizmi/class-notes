@@ -7,6 +7,7 @@ export const createCours = mutation({
     name: v.string(),
     body: v.string(),
     lessons: v.array(v.string()),
+    imageUrl: v.string(),
     sequenceId: v.string(),
     competences: v.array(v.string()),
     description: v.string(),
@@ -32,6 +33,7 @@ export const createCours = mutation({
         .collect();
 
       const categoryId = await ctx.db.insert("Cours", {
+        imageUrl: args.imageUrl,
         sequenceId: existingSequence!._id,
         name: args.name,
         body: args.body,

@@ -10,6 +10,7 @@ export const createSequence = mutation({
     description: v.string(),
     userId: v.string(),
     category: v.string(),
+    imageUrl: v.string(),
   },
   handler: async (ctx, args) => {
     const existingUser = await ctx.db
@@ -25,6 +26,7 @@ export const createSequence = mutation({
         .collect();
 
       const categoryId = await ctx.db.insert("Sequences", {
+        imageUrl: args.imageUrl,
         name: args.name,
         body: args.body,
         coursIds: [],

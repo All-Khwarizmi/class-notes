@@ -26,6 +26,7 @@ export default defineSchema({
   Cours: defineTable({
     name: v.string(),
     body: v.string(),
+    imageUrl: v.string(),
     lessons: v.array(v.string()),
     competences: v.array(v.id("Competences")),
     sequenceId: v.id("Sequences"),
@@ -39,6 +40,7 @@ export default defineSchema({
   Sequences: defineTable({
     name: v.string(),
     body: v.string(),
+    imageUrl: v.string(),
     coursIds: v.array(v.id("Cours")),
     competencesIds: v.array(v.id("Competences")),
     description: v.string(),
