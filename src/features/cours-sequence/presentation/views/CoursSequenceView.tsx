@@ -5,6 +5,7 @@ import EditorChild from "../components/EditorChild";
 import CoursSaveButton from "../components/CoursSaveButton";
 import SaveSequenceBodyButton from "../components/SaveSequenceBodyButton";
 import { Button } from "@mui/material";
+import Link from "next/link";
 
 export default function CoursSequenceView({
   cours,
@@ -33,18 +34,12 @@ export default function CoursSequenceView({
           {sequence.name}
         </h1>
         <EditorProviderWrapper content={sequence.body}>
-          <div>
+          <div className="flex gap-2 mt-2">
             <SaveSequenceBodyButton userId={userId} sequence={sequence} />
             {/* Add button to add a cours  */}
 
-            <Button
-              LinkComponent={() => <a href={`cours/add/${sequence._id}`} />}
-              className="mt-2"
-              onClick={() => {
-                console.log("Add a cours");
-              }}
-            >
-              Add a cours
+            <Button variant="contained" color="primary">
+              <Link href={`/cours/add/${sequence._id}`}>Add Cours</Link>
             </Button>
           </div>
         </EditorProviderWrapper>
