@@ -11,7 +11,7 @@ export default function CoursView({
   userId: string;
 }) {
   return (
-    <EditorProviderWrapper cours={cours}>
+    <EditorProviderWrapper content={cours.body}>
       <EditorChild userId={userId} cours={cours} />
     </EditorProviderWrapper>
   );

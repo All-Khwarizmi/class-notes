@@ -6,7 +6,10 @@ import {
   Category,
   Competence,
 } from "@/features/comp-cat/domain/entities/schemas";
-import { Cours } from "@/features/cours-sequence/domain/entities/cours-schemas";
+import {
+  Cours,
+  Sequence,
+} from "@/features/cours-sequence/domain/entities/cours-schemas";
 
 export default abstract class IDatabase {
   abstract getUser({
@@ -91,5 +94,37 @@ export default abstract class IDatabase {
     userId: string;
     coursId: string;
     body: string;
+  }): Promise<Either<Failure<string>, void>>;
+
+  abstract addSequence({
+    userId,
+    sequence,
+  }: {
+    userId: string;
+    sequence: Omit<Sequence, "_id" | "createdAt" | "coursIds">;
+  }): Promise<Either<Failure<string>, string>>;
+
+  abstract getSequences({
+    userId,
+  }: {
+    userId: string;
+  }): Promise<Either<Failure<string>, DocumentData[]>>;
+
+  abstract getSingleSequence({
+    userId,
+    sequenceId,
+  }: {
+    userId: string;
+    sequenceId: string;
+  }): Promise<Either<Failure<string>, DocumentData>>;
+
+  abstract addCoursToSequence({
+    userId,
+    sequenceId,
+    coursId,
+  }: {
+    userId: string;
+    sequenceId: string;
+    coursId: string[];
   }): Promise<Either<Failure<string>, void>>;
 }

@@ -32,15 +32,15 @@ const extensions = [
 ];
 export default function EditorProviderWrapper({
   children,
-  cours
+  content,
 }: {
-  cours: Cours;
+  content: string;
   children: React.ReactNode;
 }) {
   return (
     <EditorProvider
       autofocus
-      content={cours.body}
+      content={content}
       slotBefore={<MenuBar />}
       extensions={extensions}
     >
