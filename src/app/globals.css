@@ -101,3 +101,73 @@ body {
     background-position: 0% 50%;
   }
 }
+
+
+
+.tiptap h1 {
+  @apply text-4xl font-bold;
+}
+
+.tiptap h2 {
+  @apply text-3xl font-bold;
+}
+
+.tiptap h3 {
+  @apply text-2xl font-bold;
+}
+
+.tiptap h4 {
+  @apply text-xl font-bold;
+}
+
+.tiptap h5 {
+  @apply text-base font-bold;
+}
+
+.tiptap h6 {
+  @apply text-sm font-bold;
+}
+
+
+.proseMirror {
+  @apply bg-gray-100 text-gray-800 p-2 rounded;
+}
+
+.tiptap button {
+  @apply bg-gray-700 text-gray-500 font-bold py-2 px-4 rounded m-1;
+}
+
+
+.tiptap  {
+  @apply h-3/4 block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-bl-lg rounded-br-lg border border-gray-300   dark:bg-gray-700 dark:border-gray-600  dark:text-white ;
+}
+
+.is-active {
+  @apply  text-red-500 font-bold rounded;
+}
+
+.tiptap {
+  resize: vertical;
+  transition: all 2s, height 0s;
+}
+
+.tiptap .ProseMirror {
+  height: 400px;
+}
+
+.tiptap ul {
+  list-style-type: circle;
+}
+
+.tiptap ol {
+  list-style-type: decimal;
+}
+
+.tiptap ul,
+.tiptap ol {
+  padding-left: 2em;
+}
+
+.tiptap li {
+  margin-top: 0.5em;
+}

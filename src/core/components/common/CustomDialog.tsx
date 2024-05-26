@@ -32,7 +32,12 @@ export default function CustomDialog({
   buttonSize,
   buttonClassName,
   setOpen,
+  text,
 }: {
+  /**
+   * The text to be displayed instead of the button. If not provided, the icon will be used.
+   */
+  text?: string;
   /**
    * Determines whether to display the button. Default is true.
    */
@@ -92,7 +97,7 @@ export default function CustomDialog({
     <>
       <Dialog onOpenChange={setOpen} open={open}>
         <DialogTrigger asChild>
-          {displayButton && (
+          {displayButton ? (
             <button
               onClick={() => setOpen?.(true)}
               className={cn(
@@ -103,6 +108,10 @@ export default function CustomDialog({
             >
               {buttonText ?? icon}
             </button>
+          ) : (
+            <div className="text-gray-300 text-sm bg-green-900 p-2 rounded-xl text-center hover:text-gray-900 dark:text-gray-50 dark:hover:bg-green-600  focus:outline-none">
+              {text}
+            </div>
           )}
         </DialogTrigger>
         <DialogContent>

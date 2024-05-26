@@ -23,6 +23,33 @@ export default defineSchema({
   })
     .index("by_createdBy", ["createdBy"])
     .index("by_category", ["category"]),
+  Cours: defineTable({
+    name: v.string(),
+    body: v.string(),
+    imageUrl: v.string(),
+    lessons: v.array(v.string()),
+    competences: v.array(v.id("Competences")),
+    sequenceId: v.id("Sequences"),
+    description: v.string(),
+    createdBy: v.string(),
+    createdAt: v.float64(),
+    category: v.string(),
+  })
+    .index("by_createdBy", ["createdBy"])
+    .index("by_sequenceId", ["sequenceId"]),
+  Sequences: defineTable({
+    name: v.string(),
+    body: v.string(),
+    imageUrl: v.string(),
+    coursIds: v.array(v.id("Cours")),
+    competencesIds: v.array(v.id("Competences")),
+    description: v.string(),
+    createdBy: v.string(),
+    createdAt: v.float64(),
+    category: v.string(),
+  })
+    .index("by_createdBy", ["createdBy"])
+    .index("by_category", ["category"]),
   Classes: defineTable({
     userId: v.string(),
     description: v.optional(v.string()),

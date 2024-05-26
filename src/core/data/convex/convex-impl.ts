@@ -5,7 +5,14 @@ import { DocumentData } from "../database-types";
 import { api } from "../../../../convex/_generated/api";
 import { fetchQuery, fetchMutation } from "convex/nextjs";
 import { UserType } from "@/features/user/domain/entities/user-schema";
-import { Category, Competence } from "@/features/comp-cat/domain/entities/schemas";
+import {
+  Category,
+  Competence,
+} from "@/features/comp-cat/domain/entities/schemas";
+import {
+  Cours,
+  Sequence,
+} from "@/features/cours-sequence/domain/entities/cours-schemas";
 
 export interface ConvexDatabaseOptions {
   db: typeof api;
@@ -176,6 +183,331 @@ export default class ConvexDatabase extends IDatabase {
         Failure.invalidValue({
           invalidValue: competence,
           message: "Error adding competence",
+        })
+      );
+    }
+  }
+
+  getAllCours({
+    userId,
+  }: {
+    userId: string;
+  }): Promise<Either<Failure<string>, DocumentData[]>> {
+    throw new Error("Method not implemented.");
+  }
+  async getSingleCours({
+    userId,
+    coursId,
+  }: {
+    userId: string;
+    coursId: string;
+  }): Promise<Either<Failure<string>, DocumentData>> {
+    try {
+      const result = await fetchQuery(this._db.cours.getSingleCours, {
+        userId,
+        coursId,
+      });
+      if (!result) {
+        return left(
+          Failure.invalidValue({
+            invalidValue: coursId,
+            message: `
+          Cours not found with id: ${coursId}
+          `,
+          })
+        );
+      }
+      return right(result);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: coursId,
+          message: "Error getting single cours",
+        })
+      );
+    }
+  }
+  async addCours({
+    userId,
+    cours,
+  }: {
+    userId: string;
+    cours: Omit<Cours, "_id" | "createdAt">;
+  }): Promise<Either<Failure<string>, string>> {
+    try {
+      const result = await fetchMutation(this._db.cours.createCours, {
+        sequenceId: cours.sequenceId,
+        imageUrl: cours.imageUrl,
+        userId,
+        name: cours.name,
+        body: cours.body,
+        lessons: cours.lessons,
+        description: cours.description,
+        competences: cours.competences,
+
+        category: cours.category,
+      });
+      if (!result) {
+        return left(
+          Failure.invalidValue({
+            invalidValue: cours,
+            message: "Error adding cours",
+          })
+        );
+      }
+      return right(result);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: cours,
+          message: "Error adding cours",
+        })
+      );
+    }
+  }
+
+  async updateCours({
+    userId,
+    cours,
+  }: {
+    userId: string;
+    cours: {
+      _id: string;
+      name: string;
+      body: string;
+      lessons: string[];
+      competences: string[];
+      description: string;
+      createdBy: string;
+      createdAt: number;
+      category: string;
+    };
+  }): Promise<Either<Failure<string>, void>> {
+    try {
+      const result = await fetchMutation(this._db.cours.updateCours, {
+        userId,
+        coursId: cours._id,
+        name: cours.name,
+        body: cours.body,
+        lessons: cours.lessons,
+        competences: cours.competences,
+        description: cours.description,
+        category: cours.category,
+      });
+      if (!result) {
+        return left(
+          Failure.invalidValue({
+            invalidValue: cours,
+            message: "Error updating cours",
+          })
+        );
+      }
+      return right(undefined);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: cours,
+          message: "Error updating cours",
+        })
+      );
+    }
+  }
+
+  async updateCoursBody({
+    userId,
+    coursId,
+    body,
+  }: {
+    userId: string;
+    coursId: string;
+    body: string;
+  }): Promise<Either<Failure<string>, void>> {
+    try {
+      await fetchMutation(this._db.cours.updateCoursBody, {
+        userId,
+        coursId,
+        body,
+      });
+
+      return right(undefined);
+    } catch (error) {
+      console.log({ error });
+      return left(
+        Failure.invalidValue({
+          invalidValue: body,
+          message: "Error updating cours body: unknown",
+        })
+      );
+    }
+  }
+
+  async addSequence({
+    userId,
+    sequence,
+  }: {
+    userId: string;
+    sequence: Omit<Sequence, "createdAt" | "_id">;
+  }): Promise<Either<Failure<string>, string>> {
+    try {
+      const result = await fetchMutation(this._db.sequence.createSequence, {
+        userId,
+        imageUrl: sequence.imageUrl,
+        name: sequence.name,
+        body: sequence.body,
+        description: sequence.description,
+        category: sequence.category,
+        competencesIds: sequence.competencesIds,
+      });
+      if (!result) {
+        return left(
+          Failure.invalidValue({
+            invalidValue: sequence,
+            message: "Error adding sequence",
+            code: "INF103",
+          })
+        );
+      }
+
+      return right(result);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: sequence,
+          message: "Error adding sequence",
+          code: "INF101",
+        })
+      );
+    }
+  }
+  async getSequences({
+    userId,
+  }: {
+    userId: string;
+  }): Promise<Either<Failure<string>, DocumentData[]>> {
+    try {
+      const result = await fetchQuery(this._db.sequence.getAllSequences, {
+        userId,
+      });
+      if (!result) {
+        return left(
+          Failure.invalidValue({
+            invalidValue: userId,
+            message: "Error getting sequences",
+            code: "INF103",
+          })
+        );
+      }
+
+      return right(result);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: userId,
+          message: "Error getting sequences",
+          code: "INF101",
+        })
+      );
+    }
+  }
+  async getSingleSequence({
+    userId,
+    sequenceId,
+  }: {
+    userId: string;
+    sequenceId: string;
+  }): Promise<Either<Failure<string>, DocumentData>> {
+    try {
+      const result = await fetchQuery(this._db.sequence.getSingleSequence, {
+        userId,
+        sequenceId,
+      });
+      if (!result) {
+        return left(
+          Failure.invalidValue({
+            invalidValue: sequenceId,
+            message: "Error getting single sequence",
+            code: "INF103",
+          })
+        );
+      }
+      return right(result);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: sequenceId,
+          message: "Error getting single sequence",
+          code: "INF101",
+        })
+      );
+    }
+  }
+  addCoursToSequence({
+    userId,
+    sequenceId,
+    coursId,
+  }: {
+    userId: string;
+    sequenceId: string;
+    coursId: string[];
+  }): Promise<Either<Failure<string>, void>> {
+    throw new Error("Method not implemented.");
+  }
+
+  async addBodyToSequence({
+    userId,
+    sequenceId,
+    body,
+  }: {
+    userId: string;
+    sequenceId: string;
+    body: string;
+  }): Promise<Either<Failure<string>, void>> {
+    try {
+      await fetchMutation(this._db.sequence.addBodyToSequence, {
+        userId,
+        sequenceId,
+        body,
+      });
+      return right(undefined);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: body,
+          message: "Error adding body to sequence",
+          code: "INF101",
+        })
+      );
+    }
+  }
+
+  async getAllCoursFromSequence({
+    userId,
+    sequenceId,
+  }: {
+    userId: string;
+    sequenceId: string;
+  }): Promise<Either<Failure<string>, DocumentData[]>> {
+    try {
+      const result = await fetchQuery(this._db.sequence.getAllCoursInSequence, {
+        userId,
+        sequenceId,
+      });
+      if (!result) {
+        return left(
+          Failure.invalidValue({
+            invalidValue: sequenceId,
+            message: "Error getting all cours from sequence",
+            code: "INF103",
+          })
+        );
+      }
+      return right(result);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: sequenceId,
+          message: "Error getting all cours from sequence",
+          code: "INF101",
         })
       );
     }
