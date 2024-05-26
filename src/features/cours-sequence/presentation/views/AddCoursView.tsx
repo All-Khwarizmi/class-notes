@@ -7,9 +7,12 @@ import { useState } from "react";
 import { Cours } from "../../domain/entities/cours-schemas";
 import { useForm } from "react-hook-form";
 import useSaveSequenceMetadata from "../../application/usecases/services/useSaveSequenceMetadata";
-import { th } from "@faker-js/faker";
+
 export interface CoursSequenceForm
-  extends Pick<Cours, "description" | "category" | "name" | "competences"> {}
+  extends Pick<
+    Cours,
+    "description" | "category" | "name" | "competences" | "imageUrl"
+  > {}
 export default function AddCoursOrSequenceView({
   competences,
   authUser,
