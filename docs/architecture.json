@@ -1,0 +1,31 @@
+{
+  "nodes": [
+    {
+      "id": "infra",
+      "label": "Infra Layer",
+      "description": "Handles interactions with the external system, implements error handling and data fetching."
+    },
+    {
+      "id": "application",
+      "label": "Application Layer",
+      "description": "Manages repositories and use cases, handling business logic and data manipulation."
+    },
+    {
+      "id": "presentation",
+      "label": "Presentation Layer",
+      "description": "Responsible for displaying data to the user, adapting data for the user interface."
+    }
+  ],
+  "edges": [
+    {
+      "from": "infra",
+      "to": "application",
+      "label": "Data Flow"
+    },
+    {
+      "from": "application",
+      "to": "presentation",
+      "label": "Data Flow"
+    }
+  ]
+}
