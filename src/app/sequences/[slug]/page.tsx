@@ -1,16 +1,41 @@
+import NotFound from "@/app/not-found";
+import { authUseCases } from "@/features/auth/application/usecases/auth-usecases";
+import { coursUsecases } from "@/features/cours-sequence/application/usecases/cours-usecases";
+import CoursSequenceView from "@/features/cours-sequence/presentation/views/CoursSequenceView";
+import { isLeft } from "fp-ts/lib/Either";
+import { redirect } from "next/navigation";
 import React from "react";
 
-function Page({
+async function Page({
   params,
 }: {
   params: {
     slug: string;
   };
 }) {
-  return <div>
-    <h1>Sequence page</h1>
-    <p>Slug: {params.slug}</p>
-  </div>;
+  if (!params.slug) {
+    return <NotFound />;
+  }
+  const authUser = await authUseCases.getUserAuth();
+  if (isLeft(authUser)) {
+    redirect("/login");
+  }
+
+  const eitherSequence = await coursUsecases.getSingleSequence({
+    userId: authUser.right.userId,
+    sequenceId: params.slug,
+  });
+  if (isLeft(eitherSequence)) {
+    console.log(eitherSequence.left);
+    return <NotFound />;
+  }
+  return (
+    <CoursSequenceView
+      sequence={eitherSequence.right}
+      userId={authUser.right.userId}
+      type="sequence"
+    />
+  );
 }
 
 export default Page;
