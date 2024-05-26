@@ -13,6 +13,8 @@ import { Button } from "@/core/components/ui/button";
 import CompetenceSelectorDialog from "./CompetenceSelectorDialog";
 import { UseFormReturn } from "react-hook-form";
 import { CoursSequenceForm } from "../views/AddCoursView";
+import SelectImageUrl from "./SelectImageUrl";
+import { useState } from "react";
 
 export default function AddCoursOrSequenceForm({
   form,
@@ -39,6 +41,9 @@ export default function AddCoursOrSequenceForm({
   onSubmit: (data: CoursSequenceForm) => void;
   title: string;
 }) {
+  const [imageUrl, setImageUrl] = useState<string>(
+    "/images/mos-design-jzFbbG2WXv0-unsplash.jpg"
+  );
   return (
     <>
       <h1 className="text-2xl font-bold pb-4 ">{title}</h1>
@@ -102,10 +107,20 @@ export default function AddCoursOrSequenceForm({
             setOpen={setOpen}
           />
 
+          <SelectImageUrl
+            imageUrl={imageUrl}
+            setImageUrl={setImageUrl}
+            
+          />
+
           <Button
             onClick={(event) => {
               event.preventDefault();
-              onSubmit(form.getValues());
+              onSubmit({
+                ...form.getValues(),
+                competences: selectedCompetences.map((c) => c._id),
+                imageUrl,
+              });
             }}
             type="submit"
           >
