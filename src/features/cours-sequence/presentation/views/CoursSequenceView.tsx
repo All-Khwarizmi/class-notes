@@ -24,9 +24,15 @@ export default function CoursSequenceView({
       </EditorProviderWrapper>
     );
   }
-  return (
-    <EditorProviderWrapper content={""}>
-      <div></div>
-    </EditorProviderWrapper>
-  );
+  if (type === "sequence" && sequence) {
+    return (
+      <EditorProviderWrapper content={sequence.body}>
+        <EditorChild>
+          <div></div>
+        </EditorChild>
+      </EditorProviderWrapper>
+    );
+  }
+
+  return null;
 }
