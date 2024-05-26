@@ -20,11 +20,16 @@ export default function CoursSequenceView({
 }) {
   if (type === "cours" && cours) {
     return (
-      <EditorProviderWrapper content={cours.body}>
-        <EditorChild>
-          <CoursSaveButton userId={userId} cours={cours} />
-        </EditorChild>
-      </EditorProviderWrapper>
+      <>
+        <h1 className="text-2xl font-bold pb-4 dark:text-slate-300 text-slate-500 ">
+          {cours.name}
+        </h1>
+        <EditorProviderWrapper content={cours.body}>
+          <div className="flex gap-2 mt-2">
+            <CoursSaveButton userId={userId} cours={cours} />
+          </div>
+        </EditorProviderWrapper>
+      </>
     );
   }
   if (type === "sequence" && sequence) {
