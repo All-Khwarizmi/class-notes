@@ -1,4 +1,4 @@
-import { Cours } from "@/features/cours/domain/entities/cours-schemas";
+import { Cours } from "@/features/cours-sequence/domain/entities/cours-schemas";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { coursUsecases } from "../cours-usecases";

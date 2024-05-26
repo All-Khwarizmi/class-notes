@@ -6,7 +6,7 @@ import {
   Category,
   Competence,
 } from "@/features/comp-cat/domain/entities/schemas";
-import { Cours } from "@/features/cours/domain/entities/cours-schemas";
+import { Cours } from "@/features/cours-sequence/domain/entities/cours-schemas";
 
 export default abstract class IDatabase {
   abstract getUser({

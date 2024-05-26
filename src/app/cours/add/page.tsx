@@ -1,4 +1,4 @@
-import AddCoursView from "@/features/cours/presentation/views/AddCoursView";
+import AddCoursView from "@/features/cours-sequence/presentation/views/AddCoursView";
 
 export default async function Page() {
   return <AddCoursView />;

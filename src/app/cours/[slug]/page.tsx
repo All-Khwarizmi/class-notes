@@ -1,7 +1,7 @@
 import NotFound from "@/app/not-found";
 import { authUseCases } from "@/features/auth/application/usecases/auth-usecases";
-import { coursUsecases } from "@/features/cours/application/usecases/cours-usecases";
-import CoursView from "@/features/cours/presentation/views/CoursView";
+import { coursUsecases } from "@/features/cours-sequence/application/usecases/cours-usecases";
+import CoursView from "@/features/cours-sequence/presentation/views/CoursView";
 import { isLeft } from "fp-ts/lib/Either";
 import { redirect } from "next/navigation";
 

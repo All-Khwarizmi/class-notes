@@ -9,7 +9,7 @@ import {
   Category,
   Competence,
 } from "@/features/comp-cat/domain/entities/schemas";
-import { Cours } from "@/features/cours/domain/entities/cours-schemas";
+import { Cours } from "@/features/cours-sequence/domain/entities/cours-schemas";
 
 export interface ConvexDatabaseOptions {
   db: typeof api;
@@ -323,10 +323,10 @@ export default class ConvexDatabase extends IDatabase {
         coursId,
         body,
       });
-     
+
       return right(undefined);
     } catch (error) {
-      console.log({ error }); 
+      console.log({ error });
       return left(
         Failure.invalidValue({
           invalidValue: body,
