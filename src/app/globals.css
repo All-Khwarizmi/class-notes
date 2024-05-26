@@ -149,31 +149,28 @@ body {
   @apply  text-red-500 font-bold rounded;
 }
 
-.tiptap  {
+.tiptap {
   resize: vertical;
-  transition: all 2s, height 0s; 
+  transition: all 2s, height 0s;
+}
 
-  .ProseMirror {
-    height: 400px; 
-  }
+.tiptap .ProseMirror {
+  height: 400px;
+}
 
-  ul {
-    list-style-type: circle;
+.tiptap ul {
+  list-style-type: circle;
+}
 
-  }
+.tiptap ol {
+  list-style-type: decimal;
+}
 
-  ol {
-    list-style-type: decimal;
-  }
+.tiptap ul,
+.tiptap ol {
+  padding-left: 2em;
+}
 
-  ul, ol {
-    padding-left: 2em;
-  }
-
-  li {
-    margin-top: 0.5em;
-     
-
-  }
-
+.tiptap li {
+  margin-top: 0.5em;
 }
