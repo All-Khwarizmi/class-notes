@@ -10,7 +10,6 @@ import CoursRepository, {
 } from "../repositories/cours-repository";
 import { right } from "fp-ts/lib/Either";
 import Failure from "@/core/failures/failures";
-import { E } from "vitest/dist/reporters-P7C2ytIv.js";
 
 export default class CoursUsecases {
   private readonly _repository: CoursRepository;
@@ -116,6 +115,18 @@ export default class CoursUsecases {
       );
     }
     return right(validateSequence.data);
+  }
+
+  async addBodyToSequence({
+    userId,
+    sequenceId,
+    body,
+  }: {
+    userId: string;
+    sequenceId: string;
+    body: string;
+  }) {
+    return this._repository.addBodyToSequence({ userId, sequenceId, body });
   }
 }
 

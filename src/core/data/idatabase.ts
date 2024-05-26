@@ -127,4 +127,14 @@ export default abstract class IDatabase {
     sequenceId: string;
     coursId: string[];
   }): Promise<Either<Failure<string>, void>>;
+
+  abstract addBodyToSequence({
+    userId,
+    sequenceId,
+    body,
+  }: {
+    userId: string;
+    sequenceId: string;
+    body: string;
+  }): Promise<Either<Failure<string>, void>>;
 }

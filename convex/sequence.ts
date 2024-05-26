@@ -90,64 +90,90 @@ export const getAllSequences = query({
   },
 });
 
-
 export const getSingleSequence = query({
-    args: {
-        userId: v.string(),
-        sequenceId: v.string(),
-    },
-    handler: async (ctx, args) => {
-        const user = await ctx.db
-        .query("Users")
-        .filter((q) => q.eq(q.field("userId"), args.userId))
+  args: {
+    userId: v.string(),
+    sequenceId: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const user = await ctx.db
+      .query("Users")
+      .filter((q) => q.eq(q.field("userId"), args.userId))
+      .first();
+
+    if (user) {
+      const sequence = await ctx.db
+        .query("Sequences")
+        .filter((q) => q.eq(q.field("_id"), args.sequenceId))
         .first();
-    
-        if (user) {
-        const sequence = await ctx.db
-            .query("Sequences")
-            .filter((q) => q.eq(q.field("_id"), args.sequenceId))
-            .first();
-        return sequence;
-        }
-    },
-    });
+      return sequence;
+    }
+  },
+});
 
 export const updateSequence = mutation({
-    args: {
-        userId: v.string(),
-        sequenceId: v.string(),
-        name: v.string(),
-        body: v.string(),
-        competencesIds: v.array(v.string()),
-        description: v.string(),
-        category: v.string(),
-    },
-    handler: async (ctx, args) => {
-        const user = await ctx.db
-        .query("Users")
-        .filter((q) => q.eq(q.field("userId"), args.userId))
+  args: {
+    userId: v.string(),
+    sequenceId: v.string(),
+    name: v.string(),
+    body: v.string(),
+    competencesIds: v.array(v.string()),
+    description: v.string(),
+    category: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const user = await ctx.db
+      .query("Users")
+      .filter((q) => q.eq(q.field("userId"), args.userId))
+      .first();
+
+    if (user) {
+      const existingSequence = await ctx.db
+        .query("Sequences")
+        .filter((q) => q.eq(q.field("_id"), args.sequenceId))
         .first();
-    
-        if (user) {
-        const existingSequence = await ctx.db
-            .query("Sequences")
-            .filter((q) => q.eq(q.field("_id"), args.sequenceId))
-            .first();
-    
-        if (existingSequence) {
-            const competences = await ctx.db
-            .query("Competences")
-            .filter((q) => q.eq(q.field("createdBy"), user!._id))
-            .collect();
-    
-            await ctx.db.patch(existingSequence._id, {
-            name: args.name,
-            body: args.body,
-            competencesIds: competences.map((c) => c._id),
-            description: args.description,
-            category: args.category,
-            });
-        }
-        }
-    },
-    });
+
+      if (existingSequence) {
+        const competences = await ctx.db
+          .query("Competences")
+          .filter((q) => q.eq(q.field("createdBy"), user!._id))
+          .collect();
+
+        await ctx.db.patch(existingSequence._id, {
+          name: args.name,
+          body: args.body,
+          competencesIds: competences.map((c) => c._id),
+          description: args.description,
+          category: args.category,
+        });
+      }
+    }
+  },
+});
+
+export const addBodyToSequence = mutation({
+  args: {
+    userId: v.string(),
+    sequenceId: v.string(),
+    body: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const user = await ctx.db
+      .query("Users")
+      .filter((q) => q.eq(q.field("userId"), args.userId))
+      .first();
+
+    if (user) {
+      const existingSequence = await ctx.db
+        .query("Sequences")
+        .filter((q) => q.eq(q.field("_id"), args.sequenceId))
+        .first();
+
+      if (existingSequence) {
+        await ctx.db.patch(existingSequence._id, {
+          body: args.body,
+        });
+      }
+    }
+  },
+});

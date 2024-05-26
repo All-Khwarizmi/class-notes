@@ -435,6 +435,33 @@ export default class ConvexDatabase extends IDatabase {
   }): Promise<Either<Failure<string>, void>> {
     throw new Error("Method not implemented.");
   }
+
+  async addBodyToSequence({
+    userId,
+    sequenceId,
+    body,
+  }: {
+    userId: string;
+    sequenceId: string;
+    body: string;
+  }): Promise<Either<Failure<string>, void>> {
+    try {
+      await fetchMutation(this._db.sequence.addBodyToSequence, {
+        userId,
+        sequenceId,
+        body,
+      });
+      return right(undefined);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: body,
+          message: "Error adding body to sequence",
+          code: "INF101",
+        })
+      );
+    }
+  }
 }
 
 export const convexDatabase = new ConvexDatabase({ db: api });
