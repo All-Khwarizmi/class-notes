@@ -12,6 +12,7 @@ export type CoursMetadata = Pick<
 export interface SaveCoursMetadataOptions {
   cours: CoursMetadata;
   userId: string;
+  sequenceId: string;
 }
 
 export default function useSaveCoursMetadata() {
@@ -29,6 +30,7 @@ export default function useSaveCoursMetadata() {
       .addCours({
         cours: {
           ...saveCoursMetadata.cours,
+          sequenceId: saveCoursMetadata.sequenceId,
           body: "",
           lessons: [],
           createdBy: saveCoursMetadata.userId,
