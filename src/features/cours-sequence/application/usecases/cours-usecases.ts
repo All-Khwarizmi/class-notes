@@ -1,5 +1,5 @@
 import { isLeft, left } from "fp-ts/lib/Either";
-import { Cours, CoursSchema } from "../../domain/entities/cours-schemas";
+import { Cours, CoursSchema, Sequence } from "../../domain/entities/cours-schemas";
 import CoursRepository, {
   coursRepository,
 } from "../repositories/cours-repository";
@@ -68,6 +68,16 @@ export default class CoursUsecases {
     body: string;
   }) {
     return this._repository.updateCoursBody({ userId, coursId, body });
+  }
+
+  async addSequence({
+    userId,
+    sequence,
+  }: {
+    userId: string;
+    sequence: Omit<Sequence, "_id" | "createdAt" | "coursIds">;
+  }) {
+    return this._repository.addSequence({ userId, sequence });
   }
 }
 
