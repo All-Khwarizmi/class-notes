@@ -129,26 +129,33 @@ export default class CoursUsecases {
     return this._repository.addBodyToSequence({ userId, sequenceId, body });
   }
 
-  async getAllSequences({ userId }: { userId: string }) {
+  async getAllSequences({ userId }: { userId: string }): Promise<Either<Failure<string>, Sequence[]>> {
     const eitherSequences = await this._repository.getAllSequences({ userId });
 
     if (isLeft(eitherSequences)) {
       return eitherSequences;
     }
-    const validateSequences = SequenceSchema.safeParse(eitherSequences.right);
-    if (!validateSequences.success) {
-      return left(
-        Failure.invalidValue({
-          invalidValue: eitherSequences.right,
-          message: `
-          Unable to validate sequences
+    const validateSequences : Sequence[]= [] 
+
+    for (const sequence of eitherSequences.right) {
+      const validateSequence = SequenceSchema.safeParse(sequence);
+      if (!validateSequence.success) {
+        return left(
+          Failure.invalidValue({
+            invalidValue: sequence,
+            message: `
+            Unable to validate sequences
           
-            ${JSON.stringify(validateSequences.error)}
-          `,
-          code: "APP203",
-        })
-      );
+              ${JSON.stringify(validateSequence.error)}
+            `,
+            code: "APP203",
+          })
+        );
+      }
+      validateSequences.push(validateSequence.data)
     }
+    return right(validateSequences);
+   
   }
 }
 
