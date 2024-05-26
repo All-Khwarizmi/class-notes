@@ -28,9 +28,9 @@ export const NavItems: NavItem[] = [
     color: "text-orange-500",
   },
   {
-    title: "Cours",
+    title: "Sequences",
     icon: <Presentation size={24} />,
-    href: "/cours",
+    href: "/sequences",
     color: "text-orange-500",
   },
   {
