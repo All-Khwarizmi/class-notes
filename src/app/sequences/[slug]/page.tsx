@@ -29,11 +29,21 @@ async function Page({
     console.log(eitherSequence.left);
     return <NotFound />;
   }
+  // Get all cours from the sequence
+  const eitherCours = await coursUsecases.getAllCoursFromSequence({
+    userId: authUser.right.userId,
+    sequenceId: params.slug,
+  });
+  if (isLeft(eitherCours)) {
+    console.log(eitherCours.left);
+    return <NotFound />;
+  }
   return (
     <CoursSequenceView
       sequence={eitherSequence.right}
       userId={authUser.right.userId}
       type="sequence"
+      coursFromSequence={eitherCours.right}
     />
   );
 }
