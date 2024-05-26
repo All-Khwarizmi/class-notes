@@ -1,3 +1,4 @@
+import { sequence } from "fp-ts/lib/Traversable";
 import { mutation, query } from "./_generated/server";
 import { v } from "convex/values";
 
@@ -6,6 +7,7 @@ export const createCours = mutation({
     name: v.string(),
     body: v.string(),
     lessons: v.array(v.string()),
+    sequenceId: v.string(),
     competences: v.array(v.string()),
     description: v.string(),
     userId: v.string(),
@@ -18,6 +20,11 @@ export const createCours = mutation({
       .first();
 
     if (existingUser) {
+      const existingSequence = await ctx.db
+        .query("Sequences")
+        .filter((q) => q.eq(q.field("_id"), args.sequenceId))
+        .first();
+
       // get all competences
       const competences = await ctx.db
         .query("Competences")
@@ -25,6 +32,7 @@ export const createCours = mutation({
         .collect();
 
       const categoryId = await ctx.db.insert("Cours", {
+        sequenceId: existingSequence!._id,
         name: args.name,
         body: args.body,
         lessons: args.lessons,
