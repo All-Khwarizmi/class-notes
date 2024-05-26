@@ -2,7 +2,6 @@ import CustomDialog from "@/core/components/common/CustomDialog";
 import { FormItem, FormLabel } from "@/core/components/ui/form";
 import { Competence } from "@/features/comp-cat/domain/entities/schemas";
 import { Trash2 } from "lucide-react";
-import { Dispatch, SetStateAction } from "react";
 
 export default function CompetenceSelectorDialog({
   competences,
@@ -36,7 +35,7 @@ export default function CompetenceSelectorDialog({
                   {competence.name}
                   <button
                     onClick={() => {
-                      setSelectedCompetences({ competence });
+                      setSelectedCompetences({ competence, remove: true });
                     }}
                     className="bg-red-500 dark:bg-red-600 py-1 px-2 rounded-full text-white absolute top-0 right-0 -mt-2 -mr-2"
                   >
