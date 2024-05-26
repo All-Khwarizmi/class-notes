@@ -1,11 +1,13 @@
 import React from "react";
 import { Sequence } from "../../domain/entities/cours-schemas";
 import CoursSequenceCard from "../components/CoursSequenceCard";
+import { Button } from "@/core/components/ui/button";
+import Link  from "next/link";
 
 function SequencesListView({ sequences }: { sequences: Sequence[] }) {
   return (
     <>
-      <div>
+      <div className=" h-full w-full flex flex-col justify-between">
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
           {sequences.map((sequence) => (
             <CoursSequenceCard
@@ -18,6 +20,14 @@ function SequencesListView({ sequences }: { sequences: Sequence[] }) {
             />
           ))}
         </div>
+        {/* Add button for adding sequence */}
+        <Button
+        variant={"outline"}
+        >
+            <Link href="/sequences/add">
+                Add Sequence
+            </Link>
+        </Button>
       </div>
     </>
   );
