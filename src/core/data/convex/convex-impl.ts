@@ -392,17 +392,15 @@ export default class ConvexDatabase extends IDatabase {
   }): Promise<Either<Failure<string>, DocumentData[]>> {
     throw new Error("Method not implemented.");
   }
- async getSingleSequence({
+  async getSingleSequence({
     userId,
     sequenceId,
   }: {
     userId: string;
     sequenceId: string;
   }): Promise<Either<Failure<string>, DocumentData>> {
-   
     try {
-      
-      const result = fetchQuery(this._db.sequence.getSingleSequence, {
+      const result = await fetchQuery(this._db.sequence.getSingleSequence, {
         userId,
         sequenceId,
       });
@@ -424,7 +422,6 @@ export default class ConvexDatabase extends IDatabase {
           code: "INF101",
         })
       );
-      
     }
   }
   addCoursToSequence({
