@@ -139,21 +139,21 @@ body {
 
 
 .tiptap  {
-  @apply h-3/4 block p-2.5 w-full text-sm text-gray-900  rounded-bl-lg rounded-br-lg border border-gray-300  dark:border-slate-700  dark:text-white ;
+  @apply  p-2.5 w-full text-sm text-gray-900  rounded-bl-lg rounded-br-lg border border-gray-300  dark:border-slate-700  dark:text-white ;
 }
 
 .is-active {
   @apply  text-red-500 font-bold rounded;
 }
 
-.tiptap {
+/* .tiptap {
   resize: vertical;
   transition: all 2s, height 0s;
-}
-
+} */
+/* 
 .tiptap .ProseMirror {
   height: 400px;
-}
+} */
 
 .tiptap ul {
   list-style-type: circle;

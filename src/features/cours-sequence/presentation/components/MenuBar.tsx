@@ -24,8 +24,8 @@ export const MenuBar = () => {
       <MenuTextColor />
 
       <MenuImage />
-
       <MenuTextAlignButtons />
+
       <button
         onClick={() => editor.chain().focus().toggleItalic().run()}
         disabled={!editor.can().chain().focus().toggleItalic().run()}

@@ -14,9 +14,10 @@ export const EXTENSIONS = [
   }),
   ResizableImage,
   ResizableImage.configure({
+    
     inline: true,
     HTMLAttributes: {
-      class: "w-max-72",
+
     },
   }),
 
