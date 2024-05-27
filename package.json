@@ -68,7 +68,6 @@
     "sonner": "^1.4.41",
     "tailwind-merge": "2.2.2",
     "tailwindcss-animate": "1.0.7",
-    "tiptap-extension-resize-image": "^1.1.5",
     "zod": "3.22.4",
     "zustand": "4.5.2"
   },
