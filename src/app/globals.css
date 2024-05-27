@@ -139,7 +139,7 @@ body {
 
 
 .tiptap  {
-  @apply h-3/4 block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-bl-lg rounded-br-lg border border-gray-300   dark:bg-gray-700 dark:border-gray-600  dark:text-white ;
+  @apply h-3/4 block p-2.5 w-full text-sm text-gray-900  rounded-bl-lg rounded-br-lg border border-gray-300  dark:border-slate-700  dark:text-white ;
 }
 
 .is-active {
