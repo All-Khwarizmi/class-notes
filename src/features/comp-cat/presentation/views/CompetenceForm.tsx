@@ -36,7 +36,9 @@ export default function CompetenceForm({
   categories: Category[];
   userId: string;
 }) {
-  const [category, setCategory] = useState<string>(categories[0].name);
+  const [category, setCategory] = useState<string>(
+    categories[0] === undefined ? "" : categories[0].name
+  );
   const [open, setOpen] = useState(false);
   const { setCreateCompetenceOptions } = useCreateCompetence();
   const form = useForm<Competence>({
