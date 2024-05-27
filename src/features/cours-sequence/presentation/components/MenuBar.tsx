@@ -6,6 +6,7 @@ import ButtonMenuBar from "./ButtonMunuBar";
 import { HeadingMenuBar } from "./HeadingMenuBar";
 import MenuTextColor from "./MenuTextColor";
 import MenuImage from "./MenuImage";
+import MenuTextAlignButtons from "./MenuTextAlign";
 
 export const MenuBar = () => {
   const { editor } = useCurrentEditor();
@@ -23,6 +24,8 @@ export const MenuBar = () => {
       <MenuTextColor />
 
       <MenuImage />
+
+      <MenuTextAlignButtons />
       <button
         onClick={() => editor.chain().focus().toggleItalic().run()}
         disabled={!editor.can().chain().focus().toggleItalic().run()}
