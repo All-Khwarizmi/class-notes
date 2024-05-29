@@ -8,7 +8,7 @@ function SequencesListView({ sequences }: { sequences: Sequence[] }) {
   return (
     <>
       <div className=" h-full w-full flex flex-col justify-between">
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-5">
           {sequences.map((sequence) => (
             <CoursSequenceCard
               key={sequence._id}
