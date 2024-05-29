@@ -11,6 +11,7 @@ import {
 import { useCurrentEditor } from "@tiptap/react";
 import { Level } from "@tiptap/extension-heading";
 import { cn } from "@/lib/utils";
+import { Heading } from "lucide-react";
 
 export function HeadingMenuBar() {
   const { editor } = useCurrentEditor();
@@ -32,7 +33,7 @@ export function HeadingMenuBar() {
             "bg-slate-400 rounded-md p-1 px-2"
           )}
         >
-          Paragraph
+          <Heading size={12} />
         </button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">
