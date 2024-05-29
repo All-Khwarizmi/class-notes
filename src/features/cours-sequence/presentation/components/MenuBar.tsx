@@ -14,7 +14,6 @@ import MenuBold from "./MenuBold";
 import { HeadingMenuBar } from "./HeadingMenuBar";
 import MenuTextColor from "./MenuTextColor";
 import MenuImage from "./MenuImage";
-import MenuTextAlignButtons from "./MenuTextAlign";
 import MenuButton from "@/core/components/common/editor/MenuButton";
 import MenuTextAlign from "@/core/components/common/editor/MenuTextAlign";
 
