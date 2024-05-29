@@ -2,7 +2,7 @@ import { cn } from "@/lib/utils";
 import { useCurrentEditor } from "@tiptap/react";
 import { Bold } from "lucide-react";
 
-export default function ButtonMenuBar() {
+export default function MenuBold() {
   const { editor } = useCurrentEditor();
 
   if (!editor) {

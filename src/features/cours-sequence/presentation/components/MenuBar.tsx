@@ -12,7 +12,7 @@ import {
   Undo,
 } from "lucide-react";
 
-import MenuBold from "./ButtonMunuBar";
+import MenuBold from "./MenuBold";
 import { HeadingMenuBar } from "./HeadingMenuBar";
 import MenuTextColor from "./MenuTextColor";
 import MenuImage from "./MenuImage";
