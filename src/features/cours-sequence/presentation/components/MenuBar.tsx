@@ -1,11 +1,9 @@
-import { cn } from "@/lib/utils";
 import { useCurrentEditor } from "@tiptap/react";
 import {
   Code,
   Italic,
   List,
   ListOrdered,
-  Menu,
   Quote,
   Redo,
   Strikethrough,
@@ -18,6 +16,7 @@ import MenuTextColor from "./MenuTextColor";
 import MenuImage from "./MenuImage";
 import MenuTextAlignButtons from "./MenuTextAlign";
 import MenuButton from "@/core/components/common/editor/MenuButton";
+import MenuTextAlign from "@/core/components/common/editor/MenuTextAlign";
 
 export const MenuBar = () => {
   const { editor } = useCurrentEditor();
@@ -36,7 +35,7 @@ export const MenuBar = () => {
 
       <MenuImage />
 
-      <MenuTextAlignButtons />
+      <MenuTextAlign />
 
       <MenuButton
         onClick={() => editor.chain().focus().toggleItalic().run()}
