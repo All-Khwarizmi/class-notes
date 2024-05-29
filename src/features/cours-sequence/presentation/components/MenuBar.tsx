@@ -1,12 +1,23 @@
 import { cn } from "@/lib/utils";
 import { useCurrentEditor } from "@tiptap/react";
-import { Italic } from "lucide-react";
+import {
+  Code,
+  Italic,
+  List,
+  ListOrdered,
+  Menu,
+  Quote,
+  Redo,
+  Strikethrough,
+  Undo,
+} from "lucide-react";
 
-import ButtonMenuBar from "./ButtonMunuBar";
+import MenuBold from "./ButtonMunuBar";
 import { HeadingMenuBar } from "./HeadingMenuBar";
 import MenuTextColor from "./MenuTextColor";
 import MenuImage from "./MenuImage";
 import MenuTextAlignButtons from "./MenuTextAlign";
+import MenuButton from "@/core/components/common/editor/MenuButton";
 
 export const MenuBar = () => {
   const { editor } = useCurrentEditor();
@@ -17,77 +28,75 @@ export const MenuBar = () => {
 
   return (
     <div className="flex gap-1 flex-wrap p-2 bg-muted border boder-gray-2OO rounded-tr-lg rounded-tl-lg">
-      <ButtonMenuBar />
+      <MenuBold />
 
       <HeadingMenuBar />
 
       <MenuTextColor />
 
       <MenuImage />
+
       <MenuTextAlignButtons />
 
-      <button
+      <MenuButton
         onClick={() => editor.chain().focus().toggleItalic().run()}
         disabled={!editor.can().chain().focus().toggleItalic().run()}
-        className={cn(
-          editor.isActive("italic") ? "is-active" : "",
-          "bg-slate-400 rounded-md p-1 px-2"
-        )}
+        nodeName="italic"
       >
         <Italic size={12} />
-      </button>
-
-      <button
+      </MenuButton>
+      <MenuButton
         onClick={() => editor.chain().focus().toggleBulletList().run()}
-        className={editor.isActive("bulletList") ? "is-active" : ""}
+        nodeName="bulletList"
       >
-        bullet list
-      </button>
+        <List size={12} />
+      </MenuButton>
 
-      <button
+      <MenuButton
         onClick={() => editor.chain().focus().toggleOrderedList().run()}
-        className={editor.isActive("orderedList") ? "is-active" : ""}
+        nodeName="orderedList"
       >
-        ordered list
-      </button>
+        <ListOrdered size={12} />
+      </MenuButton>
 
-      <button
+      <MenuButton
         onClick={() => editor.chain().focus().toggleBlockquote().run()}
-        className={editor.isActive("blockquote") ? "is-active" : ""}
+        nodeName="blockquote"
       >
-        blockquote
-      </button>
+        <Quote size={12} />
+      </MenuButton>
 
-      <button onClick={() => editor.chain().focus().setHorizontalRule().run()}>
-        horizontal rule
-      </button>
+      <MenuButton
+        onClick={() => editor.chain().focus().toggleStrike().run()}
+        disabled={!editor.can().chain().focus().toggleStrike().run()}
+        nodeName="strike"
+      >
+        <Strikethrough size={12} />
+      </MenuButton>
 
-      <button onClick={() => editor.chain().focus().setHardBreak().run()}>
-        hard break
-      </button>
+      <MenuButton
+        onClick={() => editor.chain().focus().toggleCode().run()}
+        disabled={!editor.can().chain().focus().toggleCode().run()}
+        nodeName="code"
+      >
+        <Code size={12} />
+      </MenuButton>
 
-      <button
+      <MenuButton
         onClick={() => editor.chain().focus().undo().run()}
         disabled={!editor.can().chain().focus().undo().run()}
+        nodeName="undo"
       >
-        undo
-      </button>
+        <Undo size={12} />
+      </MenuButton>
 
-      <button
+      <MenuButton
         onClick={() => editor.chain().focus().redo().run()}
         disabled={!editor.can().chain().focus().redo().run()}
+        nodeName="redo"
       >
-        redo
-      </button>
-
-      <button
-        onClick={() => editor.chain().focus().setColor("#958DF1").run()}
-        className={
-          editor.isActive("textStyle", { color: "#958DF1" }) ? "is-active" : ""
-        }
-      >
-        purple
-      </button>
+        <Redo size={12} />
+      </MenuButton>
 
       {/* <button
         onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
