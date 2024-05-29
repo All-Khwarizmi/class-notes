@@ -9,7 +9,7 @@ function MenuButton({
   children,
 }: {
   onClick: () => void;
-  disabled: boolean;
+  disabled?: boolean;
   nodeName: string;
   children: React.ReactNode;
 }) {
