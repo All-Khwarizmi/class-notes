@@ -1,7 +1,7 @@
 "use client";
 import { Cours, Sequence } from "../../domain/entities/cours-schemas";
-import EditorProviderWrapper from "../components/EditorProvider";
-import CoursSaveButton from "../components/CoursSaveButton";
+import EditorProviderWrapper from "../../../../core/components/common/editor/EditorProvider";
+import CoursSaveButton from "../../../../core/components/common/editor/CoursSaveButton";
 import SaveSequenceBodyButton from "../components/SaveSequenceBodyButton";
 import { Button } from "@mui/material";
 import Link from "next/link";

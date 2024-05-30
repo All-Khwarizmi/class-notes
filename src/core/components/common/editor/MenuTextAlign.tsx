@@ -7,7 +7,6 @@ import {
   DropdownMenuTrigger,
 } from "@/core/components/ui/dropdown-menu";
 import { useCurrentEditor } from "@tiptap/react";
-import { Level } from "@tiptap/extension-heading";
 import { cn } from "@/lib/utils";
 import {
   AlignCenter,
