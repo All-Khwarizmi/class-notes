@@ -6,6 +6,7 @@
 import { CardContent, CardFooter, Card } from "@/core/components/ui/card";
 import Link from "next/link";
 import { Eye, PenIcon } from "lucide-react";
+import AfterMenuButton from "@/core/components/common/editor/AfterMenuButton";
 
 export default function CoursSequenceCard({
   title,
@@ -25,7 +26,7 @@ export default function CoursSequenceCard({
   pathToView?: string;
 }) {
   return (
-    <Card className=" max-w-sm" >
+    <Card className=" max-w-sm">
       <img
         alt="Product Image"
         className="rounded-t-lg object-cover w-full aspect-[3/2]"
@@ -49,12 +50,13 @@ export default function CoursSequenceCard({
       </CardContent>
       <CardFooter className="p-4">
         <div className="flex gap-2">
-          <Link
-            className="inline-flex  items-center justify-center rounded-md bg-gray-900 px-6 py-2  font-medium text-gray-50 shadow transition-colors hover:bg-gray-900/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-950 disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-50 dark:text-gray-900 dark:hover:bg-gray-50/90 dark:focus-visible:ring-gray-300"
-            href={path}
+          <AfterMenuButton
+            addButton={true}
+            path={path}
+            icon={<PenIcon size={12} />}
           >
             <PenIcon size={12} />
-          </Link>
+          </AfterMenuButton>
           {showViewButton && (
             <Link
               className="inline-flex  py-2 items-center justify-center rounded-md bg-gray-900 px-6 text-sm font-medium text-gray-50 shadow transition-colors hover:bg-gray-900/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-950 disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-50 dark:text-gray-900 dark:hover:bg-gray-50/90 dark:focus-visible:ring-gray-300"
