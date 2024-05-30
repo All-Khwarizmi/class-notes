@@ -267,25 +267,12 @@ export default class ConvexDatabase extends IDatabase {
   }
 
   async updateCours({
-    userId,
     cours,
   }: {
-    userId: string;
-    cours: {
-      _id: string;
-      name: string;
-      body: string;
-      lessons: string[];
-      competences: string[];
-      description: string;
-      createdBy: string;
-      createdAt: number;
-      category: string;
-    };
+    cours: Cours;
   }): Promise<Either<Failure<string>, void>> {
     try {
       const result = await fetchMutation(this._db.cours.updateCours, {
-        userId,
         coursId: cours._id,
         name: cours.name,
         body: cours.body,
