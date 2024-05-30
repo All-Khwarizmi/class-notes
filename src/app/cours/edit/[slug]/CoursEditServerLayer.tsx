@@ -69,7 +69,6 @@ async function CoursEditServerLayer(props: { slug: string }) {
     }
   });
   if (isFailure) {
-  
     return (
       <ErrorDialog
         message={`
@@ -81,7 +80,6 @@ async function CoursEditServerLayer(props: { slug: string }) {
     );
   }
   if (!cours) {
- 
     return (
       <ErrorDialog
         message={`
