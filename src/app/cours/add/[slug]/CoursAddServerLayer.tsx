@@ -5,7 +5,6 @@ import { authUseCases } from "@/features/auth/application/usecases/auth-usecases
 import { isLeft } from "fp-ts/lib/Either";
 import { redirect } from "next/navigation";
 import { Competence } from "@/features/comp-cat/domain/entities/schemas";
-import NotFound from "@/app/not-found";
 
 async function CoursAddServerLayer(
     props: { slug: string }
