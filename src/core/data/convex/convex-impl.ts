@@ -280,21 +280,16 @@ export default class ConvexDatabase extends IDatabase {
         competences: cours.competences,
         description: cours.description,
         category: cours.category,
+        imageUrl: cours.imageUrl,
       });
-      if (!result) {
-        return left(
-          Failure.invalidValue({
-            invalidValue: cours,
-            message: "Error updating cours",
-          })
-        );
-      }
+     
       return right(undefined);
     } catch (error) {
       return left(
         Failure.invalidValue({
           invalidValue: cours,
           message: "Error updating cours",
+          code: "INF101",
         })
       );
     }
