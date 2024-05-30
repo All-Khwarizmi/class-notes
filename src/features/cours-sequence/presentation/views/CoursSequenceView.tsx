@@ -3,12 +3,11 @@ import { Cours, Sequence } from "../../domain/entities/cours-schemas";
 import EditorProviderWrapper from "../../../../core/components/common/editor/EditorProvider";
 import CoursSaveButton from "../../../../core/components/common/editor/CoursSaveButton";
 import SaveSequenceBodyButton from "../components/SaveSequenceBodyButton";
-import { Button } from "@mui/material";
 import Link from "next/link";
 import CollapsibleCoursList from "../components/CallapsibleCoursList";
 import { Eye } from "lucide-react";
-import MenuButton from "@/core/components/common/editor/MenuButton";
 import AfterMenuButton from "@/core/components/common/editor/AfterMenuButton";
+import AfterMenuBar from "@/core/components/common/editor/AfterMunuBar";
 
 export default function CoursSequenceView({
   cours,
@@ -45,21 +44,21 @@ export default function CoursSequenceView({
         </h1>
         <EditorProviderWrapper content={sequence.body}>
           <div className="flex flex-col gap-4 ">
-            <div className="flex gap-2 bg-muted p-2">
+            <AfterMenuBar>
               <SaveSequenceBodyButton userId={userId} sequence={sequence} />
               {/* Add button to add a cours  */}
 
-              <AfterMenuButton>
-                <Link href={`/cours/add/${sequence._id}`}>Add Cours</Link>
-              </AfterMenuButton>
               <AfterMenuButton>
                 <Link href={`/sequences/show/${sequence._id}`}>
                   <Eye size={12} />
                 </Link>
               </AfterMenuButton>
-            </div>
+            </AfterMenuBar>
             <section>
-              <CollapsibleCoursList cours={coursFromSequence} />
+              <CollapsibleCoursList
+                cours={coursFromSequence}
+                sequenceId={sequence._id}
+              />
             </section>
           </div>
         </EditorProviderWrapper>
