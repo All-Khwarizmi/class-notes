@@ -25,7 +25,10 @@ export default function AddCoursOrSequenceForm({
   setOpen,
   onSubmit,
   title,
+  imageUrl,
 }: {
+  imageUrl?: string;
+
   form: UseFormReturn<CoursSequenceForm, any, undefined>;
   open: boolean;
   competences: Competence[];
@@ -41,8 +44,8 @@ export default function AddCoursOrSequenceForm({
   onSubmit: (data: CoursSequenceForm) => void;
   title: string;
 }) {
-  const [imageUrl, setImageUrl] = useState<string>(
-    "/images/mos-design-jzFbbG2WXv0-unsplash.jpg"
+  const [localImageUrl, setLocalImageUrl] = useState<string>(
+    imageUrl ?? "/images/mos-design-jzFbbG2WXv0-unsplash.jpg"
   );
   return (
     <>
@@ -108,9 +111,8 @@ export default function AddCoursOrSequenceForm({
           />
 
           <SelectImageUrl
-            imageUrl={imageUrl}
-            setImageUrl={setImageUrl}
-            
+            imageUrl={localImageUrl}
+            setImageUrl={setLocalImageUrl}
           />
 
           <Button
@@ -119,7 +121,7 @@ export default function AddCoursOrSequenceForm({
               onSubmit({
                 ...form.getValues(),
                 competences: selectedCompetences.map((c) => c._id),
-                imageUrl,
+                imageUrl: localImageUrl,
               });
             }}
             type="submit"
