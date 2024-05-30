@@ -29,8 +29,10 @@ export default function CoursSequenceView({
           {cours.name}
         </h1>
         <EditorProviderWrapper content={cours.body}>
-          <div className="flex gap-2 mt-2">
-            <CoursSaveButton userId={userId} cours={cours} />
+          <div className="flex flex-col gap-4 ">
+            <AfterMenuBar>
+              <CoursSaveButton userId={userId} cours={cours} />
+            </AfterMenuBar>
           </div>
         </EditorProviderWrapper>
       </>
