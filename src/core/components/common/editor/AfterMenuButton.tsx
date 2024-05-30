@@ -1,6 +1,5 @@
 import { cn } from "@/lib/utils";
-import { PropTypes } from "@mui/material";
-import { Ban, Cross, Plus } from "lucide-react";
+import { Ban, Plus } from "lucide-react";
 import Link from "next/link";
 import React, { ButtonHTMLAttributes } from "react";
 
@@ -9,6 +8,7 @@ function AfterMenuButton(props: {
   props?: ButtonHTMLAttributes<HTMLButtonElement>;
   addButton?: boolean;
   path?: string;
+  icon?: React.ReactNode;
 }) {
   if (props.addButton && props.path) {
     return (
@@ -19,9 +19,7 @@ function AfterMenuButton(props: {
           props.props?.className
         )}
       >
-        <Link href={props.path}>
-          <Plus size={12} />
-        </Link>
+        <Link href={props.path}>{props.icon ?? <Plus size={12} />}</Link>
       </button>
     );
   }
