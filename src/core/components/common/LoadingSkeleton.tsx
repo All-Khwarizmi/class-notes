@@ -5,7 +5,7 @@
  */
 import { Skeleton } from "@/core/components/ui/skeleton";
 
-export default function Component() {
+export default function LoadingSkeleton() {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
