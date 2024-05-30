@@ -65,10 +65,16 @@
     --ring: 212.7 26.8% 83.9%;
   }
 }
+html {
+  font-size: 12px;
+}
 
 body {
   height: 100vh;
   width: 100vw;
+  font-size: small;
+  font-family: 'Inter', sans-serif;
+
 }
  
 @layer base {
@@ -139,21 +145,21 @@ body {
 
 
 .tiptap  {
-  @apply h-3/4 block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-bl-lg rounded-br-lg border border-gray-300   dark:bg-gray-700 dark:border-gray-600  dark:text-white ;
+  @apply  p-2.5 w-full text-sm text-gray-900  rounded-bl-lg rounded-br-lg border border-gray-300  dark:border-slate-700  dark:text-white ;
 }
 
 .is-active {
   @apply  text-red-500 font-bold rounded;
 }
 
-.tiptap {
+/* .tiptap {
   resize: vertical;
   transition: all 2s, height 0s;
-}
-
+} */
+/* 
 .tiptap .ProseMirror {
   height: 400px;
-}
+} */
 
 .tiptap ul {
   list-style-type: circle;

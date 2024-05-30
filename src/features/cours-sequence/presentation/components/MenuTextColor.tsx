@@ -1,6 +1,5 @@
 import { useCurrentEditor } from "@tiptap/react";
 import { HexColorPicker } from "react-colorful";
-import { Button } from "@/core/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,6 +8,7 @@ import {
   DropdownMenuTrigger,
 } from "@/core/components/ui/dropdown-menu";
 import { useState } from "react";
+import { Pipette } from "lucide-react";
 export default function MenuTextColor() {
   const [color, setColor] = useState("#aabbcc");
   const { editor } = useCurrentEditor();
@@ -23,7 +23,9 @@ export default function MenuTextColor() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline">Text color</Button>
+        <button className="bg-slate-400 rounded-md p-1 px-2">
+          <Pipette size={12} />
+        </button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">
         <DropdownMenuLabel>Text color</DropdownMenuLabel>
