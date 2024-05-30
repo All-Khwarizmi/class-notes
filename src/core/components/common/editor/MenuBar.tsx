@@ -16,6 +16,7 @@ import MenuTextColor from "./MenuTextColor";
 import MenuImage from "./MenuImage";
 import MenuButton from "@/core/components/common/editor/MenuButton";
 import MenuTextAlign from "@/core/components/common/editor/MenuTextAlign";
+import { cn } from "@/lib/utils";
 
 export const MenuBar = () => {
   const { editor } = useCurrentEditor();
@@ -25,7 +26,12 @@ export const MenuBar = () => {
   }
 
   return (
-    <div className="flex gap-1 flex-wrap p-2 bg-muted border boder-gray-2OO rounded-tr-lg rounded-tl-lg">
+    <div
+      className={cn(
+        "flex gap-1 flex-wrap p-2 bg-muted  border rounded-tr-lg rounded-tl-lg",
+        `${editor.isFocused ? "border-blue-300 border-2" : "border-gray-600"}`
+      )}
+    >
       <MenuBold />
 
       <HeadingMenuBar />
