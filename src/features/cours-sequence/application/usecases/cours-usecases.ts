@@ -28,7 +28,7 @@ export default class CoursUsecases {
   }: {
     userId: string;
     coursId: string;
-  }) {
+  }): Promise<Either<Failure<string>, Cours>> {
     const eitherCours = await this._repository.getSingleCours({
       userId,
       coursId,
