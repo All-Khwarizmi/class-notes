@@ -7,6 +7,8 @@ import { Button } from "@mui/material";
 import Link from "next/link";
 import CollapsibleCoursList from "../components/CallapsibleCoursList";
 import { Eye } from "lucide-react";
+import MenuButton from "@/core/components/common/editor/MenuButton";
+import AfterMenuButton from "@/core/components/common/editor/AfterMenuButton";
 
 export default function CoursSequenceView({
   cours,
@@ -42,19 +44,19 @@ export default function CoursSequenceView({
           {sequence.name}
         </h1>
         <EditorProviderWrapper content={sequence.body}>
-          <div className="flex flex-col gap-4">
-            <div className="flex gap-2 mt-2">
+          <div className="flex flex-col gap-4 ">
+            <div className="flex gap-2 bg-muted p-2">
               <SaveSequenceBodyButton userId={userId} sequence={sequence} />
               {/* Add button to add a cours  */}
 
-              <Button size="small" variant="contained" color="primary">
+              <AfterMenuButton>
                 <Link href={`/cours/add/${sequence._id}`}>Add Cours</Link>
-              </Button>
-              <Button size="small" variant="contained" color="primary">
+              </AfterMenuButton>
+              <AfterMenuButton>
                 <Link href={`/sequences/show/${sequence._id}`}>
                   <Eye size={12} />
                 </Link>
-              </Button>
+              </AfterMenuButton>
             </div>
             <section>
               <CollapsibleCoursList cours={coursFromSequence} />
