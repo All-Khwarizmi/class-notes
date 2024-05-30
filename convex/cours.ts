@@ -105,6 +105,7 @@ export const updateCours = mutation({
     competences: v.array(v.string()),
     description: v.string(),
     category: v.string(),
+    imageUrl: v.string(),
   },
   handler: async (ctx, args) => {
     const existingCours = await ctx.db
@@ -127,6 +128,7 @@ export const updateCours = mutation({
           .map((c) => c._id),
         description: args.description,
         category: args.category,
+        imageUrl: args.imageUrl,
       });
     }
   },
