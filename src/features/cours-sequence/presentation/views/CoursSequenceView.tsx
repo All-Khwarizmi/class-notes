@@ -5,7 +5,7 @@ import CoursSaveButton from "../../../../core/components/common/editor/CoursSave
 import SaveSequenceBodyButton from "../components/SaveSequenceBodyButton";
 import Link from "next/link";
 import CollapsibleCoursList from "../components/CallapsibleCoursList";
-import { Eye } from "lucide-react";
+import { Eye, Settings } from "lucide-react";
 import AfterMenuButton from "@/core/components/common/editor/AfterMenuButton";
 import AfterMenuBar from "@/core/components/common/editor/AfterMunuBar";
 
@@ -32,6 +32,11 @@ export default function CoursSequenceView({
           <div className="flex flex-col gap-4 ">
             <AfterMenuBar>
               <CoursSaveButton userId={userId} cours={cours} />
+              <AfterMenuButton>
+                <Link href={`/cours/edit/${cours._id}`}>
+                  <Settings size={12} />
+                </Link>
+              </AfterMenuButton>
             </AfterMenuBar>
           </div>
         </EditorProviderWrapper>
