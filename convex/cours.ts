@@ -98,7 +98,6 @@ export const getSingleCours = query({
 
 export const updateCours = mutation({
   args: {
-    userId: v.string(),
     coursId: v.string(),
     name: v.string(),
     body: v.string(),
@@ -108,32 +107,27 @@ export const updateCours = mutation({
     category: v.string(),
   },
   handler: async (ctx, args) => {
-    const user = await ctx.db
-      .query("Users")
-      .filter((q) => q.eq(q.field("userId"), args.userId))
+    const existingCours = await ctx.db
+      .query("Cours")
+      .filter((q) => q.eq(q.field("_id"), args.coursId))
       .first();
 
-    if (user) {
-      const existingCours = await ctx.db
-        .query("Cours")
-        .filter((q) => q.eq(q.field("_id"), args.coursId))
-        .first();
+    if (existingCours) {
+      const userComptences = await ctx.db
+        .query("Competences")
+        .filter((q) => q.eq(q.field("createdBy"), existingCours.createdBy))
+        .collect();
 
-      if (existingCours) {
-        const competences = await ctx.db
-          .query("Competences")
-          .filter((q) => q.eq(q.field("createdBy"), user!._id))
-          .collect();
-
-        await ctx.db.patch(existingCours._id, {
-          name: args.name,
-          body: args.body,
-          lessons: args.lessons,
-          competences: competences.map((c) => c._id),
-          description: args.description,
-          category: args.category,
-        });
-      }
+      await ctx.db.patch(existingCours._id, {
+        name: args.name,
+        body: args.body,
+        lessons: args.lessons,
+        competences: userComptences
+          .filter((c) => args.competences.includes(c._id))
+          .map((c) => c._id),
+        description: args.description,
+        category: args.category,
+      });
     }
   },
 });
