@@ -1,5 +1,5 @@
 import React from "react";
-import AddCoursOrSequenceView from "@/features/cours-sequence/presentation/views/AddCoursView";
+import AddUpdateCoursSequenceView from "@/features/cours-sequence/presentation/views/AddCoursView";
 import { compCatUsecases } from "@/features/comp-cat/application/usecases/comp-cat-usecases";
 import { authUseCases } from "@/features/auth/application/usecases/auth-usecases";
 import { Either, isLeft } from "fp-ts/lib/Either";
@@ -92,7 +92,7 @@ async function CoursEditServerLayer(props: { slug: string }) {
   }
 
   return (
-    <AddCoursOrSequenceView
+    <AddUpdateCoursSequenceView
       authUser={authUser.right}
       type="cours"
       edit={true}

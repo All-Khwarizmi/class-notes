@@ -1,4 +1,4 @@
-import AddCoursOrSequenceView from "@/features/cours-sequence/presentation/views/AddCoursView";
+import AddUpdateCoursSequenceView from "@/features/cours-sequence/presentation/views/AddCoursView";
 import { compCatUsecases } from "@/features/comp-cat/application/usecases/comp-cat-usecases";
 import { authUseCases } from "@/features/auth/application/usecases/auth-usecases";
 import { isLeft } from "fp-ts/lib/Either";
@@ -20,7 +20,7 @@ export default async function Page() {
     competences = [];
   }
   return (
-    <AddCoursOrSequenceView
+    <AddUpdateCoursSequenceView
       competences={competences}
       authUser={authUser.right}
       type="cours"
