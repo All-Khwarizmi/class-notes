@@ -194,6 +194,10 @@ export default class CoursUsecases {
     }
     return right(validateCours);
   }
+
+  async updateCours({ cours }: { cours: Cours }) {
+    return this._repository.updateCours({ cours });
+  }
 }
 
 export const coursUsecases = new CoursUsecases({ repository: coursRepository });
