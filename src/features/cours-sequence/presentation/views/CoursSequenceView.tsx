@@ -47,12 +47,12 @@ export default function CoursSequenceView({
               <SaveSequenceBodyButton userId={userId} sequence={sequence} />
               {/* Add button to add a cours  */}
 
-              <Button variant="contained" color="primary">
+              <Button size="small" variant="contained" color="primary">
                 <Link href={`/cours/add/${sequence._id}`}>Add Cours</Link>
               </Button>
-              <Button variant="contained" color="primary">
+              <Button size="small" variant="contained" color="primary">
                 <Link href={`/sequences/show/${sequence._id}`}>
-                  <Eye />
+                  <Eye size={12} />
                 </Link>
               </Button>
             </div>

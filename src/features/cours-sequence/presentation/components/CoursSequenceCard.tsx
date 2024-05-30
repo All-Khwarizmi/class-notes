@@ -5,7 +5,7 @@
  */
 import { CardContent, CardFooter, Card } from "@/core/components/ui/card";
 import Link from "next/link";
-import { Eye } from "lucide-react";
+import { Eye, PenIcon } from "lucide-react";
 
 export default function CoursSequenceCard({
   title,
@@ -25,7 +25,7 @@ export default function CoursSequenceCard({
   pathToView?: string;
 }) {
   return (
-    <Card className="w-full max-w-md">
+    <Card className=" max-w-sm" >
       <img
         alt="Product Image"
         className="rounded-t-lg object-cover w-full aspect-[3/2]"
@@ -33,7 +33,7 @@ export default function CoursSequenceCard({
         src={imageUrl}
         width={600}
       />
-      <CardContent className="p-4 space-y-2">
+      <CardContent className="p-4 space-y-2 ">
         <h3 className="text-xl font-bold">{title}</h3>
         <p className="text-gray-500 dark:text-gray-400">{description}</p>
         <div className="flex flex-wrap gap-2">
@@ -50,28 +50,18 @@ export default function CoursSequenceCard({
       <CardFooter className="p-4">
         <div className="flex gap-2">
           <Link
-            className="inline-flex h-10 items-center justify-center rounded-md bg-gray-900 px-6 text-sm font-medium text-gray-50 shadow transition-colors hover:bg-gray-900/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-950 disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-50 dark:text-gray-900 dark:hover:bg-gray-50/90 dark:focus-visible:ring-gray-300"
+            className="inline-flex  items-center justify-center rounded-md bg-gray-900 px-6 py-2  font-medium text-gray-50 shadow transition-colors hover:bg-gray-900/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-950 disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-50 dark:text-gray-900 dark:hover:bg-gray-50/90 dark:focus-visible:ring-gray-300"
             href={path}
           >
-            View
+            <PenIcon size={12} />
           </Link>
           {showViewButton && (
             <Link
-              className="inline-flex h-10 items-center justify-center rounded-md bg-gray-900 px-6 text-sm font-medium text-gray-50 shadow transition-colors hover:bg-gray-900/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-950 disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-50 dark:text-gray-900 dark:hover:bg-gray-50/90 dark:focus-visible:ring-gray-300"
+              className="inline-flex  py-2 items-center justify-center rounded-md bg-gray-900 px-6 text-sm font-medium text-gray-50 shadow transition-colors hover:bg-gray-900/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-950 disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-50 dark:text-gray-900 dark:hover:bg-gray-50/90 dark:focus-visible:ring-gray-300"
               href={pathToView ?? "/sequences"}
             >
-              <Eye />
+              <Eye size={12} />
             </Link>
-            // <>
-            //   {pathToView && (
-            //     <Link
-            //       className="inline-flex h-10 items-center justify-center rounded-md bg-gray-900 px-6 text-sm font-medium text-gray-50 shadow transition-colors hover:bg-gray-900/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-950 disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-50 dark:text-gray-900 dark:hover:bg-gray-50/90 dark:focus-visible:ring-gray-300"
-            //       href={pathToView}
-            //     >
-            //       <Eye />
-            //     </Link>
-            //   )}
-            // </>
           )}
         </div>
       </CardFooter>
