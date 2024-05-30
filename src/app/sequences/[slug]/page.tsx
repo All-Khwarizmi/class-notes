@@ -1,5 +1,5 @@
 import NotFound from "@/app/not-found";
-import LoadingPage from "@/core/components/common/LoadingPage";
+import LoadingSkeleton from "@/core/components/common/LoadingSkeleton";
 import SequenceServerLayer from "@/features/cours-sequence/presentation/components/SequenceServerLayer";
 import React, { Suspense } from "react";
 
@@ -14,7 +14,7 @@ async function Page({
     return <NotFound />;
   }
   return (
-    <Suspense fallback={<LoadingPage />}>
+    <Suspense fallback={<LoadingSkeleton />}>
       <SequenceServerLayer slug={params.slug} />
     </Suspense>
   );
