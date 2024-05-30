@@ -1,6 +1,6 @@
 import NotFound from "@/app/not-found";
 import LoadingSkeleton from "@/core/components/common/LoadingSkeleton";
-import SequenceServerLayer from "@/features/cours-sequence/presentation/components/SequenceServerLayer";
+import SequenceServerLayer from "@/app/sequences/[slug]/SequenceServerLayer";
 import React, { Suspense } from "react";
 
 async function Page({
