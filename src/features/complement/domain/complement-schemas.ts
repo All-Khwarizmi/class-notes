@@ -8,8 +8,8 @@ export const ComplementSchema = z.object({
   coursId: z.string(),
   sequenceId: z.string(),
   createdBy: z.string(),
-  publish: z.boolean(),
-  publishDate: z.number(),
+  publish: z.boolean().optional(),
+  publishDate: z.number().optional(),
   body: z.string(),
   type: z.union([
     z.literal("lesson"),
