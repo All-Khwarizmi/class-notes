@@ -53,11 +53,11 @@ export default defineSchema({
   CoursComplement: defineTable({
     name: v.string(),
     description: v.string(),
-    coursId: v.id("Cours"),
-    sequenceId: v.id("Sequences"),
+    coursId: v.string(),
+    sequenceId: v.string(),
     createdBy: v.string(),
     publish: v.boolean(),
-    publishDate: v.float64(),
+    publishDate: v.optional(v.float64()),
     body: v.string(),
 
     type: v.union(

@@ -18,6 +18,7 @@ import type * as category from "../category.js";
 import type * as classes from "../classes.js";
 import type * as competences from "../competences.js";
 import type * as cours from "../cours.js";
+import type * as coursComplement from "../coursComplement.js";
 import type * as criteria from "../criteria.js";
 import type * as evaluation_with_grades from "../evaluation_with_grades.js";
 import type * as sequence from "../sequence.js";
@@ -38,6 +39,7 @@ declare const fullApi: ApiFromModules<{
   classes: typeof classes;
   competences: typeof competences;
   cours: typeof cours;
+  coursComplement: typeof coursComplement;
   criteria: typeof criteria;
   evaluation_with_grades: typeof evaluation_with_grades;
   sequence: typeof sequence;
