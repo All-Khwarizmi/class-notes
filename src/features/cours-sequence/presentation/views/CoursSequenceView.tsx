@@ -53,8 +53,6 @@ export default function CoursSequenceView({
           <div className="flex flex-col gap-4 ">
             <AfterMenuBar>
               <SaveSequenceBodyButton userId={userId} sequence={sequence} />
-              {/* Add button to add a cours  */}
-
               <AfterMenuButton>
                 <Link href={`/sequences/show/${sequence._id}`}>
                   <Eye size={12} />
@@ -67,6 +65,7 @@ export default function CoursSequenceView({
                 sequenceId={sequence._id}
               />
             </section>
+           
           </div>
         </EditorProviderWrapper>
       </>
