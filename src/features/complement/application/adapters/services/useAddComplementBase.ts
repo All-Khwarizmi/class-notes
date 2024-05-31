@@ -48,7 +48,7 @@ function useAddComplementBase() {
             position: "top-center",
           });
           toast.dismiss(loadingToast);
-          router.push(`/cours/${complementBaseOptions.coursId}`);
+          router.push(`/complements/${eitherComplement.right}`);
         })
         .finally(() => {
           setComplementBaseOptions(null);
