@@ -40,6 +40,11 @@ export default function CoursSequenceView({
             </AfterMenuBar>
           </div>
         </EditorProviderWrapper>
+        <AfterMenuButton>
+          <Link href={`/complements/add/${cours._id}`}>
+           Add Complement
+          </Link>
+        </AfterMenuButton>
       </>
     );
   }
