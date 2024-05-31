@@ -282,7 +282,7 @@ export default class ConvexDatabase extends IDatabase {
         category: cours.category,
         imageUrl: cours.imageUrl,
       });
-     
+
       return right(undefined);
     } catch (error) {
       return left(
@@ -361,6 +361,35 @@ export default class ConvexDatabase extends IDatabase {
       );
     }
   }
+
+  async updateSequence({
+    sequence,
+  }: {
+    sequence: Sequence;
+  }): Promise<Either<Failure<string>, void>> {
+    try {
+      await fetchMutation(this._db.sequence.updateSequence, {
+        sequenceId: sequence._id,
+        imageUrl: sequence.imageUrl,
+        name: sequence.name,
+        body: sequence.body,
+        description: sequence.description,
+        category: sequence.category,
+        competencesIds: sequence.competencesIds,
+      });
+
+      return right(undefined);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: sequence,
+          message: "Error updating sequence",
+          code: "INF101",
+        })
+      );
+    }
+  }
+
   async getSequences({
     userId,
   }: {

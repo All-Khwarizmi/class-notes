@@ -106,6 +106,9 @@ export default class CoursRepository {
   async updateCours({ cours }: { cours: Cours }) {
     return this._db.updateCours({ cours });
   }
+  async updateSequence({ sequence }: { sequence: Sequence }) {
+    return this._db.updateSequence({ sequence });
+  }
 }
 
 export const coursRepository = new CoursRepository({ db: convexDatabase });

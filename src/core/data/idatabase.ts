@@ -102,6 +102,12 @@ export default abstract class IDatabase {
     sequence: Omit<Sequence, "_id" | "createdAt" | "coursIds">;
   }): Promise<Either<Failure<string>, string>>;
 
+  abstract updateSequence({
+    sequence,
+  }: {
+    sequence: Sequence;
+  }): Promise<Either<Failure<string>, void>>;
+
   abstract getSequences({
     userId,
   }: {

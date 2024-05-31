@@ -115,40 +115,36 @@ export const getSingleSequence = query({
 
 export const updateSequence = mutation({
   args: {
-    userId: v.string(),
     sequenceId: v.string(),
     name: v.string(),
     body: v.string(),
     competencesIds: v.array(v.string()),
     description: v.string(),
     category: v.string(),
+    imageUrl: v.string(),
   },
   handler: async (ctx, args) => {
-    const user = await ctx.db
-      .query("Users")
-      .filter((q) => q.eq(q.field("userId"), args.userId))
+    const existingSequence = await ctx.db
+      .query("Sequences")
+      .filter((q) => q.eq(q.field("_id"), args.sequenceId))
       .first();
 
-    if (user) {
-      const existingSequence = await ctx.db
-        .query("Sequences")
-        .filter((q) => q.eq(q.field("_id"), args.sequenceId))
-        .first();
+    if (existingSequence) {
+      const userComptences = await ctx.db
+        .query("Competences")
+        .filter((q) => q.eq(q.field("createdBy"), existingSequence.createdBy))
+        .collect();
 
-      if (existingSequence) {
-        const competences = await ctx.db
-          .query("Competences")
-          .filter((q) => q.eq(q.field("createdBy"), user!._id))
-          .collect();
-
-        await ctx.db.patch(existingSequence._id, {
-          name: args.name,
-          body: args.body,
-          competencesIds: competences.map((c) => c._id),
-          description: args.description,
-          category: args.category,
-        });
-      }
+      await ctx.db.patch(existingSequence._id, {
+        name: args.name,
+        body: args.body,
+        competencesIds: userComptences
+          .filter((c) => args.competencesIds.includes(c._id))
+          .map((c) => c._id),
+        description: args.description,
+        category: args.category,
+        imageUrl: args.imageUrl,
+      });
     }
   },
 });
@@ -198,7 +194,11 @@ export const getAllCoursInSequence = query({
         .first();
 
       if (sequence) {
-        const cours = await ctx.db.query("Cours").withIndex("by_sequenceId").filter((q) => q.eq(q.field("sequenceId"), sequence._id)).collect();
+        const cours = await ctx.db
+          .query("Cours")
+          .withIndex("by_sequenceId")
+          .filter((q) => q.eq(q.field("sequenceId"), sequence._id))
+          .collect();
         return cours;
       }
     }

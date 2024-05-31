@@ -85,6 +85,10 @@ export default class CoursUsecases {
     return this._repository.addSequence({ userId, sequence });
   }
 
+  async updateSequence({ sequence }: { sequence: Sequence }) {
+    return this._repository.updateSequence({ sequence });
+  }
+
   async getSingleSequence({
     userId,
     sequenceId,
