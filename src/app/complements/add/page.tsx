@@ -1,4 +1,4 @@
-import ComplementAddBaseForm from "@/features/cours-complement/presentation/views/ComplementAddBase";
+import ComplementAddBaseForm from "@/features/complement/presentation/views/ComplementAddBase";
 import React from "react";
 
 function Page() {

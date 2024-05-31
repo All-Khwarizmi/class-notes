@@ -31,7 +31,7 @@ const ComplementBaseSchema = z.object({
     return ["video", "lesson", "audio", "diagram"].includes(value);
   }),
 });
-type ComplementBaseType = z.infer<typeof ComplementBaseSchema>;
+export type ComplementBaseType = z.infer<typeof ComplementBaseSchema>;
 function ComplementAddBaseForm() {
   const form = useForm({
     resolver: zodResolver(ComplementBaseSchema),

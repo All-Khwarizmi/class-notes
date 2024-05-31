@@ -1,12 +1,12 @@
 import { CoursComplement } from "../../domain/cours-complement-schemas";
-import CoursComplementRepository, {
+import ComplementRepository, {
   complementRepository,
-} from "../repositories/cours-complement-repository";
+} from "../repositories/complement-repository";
 
-export default class CoursComplementUsecases {
-  private readonly _repository: CoursComplementRepository;
+export default class ComplementUsecases {
+  private readonly _repository: ComplementRepository;
 
-  constructor({ repository }: { repository: CoursComplementRepository }) {
+  constructor({ repository }: { repository: ComplementRepository }) {
     this._repository = repository;
   }
 
@@ -37,6 +37,6 @@ export default class CoursComplementUsecases {
   }
 }
 
-export const complementUsecases = new CoursComplementUsecases({
+export const complementUsecases = new ComplementUsecases({
   repository: complementRepository,
 });

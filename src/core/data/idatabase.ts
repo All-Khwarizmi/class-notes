@@ -10,7 +10,7 @@ import {
   Cours,
   Sequence,
 } from "@/features/cours-sequence/domain/entities/cours-schemas";
-import { CoursComplement } from "@/features/cours-complement/domain/cours-complement-schemas";
+import { CoursComplement } from "@/features/complement/domain/cours-complement-schemas";
 
 export default abstract class IDatabase {
   abstract getUser({

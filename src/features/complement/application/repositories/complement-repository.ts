@@ -2,7 +2,7 @@ import IDatabase from "@/core/data/idatabase";
 import { CoursComplement } from "../../domain/cours-complement-schemas";
 import { convexDatabase } from "@/core/data/convex/convex-impl";
 
-export default class CoursComplementRepository {
+export default class ComplementRepository {
   private readonly _db: IDatabase;
 
   constructor(db: IDatabase) {
@@ -36,6 +36,4 @@ export default class CoursComplementRepository {
   }
 }
 
-export const complementRepository = new CoursComplementRepository(
-  convexDatabase
-);
+export const complementRepository = new ComplementRepository(convexDatabase);
