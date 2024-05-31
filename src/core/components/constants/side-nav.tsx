@@ -34,6 +34,13 @@ export const NavItems: NavItem[] = [
     color: "text-orange-500",
   },
   {
+    title: "Complements",
+    icon: <Presentation size={24} />,
+    href: "/complements/add",
+    color: "text-orange-500",
+  },
+
+  {
     title: "Evaluations",
     icon: CopyClipboard(),
     href: "/evaluations",
