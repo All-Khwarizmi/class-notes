@@ -8,6 +8,7 @@ import CollapsibleCoursList from "../components/CallapsibleCoursList";
 import { Eye, Settings } from "lucide-react";
 import AfterMenuButton from "@/core/components/common/editor/AfterMenuButton";
 import AfterMenuBar from "@/core/components/common/editor/AfterMunuBar";
+import ComplementsTable from "../components/ComplementsTable";
 
 export default function CoursSequenceView({
   cours,
@@ -29,7 +30,7 @@ export default function CoursSequenceView({
           {cours.name}
         </h1>
         <EditorProviderWrapper content={cours.body}>
-          <div className="flex flex-col gap-4 ">
+          <div className=" flex flex-col gap-4 ">
             <AfterMenuBar>
               <CoursSaveButton userId={userId} cours={cours} />
               <AfterMenuButton>
@@ -40,11 +41,8 @@ export default function CoursSequenceView({
             </AfterMenuBar>
           </div>
         </EditorProviderWrapper>
-        <AfterMenuButton>
-          <Link href={`/complements/add/${cours._id}`}>
-           Add Complement
-          </Link>
-        </AfterMenuButton>
+
+        <ComplementsTable cours={[]} coursId={cours._id} />
       </>
     );
   }
