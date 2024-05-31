@@ -14,7 +14,6 @@ import {
   ComplementSchema,
 } from "@/features/complement/domain/complement-schemas";
 import Failure from "@/core/failures/failures";
-import { DocumentData } from "@/core/data/database-types";
 import ErrorDialog from "@/core/components/common/ErrorDialog";
 
 async function CoursServerLayer(props: { slug: string }) {
@@ -35,10 +34,7 @@ async function CoursServerLayer(props: { slug: string }) {
   ]);
   const isFailure = batch.some((result, index) => {
     if (result.status === "rejected") {
-      console.log({
-        result,
-        place: "rejected",
-      });
+  
       failures.push(
         Failure.invalidValue({
           invalidValue: result.reason,
@@ -53,11 +49,7 @@ async function CoursServerLayer(props: { slug: string }) {
     }
 
     if (isLeft(result.value)) {
-      console.log({
-        result,
-        place: "value left",
-        lef: result.value.left,
-      });
+  
       failures.push(
         Failure.invalidValue({
           invalidValue: result.value.left,
