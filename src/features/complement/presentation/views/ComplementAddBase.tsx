@@ -22,6 +22,8 @@ import { Switch } from "@/core/components/ui/switch";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import useAddComplementBase from "../../application/adapters/services/useAddComplementBase";
+import { toast } from "sonner";
 
 const ComplementBaseSchema = z.object({
   name: z.string(),
@@ -32,7 +34,8 @@ const ComplementBaseSchema = z.object({
   }),
 });
 export type ComplementBaseType = z.infer<typeof ComplementBaseSchema>;
-function ComplementAddBaseForm() {
+function ComplementAddBaseForm(props: { slug: string }) {
+  const { setComplementBaseOptions } = useAddComplementBase();
   const form = useForm({
     resolver: zodResolver(ComplementBaseSchema),
     defaultValues: {
@@ -43,7 +46,28 @@ function ComplementAddBaseForm() {
     },
   });
   function onSubmit(values: ComplementBaseType) {
-    console.log(values);
+    if (
+      values.type !== "video" &&
+      values.type !== "lesson" &&
+      values.type !== "audio" &&
+      values.type !== "diagram"
+    ) {
+      toast.error("Invalid type", {
+        position: "top-center",
+        description: "The type must be video, lesson, audio or diagram",
+      });
+      return;
+    }
+
+    setComplementBaseOptions({
+      complementBaseOptions: {
+        name: values.name,
+        description: values.description,
+        publish: values.publish,
+        type: values.type,
+      },
+      coursId: props.slug,
+    });
   }
   return (
     <Form {...form}>
