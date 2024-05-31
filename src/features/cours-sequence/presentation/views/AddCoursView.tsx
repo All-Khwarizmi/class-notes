@@ -4,10 +4,12 @@ import { Competence } from "@/features/comp-cat/domain/entities/schemas";
 import { UserAuth } from "@/core/auth/i-auth";
 import useSaveCoursMetadata from "../../application/usecases/services/useSaveCoursMetadata";
 import { useState } from "react";
-import { Cours } from "../../domain/entities/cours-schemas";
+import { Cours, Sequence } from "../../domain/entities/cours-schemas";
 import { useForm } from "react-hook-form";
 import useSaveSequenceMetadata from "../../application/usecases/services/useSaveSequenceMetadata";
 import useUpdateCoursMetadata from "../../application/usecases/services/useUpdateCoursMetadata";
+import useGetSelectedCompetences from "../hooks/useGetSelectedCompetences";
+import useGetFormValues from "../hooks/useGetFormValues";
 
 export interface CoursSequenceForm
   extends Pick<
@@ -22,39 +24,35 @@ export default function AddUpdateCoursSequenceView({
   sequenceId,
   edit,
   cours,
+  sequence,
 }: {
   competences: Competence[];
   authUser: UserAuth;
   type: "cours" | "sequence";
   edit?: boolean;
   cours?: Cours;
+  sequence?: Sequence;
   title: string;
   sequenceId?: string;
 }) {
-  const [selectedCompetences, setSelectedCompetences] = useState<Competence[]>(
-    edit && cours !== undefined
-      ? competences.filter((c) => cours.competences.includes(c._id))
-      : []
-  );
+  const { selectedCompetences, setSelectedCompetences } =
+    useGetSelectedCompetences({
+      edit,
+      cours,
+      sequence,
+      type,
+      competences,
+    });
   const { setSaveCoursMetadata } = useSaveCoursMetadata();
   const { setSaveSequenceMetadata } = useSaveSequenceMetadata();
   const { setUpdateCoursMetadata } = useUpdateCoursMetadata();
   const [open, setOpen] = useState(false);
-  const form = useForm<CoursSequenceForm>({
-    defaultValues: edit
-      ? {
-          description: cours?.description,
-          category: cours?.category,
-          name: cours?.name,
-          competences: cours?.competences || [],
-          imageUrl: cours?.imageUrl,
-        }
-      : {
-          description: "",
-          category: "",
-          name: "",
-          competences: [],
-        },
+  const { form } = useGetFormValues({
+    edit,
+    cours,
+    sequence,
+    type,
+    competences,
   });
 
   function selectCompetences({
