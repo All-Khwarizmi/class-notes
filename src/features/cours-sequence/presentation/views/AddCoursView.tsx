@@ -7,6 +7,7 @@ import { Cours, Sequence } from "../../domain/entities/cours-schemas";
 import useGetSelectedCompetences from "../hooks/useGetSelectedCompetences";
 import useGetFormValues from "../hooks/useGetFormValues";
 import useGetSubmitFunction from "../hooks/useGetSubmitFunction";
+import ErrorDialog from "@/core/components/common/ErrorDialog";
 
 export interface CoursSequenceForm
   extends Pick<
@@ -75,34 +76,16 @@ export default function AddUpdateCoursSequenceView({
     }
   }
 
-  if (edit && cours !== undefined && type === "cours") {
+  // add guard rails to prevent null values from being passed to the AddCoursOrSequenceForm component from the outer component
+
+  if (edit && !cours && !sequence) {
     return (
-      <div>
-        <AddCoursOrSequenceForm
-          competences={competences}
-          form={form}
-          open={open}
-          setOpen={setOpen}
-          selectedCompetences={selectedCompetences}
-          setSelectedCompetences={selectCompetences}
-          onSubmit={onSubmit}
-          title={title}
-          imageUrl={cours.imageUrl}
-        />
-      </div>
+      <ErrorDialog
+        message={`
+    You are trying to edit a ${type} but the ${type} is not available.
+    `}
+      />
     );
-  }
-  if (edit && cours !== undefined && type === "sequence") {
-    return (
-      <div>
-        <p>
-          Not implemented yet. Sequence selected while passing cours as prop
-        </p>
-      </div>
-    );
-  }
-  if (edit && cours === undefined) {
-    return <p>Edit is true but cours is not passed as a prop</p>;
   }
 
   return (

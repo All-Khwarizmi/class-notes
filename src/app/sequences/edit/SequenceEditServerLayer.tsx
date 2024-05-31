@@ -93,7 +93,16 @@ async function SequenceEditServerLayer(props: { slug: string }) {
     );
   }
 
-  return <div>SequenceEditServerLayer</div>;
+  return (
+    <AddUpdateCoursSequenceView
+      competences={competences}
+      sequence={sequence}
+      authUser={authUser.right}
+      title="Edit Sequence"
+      edit={true}
+      type="sequence"
+    />
+  );
 }
 
 export default SequenceEditServerLayer;
