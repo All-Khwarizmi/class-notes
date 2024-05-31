@@ -24,7 +24,6 @@ interface SideNavProps {
 
 export function SideNav({ items, setOpen, className }: SideNavProps) {
   const path = usePathname();
-  console.log(path);
   const { isOpen } = useSidebar();
   const [openItem, setOpenItem] = useState("");
   const [lastOpenItem, setLastOpenItem] = useState("");
@@ -44,11 +43,6 @@ export function SideNav({ items, setOpen, className }: SideNavProps) {
   }, [path]);
 
   function pathIsActive(props: { path: string; liveHref: string }) {
-    console.log({
-      fullLiveHref: props.liveHref,
-      path: props.path.split("/")[1],
-      liveHref: props.liveHref.split("/")[1],
-    });
     return props.liveHref.split("/")[1] === props.path.split("/")[1];
   }
   return (
@@ -68,7 +62,7 @@ export function SideNav({ items, setOpen, className }: SideNavProps) {
                 className={cn(
                   buttonVariants({ variant: "ghost" }),
                   pathIsActive({ path: item.href, liveHref }) && "bg-muted",
-                    "group relative flex h-12 justify-between px-4 py-2 text-base duration-200 hover:bg-muted hover:no-underline"
+                  "group relative flex h-12 justify-between px-4 py-2 text-base duration-200 hover:bg-muted hover:no-underline"
                 )}
               >
                 <div>{item.icon}</div>
