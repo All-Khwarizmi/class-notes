@@ -1,5 +1,6 @@
 import IDatabase from "@/core/data/idatabase";
 import { CoursComplement } from "../../domain/cours-complement-schemas";
+import { convexDatabase } from "@/core/data/convex/convex-impl";
 
 export default class CoursComplementRepository {
   private readonly _db: IDatabase;
@@ -34,3 +35,7 @@ export default class CoursComplementRepository {
     return this._db.updateCoursComplement({ coursComplement });
   }
 }
+
+export const complementRepository = new CoursComplementRepository(
+  convexDatabase
+);

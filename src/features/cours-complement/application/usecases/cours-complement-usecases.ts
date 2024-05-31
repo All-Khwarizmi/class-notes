@@ -1,5 +1,7 @@
 import { CoursComplement } from "../../domain/cours-complement-schemas";
-import CoursComplementRepository from "../repositories/cours-complement-repository";
+import CoursComplementRepository, {
+  complementRepository,
+} from "../repositories/cours-complement-repository";
 
 export default class CoursComplementUsecases {
   private readonly _repository: CoursComplementRepository;
@@ -8,29 +10,33 @@ export default class CoursComplementUsecases {
     this._repository = repository;
   }
 
-    async addCoursComplement({
-        userId,
-        coursComplement,
-    }: {
-        userId: string;
-        coursComplement: Omit<CoursComplement, "_id" | "createdAt">;
-    }) {
-        return this._repository.addCoursComplement({ userId, coursComplement });
-    }
+  async addCoursComplement({
+    userId,
+    coursComplement,
+  }: {
+    userId: string;
+    coursComplement: Omit<CoursComplement, "_id" | "createdAt">;
+  }) {
+    return this._repository.addCoursComplement({ userId, coursComplement });
+  }
 
-    async getAllCoursComplement({ coursId }: { coursId: string }) {
-        return this._repository.getAllCoursComplement({ coursId });
-    }
+  async getAllCoursComplement({ coursId }: { coursId: string }) {
+    return this._repository.getAllCoursComplement({ coursId });
+  }
 
-    async getCoursComplement({ id }: { id: string }) {
-        return this._repository.getCoursComplement({ id });
-    }
+  async getCoursComplement({ id }: { id: string }) {
+    return this._repository.getCoursComplement({ id });
+  }
 
-    async updateCoursComplement({
-        coursComplement,
-    }: {
-        coursComplement: CoursComplement;
-    }) {
-        return this._repository.updateCoursComplement({ coursComplement });
-    }
+  async updateCoursComplement({
+    coursComplement,
+  }: {
+    coursComplement: CoursComplement;
+  }) {
+    return this._repository.updateCoursComplement({ coursComplement });
+  }
 }
+
+export const complementUsecases = new CoursComplementUsecases({
+  repository: complementRepository,
+});
