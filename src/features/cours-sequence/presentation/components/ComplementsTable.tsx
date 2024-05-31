@@ -12,13 +12,11 @@ import {
   TableCell,
 } from "@/core/components/ui/table";
 import { Switch } from "@/core/components/ui/switch";
-import { useRouter } from "next/navigation";
+
 function ComplementsTable(props: {
   complements: Complement[];
   coursId: string;
 }) {
-  const router = useRouter();
-
   return (
     <div className="w-full h-full py-4">
       <Table className="w-full">
