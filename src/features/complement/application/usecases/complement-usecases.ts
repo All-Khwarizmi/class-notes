@@ -12,20 +12,26 @@ export default class ComplementUsecases {
 
   async addCoursComplement({
     userId,
-    coursComplement,
+    complement,
   }: {
     userId: string;
-    coursComplement: Omit<Complement, "_id" | "createdAt">;
+    complement: Pick<
+      Complement,
+      "name" | "description" | "type" | "publish" | "coursId" | "body"
+    >;
   }) {
-    return this._repository.addCoursComplement({ userId, coursComplement });
+    return this._repository.addComplement({
+      userId,
+      complement,
+    });
   }
 
   async getAllCoursComplement({ coursId }: { coursId: string }) {
-    return this._repository.getAllCoursComplement({ coursId });
+    return this._repository.getAllComplement({ coursId });
   }
 
   async getCoursComplement({ id }: { id: string }) {
-    return this._repository.getCoursComplement({ id });
+    return this._repository.getComplement({ id });
   }
 
   async updateCoursComplement({
@@ -33,7 +39,7 @@ export default class ComplementUsecases {
   }: {
     coursComplement: Complement;
   }) {
-    return this._repository.updateCoursComplement({ coursComplement });
+    return this._repository.updateComplement({ coursComplement });
   }
 }
 

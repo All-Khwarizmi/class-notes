@@ -10,7 +10,7 @@ import {
   Cours,
   Sequence,
 } from "@/features/cours-sequence/domain/entities/cours-schemas";
-import { CoursComplement } from "@/features/complement/domain/cours-complement-schemas";
+import { Complement } from "@/features/complement/domain/complement-schemas";
 
 export default abstract class IDatabase {
   abstract getUser({
@@ -151,29 +151,32 @@ export default abstract class IDatabase {
     sequenceId: string;
   }): Promise<Either<Failure<string>, DocumentData[]>>;
 
-  abstract addCoursComplement({
+  abstract addComplement({
     userId,
-    coursComplement,
+    complement,
   }: {
     userId: string;
-    coursComplement: Omit<CoursComplement, "_id" | "createdAt">;
+    complement: Pick<
+      Complement,
+      "name" | "description" | "type" | "publish" | "coursId" | "body"
+    >;
   }): Promise<Either<Failure<string>, string>>;
 
-  abstract getAllCoursComplement({
+  abstract getAllComplement({
     coursId,
   }: {
     coursId: string;
   }): Promise<Either<Failure<string>, DocumentData[]>>;
 
-  abstract getCoursComplement({
+  abstract getComplement({
     id,
   }: {
     id: string;
   }): Promise<Either<Failure<string>, DocumentData>>;
 
-  abstract updateCoursComplement({
+  abstract updateComplement({
     coursComplement,
   }: {
-    coursComplement: CoursComplement;
+    coursComplement: Complement;
   }): Promise<Either<Failure<string>, void>>;
 }

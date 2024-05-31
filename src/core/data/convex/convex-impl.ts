@@ -13,7 +13,7 @@ import {
   Cours,
   Sequence,
 } from "@/features/cours-sequence/domain/entities/cours-schemas";
-import { CoursComplement } from "@/features/complement/domain/cours-complement-schemas";
+import { Complement } from "@/features/complement/domain/complement-schemas";
 
 export interface ConvexDatabaseOptions {
   db: typeof api;
@@ -525,33 +525,27 @@ export default class ConvexDatabase extends IDatabase {
     }
   }
 
-  async addCoursComplement({
+  async addComplement({
     userId,
-    coursComplement,
+    complement,
   }: {
     userId: string;
-    coursComplement: Omit<CoursComplement, "_id" | "createdAt">;
+    complement: Omit<Complement, "_id" | "createdAt">;
   }): Promise<Either<Failure<string>, string>> {
     try {
-      const result = await fetchMutation(
-        this._db.coursComplement.createCoursComplement,
-        {
-          userId,
-          sequenceId: coursComplement.sequenceId,
-          coursId: coursComplement.coursId,
-          name: coursComplement.name,
-          body: coursComplement.body,
-          description: coursComplement.description,
-          publish: coursComplement.publish,
-          publishDate: coursComplement.publishDate,
-          type: coursComplement.type,
-        }
-      );
+      const result = await fetchMutation(this._db.complement.createComplement, {
+        coursId: complement.coursId,
+        name: complement.name,
+        body: complement.body,
+        description: complement.description,
+        publish: complement.publish,
+        type: complement.type,
+      });
       if (!result) {
         return left(
           Failure.invalidValue({
-            invalidValue: coursComplement,
-            message: "Error adding cours complement",
+            invalidValue: complement,
+            message: "Error adding complement",
             code: "INF103",
           })
         );
@@ -560,26 +554,23 @@ export default class ConvexDatabase extends IDatabase {
     } catch (error) {
       return left(
         Failure.invalidValue({
-          invalidValue: coursComplement,
-          message: "Error adding cours complement",
+          invalidValue: complement,
+          message: "Error adding complement",
           code: "INF101",
         })
       );
     }
   }
 
-  async getAllCoursComplement({
+  async getAllComplement({
     coursId,
   }: {
     coursId: string;
   }): Promise<Either<Failure<string>, DocumentData[]>> {
     try {
-      const result = await fetchQuery(
-        this._db.coursComplement.getAllCoursComplement,
-        {
-          coursId,
-        }
-      );
+      const result = await fetchQuery(this._db.complement.getAllComplement, {
+        coursId,
+      });
       if (!result) {
         return left(
           Failure.invalidValue({
@@ -601,18 +592,15 @@ export default class ConvexDatabase extends IDatabase {
     }
   }
 
-  async getCoursComplement({
+  async getComplement({
     id,
   }: {
     id: string;
   }): Promise<Either<Failure<string>, DocumentData>> {
     try {
-      const result = await fetchQuery(
-        this._db.coursComplement.getCoursComplement,
-        {
-          id,
-        }
-      );
+      const result = await fetchQuery(this._db.complement.getComplement, {
+        id,
+      });
       if (!result) {
         return left(
           Failure.invalidValue({
@@ -634,24 +622,21 @@ export default class ConvexDatabase extends IDatabase {
     }
   }
 
-  async updateCoursComplement({
+  async updateComplement({
     coursComplement,
   }: {
-    coursComplement: CoursComplement;
+    coursComplement: Complement;
   }): Promise<Either<Failure<string>, void>> {
     try {
-      const result = await fetchMutation(
-        this._db.coursComplement.updateCoursComplement,
-        {
-          id: coursComplement.id,
-          name: coursComplement.name,
-          body: coursComplement.body,
-          sequenceId: coursComplement.sequenceId,
-          description: coursComplement.description,
-          publish: coursComplement.publish,
-          publishDate: coursComplement.publishDate,
-        }
-      );
+      const result = await fetchMutation(this._db.complement.updateComplement, {
+        id: coursComplement.id,
+        name: coursComplement.name,
+        body: coursComplement.body,
+        sequenceId: coursComplement.sequenceId,
+        description: coursComplement.description,
+        publish: coursComplement.publish,
+        publishDate: coursComplement.publishDate,
+      });
       if (!result) {
         return left(
           Failure.invalidValue({

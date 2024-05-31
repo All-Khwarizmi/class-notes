@@ -9,30 +9,29 @@ export default class ComplementRepository {
     this._db = db;
   }
 
-  async addCoursComplement({
+  async addComplement({
     userId,
-    coursComplement,
+    complement,
   }: {
     userId: string;
-    coursComplement: Omit<Complement, "_id" | "createdAt">;
+    complement: Pick<
+      Complement,
+      "name" | "description" | "type" | "publish" | "coursId" | "body"
+    >;
   }) {
-    return this._db.addCoursComplement({ coursComplement, userId });
+    return this._db.addComplement({ complement, userId });
   }
 
-  async getAllCoursComplement({ coursId }: { coursId: string }) {
-    return this._db.getAllCoursComplement({ coursId });
+  async getAllComplement({ coursId }: { coursId: string }) {
+    return this._db.getAllComplement({ coursId });
   }
 
-  async getCoursComplement({ id }: { id: string }) {
-    return this._db.getCoursComplement({ id });
+  async getComplement({ id }: { id: string }) {
+    return this._db.getComplement({ id });
   }
 
-  async updateCoursComplement({
-    coursComplement,
-  }: {
-    coursComplement: Complement;
-  }) {
-    return this._db.updateCoursComplement({ coursComplement });
+  async updateComplement({ coursComplement }: { coursComplement: Complement }) {
+    return this._db.updateComplement({ coursComplement });
   }
 }
 
