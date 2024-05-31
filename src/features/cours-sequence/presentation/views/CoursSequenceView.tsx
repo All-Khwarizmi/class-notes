@@ -9,6 +9,7 @@ import { Eye, Settings } from "lucide-react";
 import AfterMenuButton from "@/core/components/common/editor/AfterMenuButton";
 import AfterMenuBar from "@/core/components/common/editor/AfterMunuBar";
 import ComplementsTable from "../components/ComplementsTable";
+import { Complement } from "@/features/complement/domain/complement-schemas";
 
 export default function CoursSequenceView({
   cours,
@@ -16,14 +17,16 @@ export default function CoursSequenceView({
   userId,
   type,
   coursFromSequence,
+  complements,
 }: {
   type: "cours" | "sequence";
   cours?: Cours;
   sequence?: Sequence;
   userId: string;
   coursFromSequence?: Cours[];
+  complements?: Complement[];
 }) {
-  if (type === "cours" && cours) {
+  if (type === "cours" && cours && complements) {
     return (
       <>
         <h1 className="text-2xl font-bold pb-4 dark:text-slate-300 text-slate-500 ">
@@ -42,7 +45,7 @@ export default function CoursSequenceView({
           </div>
         </EditorProviderWrapper>
 
-        <ComplementsTable cours={[]} coursId={cours._id} />
+        <ComplementsTable complements={complements} coursId={cours._id} />
       </>
     );
   }
