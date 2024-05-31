@@ -1,7 +1,9 @@
-import { Complement } from "../../domain/complement-schemas";
+import { Either, isLeft, left, right } from "fp-ts/lib/Either";
+import { Complement, ComplementSchema } from "../../domain/complement-schemas";
 import ComplementRepository, {
   complementRepository,
 } from "../repositories/complement-repository";
+import Failure from "@/core/failures/failures";
 
 export default class ComplementUsecases {
   private readonly _repository: ComplementRepository;
@@ -26,8 +28,52 @@ export default class ComplementUsecases {
     });
   }
 
-  async getAllCoursComplement({ coursId }: { coursId: string }) {
-    return this._repository.getAllComplement({ coursId });
+  async getAllCoursComplement({
+    coursId,
+  }: {
+    coursId: string;
+  }): Promise<Either<Failure<string>, Complement[]>> {
+    const eitherComplements = await this._repository.getAllComplement({
+      coursId,
+    });
+    if (isLeft(eitherComplements)) {
+      return eitherComplements;
+    }
+    let complements: Complement[] = [];
+    let failures: Failure<string>[] = [];
+
+    for (const complement of eitherComplements.right) {
+      const parsedComplement = {
+        ...complement,
+        id: complement._id,
+        createdAt: complement._creationTime,
+      };
+      const validateComplement = ComplementSchema.safeParse(parsedComplement);
+      if (!validateComplement.success) {
+        failures.push(
+          Failure.invalidValue({
+            invalidValue: complement,
+            message: `
+            Unable to validate complement with id: ${complement.id}
+            
+            ${JSON.stringify(validateComplement.error)}
+            `,
+          })
+        );
+        break;
+      }
+      complements.push(validateComplement.data);
+    }
+    if (failures.length > 0) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: failures,
+          message: " Could not validate complements ",
+          code: "APP203",
+        })
+      );
+    }
+    return right(complements);
   }
 
   async getCoursComplement({ id }: { id: string }) {
