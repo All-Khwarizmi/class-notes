@@ -8,6 +8,9 @@ import { Cours } from "../../domain/entities/cours-schemas";
 import { useState } from "react";
 import CoursSequenceCard from "./CoursSequenceCard";
 import AfterMenuButton from "@/core/components/common/editor/AfterMenuButton";
+import Link from "next/link";
+import { Plus } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 function CallapsibleCoursList(props: { cours: Cours[]; sequenceId: string }) {
   const [open, setOpen] = useState(false);
@@ -20,10 +23,14 @@ function CallapsibleCoursList(props: { cours: Cours[]; sequenceId: string }) {
           </h3>
 
           <CaretSortIcon />
-          <AfterMenuButton
-            addButton={true}
-            path={`/cours/add/${props.sequenceId}`}
-          />
+          <Link
+            href={`/cours/add/${props.sequenceId}`}
+            className={cn(
+              "bg-transparent rounded-md p-1 px-2 flex items-center ml-2 hover:bg-slate-400 border border-slate-400 hover:border-slate-400"
+            )}
+          >
+            <Plus size={12} />
+          </Link>
         </CollapsibleTrigger>
         <CollapsibleContent className="p-4">
           <div className="grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-5">
