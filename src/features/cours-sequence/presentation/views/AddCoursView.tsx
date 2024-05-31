@@ -99,6 +99,13 @@ export default function AddUpdateCoursSequenceView({
         setSelectedCompetences={selectCompetences}
         onSubmit={onSubmit}
         title={title}
+        imageUrl={
+          type === "cours"
+            ? cours?.imageUrl
+            : type === "sequence"
+            ? sequence?.imageUrl
+            : undefined
+        }
       />
     </div>
   );

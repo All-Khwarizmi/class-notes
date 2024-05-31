@@ -58,6 +58,11 @@ export default function CoursSequenceView({
                   <Eye size={12} />
                 </Link>
               </AfterMenuButton>
+              <AfterMenuButton>
+                <Link href={`/sequences/edit/${sequence._id}`}>
+                  <Settings size={12} />
+                </Link>
+              </AfterMenuButton>
             </AfterMenuBar>
             <section>
               <CollapsibleCoursList
@@ -65,7 +70,6 @@ export default function CoursSequenceView({
                 sequenceId={sequence._id}
               />
             </section>
-           
           </div>
         </EditorProviderWrapper>
       </>

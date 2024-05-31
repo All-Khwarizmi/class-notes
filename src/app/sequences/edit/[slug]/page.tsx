@@ -4,7 +4,9 @@ import LoadingSkeleton from "@/core/components/common/LoadingSkeleton";
 import SequenceEditServerLayer from "./SequenceEditServerLayer";
 
 export default async function Page({ params }: { params: { slug: string } }) {
+  console.log("hitting page route for sequence edit");
   if (!params.slug) {
+    console.log(params.slug);
     return <NotFound />;
   }
 

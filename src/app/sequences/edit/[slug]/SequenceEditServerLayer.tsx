@@ -8,8 +8,6 @@ import { Competence } from "@/features/comp-cat/domain/entities/schemas";
 import { coursUsecases } from "@/features/cours-sequence/application/usecases/cours-usecases";
 import ErrorDialog from "@/core/components/common/ErrorDialog";
 import {
-  Cours,
-  CoursSchema,
   Sequence,
   SequenceSchema,
 } from "@/features/cours-sequence/domain/entities/cours-schemas";
