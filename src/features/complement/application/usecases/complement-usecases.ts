@@ -1,4 +1,4 @@
-import { CoursComplement } from "../../domain/cours-complement-schemas";
+import { Complement } from "../../domain/complement-schemas";
 import ComplementRepository, {
   complementRepository,
 } from "../repositories/complement-repository";
@@ -15,7 +15,7 @@ export default class ComplementUsecases {
     coursComplement,
   }: {
     userId: string;
-    coursComplement: Omit<CoursComplement, "_id" | "createdAt">;
+    coursComplement: Omit<Complement, "_id" | "createdAt">;
   }) {
     return this._repository.addCoursComplement({ userId, coursComplement });
   }
@@ -31,7 +31,7 @@ export default class ComplementUsecases {
   async updateCoursComplement({
     coursComplement,
   }: {
-    coursComplement: CoursComplement;
+    coursComplement: Complement;
   }) {
     return this._repository.updateCoursComplement({ coursComplement });
   }

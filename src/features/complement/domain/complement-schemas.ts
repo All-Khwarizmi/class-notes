@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const CoursComplementSchema = z.object({
+export const ComplementSchema = z.object({
   id: z.string(),
   createdAt: z.number(),
   name: z.string(),
@@ -19,4 +19,4 @@ export const CoursComplementSchema = z.object({
   ]),
 });
 
-export type CoursComplement = z.infer<typeof CoursComplementSchema>;
+export type Complement = z.infer<typeof ComplementSchema>;

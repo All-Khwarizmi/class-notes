@@ -1,5 +1,5 @@
 import IDatabase from "@/core/data/idatabase";
-import { CoursComplement } from "../../domain/cours-complement-schemas";
+import { Complement } from "../../domain/complement-schemas";
 import { convexDatabase } from "@/core/data/convex/convex-impl";
 
 export default class ComplementRepository {
@@ -14,7 +14,7 @@ export default class ComplementRepository {
     coursComplement,
   }: {
     userId: string;
-    coursComplement: Omit<CoursComplement, "_id" | "createdAt">;
+    coursComplement: Omit<Complement, "_id" | "createdAt">;
   }) {
     return this._db.addCoursComplement({ coursComplement, userId });
   }
@@ -30,7 +30,7 @@ export default class ComplementRepository {
   async updateCoursComplement({
     coursComplement,
   }: {
-    coursComplement: CoursComplement;
+    coursComplement: Complement;
   }) {
     return this._db.updateCoursComplement({ coursComplement });
   }
