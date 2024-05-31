@@ -11,11 +11,13 @@ import {
   TableBody,
   TableCell,
 } from "@/core/components/ui/table";
-
+import { Switch } from "@/core/components/ui/switch";
+import { useRouter } from "next/navigation";
 function ComplementsTable(props: {
   complements: Complement[];
   coursId: string;
 }) {
+  const router = useRouter();
 
   return (
     <div className="w-full h-full py-4">
@@ -35,14 +37,19 @@ function ComplementsTable(props: {
         <TableBody>
           {props.complements.map((complement) => {
             return (
-              <TableRow key={complement.id}>
+              <TableRow
+                key={complement.id}
+                onClick={() => {
+                  router.push(`/complements/${complement.id}`);
+                }}
+              >
                 <TableCell className="w-[200px]">{complement.name}</TableCell>
                 <TableCell className="w-[200px]">
                   {complement.description}
                 </TableCell>
                 <TableCell className="w-[200px]">{complement.type}</TableCell>
                 <TableCell className="w-[200px]">
-                  {complement.publish ? "Yes" : "No"}
+                  <Switch checked={complement.publish} />
                 </TableCell>
                 <TableCell className="w-[200px]">
                   {complement.publishDate
