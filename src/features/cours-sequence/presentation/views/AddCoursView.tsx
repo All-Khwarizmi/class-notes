@@ -10,6 +10,7 @@ import useSaveSequenceMetadata from "../../application/usecases/services/useSave
 import useUpdateCoursMetadata from "../../application/usecases/services/useUpdateCoursMetadata";
 import useGetSelectedCompetences from "../hooks/useGetSelectedCompetences";
 import useGetFormValues from "../hooks/useGetFormValues";
+import useGetSubmitFunction from "../hooks/useGetSubmitFunction";
 
 export interface CoursSequenceForm
   extends Pick<
@@ -43,9 +44,7 @@ export default function AddUpdateCoursSequenceView({
       type,
       competences,
     });
-  const { setSaveCoursMetadata } = useSaveCoursMetadata();
-  const { setSaveSequenceMetadata } = useSaveSequenceMetadata();
-  const { setUpdateCoursMetadata } = useUpdateCoursMetadata();
+
   const [open, setOpen] = useState(false);
   const { form } = useGetFormValues({
     edit,
@@ -53,6 +52,15 @@ export default function AddUpdateCoursSequenceView({
     sequence,
     type,
     competences,
+  });
+  const { onSubmit } = useGetSubmitFunction({
+    edit,
+    type,
+    sequenceId,
+    cours,
+    sequence,
+    selectedCompetences,
+    authUser,
   });
 
   function selectCompetences({
@@ -71,40 +79,6 @@ export default function AddUpdateCoursSequenceView({
     }
   }
 
-  function onSubmitCours(data: CoursSequenceForm) {
-    const newData = {
-      ...data,
-      competences: selectedCompetences.map((c) => c._id),
-    };
-    setSaveCoursMetadata({
-      sequenceId: sequenceId!,
-      cours: newData,
-      userId: authUser.userId,
-    });
-  }
-
-  function onEditCours(data: CoursSequenceForm) {
-    console.log({ submitImg: data.imageUrl });
-    const newData = {
-      ...cours!,
-      ...data,
-      competences: selectedCompetences.map((c) => c._id),
-    };
-    setUpdateCoursMetadata({
-      cours: newData,
-    });
-  }
-
-  function onSubmitSequence(data: CoursSequenceForm) {
-    const newData = {
-      ...data,
-      competencesIds: selectedCompetences.map((c) => c._id),
-    };
-    setSaveSequenceMetadata({
-      sequence: newData,
-      userId: authUser.userId,
-    });
-  }
   if (edit && cours !== undefined && type === "cours") {
     return (
       <div>
@@ -115,7 +89,7 @@ export default function AddUpdateCoursSequenceView({
           setOpen={setOpen}
           selectedCompetences={selectedCompetences}
           setSelectedCompetences={selectCompetences}
-          onSubmit={onEditCours}
+          onSubmit={onSubmit}
           title={title}
           imageUrl={cours.imageUrl}
         />
@@ -144,15 +118,7 @@ export default function AddUpdateCoursSequenceView({
         setOpen={setOpen}
         selectedCompetences={selectedCompetences}
         setSelectedCompetences={selectCompetences}
-        onSubmit={
-          type === "cours"
-            ? sequenceId !== null
-              ? onSubmitCours
-              : () => {
-                  throw new Error("sequenceId is required for cours");
-                }
-            : onSubmitSequence
-        }
+        onSubmit={onSubmit}
         title={title}
       />
     </div>
