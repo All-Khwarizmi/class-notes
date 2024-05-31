@@ -23,14 +23,14 @@ export const createComplement = mutation({
     if (!existingCours) {
       throw new Error("Cours not found");
     }
-    const categoryId = await ctx.db.insert("CoursComplement", {
+    const categoryId = await ctx.db.insert("Complement", {
       sequenceId: existingCours.sequenceId,
       name: args.name,
       body: args.body,
       description: args.description,
       createdBy: existingCours.createdBy,
       publish: args.publish,
-      publishDate: args.publishDate,
+      publishDate: args.publish === true ? Date.now() : undefined,
       coursId: args.coursId,
       type: args.type,
     });
@@ -44,7 +44,7 @@ export const getAllComplement = query({
   },
   handler: async (ctx, args) => {
     const complements = await ctx.db
-      .query("CoursComplement")
+      .query("Complement")
       .withIndex("by_coursId")
       .filter((q) => q.eq(q.field("coursId"), args.coursId))
       .collect();
@@ -58,7 +58,7 @@ export const getComplement = query({
   },
   handler: async (ctx, args) => {
     const coursComplement = await ctx.db
-      .query("CoursComplement")
+      .query("Complement")
       .filter((q) => q.eq(q.field("_id"), args.id))
       .first();
     return coursComplement;
@@ -77,7 +77,7 @@ export const updateComplement = mutation({
   },
   handler: async (ctx, args) => {
     const coursComplement = await ctx.db
-      .query("CoursComplement")
+      .query("Complement")
       .filter((q) => q.eq(q.field("_id"), args.id))
       .first();
     if (coursComplement) {

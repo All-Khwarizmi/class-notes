@@ -50,7 +50,7 @@ export default defineSchema({
   //   publishDate: v.float64(),
   //   body: v.string(),
   // }).index("by_coursId", ["coursId"]),
-  CoursComplement: defineTable({
+ Complement: defineTable({
     name: v.string(),
     description: v.string(),
     coursId: v.string(),
