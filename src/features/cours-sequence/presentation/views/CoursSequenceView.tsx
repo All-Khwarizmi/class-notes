@@ -1,12 +1,13 @@
 "use client";
 import { Cours, Sequence } from "../../domain/entities/cours-schemas";
-import EditorProviderWrapper from "../components/EditorProvider";
-import CoursSaveButton from "../components/CoursSaveButton";
+import EditorProviderWrapper from "../../../../core/components/common/editor/EditorProvider";
+import CoursSaveButton from "../../../../core/components/common/editor/CoursSaveButton";
 import SaveSequenceBodyButton from "../components/SaveSequenceBodyButton";
-import { Button } from "@mui/material";
 import Link from "next/link";
 import CollapsibleCoursList from "../components/CallapsibleCoursList";
-import { Eye } from "lucide-react";
+import { Eye, Settings } from "lucide-react";
+import AfterMenuButton from "@/core/components/common/editor/AfterMenuButton";
+import AfterMenuBar from "@/core/components/common/editor/AfterMunuBar";
 
 export default function CoursSequenceView({
   cours,
@@ -28,8 +29,15 @@ export default function CoursSequenceView({
           {cours.name}
         </h1>
         <EditorProviderWrapper content={cours.body}>
-          <div className="flex gap-2 mt-2">
-            <CoursSaveButton userId={userId} cours={cours} />
+          <div className="flex flex-col gap-4 ">
+            <AfterMenuBar>
+              <CoursSaveButton userId={userId} cours={cours} />
+              <AfterMenuButton>
+                <Link href={`/cours/edit/${cours._id}`}>
+                  <Settings size={12} />
+                </Link>
+              </AfterMenuButton>
+            </AfterMenuBar>
           </div>
         </EditorProviderWrapper>
       </>
@@ -42,22 +50,25 @@ export default function CoursSequenceView({
           {sequence.name}
         </h1>
         <EditorProviderWrapper content={sequence.body}>
-          <div className="flex flex-col gap-4">
-            <div className="flex gap-2 mt-2">
+          <div className="flex flex-col gap-4 ">
+            <AfterMenuBar>
               <SaveSequenceBodyButton userId={userId} sequence={sequence} />
-              {/* Add button to add a cours  */}
-
-              <Button size="small" variant="contained" color="primary">
-                <Link href={`/cours/add/${sequence._id}`}>Add Cours</Link>
-              </Button>
-              <Button size="small" variant="contained" color="primary">
+              <AfterMenuButton>
                 <Link href={`/sequences/show/${sequence._id}`}>
                   <Eye size={12} />
                 </Link>
-              </Button>
-            </div>
+              </AfterMenuButton>
+              <AfterMenuButton>
+                <Link href={`/sequences/edit/${sequence._id}`}>
+                  <Settings size={12} />
+                </Link>
+              </AfterMenuButton>
+            </AfterMenuBar>
             <section>
-              <CollapsibleCoursList cours={coursFromSequence} />
+              <CollapsibleCoursList
+                cours={coursFromSequence}
+                sequenceId={sequence._id}
+              />
             </section>
           </div>
         </EditorProviderWrapper>

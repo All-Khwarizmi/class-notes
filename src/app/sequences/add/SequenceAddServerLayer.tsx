@@ -1,3 +1,4 @@
+import React from "react";
 import AddUpdateCoursSequenceView from "@/features/cours-sequence/presentation/views/AddCoursView";
 import { compCatUsecases } from "@/features/comp-cat/application/usecases/comp-cat-usecases";
 import { authUseCases } from "@/features/auth/application/usecases/auth-usecases";
@@ -5,7 +6,7 @@ import { isLeft } from "fp-ts/lib/Either";
 import { redirect } from "next/navigation";
 import { Competence } from "@/features/comp-cat/domain/entities/schemas";
 
-export default async function Page() {
+async function SequenceAddServerLayer() {
   const authUser = await authUseCases.getUserAuth();
   if (isLeft(authUser)) {
     redirect("/login");
@@ -23,8 +24,10 @@ export default async function Page() {
     <AddUpdateCoursSequenceView
       competences={competences}
       authUser={authUser.right}
-      type="cours"
-      title="Add Cours"
+      type="sequence"
+      title="Add Sequence"
     />
   );
 }
+
+export default SequenceAddServerLayer;

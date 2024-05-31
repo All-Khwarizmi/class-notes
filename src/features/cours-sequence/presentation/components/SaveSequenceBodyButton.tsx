@@ -3,6 +3,8 @@ import React from "react";
 import { useCurrentEditor } from "@tiptap/react";
 import { Sequence } from "../../domain/entities/cours-schemas";
 import useUpdateSequenceBody from "../../application/usecases/services/useUpdateSequenceBody";
+import AfterMenuButton from "@/core/components/common/editor/AfterMenuButton";
+import { Save } from "lucide-react";
 
 function SaveSequenceBodyButton({
   sequence,
@@ -17,18 +19,27 @@ function SaveSequenceBodyButton({
     return null;
   }
   return (
-    <Button
-      onClick={() => {
-        setUpdateSequenceBodyOptions({
-          userId,
-          sequenceId: sequence._id,
-          body: editor.getHTML(),
-        });
+    <AfterMenuButton
+      props={{
+        onClick: () => {
+          setUpdateSequenceBodyOptions({
+            userId,
+            sequenceId: sequence._id,
+            body: editor.getHTML(),
+          });
+        },
       }}
     >
-      Save
-    </Button>
+      <Save size={12} />
+    </AfterMenuButton>
   );
 }
 
 export default SaveSequenceBodyButton;
+//   onClick={() => {
+//   setUpdateSequenceBodyOptions({
+//     userId,
+//     sequenceId: sequence._id,
+//     body: editor.getHTML(),
+//   });
+// }}

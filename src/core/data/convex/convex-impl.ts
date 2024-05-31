@@ -267,25 +267,12 @@ export default class ConvexDatabase extends IDatabase {
   }
 
   async updateCours({
-    userId,
     cours,
   }: {
-    userId: string;
-    cours: {
-      _id: string;
-      name: string;
-      body: string;
-      lessons: string[];
-      competences: string[];
-      description: string;
-      createdBy: string;
-      createdAt: number;
-      category: string;
-    };
+    cours: Cours;
   }): Promise<Either<Failure<string>, void>> {
     try {
       const result = await fetchMutation(this._db.cours.updateCours, {
-        userId,
         coursId: cours._id,
         name: cours.name,
         body: cours.body,
@@ -293,21 +280,16 @@ export default class ConvexDatabase extends IDatabase {
         competences: cours.competences,
         description: cours.description,
         category: cours.category,
+        imageUrl: cours.imageUrl,
       });
-      if (!result) {
-        return left(
-          Failure.invalidValue({
-            invalidValue: cours,
-            message: "Error updating cours",
-          })
-        );
-      }
+
       return right(undefined);
     } catch (error) {
       return left(
         Failure.invalidValue({
           invalidValue: cours,
           message: "Error updating cours",
+          code: "INF101",
         })
       );
     }
@@ -379,6 +361,35 @@ export default class ConvexDatabase extends IDatabase {
       );
     }
   }
+
+  async updateSequence({
+    sequence,
+  }: {
+    sequence: Sequence;
+  }): Promise<Either<Failure<string>, void>> {
+    try {
+      await fetchMutation(this._db.sequence.updateSequence, {
+        sequenceId: sequence._id,
+        imageUrl: sequence.imageUrl,
+        name: sequence.name,
+        body: sequence.body,
+        description: sequence.description,
+        category: sequence.category,
+        competencesIds: sequence.competencesIds,
+      });
+
+      return right(undefined);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: sequence,
+          message: "Error updating sequence",
+          code: "INF101",
+        })
+      );
+    }
+  }
+
   async getSequences({
     userId,
   }: {

@@ -2,6 +2,9 @@ import { cn } from "@/lib/utils";
 import { useCurrentEditor } from "@tiptap/react";
 import React from "react";
 
+/**
+ * @deprecated This component is deprecated and should not be used.
+ */
 function MenuButton({
   onClick,
   disabled,
