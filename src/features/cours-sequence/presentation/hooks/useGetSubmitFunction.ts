@@ -5,6 +5,7 @@ import useUpdateCoursMetadata from "../../application/usecases/services/useUpdat
 import { Cours, Sequence } from "../../domain/entities/cours-schemas";
 import { CoursSequenceForm } from "../views/AddCoursView";
 import { UserAuth } from "@/core/auth/i-auth";
+import useUpdateSequenceMetadata from "../../application/usecases/services/useUpdateSequenceMetadata";
 
 function useGetSubmitFunction(options: {
   edit?: boolean;
@@ -18,6 +19,7 @@ function useGetSubmitFunction(options: {
   const { setSaveCoursMetadata } = useSaveCoursMetadata();
   const { setSaveSequenceMetadata } = useSaveSequenceMetadata();
   const { setUpdateCoursMetadata } = useUpdateCoursMetadata();
+  const { setUpdateSequenceMetadata } = useUpdateSequenceMetadata();
 
   function onSubmitCours(data: CoursSequenceForm) {
     const newData = {
@@ -53,13 +55,24 @@ function useGetSubmitFunction(options: {
     });
   }
 
-  // retunr submit function based on options:  (data: CoursSequenceForm) => void
+  function onEditSequence(data: CoursSequenceForm) {
+    const newData = {
+      ...options.sequence!,
+      ...data,
+
+      competencesIds: options.selectedCompetences.map((c) => c._id),
+    };
+    setUpdateSequenceMetadata({
+      sequence: newData,
+    });
+  }
+
   return {
     onSubmit:
       options.edit && options.cours !== undefined
         ? onEditCours
         : options.sequence !== undefined
-        ? onSubmitSequence //!!! if sequence is defined should be updating sequence
+        ? onEditSequence
         : options.type === "cours"
         ? onSubmitCours
         : onSubmitSequence,
