@@ -1,4 +1,4 @@
-import { useState } from "react";
+"use client";
 import Link from "next/link";
 import { Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -12,8 +12,10 @@ import {
   TableCell,
 } from "@/core/components/ui/table";
 
-function ComplementsTable(props: { cours: Complement[]; coursId: string }) {
-  const [open, setOpen] = useState(false);
+function ComplementsTable(props: {
+  complements: Complement[];
+  coursId: string;
+}) {
 
   return (
     <div className="w-full h-full py-4">
@@ -31,7 +33,7 @@ function ComplementsTable(props: { cours: Complement[]; coursId: string }) {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {props.cours.map((complement) => {
+          {props.complements.map((complement) => {
             return (
               <TableRow key={complement.id}>
                 <TableCell className="w-[200px]">{complement.name}</TableCell>
