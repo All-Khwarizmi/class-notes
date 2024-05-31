@@ -1,5 +1,5 @@
-import { CoursComplement } from "../domain/cours-complement-schemas";
-import CoursComplementRepository from "./repositories/cours-complement-repository";
+import { CoursComplement } from "../../domain/cours-complement-schemas";
+import CoursComplementRepository from "../repositories/cours-complement-repository";
 
 export default class CoursComplementUsecases {
   private readonly _repository: CoursComplementRepository;
