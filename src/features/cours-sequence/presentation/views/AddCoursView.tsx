@@ -2,12 +2,8 @@
 import AddCoursOrSequenceForm from "../components/AddCoursOrSequenceForm";
 import { Competence } from "@/features/comp-cat/domain/entities/schemas";
 import { UserAuth } from "@/core/auth/i-auth";
-import useSaveCoursMetadata from "../../application/usecases/services/useSaveCoursMetadata";
 import { useState } from "react";
 import { Cours, Sequence } from "../../domain/entities/cours-schemas";
-import { useForm } from "react-hook-form";
-import useSaveSequenceMetadata from "../../application/usecases/services/useSaveSequenceMetadata";
-import useUpdateCoursMetadata from "../../application/usecases/services/useUpdateCoursMetadata";
 import useGetSelectedCompetences from "../hooks/useGetSelectedCompetences";
 import useGetFormValues from "../hooks/useGetFormValues";
 import useGetSubmitFunction from "../hooks/useGetSubmitFunction";
