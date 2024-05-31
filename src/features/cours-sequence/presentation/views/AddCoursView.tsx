@@ -2,43 +2,62 @@
 import AddCoursOrSequenceForm from "../components/AddCoursOrSequenceForm";
 import { Competence } from "@/features/comp-cat/domain/entities/schemas";
 import { UserAuth } from "@/core/auth/i-auth";
-import useSaveCoursMetadata from "../../application/usecases/services/useSaveCoursMetadata";
 import { useState } from "react";
-import { Cours } from "../../domain/entities/cours-schemas";
-import { useForm } from "react-hook-form";
-import useSaveSequenceMetadata from "../../application/usecases/services/useSaveSequenceMetadata";
+import { Cours, Sequence } from "../../domain/entities/cours-schemas";
+import useGetSelectedCompetences from "../hooks/useGetSelectedCompetences";
+import useGetFormValues from "../hooks/useGetFormValues";
+import useGetSubmitFunction from "../hooks/useGetSubmitFunction";
+import ErrorDialog from "@/core/components/common/ErrorDialog";
 
 export interface CoursSequenceForm
   extends Pick<
     Cours,
     "description" | "category" | "name" | "competences" | "imageUrl"
   > {}
-export default function AddCoursOrSequenceView({
+export default function AddUpdateCoursSequenceView({
   competences,
   authUser,
   type,
   title,
   sequenceId,
+  edit,
+  cours,
+  sequence,
 }: {
   competences: Competence[];
   authUser: UserAuth;
   type: "cours" | "sequence";
+  edit?: boolean;
+  cours?: Cours;
+  sequence?: Sequence;
   title: string;
   sequenceId?: string;
 }) {
-  const [selectedCompetences, setSelectedCompetences] = useState<Competence[]>(
-    []
-  );
-  const { setSaveCoursMetadata } = useSaveCoursMetadata();
-  const { setSaveSequenceMetadata } = useSaveSequenceMetadata();
+  const { selectedCompetences, setSelectedCompetences } =
+    useGetSelectedCompetences({
+      edit,
+      cours,
+      sequence,
+      type,
+      competences,
+    });
+
   const [open, setOpen] = useState(false);
-  const form = useForm<CoursSequenceForm>({
-    defaultValues: {
-      description: "",
-      category: "",
-      name: "",
-      competences: [],
-    },
+  const { form } = useGetFormValues({
+    edit,
+    cours,
+    sequence,
+    type,
+    competences,
+  });
+  const { onSubmit } = useGetSubmitFunction({
+    edit,
+    type,
+    sequenceId,
+    cours,
+    sequence,
+    selectedCompetences,
+    authUser,
   });
 
   function selectCompetences({
@@ -57,28 +76,18 @@ export default function AddCoursOrSequenceView({
     }
   }
 
-  function onSubmitCours(data: CoursSequenceForm) {
-    const newData = {
-      ...data,
-      competences: selectedCompetences.map((c) => c._id),
-    };
-    setSaveCoursMetadata({
-      sequenceId: sequenceId!,
-      cours: newData,
-      userId: authUser.userId,
-    });
+  // add guard rails to prevent null values from being passed to the AddCoursOrSequenceForm component from the outer component
+
+  if (edit && !cours && !sequence) {
+    return (
+      <ErrorDialog
+        message={`
+    You are trying to edit a ${type} but the ${type} is not available.
+    `}
+      />
+    );
   }
 
-  function onSubmitSequence(data: CoursSequenceForm) {
-    const newData = {
-      ...data,
-      competencesIds: selectedCompetences.map((c) => c._id),
-    };
-    setSaveSequenceMetadata({
-      sequence: newData,
-      userId: authUser.userId,
-    });
-  }
   return (
     <div>
       <AddCoursOrSequenceForm
@@ -88,16 +97,15 @@ export default function AddCoursOrSequenceView({
         setOpen={setOpen}
         selectedCompetences={selectedCompetences}
         setSelectedCompetences={selectCompetences}
-        onSubmit={
-          type === "cours"
-            ? sequenceId !== null
-              ? onSubmitCours
-              : () => {
-                  throw new Error("sequenceId is required for cours");
-                }
-            : onSubmitSequence
-        }
+        onSubmit={onSubmit}
         title={title}
+        imageUrl={
+          type === "cours"
+            ? cours?.imageUrl
+            : type === "sequence"
+            ? sequence?.imageUrl
+            : undefined
+        }
       />
     </div>
   );

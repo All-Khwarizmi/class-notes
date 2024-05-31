@@ -28,7 +28,7 @@ export default class CoursUsecases {
   }: {
     userId: string;
     coursId: string;
-  }) {
+  }): Promise<Either<Failure<string>, Cours>> {
     const eitherCours = await this._repository.getSingleCours({
       userId,
       coursId,
@@ -83,6 +83,10 @@ export default class CoursUsecases {
     sequence: Omit<Sequence, "_id" | "createdAt" | "coursIds">;
   }) {
     return this._repository.addSequence({ userId, sequence });
+  }
+
+  async updateSequence({ sequence }: { sequence: Sequence }) {
+    return this._repository.updateSequence({ sequence });
   }
 
   async getSingleSequence({
@@ -193,6 +197,10 @@ export default class CoursUsecases {
       validateCours.push(validateCoursSchema.data);
     }
     return right(validateCours);
+  }
+
+  async updateCours({ cours }: { cours: Cours }) {
+    return this._repository.updateCours({ cours });
   }
 }
 

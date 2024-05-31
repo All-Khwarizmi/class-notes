@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
 import { useAuthStore } from "@/core/auth/auth-store";
 import useAuth from "@/core/auth/useAuth";
 import { userRepositry } from "@/features/user/application/repository/user-repository";
-import { use } from "chai";
 
 export default function Page() {
   const [open, setOpen] = useState(false);

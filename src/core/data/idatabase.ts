@@ -79,11 +79,9 @@ export default abstract class IDatabase {
   }): Promise<Either<Failure<string>, string>>;
 
   abstract updateCours({
-    userId,
     cours,
   }: {
-    userId: string;
-    cours: Partial<Omit<Cours, "_id" | "createdAt">>;
+    cours: Cours;
   }): Promise<Either<Failure<string>, void>>;
 
   abstract updateCoursBody({
@@ -103,6 +101,12 @@ export default abstract class IDatabase {
     userId: string;
     sequence: Omit<Sequence, "_id" | "createdAt" | "coursIds">;
   }): Promise<Either<Failure<string>, string>>;
+
+  abstract updateSequence({
+    sequence,
+  }: {
+    sequence: Sequence;
+  }): Promise<Either<Failure<string>, void>>;
 
   abstract getSequences({
     userId,
