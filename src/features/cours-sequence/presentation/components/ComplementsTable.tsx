@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { Plus } from "lucide-react";
+import { ExternalLink, Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Complement } from "@/features/complement/domain/complement-schemas";
 import { TableCaption, TableHeader } from "@/core/components/ui/table";
@@ -32,17 +32,13 @@ function ComplementsTable(props: {
             <TableHead className="w-[200px]">Type</TableHead>
             <TableHead className="w-[200px]"> Publish </TableHead>
             <TableHead className="w-[200px]">Publish Date</TableHead>
+            <TableHead className="w-[200px]">Actions</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {props.complements.map((complement) => {
             return (
-              <TableRow
-                key={complement.id}
-                onClick={() => {
-                  router.push(`/complements/${complement.id}`);
-                }}
-              >
+              <TableRow key={complement.id}>
                 <TableCell className="w-[200px]">{complement.name}</TableCell>
                 <TableCell className="w-[200px]">
                   {complement.description}
@@ -55,6 +51,11 @@ function ComplementsTable(props: {
                   {complement.publishDate
                     ? new Date(complement.publishDate).toLocaleDateString()
                     : "Not published"}
+                </TableCell>
+                <TableCell className="w-[200px]">
+                  <Link href={`/complements/${complement.id}`}>
+                    <ExternalLink size={12} />
+                  </Link>
                 </TableCell>
               </TableRow>
             );
