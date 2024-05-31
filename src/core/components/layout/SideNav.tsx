@@ -24,6 +24,7 @@ interface SideNavProps {
 
 export function SideNav({ items, setOpen, className }: SideNavProps) {
   const path = usePathname();
+  console.log(path);
   const { isOpen } = useSidebar();
   const [openItem, setOpenItem] = useState("");
   const [lastOpenItem, setLastOpenItem] = useState("");
@@ -42,6 +43,14 @@ export function SideNav({ items, setOpen, className }: SideNavProps) {
     setLiveHref(path);
   }, [path]);
 
+  function pathIsActive(props: { path: string; liveHref: string }) {
+    console.log({
+      fullLiveHref: props.liveHref,
+      path: props.path.split("/")[1],
+      liveHref: props.liveHref.split("/")[1],
+    });
+    return props.liveHref.split("/")[1] === props.path.split("/")[1];
+  }
   return (
     <nav className="space-y-2">
       {items.map((item) =>
@@ -58,8 +67,8 @@ export function SideNav({ items, setOpen, className }: SideNavProps) {
               <AccordionTrigger
                 className={cn(
                   buttonVariants({ variant: "ghost" }),
-
-                  "group relative flex h-12 justify-between px-4 py-2 text-base duration-200 hover:bg-muted hover:no-underline"
+                  pathIsActive({ path: item.href, liveHref }) && "bg-muted",
+                    "group relative flex h-12 justify-between px-4 py-2 text-base duration-200 hover:bg-muted hover:no-underline"
                 )}
               >
                 <div>{item.icon}</div>
@@ -86,7 +95,8 @@ export function SideNav({ items, setOpen, className }: SideNavProps) {
                   className={cn(
                     buttonVariants({ variant: "ghost" }),
                     "group relative flex h-12 justify-start gap-x-3",
-                    path === item.href && "bg-muted font-bold hover:bg-muted"
+                    pathIsActive({ path: item.href, liveHref }) &&
+                      "bg-muted font-bold hover:bg-muted"
                   )}
                 >
                   {item.icon}
@@ -109,7 +119,8 @@ export function SideNav({ items, setOpen, className }: SideNavProps) {
                     className={cn(
                       buttonVariants({ variant: "ghost" }),
                       "group relative flex h-12 justify-start gap-x-3",
-                      path === child.href && "bg-muted font-bold hover:bg-muted"
+                      pathIsActive({ path: child.href, liveHref }) &&
+                        "bg-muted font-bold hover:bg-muted"
                     )}
                   >
                     {child.icon}
@@ -137,7 +148,8 @@ export function SideNav({ items, setOpen, className }: SideNavProps) {
               buttonVariants({ variant: "ghost" }),
               "group relative flex h-12 justify-start",
 
-              path === item.href && "bg-secondary font-bold hover:bg-muted"
+              pathIsActive({ path: item.href, liveHref: liveHref }) &&
+                "bg-secondary font-bold hover:bg-muted"
             )}
           >
             {item.icon}
