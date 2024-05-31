@@ -1,5 +1,6 @@
 import { defineSchema, defineTable } from "convex/server";
 import { v } from "convex/values";
+import { b } from "vitest/dist/suite-a18diDsI.js";
 
 export default defineSchema({
   Users: defineTable({
@@ -7,6 +8,7 @@ export default defineSchema({
     schoolSubject: v.string(),
     name: v.string(),
     onboarding: v.boolean(),
+    hostname: v.optional(v.string()),
   }),
   Category: defineTable({
     name: v.string(),
@@ -23,6 +25,48 @@ export default defineSchema({
   })
     .index("by_createdBy", ["createdBy"])
     .index("by_category", ["category"]),
+
+  // Lesson: defineTable({
+  //   name: v.string(),
+  //   description: v.string(),
+  //   coursId: v.id("Cours"),
+  //   body: v.string(),
+  //   sequenceId: v.id("Sequences"),
+  //   createdBy: v.id("Users"),
+  //   publish: v.boolean(),
+  //   publishDate: v.float64(),
+  // })
+  //   // .index("by_createdBy", ["createdBy"])
+  //   // .index("by_sequenceId", ["sequenceId"])
+  //   .index("by_coursId", ["coursId"]),
+
+  // Diagram: defineTable({
+  //   name: v.string(),
+  //   description: v.string(),
+  //   coursId: v.id("Cours"),
+  //   sequenceId: v.id("Sequences"),
+  //   createdBy: v.string(),
+  //   publish: v.boolean(),
+  //   publishDate: v.float64(),
+  //   body: v.string(),
+  // }).index("by_coursId", ["coursId"]),
+  CoursComplement: defineTable({
+    name: v.string(),
+    description: v.string(),
+    coursId: v.id("Cours"),
+    sequenceId: v.id("Sequences"),
+    createdBy: v.string(),
+    publish: v.boolean(),
+    publishDate: v.float64(),
+    body: v.string(),
+
+    type: v.union(
+      v.literal("lesson"),
+      v.literal("diagram"),
+      v.literal("video"),
+      v.literal("audio")
+    ),
+  }).index("by_coursId", ["coursId"]),
   Cours: defineTable({
     name: v.string(),
     body: v.string(),
@@ -34,9 +78,12 @@ export default defineSchema({
     createdBy: v.string(),
     createdAt: v.float64(),
     category: v.string(),
+    publish: v.optional(v.boolean()),
+    coursComplementIds: v.optional(v.array(v.id("Cours"))),
   })
     .index("by_createdBy", ["createdBy"])
     .index("by_sequenceId", ["sequenceId"]),
+
   Sequences: defineTable({
     name: v.string(),
     body: v.string(),
@@ -47,6 +94,7 @@ export default defineSchema({
     createdBy: v.string(),
     createdAt: v.float64(),
     category: v.string(),
+    publish: v.optional(v.boolean()),
   })
     .index("by_createdBy", ["createdBy"])
     .index("by_category", ["category"]),
