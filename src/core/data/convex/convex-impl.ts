@@ -13,6 +13,7 @@ import {
   Cours,
   Sequence,
 } from "@/features/cours-sequence/domain/entities/cours-schemas";
+import { CoursComplement } from "@/features/cours-complement/domain/cours-complement-schemas";
 
 export interface ConvexDatabaseOptions {
   db: typeof api;
@@ -518,6 +519,154 @@ export default class ConvexDatabase extends IDatabase {
         Failure.invalidValue({
           invalidValue: sequenceId,
           message: "Error getting all cours from sequence",
+          code: "INF101",
+        })
+      );
+    }
+  }
+
+  async addCoursComplement({
+    userId,
+    coursComplement,
+  }: {
+    userId: string;
+    coursComplement: Omit<CoursComplement, "_id" | "createdAt">;
+  }): Promise<Either<Failure<string>, string>> {
+    try {
+      const result = await fetchMutation(
+        this._db.coursComplement.createCoursComplement,
+        {
+          userId,
+          sequenceId: coursComplement.sequenceId,
+          coursId: coursComplement.coursId,
+          name: coursComplement.name,
+          body: coursComplement.body,
+          description: coursComplement.description,
+          publish: coursComplement.publish,
+          publishDate: coursComplement.publishDate,
+          type: coursComplement.type,
+        }
+      );
+      if (!result) {
+        return left(
+          Failure.invalidValue({
+            invalidValue: coursComplement,
+            message: "Error adding cours complement",
+            code: "INF103",
+          })
+        );
+      }
+      return right(result);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: coursComplement,
+          message: "Error adding cours complement",
+          code: "INF101",
+        })
+      );
+    }
+  }
+
+  async getAllCoursComplement({
+    coursId,
+  }: {
+    coursId: string;
+  }): Promise<Either<Failure<string>, DocumentData[]>> {
+    try {
+      const result = await fetchQuery(
+        this._db.coursComplement.getAllCoursComplement,
+        {
+          coursId,
+        }
+      );
+      if (!result) {
+        return left(
+          Failure.invalidValue({
+            invalidValue: coursId,
+            message: "Error getting all cours complement",
+            code: "INF103",
+          })
+        );
+      }
+      return right(result);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: coursId,
+          message: "Error getting all cours complement",
+          code: "INF101",
+        })
+      );
+    }
+  }
+
+  async getCoursComplement({
+    id,
+  }: {
+    id: string;
+  }): Promise<Either<Failure<string>, DocumentData>> {
+    try {
+      const result = await fetchQuery(
+        this._db.coursComplement.getCoursComplement,
+        {
+          id,
+        }
+      );
+      if (!result) {
+        return left(
+          Failure.invalidValue({
+            invalidValue: id,
+            message: "Error getting cours complement",
+            code: "INF103",
+          })
+        );
+      }
+      return right(result);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: id,
+          message: "Error getting cours complement",
+          code: "INF101",
+        })
+      );
+    }
+  }
+
+  async updateCoursComplement({
+    coursComplement,
+  }: {
+    coursComplement: CoursComplement;
+  }): Promise<Either<Failure<string>, void>> {
+    try {
+      const result = await fetchMutation(
+        this._db.coursComplement.updateCoursComplement,
+        {
+          id: coursComplement.id,
+          name: coursComplement.name,
+          body: coursComplement.body,
+          sequenceId: coursComplement.sequenceId,
+          description: coursComplement.description,
+          publish: coursComplement.publish,
+          publishDate: coursComplement.publishDate,
+        }
+      );
+      if (!result) {
+        return left(
+          Failure.invalidValue({
+            invalidValue: coursComplement,
+            message: "Error updating cours complement",
+            code: "INF103",
+          })
+        );
+      }
+      return right(undefined);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: coursComplement,
+          message: "Error updating cours complement",
           code: "INF101",
         })
       );
