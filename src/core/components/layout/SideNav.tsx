@@ -82,7 +82,7 @@ export function SideNav({ items, setOpen, className }: SideNavProps) {
               </AccordionTrigger>
               <AccordionContent className="mt-2 space-y-4 pb-1">
                 {" "}
-                <Link
+                {/* <Link
                   href={item.href}
                   onClick={() => {
                     if (setOpen) setOpen(false);
@@ -103,7 +103,7 @@ export function SideNav({ items, setOpen, className }: SideNavProps) {
                   >
                     {item.title}
                   </div>
-                </Link>
+                </Link> */}
                 {item.children?.map((child) => (
                   <Link
                     key={child.title}
@@ -113,7 +113,7 @@ export function SideNav({ items, setOpen, className }: SideNavProps) {
                     }}
                     className={cn(
                       buttonVariants({ variant: "ghost" }),
-                      "group relative flex h-12 justify-start gap-x-3",
+                      "group relative flex h-12 justify-start gap-x-3 ml-4",
                       pathIsActive({ path: child.href, liveHref }) &&
                         "bg-muted font-bold hover:bg-muted"
                     )}

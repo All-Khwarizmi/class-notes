@@ -149,7 +149,7 @@ async function CoursServerLayer(props: { slug: string }) {
     },
     {
       title: "All Resources",
-      icon: <Rows3 size={20} />,
+      icon: <Rows3 size={16} />,
       href: `/cours/complements/${cours!._id}`,
       color: "text-sky-500",
     }
