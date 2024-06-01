@@ -15,6 +15,14 @@ import {
 } from "@/features/complement/domain/complement-schemas";
 import Failure from "@/core/failures/failures";
 import ErrorDialog from "@/core/components/common/ErrorDialog";
+import Sidebar from "@/core/components/layout/Sidebar";
+import { NavItem } from "@/lib/types";
+import {
+  Activity,
+  AlignVerticalDistributeCenter,
+  BookOpenCheck,
+} from "lucide-react";
+import Dashboard from "@/core/components/icons/Dashboard";
 
 async function CoursServerLayer(props: { slug: string }) {
   const authUser = await authUseCases.getUserAuth();
@@ -34,7 +42,6 @@ async function CoursServerLayer(props: { slug: string }) {
   ]);
   const isFailure = batch.some((result, index) => {
     if (result.status === "rejected") {
-  
       failures.push(
         Failure.invalidValue({
           invalidValue: result.reason,
@@ -49,7 +56,6 @@ async function CoursServerLayer(props: { slug: string }) {
     }
 
     if (isLeft(result.value)) {
-  
       failures.push(
         Failure.invalidValue({
           invalidValue: result.value.left,
@@ -80,7 +86,6 @@ async function CoursServerLayer(props: { slug: string }) {
       cours = validateCours.data;
     }
     if (index === 1) {
-  
       const eitherComplements = result.value as Right<Complement[]>;
       for (const complement of eitherComplements.right) {
         const validateComplement = ComplementSchema.safeParse(complement);
@@ -121,14 +126,41 @@ async function CoursServerLayer(props: { slug: string }) {
       />
     );
   }
+  const coursNavItems: NavItem[] = complements.map((complement) => ({
+    id: complement.id,
+    title: complement.name,
+    icon:
+      complement.type === "Exercise" ? (
+        <Activity size={20} />
+      ) : complement.type === "Lesson" ? (
+        <BookOpenCheck size={20} />
+      ) : (
+        <AlignVerticalDistributeCenter size={20} />
+      ),
+    href: `/complements/${complement.id}`,
+  }));
+  coursNavItems.unshift({
+    title: "Dashboard",
+    icon: Dashboard(),
+    href: "/dashboard",
+    color: "text-sky-500",
+  });
 
   return (
-    <CoursSequenceView
-      cours={cours}
-      userId={authUser.right.userId}
-      complements={complements}
-      type="cours"
-    />
+    <>
+      <Sidebar navItems={coursNavItems} />
+      <section className="h-full flex-1  overflow-x-hidden">
+        <div className="h-full py-8 px-6">
+          {" "}
+          <CoursSequenceView
+            cours={cours}
+            userId={authUser.right.userId}
+            complements={complements}
+            type="cours"
+          />
+        </div>
+      </section>
+    </>
   );
 }
 
