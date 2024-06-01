@@ -1,5 +1,6 @@
 import { defineSchema, defineTable } from "convex/server";
 import { v } from "convex/values";
+import { id } from "fp-ts/lib/Refinement";
 import { b } from "vitest/dist/suite-a18diDsI.js";
 
 export default defineSchema({
@@ -50,23 +51,53 @@ export default defineSchema({
   //   publishDate: v.float64(),
   //   body: v.string(),
   // }).index("by_coursId", ["coursId"]),
-  CoursComplement: defineTable({
+  Complement: defineTable({
     name: v.string(),
-    description: v.string(),
-    coursId: v.id("Cours"),
-    sequenceId: v.id("Sequences"),
+    description: v.optional(v.string()),
+    coursId: v.string(),
+    sequenceId: v.string(),
     createdBy: v.string(),
     publish: v.boolean(),
-    publishDate: v.float64(),
+    publishDate: v.optional(v.float64()),
     body: v.string(),
-
+    contentType: v.union(
+      v.literal("Diagram"),
+      v.literal("Flowchart"),
+      v.literal("Markup")
+    ),
     type: v.union(
-      v.literal("lesson"),
-      v.literal("diagram"),
-      v.literal("video"),
-      v.literal("audio")
+      v.literal("Lesson"),
+      v.literal("Exercise"),
+      v.literal("Additional")
     ),
   }).index("by_coursId", ["coursId"]),
+  Notes: defineTable({
+    name: v.string(),
+    description: v.string(),
+    parentId: v.string(),
+    fullPath: v.string(),
+    pathDictionary: v.array(v.object({
+      id: v.string(),
+      name: v.string(),
+    })),
+    folders: v.optional(
+      v.array(
+        v.object({
+          id: v.string(),
+          name: v.string(),
+          contentType: v.union(
+            v.literal("Diagram"),
+            v.literal("Flowchart"),
+            v.literal("Markup")
+          ),
+          createdAt: v.float64(),
+        })
+      )
+    ),
+    createdBy: v.string(),
+    keywords: v.array(v.string()),
+    content: v.string(),
+  }).index("by_parentId", ["parentId"]),
   Cours: defineTable({
     name: v.string(),
     body: v.string(),

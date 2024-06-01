@@ -8,18 +8,12 @@ import { TextAlign } from "@tiptap/extension-text-align";
 import ResizableImageExtension from "../common/editor/ImageResize";
 
 export const EXTENSIONS = [
-  TextAlign,
+  // TextAlign,
   TextAlign.configure({
     types: ["heading", "paragraph", "img"],
     alignments: ["left", "center", "right", "justify"],
     defaultAlignment: "left",
   }),
-  // ResizableImage,
-  // ResizableImage.configure({
-  //   inline: true,
-  //   HTMLAttributes: {},
-  // }),
-  ResizableImageExtension,
   ResizableImageExtension.configure({
     inline: true,
     HTMLAttributes: {},

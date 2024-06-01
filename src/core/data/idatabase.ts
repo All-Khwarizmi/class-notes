@@ -10,6 +10,8 @@ import {
   Cours,
   Sequence,
 } from "@/features/cours-sequence/domain/entities/cours-schemas";
+import { Complement } from "@/features/complement/domain/complement-schemas";
+import { Note } from "@/features/notes/domain/notes-schemas";
 
 export default abstract class IDatabase {
   abstract getUser({
@@ -149,4 +151,66 @@ export default abstract class IDatabase {
     userId: string;
     sequenceId: string;
   }): Promise<Either<Failure<string>, DocumentData[]>>;
+
+  abstract addComplement({
+    userId,
+    complement,
+  }: {
+    userId: string;
+    complement: Pick<
+      Complement,
+      "name" | "description" | "type" | "publish" | "coursId" | "body"
+    >;
+  }): Promise<Either<Failure<string>, string>>;
+
+  abstract getAllComplement({
+    coursId,
+  }: {
+    coursId: string;
+  }): Promise<Either<Failure<string>, DocumentData[]>>;
+
+  abstract getComplement({
+    id,
+  }: {
+    id: string;
+  }): Promise<Either<Failure<string>, DocumentData>>;
+
+  abstract updateComplement({
+    coursComplement,
+  }: {
+    coursComplement: Complement;
+  }): Promise<Either<Failure<string>, void>>;
+
+  abstract createNote({
+    note,
+  }: {
+    note: Omit<Note, "id">;
+  }): Promise<Either<Failure<string>, string>>;
+  abstract getNotes({
+    parentId,
+  }: {
+    parentId: string;
+  }): Promise<Either<Failure<string>, DocumentData[]>>;
+  abstract getNote({
+    id,
+  }: {
+    id: string;
+  }): Promise<Either<Failure<string>, DocumentData>>;
+
+  abstract updateNote({
+    note,
+  }: {
+    note: Pick<
+      Note,
+      | "id"
+      | "name"
+      | "description"
+      | "content"
+      | "fullPath"
+      | "pathDictionary"
+      | "folders"
+      | "createdBy"
+      | "keywords"
+    >;
+  }): Promise<Either<Failure<string>, void>>;
 }

@@ -1,3 +1,4 @@
+"use client";
 /**
  * v0 by Vercel.
  * @see https://v0.dev/t/VW9DgAjsBFE
@@ -6,11 +7,7 @@
 import { Button } from "@/core/components/ui/button";
 import Link from "next/link";
 
-export default function ErrorDialog(props: {
-  message: string;
-  onRetry?: () => void;
-  path?: string;
-}) {
+export default function ErrorDialog(props: { message: string; path?: string }) {
   return (
     <div
       aria-label={`Displaying message: ${props.message}`}
@@ -27,7 +24,7 @@ export default function ErrorDialog(props: {
           <div className="space-y-2">
             <h3 className="text-lg font-medium">What happened?</h3>
             {props.message ? (
-              <p className="text-gray-500 dark:text-gray-400">
+              <p className="text-gray-500 dark:text-gray-400 text-wrap break-words ">
                 {props.message}
               </p>
             ) : (
@@ -39,11 +36,7 @@ export default function ErrorDialog(props: {
           <div className="space-y-2">
             <h3 className="text-lg font-medium">What can you do?</h3>
             <div className="space-y-2">
-              {props.onRetry ? (
-                <Button onClick={props.onRetry}>Try again</Button>
-              ) : (
-                <Button onClick={() => window.location.reload()}>Reload</Button>
-              )}
+              <Button onClick={() => {}}>Try again</Button>
               <Link
                 href="/"
                 className="inline-flex w-full justify-center rounded-md border border-transparent bg-gray-900 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 dark:bg-gray-50 dark:text-gray-900 dark:hover:bg-gray-200 dark:focus:ring-gray-700 dark:focus:ring-offset-gray-900"
