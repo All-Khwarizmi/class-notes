@@ -11,13 +11,13 @@ export const NavItems: NavItem[] = [
   },
   {
     title: "Profile",
-    icon: <User size={24} />,
+    icon: <User size={16} />,
     href: "/profile",
     color: "text-sky-500",
   },
   {
     title: "Competences",
-    icon: <BookmarkCheck size={24} />,
+    icon: <BookmarkCheck size={16} />,
     href: "/competences",
     color: "text-sky-500",
   },
@@ -29,14 +29,8 @@ export const NavItems: NavItem[] = [
   },
   {
     title: "Sequences",
-    icon: <Presentation size={24} />,
+    icon: <Presentation size={16} />,
     href: "/sequences",
-    color: "text-orange-500",
-  },
-  {
-    title: "Complements",
-    icon: <Presentation size={24} />,
-    href: "/complements/add",
     color: "text-orange-500",
   },
 
