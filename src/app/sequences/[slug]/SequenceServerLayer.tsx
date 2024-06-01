@@ -6,7 +6,7 @@ import { coursUsecases } from "@/features/cours-sequence/application/usecases/co
 import CoursSequenceView from "@/features/cours-sequence/presentation/views/CoursSequenceView";
 import { NavItem } from "@/lib/types";
 import { isLeft } from "fp-ts/lib/Either";
-import { BookA, BookCheck, NotebookPen } from "lucide-react";
+import { BookA, BookCheck, NotebookPen, Plus } from "lucide-react";
 import { redirect } from "next/navigation";
 import React from "react";
 
@@ -37,6 +37,16 @@ export default async function SequenceServerLayer(props: { slug: string }) {
     return <NotFound />;
   }
 
+  const coursesNavItems: NavItem[] = eitherCours.right.map((cours) => ({
+    title: cours.name,
+    href: `/cours/${cours._id}`,
+    icon: <BookA size={16} />,
+  }));
+  coursesNavItems.push({
+    title: "Add new course",
+    href: `/cours/add/${props.slug}`,
+    icon: <Plus size={16} />,
+  });
   const sequenceNavItems: NavItem[] = [
     {
       title: "Dashboard",
@@ -45,14 +55,10 @@ export default async function SequenceServerLayer(props: { slug: string }) {
     },
     {
       title: "Courses",
-      href: `/sequences/cours/${props.slug}`,
+      href: `#`,
       icon: <BookCheck size={16} />,
       isChidren: true,
-      children: eitherCours.right.map((cours) => ({
-        title: cours.name,
-        href: `/cours/${cours._id}`,
-        icon: <BookA size={16} />,
-      })),
+      children: coursesNavItems,
     },
     {
       title: "Notes",
