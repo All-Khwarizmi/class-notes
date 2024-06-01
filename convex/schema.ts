@@ -52,7 +52,7 @@ export default defineSchema({
   // }).index("by_coursId", ["coursId"]),
   Complement: defineTable({
     name: v.string(),
-    description: v.string(),
+    description: v.optional(v.string()),
     coursId: v.string(),
     sequenceId: v.string(),
     createdBy: v.string(),

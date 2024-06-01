@@ -5,7 +5,7 @@ export const createComplement = mutation({
   args: {
     name: v.string(),
     body: v.string(),
-    description: v.string(),
+    description: v.optional(v.string()),
     coursId: v.string(),
     type: v.union(
       v.literal("Lesson"),
