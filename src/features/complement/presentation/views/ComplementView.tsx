@@ -6,6 +6,7 @@ import AfterMenuBar from "@/core/components/common/editor/AfterMunuBar";
 import UpdateComplement from "../components/UpdateComplement";
 
 function ComplementView(props: { slug: string; complement: Complement }) {
+  //! Check complement type and return the right component
   return (
     <Editor
       content={props.complement.body}

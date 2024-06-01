@@ -4,7 +4,7 @@ export const ComplementSchema = z.object({
   id: z.string(),
   createdAt: z.number(),
   name: z.string(),
-  description: z.string(),
+  description: z.string().optional(),
   coursId: z.string(),
   sequenceId: z.string(),
   createdBy: z.string(),

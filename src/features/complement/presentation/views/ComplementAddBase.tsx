@@ -15,6 +15,7 @@ import {
   SelectContent,
   SelectGroup,
   SelectItem,
+  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/core/components/ui/select";
@@ -26,12 +27,24 @@ import useAddComplementBase from "../../application/adapters/services/useAddComp
 import { toast } from "sonner";
 
 const ComplementBaseSchema = z.object({
-  name: z.string(),
-  description: z.string(),
-  publish: z.boolean(),
-  type: z.string().refine((value) => {
-    return ["video", "lesson", "audio", "diagram"].includes(value);
-  }),
+  name: z.string().min(3),
+  description: z.string().optional(),
+  publish: z.boolean().optional(),
+  type: z
+    .string()
+    .default("Lesson")
+    .refine((value) => {
+      console.log(value);
+      return ["Lesson", "Exercise", "Additional"].includes(value);
+    })
+    .optional(),
+  contentType: z
+    .string()
+    .default("Markup")
+    .refine((value) => {
+      return ["Diagram", "Flowchart", "Markup"].includes(value);
+    })
+    .optional(),
 });
 export type ComplementBaseType = z.infer<typeof ComplementBaseSchema>;
 function ComplementAddBaseForm(props: { slug: string }) {
@@ -42,32 +55,43 @@ function ComplementAddBaseForm(props: { slug: string }) {
       name: "",
       description: "",
       publish: false,
-      type: "video" || "lesson" || "audio" || "diagram",
+      type: "Lesson",
+      contentType: "Markup",
     },
   });
   function onSubmit(values: ComplementBaseType) {
     if (
-      values.type !== "video" &&
-      values.type !== "lesson" &&
-      values.type !== "audio" &&
-      values.type !== "diagram"
+      values.type !== "Lesson" &&
+      values.type !== "Exercise" &&
+      values.type !== "Additional"
     ) {
       toast.error("Invalid type", {
         position: "top-center",
-        description: "The type must be video, lesson, audio or diagram",
+        description: "The type must be lesson, exercise or additional",
+      });
+      return;
+    } else if (
+      values.contentType !== "Diagram" &&
+      values.contentType !== "Flowchart" &&
+      values.contentType !== "Markup"
+    ) {
+      toast.error("Invalid content type", {
+        position: "top-center",
+        description: "The content type must be diagram, flowchart or markup",
       });
       return;
     }
-
     setComplementBaseOptions({
       complementBaseOptions: {
         name: values.name,
         description: values.description,
         publish: values.publish,
         type: values.type,
+        contentType: values.contentType,
       },
       coursId: props.slug,
     });
+
   }
   return (
     <Form {...form}>
@@ -84,7 +108,6 @@ function ComplementAddBaseForm(props: { slug: string }) {
               <FormControl>
                 <Input placeholder="Complement name" {...field} />
               </FormControl>
-              <FormDescription>The name of the complement</FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -98,43 +121,75 @@ function ComplementAddBaseForm(props: { slug: string }) {
               <FormControl>
                 <Input placeholder="Complement description" {...field} />
               </FormControl>
-              <FormDescription>
-                The description of the complement
-              </FormDescription>
+
               <FormMessage />
             </FormItem>
           )}
         />
         <div className="flex gap-4 justify-between">
-          <FormField
-            control={form.control}
-            name="type"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel htmlFor={field.name}>Type</FormLabel>
-                <FormControl>
-                  <Select
-                    onValueChange={field.onChange}
-                    value={form.getValues().type}
-                  >
-                    <SelectTrigger className="w-[180px]">
-                      <SelectValue placeholder="Select a type" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectGroup>
-                        <SelectItem value="video">Video</SelectItem>
-                        <SelectItem value="lesson">Lesson</SelectItem>
-                        <SelectItem value="audio">Audio</SelectItem>
-                        <SelectItem value="diagram">Diagram</SelectItem>
-                      </SelectGroup>
-                    </SelectContent>
-                  </Select>
-                </FormControl>
-                <FormDescription>The type of the complement</FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          <div className="space-y-4 w-full max-w-lg mx-auto">
+            <FormField
+              control={form.control}
+              name="type"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel htmlFor={field.name}>Type</FormLabel>
+                  <FormControl>
+                    <Select onValueChange={field.onChange} value={field.value}>
+                      <SelectTrigger className="w-[180px]">
+                        <SelectValue
+                          placeholder="Select a type"
+                          defaultValue={field.value}
+                        />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          <SelectItem value="Lesson">Lesson</SelectItem>
+                          <SelectItem value="Exercise">Exercise</SelectItem>
+                          <SelectItem value="Additional">Additional</SelectItem>
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                  </FormControl>
+                  <FormDescription>The type of the complement</FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="contentType"
+              render={({ field }) => {
+                return (
+                  <FormItem>
+                    <FormLabel htmlFor={field.name}>Content Type</FormLabel>
+                    <FormControl>
+                      <Select
+                        onValueChange={field.onChange}
+                        value={field.value}
+                      >
+                        <SelectTrigger className="w-[180px]">
+                          <SelectValue placeholder="Select a content type" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectGroup>
+                            <SelectItem value="Diagram">Diagram</SelectItem>
+                            <SelectItem value="Flowchart">Flowchart</SelectItem>
+                            <SelectItem value="Markup">Markup</SelectItem>
+                          </SelectGroup>
+                        </SelectContent>
+                      </Select>
+                    </FormControl>
+                    <FormDescription>
+                      The content type of the complement
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                );
+              }}
+            />
+          </div>
+
           <FormField
             control={form.control}
             name="publish"
