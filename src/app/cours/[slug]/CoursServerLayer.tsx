@@ -133,11 +133,11 @@ async function CoursServerLayer(props: { slug: string }) {
     title: complement.name,
     icon:
       complement.type === "Exercise" ? (
-        <Activity size={20} />
+        <Activity size={16} />
       ) : complement.type === "Lesson" ? (
-        <BookOpenCheck size={20} />
+        <BookOpenCheck size={16} />
       ) : (
-        <AlignVerticalDistributeCenter size={20} />
+        <AlignVerticalDistributeCenter size={16} />
       ),
     href: `/complements/${complement.id}`,
   }));
