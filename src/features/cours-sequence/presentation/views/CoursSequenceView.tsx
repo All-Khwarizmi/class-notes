@@ -45,7 +45,7 @@ export default function CoursSequenceView({
           </div>
         </EditorProviderWrapper>
 
-        <ComplementsTable complements={complements} coursId={cours._id} />
+        {/* <ComplementsTable complements={complements} coursId={cours._id} /> */}
       </>
     );
   }
@@ -70,12 +70,12 @@ export default function CoursSequenceView({
                 </Link>
               </AfterMenuButton>
             </AfterMenuBar>
-            <section>
+            {/* <section>
               <CollapsibleCoursList
                 cours={coursFromSequence}
                 sequenceId={sequence._id}
               />
-            </section>
+            </section> */}
           </div>
         </EditorProviderWrapper>
       </>
