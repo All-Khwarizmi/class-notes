@@ -1,7 +1,9 @@
-import { Note } from "../../domain/notes-schemas";
+import { Either, isLeft, left, right } from "fp-ts/lib/Either";
+import { Note, NoteSchema } from "../../domain/notes-schemas";
 import NoteRepository, {
   noteRepository,
 } from "../repositories/note-repository";
+import Failure from "@/core/failures/failures";
 
 export default class NotesUsecases {
   private readonly _repository: NoteRepository;
@@ -10,8 +12,31 @@ export default class NotesUsecases {
     this._repository = repository;
   }
 
-  async getNotes({ parentId }: { parentId: string }) {
-    return this._repository.getNotes({ parentId });
+  async getNotes({
+    parentId,
+  }: {
+    parentId: string;
+  }): Promise<Either<Failure<string>, Note[]>> {
+    const eitherNotes = await this._repository.getNotes({ parentId });
+    if (isLeft(eitherNotes)) {
+      return eitherNotes;
+    }
+    const validatedNotes: Note[] = [];
+    for (const note of eitherNotes.right) {
+      const validatesNotes = NoteSchema.safeParse(note);
+      if (!validatesNotes.success) {
+        return left(
+          Failure.invalidValue({
+            invalidValue: note,
+            message: "Invalid notes",
+            code: "APP203",
+          })
+        );
+      }
+      validatedNotes.push(validatesNotes.data);
+    }
+
+    return right(validatedNotes);
   }
 
   async getNote({ id }: { id: string }) {
