@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 export interface AddComplementBaseOptions {
   complementBaseOptions: Pick<
     Complement,
-    "name" | "description" | "type" | "publish"
+    "name" | "description" | "type" | "publish" | "contentType"
   >;
   coursId: string;
 }
@@ -18,7 +18,6 @@ function useAddComplementBase() {
     useState<AddComplementBaseOptions | null>(null);
   useEffect(() => {
     if (complementBaseOptions) {
-      console.log(complementBaseOptions);
       const loadingToast = toast.loading("Adding...", {
         position: "top-center",
       });
@@ -34,6 +33,8 @@ function useAddComplementBase() {
             type: complementBaseOptions.complementBaseOptions.type,
             body: "",
             coursId: complementBaseOptions.coursId,
+            contentType:
+              complementBaseOptions.complementBaseOptions.contentType,
           },
         })
         .then((eitherComplement) => {
