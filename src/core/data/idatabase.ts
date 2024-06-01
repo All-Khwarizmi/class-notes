@@ -184,7 +184,7 @@ export default abstract class IDatabase {
   abstract createNote({
     note,
   }: {
-    note: Omit<Note, "_id">;
+    note: Omit<Note, "id">;
   }): Promise<Either<Failure<string>, string>>;
   abstract getNotes({
     parentId,
@@ -200,6 +200,17 @@ export default abstract class IDatabase {
   abstract updateNote({
     note,
   }: {
-    note: Note;
+    note: Pick<
+      Note,
+      | "id"
+      | "name"
+      | "description"
+      | "content"
+      | "fullPath"
+      | "pathDictionary"
+      | "folders"
+      | "createdBy"
+      | "keywords"
+    >;
   }): Promise<Either<Failure<string>, void>>;
 }

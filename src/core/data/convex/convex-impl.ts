@@ -663,7 +663,7 @@ export default class ConvexDatabase extends IDatabase {
   async createNote({
     note,
   }: {
-    note: Omit<Note, "_id">;
+    note: Omit<Note, "id">;
   }): Promise<Either<Failure<string>, string>> {
     try {
       const result = await fetchMutation(this._db.notes.createNote, {
@@ -761,7 +761,18 @@ export default class ConvexDatabase extends IDatabase {
   async updateNote({
     note,
   }: {
-    note: Note;
+    note: Pick<
+      Note,
+      | "id"
+      | "name"
+      | "description"
+      | "content"
+      | "fullPath"
+      | "pathDictionary"
+      | "folders"
+      | "createdBy"
+      | "keywords"
+    >;
   }): Promise<Either<Failure<string>, void>> {
     try {
       const result = await fetchMutation(this._db.notes.updateNote, {
@@ -769,11 +780,9 @@ export default class ConvexDatabase extends IDatabase {
         name: note.name,
         description: note.description,
         content: note.content,
-        parentId: note.parentId,
         fullPath: note.fullPath,
         pathDictionary: note.pathDictionary,
         folders: note.folders,
-        createdBy: note.createdBy,
         keywords: note.keywords,
       });
       if (!result) {
