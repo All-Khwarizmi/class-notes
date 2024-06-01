@@ -1,5 +1,4 @@
 import Header from "@/core/components/layout/Header";
-import Sidebar from "@/core/components/layout/Sidebar";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -16,11 +15,11 @@ export default function RootLayout({
   return (
     <>
       <Header />
-      <section className="flex h-full w-full border-collapse overflow-hidden">
-        <Sidebar />
-        <section className="h-full flex-1  overflow-x-hidden">
-          <div className="h-full py-8 px-6">{children}</div>
-        </section>
+      <section className="flex h-full  w-full border-collapse overflow-hidden">
+        {/* <Sidebar />
+        <section className="h-full flex-1  overflow-x-hidden"> */}
+        {children}
+        {/* </section> */}
       </section>
     </>
   );

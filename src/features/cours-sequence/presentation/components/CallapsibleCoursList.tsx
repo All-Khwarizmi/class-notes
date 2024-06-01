@@ -7,7 +7,6 @@ import {
 import { Cours } from "../../domain/entities/cours-schemas";
 import { useState } from "react";
 import CoursSequenceCard from "./CoursSequenceCard";
-import AfterMenuButton from "@/core/components/common/editor/AfterMenuButton";
 import Link from "next/link";
 import { Plus } from "lucide-react";
 import { cn } from "@/lib/utils";

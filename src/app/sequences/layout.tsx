@@ -17,10 +17,11 @@ export default function RootLayout({
     <>
       <Header />
       <section className="flex h-full w-full border-collapse overflow-hidden">
-        <Sidebar />
+        {/* <Sidebar />
         <section className="h-full flex-1  overflow-x-hidden">
           <div className="h-full py-8 px-6">{children}</div>
-        </section>
+        </section> */}
+        {children}
       </section>
     </>
   );

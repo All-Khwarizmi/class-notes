@@ -7,15 +7,16 @@ import { cn } from "@/lib/utils";
 import { useSidebar } from "@/core/application/common/useSidebar";
 import ArrowLeft from "../icons/ArrowLeft";
 import useNavItems from "@/core/application/common/useNavItems";
+import { NavItem } from "@/lib/types";
 
 interface SidebarProps {
   className?: string;
+  navItems?: NavItem[];
 }
 
-export default function Sidebar({ className }: SidebarProps) {
+export default function Sidebar({ className, navItems }: SidebarProps) {
   const { isOpen, toggle } = useSidebar();
   const [status, setStatus] = useState(false);
-  const { navItems } = useNavItems();
 
   const handleToggle = () => {
     setStatus(true);
