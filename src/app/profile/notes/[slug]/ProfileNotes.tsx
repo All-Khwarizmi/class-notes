@@ -2,7 +2,8 @@ import NotFound from "@/app/not-found";
 import ErrorDialog from "@/core/components/common/ErrorDialog";
 import { authUseCases } from "@/features/auth/application/usecases/auth-usecases";
 import { notesUsecases } from "@/features/notes/application/usecases/note-usecases";
-import NotesAddTableView from "@/features/notes/presentation/views/NotesAddFormView";
+import NotesTableView from "@/features/notes/presentation/views/NotesTableView";
+
 import { isLeft } from "fp-ts/lib/Either";
 import { redirect } from "next/navigation";
 import React from "react";
@@ -31,7 +32,7 @@ async function ProfileNotes(props: { slug: string }) {
     );
   }
 
-  return <NotesAddTableView />;
+  return <NotesTableView />;
 }
 
 export default ProfileNotes;
