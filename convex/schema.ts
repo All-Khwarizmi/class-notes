@@ -76,23 +76,25 @@ export default defineSchema({
     description: v.string(),
     parentId: v.string(),
     fullPath: v.string(),
-    pathDictionary: v.object({
+    pathDictionary: v.array(v.object({
       id: v.string(),
       name: v.string(),
-    }),
-    folders: v.array(
-      v.object({
-        id: v.string(),
-        name: v.string(),
-        contentType: v.union(
-          v.literal("Diagram"),
-          v.literal("Flowchart"),
-          v.literal("Markup")
-        ),
-        createdAt: v.float64(),
-      })
+    })),
+    folders: v.optional(
+      v.array(
+        v.object({
+          id: v.string(),
+          name: v.string(),
+          contentType: v.union(
+            v.literal("Diagram"),
+            v.literal("Flowchart"),
+            v.literal("Markup")
+          ),
+          createdAt: v.float64(),
+        })
+      )
     ),
-    createdBy: v.id("Users"),
+    createdBy: v.string(),
     keywords: v.array(v.string()),
     content: v.string(),
   }).index("by_parentId", ["parentId"]),

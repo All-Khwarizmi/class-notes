@@ -11,6 +11,7 @@ import {
   Sequence,
 } from "@/features/cours-sequence/domain/entities/cours-schemas";
 import { Complement } from "@/features/complement/domain/complement-schemas";
+import { Note } from "@/features/notes/domain/notes-schemas";
 
 export default abstract class IDatabase {
   abstract getUser({
@@ -178,5 +179,27 @@ export default abstract class IDatabase {
     coursComplement,
   }: {
     coursComplement: Complement;
+  }): Promise<Either<Failure<string>, void>>;
+
+  abstract createNote({
+    note,
+  }: {
+    note: Omit<Note, "_id">;
+  }): Promise<Either<Failure<string>, string>>;
+  abstract getNotes({
+    parentId,
+  }: {
+    parentId: string;
+  }): Promise<Either<Failure<string>, DocumentData[]>>;
+  abstract getNote({
+    id,
+  }: {
+    id: string;
+  }): Promise<Either<Failure<string>, DocumentData>>;
+
+  abstract updateNote({
+    note,
+  }: {
+    note: Note;
   }): Promise<Either<Failure<string>, void>>;
 }

@@ -14,6 +14,7 @@ import {
   Sequence,
 } from "@/features/cours-sequence/domain/entities/cours-schemas";
 import { Complement } from "@/features/complement/domain/complement-schemas";
+import { Note } from "@/features/notes/domain/notes-schemas";
 
 export interface ConvexDatabaseOptions {
   db: typeof api;
@@ -653,6 +654,143 @@ export default class ConvexDatabase extends IDatabase {
         Failure.invalidValue({
           invalidValue: coursComplement,
           message: "Error updating cours complement",
+          code: "INF101",
+        })
+      );
+    }
+  }
+
+  async createNote({
+    note,
+  }: {
+    note: Omit<Note, "_id">;
+  }): Promise<Either<Failure<string>, string>> {
+    try {
+      const result = await fetchMutation(this._db.notes.createNote, {
+        name: note.name,
+        description: note.description,
+        parentId: note.parentId,
+        fullPath: note.fullPath,
+        pathDictionary: note.pathDictionary,
+        folders: note.folders,
+        createdBy: note.createdBy,
+        keywords: note.keywords,
+        content: note.content,
+      });
+      if (!result) {
+        return left(
+          Failure.invalidValue({
+            invalidValue: note,
+            message: "Error creating note",
+            code: "INF103",
+          })
+        );
+      }
+      return right(result);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: note,
+          message: "Error creating note",
+          code: "INF101",
+        })
+      );
+    }
+  }
+
+  async getNotes({
+    parentId,
+  }: {
+    parentId: string;
+  }): Promise<Either<Failure<string>, DocumentData[]>> {
+    try {
+      const result = await fetchQuery(this._db.notes.getNotes, {
+        parentId,
+      });
+      if (!result) {
+        return left(
+          Failure.invalidValue({
+            invalidValue: parentId,
+            message: "Error getting notes",
+            code: "INF103",
+          })
+        );
+      }
+      return right(result);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: parentId,
+          message: "Error getting notes",
+          code: "INF101",
+        })
+      );
+    }
+  }
+
+  async getNote({
+    id,
+  }: {
+    id: string;
+  }): Promise<Either<Failure<string>, DocumentData>> {
+    try {
+      const result = await fetchQuery(this._db.notes.getNote, {
+        id,
+      });
+      if (!result) {
+        return left(
+          Failure.invalidValue({
+            invalidValue: id,
+            message: "Error getting note",
+            code: "INF103",
+          })
+        );
+      }
+      return right(result);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: id,
+          message: "Error getting note",
+          code: "INF101",
+        })
+      );
+    }
+  }
+
+  async updateNote({
+    note,
+  }: {
+    note: Note;
+  }): Promise<Either<Failure<string>, void>> {
+    try {
+      const result = await fetchMutation(this._db.notes.updateNote, {
+        id: note.id,
+        name: note.name,
+        description: note.description,
+        content: note.content,
+        parentId: note.parentId,
+        fullPath: note.fullPath,
+        pathDictionary: note.pathDictionary,
+        folders: note.folders,
+        createdBy: note.createdBy,
+        keywords: note.keywords,
+      });
+      if (!result) {
+        return left(
+          Failure.invalidValue({
+            invalidValue: note,
+            message: "Error updating note",
+            code: "INF103",
+          })
+        );
+      }
+      return right(undefined);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: note,
+          message: "Error updating note",
           code: "INF101",
         })
       );

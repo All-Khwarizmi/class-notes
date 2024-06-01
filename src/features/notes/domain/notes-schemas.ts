@@ -1,14 +1,17 @@
 import { z } from "zod";
 
 export const NoteSchema = z.object({
+  id: z.string(),
   name: z.string(),
   description: z.string(),
   parentId: z.string(),
   fullPath: z.string(),
-  pathDictionary: z.object({
-    id: z.string(),
-    name: z.string(),
-  }),
+  pathDictionary: z.array(
+    z.object({
+      id: z.string(),
+      name: z.string(),
+    })
+  ),
   folders: z.array(
     z.object({
       id: z.string(),
