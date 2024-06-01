@@ -21,6 +21,7 @@ import {
   Activity,
   AlignVerticalDistributeCenter,
   BookOpenCheck,
+  Rows3,
 } from "lucide-react";
 import Dashboard from "@/core/components/icons/Dashboard";
 
@@ -29,7 +30,7 @@ async function CoursServerLayer(props: { slug: string }) {
   if (isLeft(authUser)) {
     redirect("/login");
   }
-  let cours: Cours | null = null;
+  let cours: Cours = {} as Cours;
   let complements: Complement[] = [];
   let failures: Failure<string>[] = [];
 
@@ -117,7 +118,7 @@ async function CoursServerLayer(props: { slug: string }) {
       />
     );
   }
-  if (!cours) {
+  if (!cours._id) {
     return (
       <ErrorDialog
         message={`
@@ -139,12 +140,20 @@ async function CoursServerLayer(props: { slug: string }) {
       ),
     href: `/complements/${complement.id}`,
   }));
-  coursNavItems.unshift({
-    title: "Dashboard",
-    icon: Dashboard(),
-    href: "/dashboard",
-    color: "text-sky-500",
-  });
+  coursNavItems.unshift(
+    {
+      title: "Dashboard",
+      icon: Dashboard(),
+      href: "/dashboard",
+      color: "text-sky-500",
+    },
+    {
+      title: "All Resources",
+      icon: <Rows3 size={20} />,
+      href: `/cours/complements/${cours!._id}`,
+      color: "text-sky-500",
+    }
+  );
 
   return (
     <>
