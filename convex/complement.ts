@@ -8,10 +8,14 @@ export const createComplement = mutation({
     description: v.string(),
     coursId: v.string(),
     type: v.union(
-      v.literal("lesson"),
-      v.literal("diagram"),
-      v.literal("video"),
-      v.literal("audio")
+      v.literal("Lesson"),
+      v.literal("Exercise"),
+      v.literal("Additional")
+    ),
+    contentType: v.union(
+      v.literal("Diagram"),
+      v.literal("Flowchart"),
+      v.literal("Markup")
     ),
     publish: v.boolean(),
   },
@@ -33,6 +37,7 @@ export const createComplement = mutation({
       publishDate: args.publish === true ? Date.now() : undefined,
       coursId: args.coursId,
       type: args.type,
+      contentType: args.contentType,
     });
     return categoryId;
   },

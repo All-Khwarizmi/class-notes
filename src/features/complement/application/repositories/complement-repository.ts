@@ -16,7 +16,13 @@ export default class ComplementRepository {
     userId: string;
     complement: Pick<
       Complement,
-      "name" | "description" | "type" | "publish" | "coursId" | "body"
+      | "name"
+      | "description"
+      | "type"
+      | "publish"
+      | "coursId"
+      | "body"
+      | "contentType"
     >;
   }) {
     return this._db.addComplement({ complement, userId });

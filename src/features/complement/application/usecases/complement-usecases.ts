@@ -19,7 +19,13 @@ export default class ComplementUsecases {
     userId: string;
     complement: Pick<
       Complement,
-      "name" | "description" | "type" | "publish" | "coursId" | "body"
+      | "name"
+      | "description"
+      | "type"
+      | "publish"
+      | "coursId"
+      | "body"
+      | "contentType"
     >;
   }) {
     return this._repository.addComplement({

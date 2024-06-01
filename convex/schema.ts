@@ -50,7 +50,7 @@ export default defineSchema({
   //   publishDate: v.float64(),
   //   body: v.string(),
   // }).index("by_coursId", ["coursId"]),
- Complement: defineTable({
+  Complement: defineTable({
     name: v.string(),
     description: v.string(),
     coursId: v.string(),
@@ -59,12 +59,15 @@ export default defineSchema({
     publish: v.boolean(),
     publishDate: v.optional(v.float64()),
     body: v.string(),
-
+    contentType: v.union(
+      v.literal("Diagram"),
+      v.literal("Flowchart"),
+      v.literal("Markup")
+    ),
     type: v.union(
-      v.literal("lesson"),
-      v.literal("diagram"),
-      v.literal("video"),
-      v.literal("audio")
+      v.literal("Lesson"),
+      v.literal("Exercise"),
+      v.literal("Additional")
     ),
   }).index("by_coursId", ["coursId"]),
   Cours: defineTable({

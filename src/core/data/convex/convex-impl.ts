@@ -540,6 +540,7 @@ export default class ConvexDatabase extends IDatabase {
         description: complement.description,
         publish: complement.publish ?? false,
         type: complement.type,
+        contentType: complement.contentType,
       });
       if (!result) {
         return left(

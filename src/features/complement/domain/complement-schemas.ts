@@ -12,10 +12,14 @@ export const ComplementSchema = z.object({
   publishDate: z.number().optional(),
   body: z.string(),
   type: z.union([
-    z.literal("lesson"),
-    z.literal("diagram"),
-    z.literal("video"),
-    z.literal("audio"),
+    z.literal("Lesson"),
+    z.literal("Exercise"),
+    z.literal("Additional"),
+  ]),
+  contentType: z.union([
+    z.literal("Diagram"),
+    z.literal("Flowchart"),
+    z.literal("Markup"),
   ]),
 });
 
