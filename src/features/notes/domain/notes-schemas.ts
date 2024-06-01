@@ -2,6 +2,7 @@ import { z } from "zod";
 
 export const NoteSchema = z.object({
   id: z.string(),
+  createdAt: z.number(),
   name: z.string(),
   description: z.string(),
   parentId: z.string(),
