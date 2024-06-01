@@ -572,7 +572,6 @@ export default class ConvexDatabase extends IDatabase {
       const result = await fetchQuery(this._db.complement.getAllComplement, {
         coursId,
       });
-      console.log({ result });
       if (!result) {
         return left(
           Failure.invalidValue({
