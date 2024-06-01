@@ -1,5 +1,6 @@
 import { defineSchema, defineTable } from "convex/server";
 import { v } from "convex/values";
+import { id } from "fp-ts/lib/Refinement";
 import { b } from "vitest/dist/suite-a18diDsI.js";
 
 export default defineSchema({
@@ -70,6 +71,31 @@ export default defineSchema({
       v.literal("Additional")
     ),
   }).index("by_coursId", ["coursId"]),
+  Notes: defineTable({
+    name: v.string(),
+    description: v.string(),
+    parentId: v.string(),
+    fullPath: v.string(),
+    pathDictionary: v.object({
+      id: v.string(),
+      name: v.string(),
+    }),
+    folders: v.array(
+      v.object({
+        id: v.string(),
+        name: v.string(),
+        contentType: v.union(
+          v.literal("Diagram"),
+          v.literal("Flowchart"),
+          v.literal("Markup")
+        ),
+        createdAt: v.float64(),
+      })
+    ),
+    createdBy: v.id("Users"),
+    keywords: v.array(v.string()),
+    content: v.string(),
+  }).index("by_parentId", ["parentId"]),
   Cours: defineTable({
     name: v.string(),
     body: v.string(),
