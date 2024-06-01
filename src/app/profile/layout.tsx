@@ -17,8 +17,7 @@ export default function RootLayout({
     <>
       <Header />
       <section className="flex h-full w-full border-collapse overflow-hidden">
-        <Sidebar />
-        <section className="flex-1  overflow-x-hidden">{children}</section>
+        {children}
       </section>
     </>
   );
