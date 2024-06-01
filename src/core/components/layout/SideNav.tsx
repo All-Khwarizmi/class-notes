@@ -43,6 +43,7 @@ export function SideNav({ items, setOpen, className }: SideNavProps) {
   }, [path]);
 
   function pathIsActive(props: { path: string; liveHref: string }) {
+    if (items.length > 0) return false;
     return props.liveHref.split("/")[1] === props.path.split("/")[1];
   }
   return (
