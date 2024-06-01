@@ -21,6 +21,7 @@ import {
   Activity,
   AlignVerticalDistributeCenter,
   BookOpenCheck,
+  Plus,
   Rows3,
 } from "lucide-react";
 import Dashboard from "@/core/components/icons/Dashboard";
@@ -154,6 +155,12 @@ async function CoursServerLayer(props: { slug: string }) {
       color: "text-sky-500",
     }
   );
+
+  coursNavItems.push({
+    title: "Add new resource",
+    href: `/complements/add/${props.slug}`,
+    icon: <Plus size={16} />,
+  });
 
   return (
     <>
