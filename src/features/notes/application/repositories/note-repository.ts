@@ -9,7 +9,24 @@ export default class NoteRepository {
     this._db = db;
   }
 
-  async createNote({ note }: { note: Omit<Note, "id"> }) {
+  async createNote({
+    note,
+  }: {
+    note: Pick<
+      Note,
+      | "name"
+      | "description"
+      | "content"
+      | "fullPath"
+      | "pathDictionary"
+      | "folders"
+      | "createdBy"
+      | "keywords"
+      | "type"
+      | "parentId"
+      | "contentType"
+    >;
+  }) {
     return this._db.createNote({
       note,
     });
