@@ -28,6 +28,12 @@ export const NoteSchema = z.object({
   createdBy: z.string(),
   keywords: z.array(z.string()),
   content: z.string(),
+  type: z.union([z.literal("Folder"), z.literal("Item")]),
+  contentType: z.union([
+    z.literal("Diagram"),
+    z.literal("Flowchart"),
+    z.literal("Markup"),
+  ]),
 });
 
 export type Note = z.infer<typeof NoteSchema>;
