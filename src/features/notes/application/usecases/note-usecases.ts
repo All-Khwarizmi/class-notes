@@ -23,7 +23,12 @@ export default class NotesUsecases {
     }
     const validatedNotes: Note[] = [];
     for (const note of eitherNotes.right) {
-      const validatesNotes = NoteSchema.safeParse(note);
+      const parsedNote = {
+        ...note,
+        id: note._id,
+        createdAt: note._creationTime,
+      };
+      const validatesNotes = NoteSchema.safeParse(parsedNote);
       if (!validatesNotes.success) {
         return left(
           Failure.invalidValue({
