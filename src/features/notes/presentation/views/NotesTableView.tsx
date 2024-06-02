@@ -41,7 +41,9 @@ function NotesTableView(props: { notes: Note[]; parentId: string }) {
       {/* Add a table to display notes */}
       <div className="w-full h-full py-4">
         <Table className="w-full">
-          <TableCaption>Add resources to your course</TableCaption>
+          <TableCaption>
+            Add a note or a folder to the profile, or click on the note to view it.
+          </TableCaption>
           <TableHeader>
             <TableRow>
               <TableHead className="w-[200px]">Name</TableHead>
