@@ -32,7 +32,12 @@ async function ProfileNotes(props: { slug: string }) {
     );
   }
 
-  return <NotesTableView />;
+  return (
+    <NotesTableView
+      notes={eitherNotes.right}
+      parentId={authUser.right.userId}
+    />
+  );
 }
 
 export default ProfileNotes;
