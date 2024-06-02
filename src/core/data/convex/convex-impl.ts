@@ -663,7 +663,20 @@ export default class ConvexDatabase extends IDatabase {
   async createNote({
     note,
   }: {
-    note: Omit<Note, "id">;
+    note: Pick<
+      Note,
+      | "name"
+      | "description"
+      | "content"
+      | "fullPath"
+      | "pathDictionary"
+      | "folders"
+      | "createdBy"
+      | "keywords"
+      | "type"
+      | "parentId"
+      | "contentType"
+    >;
   }): Promise<Either<Failure<string>, string>> {
     try {
       const result = await fetchMutation(this._db.notes.createNote, {
@@ -676,6 +689,8 @@ export default class ConvexDatabase extends IDatabase {
         createdBy: note.createdBy,
         keywords: note.keywords,
         content: note.content,
+        type: note.type,
+        contentType: note.contentType,
       });
       if (!result) {
         return left(

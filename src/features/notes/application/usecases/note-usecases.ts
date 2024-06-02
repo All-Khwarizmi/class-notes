@@ -63,6 +63,8 @@ export default class NotesUsecases {
       | "folders"
       | "createdBy"
       | "keywords"
+      | "type"
+      | "contentType"
     >;
   }) {
     return this._repository.updateNote({
