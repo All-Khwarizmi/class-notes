@@ -184,7 +184,20 @@ export default abstract class IDatabase {
   abstract createNote({
     note,
   }: {
-    note: Omit<Note, "id">;
+    note: Pick<
+      Note,
+      | "name"
+      | "description"
+      | "content"
+      | "fullPath"
+      | "pathDictionary"
+      | "folders"
+      | "createdBy"
+      | "keywords"
+      | "type"
+      | "parentId"
+      | "contentType"
+    >;
   }): Promise<Either<Failure<string>, string>>;
   abstract getNotes({
     parentId,

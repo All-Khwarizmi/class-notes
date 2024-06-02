@@ -91,7 +91,6 @@ function ComplementAddBaseForm(props: { slug: string }) {
       },
       coursId: props.slug,
     });
-
   }
   return (
     <Form {...form}>

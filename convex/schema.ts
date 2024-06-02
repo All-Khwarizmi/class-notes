@@ -76,10 +76,12 @@ export default defineSchema({
     description: v.string(),
     parentId: v.string(),
     fullPath: v.string(),
-    pathDictionary: v.array(v.object({
-      id: v.string(),
-      name: v.string(),
-    })),
+    pathDictionary: v.array(
+      v.object({
+        id: v.string(),
+        name: v.string(),
+      })
+    ),
     folders: v.optional(
       v.array(
         v.object({
@@ -97,6 +99,12 @@ export default defineSchema({
     createdBy: v.string(),
     keywords: v.array(v.string()),
     content: v.string(),
+    type: v.union(v.literal("Folder"), v.literal("Item")),
+    contentType: v.union(
+      v.literal("Diagram"),
+      v.literal("Flowchart"),
+      v.literal("Markup")
+    ),
   }).index("by_parentId", ["parentId"]),
   Cours: defineTable({
     name: v.string(),
