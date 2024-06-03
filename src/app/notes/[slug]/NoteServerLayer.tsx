@@ -8,7 +8,7 @@ import { NoteSchema } from "@/features/notes/domain/notes-schemas";
 import NoteEditorView from "@/features/notes/presentation/views/NoteEditorView";
 import { NavItem } from "@/lib/types";
 import { isLeft } from "fp-ts/lib/Either";
-import { File, Folder } from "lucide-react";
+import { File, Folder, Plus } from "lucide-react";
 import { redirect } from "next/navigation";
 import React from "react";
 
@@ -91,6 +91,18 @@ async function NoteServerLayer(props: { slug: string }) {
       }),
     },
   ];
+
+  noteNavItems[1].children?.push({
+    title: "New Note",
+    href: `/notes/${props.slug}/add`,
+    icon: <Plus size={16} />,
+  });
+
+  noteNavItems[2].children?.push({
+    title: "New Folder",
+    href: `/notes/${props.slug}/add-folder`,
+    icon: <Plus size={16} />,
+  });
 
   return (
     <>
