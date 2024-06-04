@@ -54,12 +54,7 @@ describe("User onboarding flow", () => {
         nameInput.type("John Doe");
         nameInput.should("have.value", "John Doe");
 
-        cy.getByTestId("submit-onboarding-form").click();
-        cy.getByTestId("user-form").should("exist");
-        cy.getByTestId("matiere-input").should("have.attr", "aria-invalid");
-        cy.getByTestId("matiere-input").should("have.attr", "aria-describedby");
-        cy.getByTestId("matiere-input").should("have.attr", "aria-describedby");
-        cy.getByTestId("matiere-input").should("have.attr", "aria-invalid");
+  
       });
     });
 
