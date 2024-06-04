@@ -4,7 +4,7 @@ import { toast } from "sonner";
 import { notesUsecases } from "../../usecases/note-usecases";
 import { isLeft } from "fp-ts/lib/Either";
 
-function useAddProfileNote() {
+function useAddNote() {
   const [noteOptions, setNoteOptions] = useState<Omit<Note, "id"> | null>(null);
 
   useEffect(() => {
@@ -34,4 +34,4 @@ function useAddProfileNote() {
   };
 }
 
-export default useAddProfileNote;
+export default useAddNote;
