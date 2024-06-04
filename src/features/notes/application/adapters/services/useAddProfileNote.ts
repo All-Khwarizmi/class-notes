@@ -3,10 +3,9 @@ import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { notesUsecases } from "../../usecases/note-usecases";
 import { isLeft } from "fp-ts/lib/Either";
-import { useRouter } from "next/navigation";
-function useAddProfileNote() {
+
+function useAddNote() {
   const [noteOptions, setNoteOptions] = useState<Omit<Note, "id"> | null>(null);
-  const router = useRouter();
 
   useEffect(() => {
     if (noteOptions) {
@@ -15,15 +14,15 @@ function useAddProfileNote() {
       });
       notesUsecases.createNote({ note: noteOptions }).then((eitherNote) => {
         if (isLeft(eitherNote)) {
-              toast.error("Error adding note", {
+          toast.error("Error adding note", {
             position: "top-center",
           });
-          
         } else {
-        toast.success("Note added successfully", {
-          position: "top-center",
-        });
-        router.refresh();
+          toast.success("Note added successfully", {
+            position: "top-center",
+          });
+          // router.refresh();
+          location.reload();
         }
         toast.dismiss(loadingToast);
       });
@@ -35,4 +34,4 @@ function useAddProfileNote() {
   };
 }
 
-export default useAddProfileNote;
+export default useAddNote;

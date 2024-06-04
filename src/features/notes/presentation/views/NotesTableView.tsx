@@ -21,12 +21,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/core/components/ui/select";
-import useAddProfileNote from "../../application/adapters/services/useAddProfileNote";
+import useAddNote from "../../application/adapters/services/useAddProfileNote";
 function NotesTableView(props: { notes: Note[]; parentId: string }) {
   const [localNotes, setLocalNotes] = useState<Note[]>(props.notes);
   const [isFileFormVisible, setIsFileFormVisible] = useState(false);
   const [isFolderFormVisible, setIsFolderFormVisible] = useState(false);
-  const { setNoteOptions } = useAddProfileNote();
+  const { setNoteOptions } = useAddNote();
   function handleSubmit(note: Omit<Note, "id" | "createdBy">) {
     const newNote = {
       ...note,
@@ -42,7 +42,8 @@ function NotesTableView(props: { notes: Note[]; parentId: string }) {
       <div className="w-full h-full py-4">
         <Table className="w-full">
           <TableCaption>
-            Add a note or a folder to the profile, or click on the note to view it.
+            Add a note or a folder to the profile, or click on the note to view
+            it.
           </TableCaption>
           <TableHeader>
             <TableRow>
