@@ -143,3 +143,19 @@ export const deleteSequenceClass = mutation({
     return { error: true, success: false };
   },
 });
+
+export const getClassSequence = query({
+  args: {
+    id: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const result = await ctx.db
+      .query("ClasseSequence")
+      .filter((q) => q.eq(q.field("_id"), args.id))
+      .first();
+    if (result) {
+      console.log(result);
+      return result;
+    }
+  },
+});

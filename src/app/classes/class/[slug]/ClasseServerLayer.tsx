@@ -29,7 +29,7 @@ async function ClasseServerLayer(props: { slug: string }) {
   }
   const sequenceNavItems: NavItem[] = eitherSequences.right.map((sequence) => ({
     title: sequence.name,
-    href: `/sequences/${sequence._id}`,
+    href: `/sequences/${sequence._id}?type=sequence`,
     icon: <Presentation size={16} />,
   }));
 

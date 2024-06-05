@@ -10,7 +10,10 @@ import { BookA, BookCheck, NotebookPen, Plus } from "lucide-react";
 import { redirect } from "next/navigation";
 import React from "react";
 
-export default async function SequenceServerLayer(props: { slug: string }) {
+export default async function SequenceServerLayer(props: {
+  slug: string;
+  type?: "template" | "sequence";
+}) {
   if (!props.slug) {
     return <NotFound />;
   }
@@ -22,6 +25,7 @@ export default async function SequenceServerLayer(props: { slug: string }) {
   const eitherSequence = await coursUsecases.getSingleSequence({
     userId: authUser.right.userId,
     sequenceId: props.slug,
+    type: props.type,
   });
   if (isLeft(eitherSequence)) {
     console.log(eitherSequence.left);
