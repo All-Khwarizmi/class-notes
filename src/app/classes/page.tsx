@@ -1,11 +1,11 @@
 import LoadingSkeleton from "@/core/components/common/LoadingSkeleton";
 import { Suspense } from "react";
-import ClasseServerLayer from "./ClasseServerLayer";
+import ClassesServerLayer from "./ClassesServerLayer";
 
 export default async function Home() {
   return (
     <Suspense fallback={<LoadingSkeleton />}>
-      <ClasseServerLayer slug="slug" />
+      <ClassesServerLayer slug="slug" />
     </Suspense>
   );
 }

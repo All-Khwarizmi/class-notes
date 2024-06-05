@@ -8,7 +8,7 @@ import ClassesTable from "@/features/classe/presentation/components/ClassesTable
 import { classeUsecases } from "@/features/classe/application/usecases/classe-usecases";
 import Sidebar from "@/core/components/layout/Sidebar";
 
-async function ClasseServerLayer(props: { slug: string }) {
+async function ClassesServerLayer(props: { slug: string }) {
   if (!props.slug) {
     return <NotFound />;
   }
@@ -49,4 +49,4 @@ async function ClasseServerLayer(props: { slug: string }) {
   );
 }
 
-export default ClasseServerLayer;
+export default ClassesServerLayer;
