@@ -14,6 +14,7 @@ import Link from "next/link";
 import { Button } from "@/core/components/ui/button";
 import { classeRepository } from "@/features/classe/application/repository/classe-repository";
 import { ClassType } from "../../domain/class-schema";
+import { Pen } from "lucide-react";
 
 export default function ClassesTable(props: { classes: ClassType[] }) {
   const { setClasseId } = classeRepository.useDeleteClasse();
@@ -63,7 +64,7 @@ export default function ClassesTable(props: { classes: ClassType[] }) {
 
                   <Link href={`/classes/class/${classe.id}`}>
                     <Button data-testid="edit-class" variant="link">
-                      Edit
+                      <Pen size={16} />
                     </Button>
                   </Link>
                 </TableCell>
