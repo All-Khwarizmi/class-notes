@@ -14,7 +14,7 @@ async function ClasseServerLayer(props: { slug: string }) {
     },
     {
       title: "Notes",
-      href: `/sequences/notes/${props.slug}`,
+      href: `/classes/notes/${props.slug}`,
       icon: <NotebookPen size={16} />,
     },
   ];
