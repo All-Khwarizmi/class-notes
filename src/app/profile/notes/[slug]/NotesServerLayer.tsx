@@ -8,7 +8,10 @@ import { isLeft } from "fp-ts/lib/Either";
 import { redirect } from "next/navigation";
 import React from "react";
 
-async function ProfileNotes(props: { slug: string }) {
+async function NotesServerLayer(props: {
+  slug: string;
+  type: "profile" | "sequence" | "cours" | "class" | "student";
+}) {
   if (!props.slug) {
     return <NotFound />;
   }
@@ -17,7 +20,7 @@ async function ProfileNotes(props: { slug: string }) {
     redirect("/login");
   }
   const eitherNotes = await notesUsecases.getNotes({
-    parentId: authUser.right.userId,
+    parentId: props.type === "profile" ? authUser.right.userId : props.slug,
   });
   if (isLeft(eitherNotes)) {
     return (
@@ -35,9 +38,9 @@ async function ProfileNotes(props: { slug: string }) {
   return (
     <NotesTableView
       notes={eitherNotes.right}
-      parentId={authUser.right.userId}
+      parentId={props.type === "profile" ? authUser.right.userId : props.slug}
     />
   );
 }
 
-export default ProfileNotes;
+export default NotesServerLayer;

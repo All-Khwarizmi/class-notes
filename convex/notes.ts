@@ -1,4 +1,3 @@
-import { a } from "vitest/dist/suite-a18diDsI.js";
 import { mutation, query } from "./_generated/server";
 import { v } from "convex/values";
 

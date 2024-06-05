@@ -1,6 +1,6 @@
 import React, { Suspense } from "react";
-import ProfileNotes from "./ProfileNotes";
 import LoadingSkeleton from "@/core/components/common/LoadingSkeleton";
+import NotesServerLayer from "@/app/profile/notes/[slug]/NotesServerLayer";
 
 async function Page({
   params,
@@ -11,7 +11,7 @@ async function Page({
 }) {
   return (
     <Suspense fallback={<LoadingSkeleton />}>
-      <ProfileNotes slug={params.slug} />
+      <NotesServerLayer slug={params.slug} type="sequence" />
     </Suspense>
   );
 }
