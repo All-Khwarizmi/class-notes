@@ -16,28 +16,10 @@ import { classeRepository } from "@/features/classe/application/repository/class
 import { ClassType } from "../../domain/class-schema";
 
 export default function ClassesTable(props: { classes: ClassType[] }) {
-  // const { user } = useAuthStore((state) => ({
-  //   user: state.user,
-  // }));
-  // const getClasses = classeRepository.useGetClasses({
-  //   id: user.user?.id || "",
-  // });
-  // const { loading, classes, error } = getClasses();
   const { setClasseId } = classeRepository.useDeleteClasse();
   const handleDelete = async (id: string) => {
     setClasseId(id);
   };
-
-  // if (loading) {
-  //   return <MessageFullScreen message={"Chargement..."} />;
-  // }
-  // if (error) {
-  //   return (
-  //     <MessageFullScreen
-  //       message={"Une erreur s'est produite lors du chargement des classes"}
-  //     />
-  //   );
-  // }
 
   return (
     <section className="flex flex-col  justify-between p-4  h-[100%]">
@@ -50,9 +32,7 @@ export default function ClassesTable(props: { classes: ClassType[] }) {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {/* //! TODO :make  the failure to have an id 
-          //! TODO : make an adapter for the class entity to show in the UI */}
-          {props.classes.map((classe, index) => {
+          {props.classes.map((classe) => {
             return (
               <TableRow key={classe.id} className="cursor-pointer ">
                 <Link href={`/classes/class/${classe.id}`} legacyBehavior>
