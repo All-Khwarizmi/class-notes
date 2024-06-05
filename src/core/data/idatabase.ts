@@ -152,6 +152,18 @@ export default abstract class IDatabase {
     sequenceId: string;
   }): Promise<Either<Failure<string>, DocumentData[]>>;
 
+  abstract addClasseSequence({
+    sequenceId,
+    classeId,
+  }: {
+    sequenceId: string;
+    classeId: string;
+  }): Promise<Either<Failure<string>, string>>;
+  abstract getClasseSequences({
+    classeId,
+  }: {
+    classeId: string;
+  }): Promise<Either<Failure<string>, DocumentData[]>>;
   abstract addComplement({
     userId,
     complement,

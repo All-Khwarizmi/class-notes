@@ -102,10 +102,11 @@ export const addSequenceClass = mutation({
       }
       return { error: true, id: "" };
     }
+    return { error: true, id: "" };
   },
 });
 
-export const getSequencesClass = query({
+export const getClassSequences = query({
   args: {
     classId: v.string(),
   },
@@ -133,5 +134,3 @@ export const deleteSequenceClass = mutation({
     return { error: true, success: false };
   },
 });
-
-

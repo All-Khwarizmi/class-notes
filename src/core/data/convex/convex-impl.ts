@@ -454,6 +454,7 @@ export default class ConvexDatabase extends IDatabase {
       );
     }
   }
+
   addCoursToSequence({
     userId,
     sequenceId,
@@ -464,6 +465,69 @@ export default class ConvexDatabase extends IDatabase {
     coursId: string[];
   }): Promise<Either<Failure<string>, void>> {
     throw new Error("Method not implemented.");
+  }
+
+  async addClasseSequence({
+    sequenceId,
+    classeId,
+  }: {
+    sequenceId: string;
+    classeId: string;
+  }): Promise<Either<Failure<string>, string>> {
+    try {
+      const result = await fetchMutation(this._db.classes.addSequenceClass, {
+        classId: classeId,
+        sequenceId,
+      });
+      if (result.error) {
+        return left(
+          Failure.invalidValue({
+            invalidValue: sequenceId,
+            message: "Error adding sequence to class",
+            code: "INF103",
+          })
+        );
+      }
+      return right(result.id);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: sequenceId,
+          message: "Error adding sequence to class",
+          code: "INF101",
+        })
+      );
+    }
+  }
+
+  async getClasseSequences({
+    classeId,
+  }: {
+    classeId: string;
+  }): Promise<Either<Failure<string>, DocumentData[]>> {
+    try {
+      const result = await fetchQuery(this._db.classes.getClassSequences, {
+        classId: classeId,
+      });
+      if (!result) {
+        return left(
+          Failure.invalidValue({
+            invalidValue: classeId,
+            message: "Error getting class sequences",
+            code: "INF103",
+          })
+        );
+      }
+      return right(result);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: classeId,
+          message: "Error getting class sequences",
+          code: "INF101",
+        })
+      );
+    }
   }
 
   async addBodyToSequence({
