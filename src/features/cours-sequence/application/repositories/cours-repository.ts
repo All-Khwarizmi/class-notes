@@ -99,11 +99,13 @@ export default class CoursRepository {
   async getAllCoursFromSequence({
     userId,
     sequenceId,
+    type
   }: {
     userId: string;
     sequenceId: string;
+    type?: "template" | "sequence";
   }) {
-    return this._db.getAllCoursFromSequence({ userId, sequenceId });
+    return this._db.getAllCoursFromSequence({ userId, sequenceId, type });
   }
 
   async updateCours({ cours }: { cours: Cours }) {

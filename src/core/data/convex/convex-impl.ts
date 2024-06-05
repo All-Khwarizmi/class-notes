@@ -591,14 +591,18 @@ export default class ConvexDatabase extends IDatabase {
   async getAllCoursFromSequence({
     userId,
     sequenceId,
+    type,
   }: {
     userId: string;
     sequenceId: string;
+    type?: "template" | "sequence";
   }): Promise<Either<Failure<string>, DocumentData[]>> {
     try {
+      const defaultType = type === "sequence" ? "sequence" : undefined;
       const result = await fetchQuery(this._db.sequence.getAllCoursInSequence, {
         userId,
         sequenceId,
+        type: defaultType,
       });
       if (!result) {
         return left(

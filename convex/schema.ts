@@ -138,6 +138,7 @@ export default defineSchema({
     .index("by_createdBy", ["createdBy"])
     .index("by_category", ["category"]),
   ClasseSequence: defineTable({
+    originalSequenceId: v.id("Sequences"),
     classeId: v.string(),
     name: v.string(),
     body: v.string(),

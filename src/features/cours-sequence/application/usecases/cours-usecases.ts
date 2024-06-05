@@ -171,12 +171,14 @@ export default class CoursUsecases {
   async getAllCoursFromSequence({
     userId,
     sequenceId,
+    type,
   }: {
     userId: string;
     sequenceId: string;
+    type?: "template" | "sequence";
   }): Promise<Either<Failure<string>, Cours[]>> {
     const eitherSequencesCours = await this._repository.getAllCoursFromSequence(
-      { userId, sequenceId }
+      { userId, sequenceId, type }
     );
     if (isLeft(eitherSequencesCours)) {
       return eitherSequencesCours;

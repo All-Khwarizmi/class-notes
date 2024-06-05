@@ -93,6 +93,7 @@ export const addSequenceClass = mutation({
       .first();
     if (sequence) {
       const result = await ctx.db.insert("ClasseSequence", {
+        originalSequenceId: sequence._id,
         name: sequence.name,
         body: sequence.body,
         imageUrl: sequence.imageUrl,
