@@ -71,11 +71,13 @@ export default class CoursRepository {
   async getSingleSequence({
     userId,
     sequenceId,
+    type,
   }: {
     userId: string;
     sequenceId: string;
+    type?: "template" | "sequence";
   }) {
-    return this._db.getSingleSequence({ userId, sequenceId });
+    return this._db.getSingleSequence({ userId, sequenceId, type });
   }
 
   async addBodyToSequence({

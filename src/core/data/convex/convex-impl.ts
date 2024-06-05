@@ -431,6 +431,7 @@ export default class ConvexDatabase extends IDatabase {
     sequenceId: string;
     type?: "template" | "sequence";
   }): Promise<Either<Failure<string>, DocumentData>> {
+    console.log({ type, sequenceId });
     try {
       if (!type || type === "template") {
         const result = await fetchQuery(this._db.sequence.getSingleSequence, {
@@ -449,11 +450,11 @@ export default class ConvexDatabase extends IDatabase {
         return right(result);
       } else {
         if (type === "sequence") {
-          const result = await fetchQuery(this._db.sequence.getSingleSequence, {
-            userId,
-            sequenceId,
+          const result = await fetchQuery(this._db.classes.getClassSequence, {
+            id: sequenceId,
           });
           if (!result) {
+            console.log({ result });
             return left(
               Failure.invalidValue({
                 invalidValue: sequenceId,

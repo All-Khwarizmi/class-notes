@@ -119,9 +119,11 @@ export default abstract class IDatabase {
   abstract getSingleSequence({
     userId,
     sequenceId,
+    type,
   }: {
     userId: string;
     sequenceId: string;
+    type?: "template" | "sequence";
   }): Promise<Either<Failure<string>, DocumentData>>;
 
   abstract addCoursToSequence({

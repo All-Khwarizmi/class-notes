@@ -92,13 +92,16 @@ export default class CoursUsecases {
   async getSingleSequence({
     userId,
     sequenceId,
+    type,
   }: {
     userId: string;
     sequenceId: string;
+    type?: "template" | "sequence";
   }): Promise<Either<Failure<string>, Sequence>> {
     const eitherSequence = await this._repository.getSingleSequence({
       userId,
       sequenceId,
+      type,
     });
 
     if (isLeft(eitherSequence)) {
@@ -215,7 +218,9 @@ export default class CoursUsecases {
 
   async getClasseSequences({
     classeId,
-  }: { classeId: string }): Promise<Either<Failure<string>, Sequence[]>> {
+  }: {
+    classeId: string;
+  }): Promise<Either<Failure<string>, Sequence[]>> {
     const eitherClasseSequences = await this._repository.getClasseSequences({
       classeId,
     });
