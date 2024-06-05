@@ -21,6 +21,7 @@ import {
   Activity,
   AlignVerticalDistributeCenter,
   BookOpenCheck,
+  NotebookPen,
   Plus,
   Rows3,
 } from "lucide-react";
@@ -156,11 +157,18 @@ async function CoursServerLayer(props: { slug: string }) {
     }
   );
 
-  coursNavItems.push({
-    title: "Add new resource",
-    href: `/complements/add/${props.slug}`,
-    icon: <Plus size={16} />,
-  });
+  coursNavItems.push(
+    {
+      title: "Add new resource",
+      href: `/complements/add/${props.slug}`,
+      icon: <Plus size={16} />,
+    },
+    {
+      title: "Notes",
+      href: `/cours/notes/${props.slug}`,
+      icon: <NotebookPen size={16} />,
+    }
+  );
 
   return (
     <>

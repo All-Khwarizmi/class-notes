@@ -820,6 +820,135 @@ export default class ConvexDatabase extends IDatabase {
       );
     }
   }
+
+  async createClass({
+    userId,
+    name,
+    description,
+    imageUrl,
+  }: {
+    userId: string;
+    name: string;
+    description: string;
+    imageUrl: string;
+  }): Promise<Either<Failure<string>, string>> {
+    try {
+      const result = await fetchMutation(this._db.classes.createClass, {
+        userId,
+        name,
+        description,
+        imageUrl,
+      });
+      if (!result) {
+        return left(
+          Failure.invalidValue({
+            invalidValue: name,
+            message: "Error creating class",
+            code: "INF103",
+          })
+        );
+      }
+      if (!result.id || typeof result.id !== "string") {
+        return left(
+          Failure.invalidValue({
+            invalidValue: name,
+            message: "Error creating class",
+            code: "INF103",
+          })
+        );
+      }
+      return right(result.id);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: name,
+          message: "Error creating class",
+          code: "INF101",
+        })
+      );
+    }
+  }
+
+  async deleteClass({
+    id,
+  }: {
+    id: string;
+  }): Promise<Either<Failure<string>, void>> {
+    try {
+      await fetchMutation(this._db.classes.deleteClass, {
+        id,
+      });
+      return right(undefined);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: id,
+          message: "Error deleting class",
+          code: "INF101",
+        })
+      );
+    }
+  }
+
+  async getClasses({
+    id,
+  }: {
+    id: string;
+  }): Promise<Either<Failure<string>, DocumentData[]>> {
+    try {
+      const result = await fetchQuery(this._db.classes.getClasses, {
+        id,
+      });
+      if (!result) {
+        return left(
+          Failure.invalidValue({
+            invalidValue: id,
+            message: "Error getting classes",
+            code: "INF103",
+          })
+        );
+      }
+      return right(result);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: id,
+          message: "Error getting classes",
+          code: "INF101",
+        })
+      );
+    }
+  }
+
+  async getClass({
+    id,
+  }: {
+    id: string;
+  }): Promise<Either<Failure<string>, DocumentData>> {
+    try {
+      const result = await fetchQuery(this._db.classes.getClass, {
+        id,
+      });
+      if (!result) {
+        return left(
+          Failure.invalidValue({
+            invalidValue: id,
+            message: "Error getting class",
+            code: "INF103",
+          })
+        );
+      }
+      return right(result);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: id,
+          message: "Error getting class",
+          code: "INF101",
+        })
+      );
+    }
+  }
 }
 
 export const convexDatabase = new ConvexDatabase({ db: api });
