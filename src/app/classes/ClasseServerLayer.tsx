@@ -6,6 +6,7 @@ import NotFound from "../not-found";
 import ErrorDialog from "@/core/components/common/ErrorDialog";
 import ClassesTable from "@/features/classe/presentation/components/ClassesTable";
 import { classeUsecases } from "@/features/classe/application/usecases/classe-usecases";
+import Sidebar from "@/core/components/layout/Sidebar";
 
 async function ClasseServerLayer(props: { slug: string }) {
   if (!props.slug) {
@@ -36,7 +37,16 @@ async function ClasseServerLayer(props: { slug: string }) {
     );
   }
 
-  return <ClassesTable classes={eitherClasses.right} />;
+  return (
+    <>
+      <Sidebar />
+      <section className="h-full flex-1  overflow-x-hidden">
+        <div className="h-full py-8 px-6">
+          <ClassesTable classes={eitherClasses.right} />
+        </div>
+      </section>
+    </>
+  );
 }
 
 export default ClasseServerLayer;
