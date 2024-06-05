@@ -848,6 +848,15 @@ export default class ConvexDatabase extends IDatabase {
           })
         );
       }
+      if (!result.id || typeof result.id !== "string") {
+        return left(
+          Failure.invalidValue({
+            invalidValue: name,
+            message: "Error creating class",
+            code: "INF103",
+          })
+        );
+      }
       return right(result.id);
     } catch (error) {
       return left(

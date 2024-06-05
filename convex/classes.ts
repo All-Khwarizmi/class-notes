@@ -25,7 +25,7 @@ export const createClass = mutation({
       });
       return { id, error: false };
     }
-    return { id: "", error: true };
+    return { id: false, error: true };
   },
 });
 
