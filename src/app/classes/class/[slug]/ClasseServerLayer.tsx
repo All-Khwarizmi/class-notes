@@ -2,6 +2,7 @@ import Dashboard from "@/core/components/icons/Dashboard";
 import Sidebar from "@/core/components/layout/Sidebar";
 import StudentsTable from "@/features/classe/presentation/components/StudentsTable";
 import { NavItem } from "@/lib/types";
+import { NotebookPen } from "lucide-react";
 import React from "react";
 
 async function ClasseServerLayer(props: { slug: string }) {
@@ -10,6 +11,11 @@ async function ClasseServerLayer(props: { slug: string }) {
       title: "Dashboard",
       href: "/dashboard",
       icon: Dashboard(),
+    },
+    {
+      title: "Notes",
+      href: `/sequences/notes/${props.slug}`,
+      icon: <NotebookPen size={16} />,
     },
   ];
   return (
