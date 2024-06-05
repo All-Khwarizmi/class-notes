@@ -80,3 +80,58 @@ export const getClass = query({
       .first();
   },
 });
+
+export const addSequenceClass = mutation({
+  args: {
+    classId: v.string(),
+    sequenceId: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const sequence = await ctx.db
+      .query("Sequences")
+      .filter((q) => q.eq(q.field("_id"), args.sequenceId))
+      .first();
+
+    if (sequence) {
+      const result = await ctx.db.insert("ClasseSequence", {
+        ...sequence,
+        classeId: args.classId,
+      });
+      if (result) {
+        return { error: false, id: result };
+      }
+      return { error: true, id: "" };
+    }
+  },
+});
+
+export const getSequencesClass = query({
+  args: {
+    classId: v.string(),
+  },
+  handler: async (ctx, args) => {
+    return ctx.db
+      .query("ClasseSequence")
+      .filter((q) => q.eq(q.field("classeId"), args.classId))
+      .collect();
+  },
+});
+
+export const deleteSequenceClass = mutation({
+  args: {
+    id: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const sequence = await ctx.db
+      .query("ClasseSequence")
+      .filter((q) => q.eq(q.field("_id"), args.id))
+      .first();
+    if (sequence) {
+      ctx.db.delete(sequence._id);
+      return { error: false, success: true };
+    }
+    return { error: true, success: false };
+  },
+});
+
+
