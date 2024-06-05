@@ -226,4 +226,34 @@ export default abstract class IDatabase {
       | "keywords"
     >;
   }): Promise<Either<Failure<string>, void>>;
+
+  abstract createClass({
+    userId,
+    name,
+    description,
+    imageUrl,
+  }: {
+    userId: string;
+    name: string;
+    description: string;
+    imageUrl: string;
+  }): Promise<Either<Failure<string>, string>>;
+
+  abstract deleteClass({
+    id,
+  }: {
+    id: string;
+  }): Promise<Either<Failure<string>, void>>;
+
+  abstract getClasses({
+    id,
+  }: {
+    id: string;
+  }): Promise<Either<Failure<string>, DocumentData[]>>;
+
+  abstract getClass({
+    id,
+  }: {
+    id: string;
+  }): Promise<Either<Failure<string>, DocumentData>>;
 }
