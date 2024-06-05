@@ -423,18 +423,47 @@ export default class ConvexDatabase extends IDatabase {
     }
   }
   async getSingleSequence({
+    type,
     userId,
     sequenceId,
   }: {
     userId: string;
     sequenceId: string;
+    type?: "template" | "sequence";
   }): Promise<Either<Failure<string>, DocumentData>> {
     try {
-      const result = await fetchQuery(this._db.sequence.getSingleSequence, {
-        userId,
-        sequenceId,
-      });
-      if (!result) {
+      if (!type || type === "template") {
+        const result = await fetchQuery(this._db.sequence.getSingleSequence, {
+          userId,
+          sequenceId,
+        });
+        if (!result) {
+          return left(
+            Failure.invalidValue({
+              invalidValue: sequenceId,
+              message: "Error getting single sequence",
+              code: "INF103",
+            })
+          );
+        }
+        return right(result);
+      } else {
+        if (type === "sequence") {
+          const result = await fetchQuery(this._db.sequence.getSingleSequence, {
+            userId,
+            sequenceId,
+          });
+          if (!result) {
+            return left(
+              Failure.invalidValue({
+                invalidValue: sequenceId,
+                message: "Error getting single sequence",
+                code: "INF103",
+              })
+            );
+          }
+          return right(result);
+        }
         return left(
           Failure.invalidValue({
             invalidValue: sequenceId,
@@ -443,7 +472,6 @@ export default class ConvexDatabase extends IDatabase {
           })
         );
       }
-      return right(result);
     } catch (error) {
       return left(
         Failure.invalidValue({
@@ -479,7 +507,9 @@ export default class ConvexDatabase extends IDatabase {
         classId: classeId,
         sequenceId,
       });
+      console.log({ result });
       if (result.error) {
+        console.log({ result });
         return left(
           Failure.invalidValue({
             invalidValue: sequenceId,

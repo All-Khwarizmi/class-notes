@@ -91,10 +91,19 @@ export const addSequenceClass = mutation({
       .query("Sequences")
       .filter((q) => q.eq(q.field("_id"), args.sequenceId))
       .first();
-
     if (sequence) {
       const result = await ctx.db.insert("ClasseSequence", {
-        ...sequence,
+        name: sequence.name,
+        body: sequence.body,
+        imageUrl: sequence.imageUrl,
+        coursIds: sequence.coursIds,
+        competencesIds: sequence.competencesIds,
+        description: sequence.description,
+        createdBy: sequence.createdBy,
+        createdAt: sequence.createdAt,
+        category: sequence.category,
+        publish: sequence.publish,
+
         classeId: args.classId,
       });
       if (result) {

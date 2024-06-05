@@ -35,7 +35,7 @@ async function ClasseServerLayer(props: { slug: string }) {
 
   sequenceNavItems.push({
     title: "Add new sequence",
-    href: `/sequences/add/${props.slug}`,
+    href: `/classes/sequences/${props.slug}`,
     icon: <Plus size={16} />,
   });
   const classeNavItems: NavItem[] = [
