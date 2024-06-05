@@ -202,6 +202,46 @@ export default class CoursUsecases {
   async updateCours({ cours }: { cours: Cours }) {
     return this._repository.updateCours({ cours });
   }
+
+  async addClassSequence({
+    sequenceId,
+    classeId,
+  }: {
+    sequenceId: string;
+    classeId: string;
+  }) {
+    return this._repository.addClassSequence({ sequenceId, classeId });
+  }
+
+  async getClasseSequences({
+    classeId,
+  }: { classeId: string }): Promise<Either<Failure<string>, Sequence[]>> {
+    const eitherClasseSequences = await this._repository.getClasseSequences({
+      classeId,
+    });
+    if (isLeft(eitherClasseSequences)) {
+      return eitherClasseSequences;
+    }
+    const validateSequences: Sequence[] = [];
+    for (const sequence of eitherClasseSequences.right) {
+      const validateSequence = SequenceSchema.safeParse(sequence);
+      if (!validateSequence.success) {
+        return left(
+          Failure.invalidValue({
+            invalidValue: sequence,
+            message: `
+            Unable to validate sequences
+          
+              ${JSON.stringify(validateSequence.error)}
+            `,
+            code: "APP203",
+          })
+        );
+      }
+      validateSequences.push(validateSequence.data);
+    }
+    return right(validateSequences);
+  }
 }
 
 export const coursUsecases = new CoursUsecases({ repository: coursRepository });
