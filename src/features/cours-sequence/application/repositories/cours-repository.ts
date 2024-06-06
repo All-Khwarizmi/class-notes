@@ -1,6 +1,7 @@
 import { convexDatabase } from "@/core/data/convex/convex-impl";
 import IDatabase from "@/core/data/idatabase";
 import { Cours, Sequence } from "../../domain/entities/cours-schemas";
+import { get } from "lodash";
 
 export default class CoursRepository {
   private readonly _db: IDatabase;
@@ -70,11 +71,13 @@ export default class CoursRepository {
   async getSingleSequence({
     userId,
     sequenceId,
+    type,
   }: {
     userId: string;
     sequenceId: string;
+    type?: "template" | "sequence";
   }) {
-    return this._db.getSingleSequence({ userId, sequenceId });
+    return this._db.getSingleSequence({ userId, sequenceId, type });
   }
 
   async addBodyToSequence({
@@ -96,11 +99,13 @@ export default class CoursRepository {
   async getAllCoursFromSequence({
     userId,
     sequenceId,
+    type
   }: {
     userId: string;
     sequenceId: string;
+    type?: "template" | "sequence";
   }) {
-    return this._db.getAllCoursFromSequence({ userId, sequenceId });
+    return this._db.getAllCoursFromSequence({ userId, sequenceId, type });
   }
 
   async updateCours({ cours }: { cours: Cours }) {
@@ -108,6 +113,19 @@ export default class CoursRepository {
   }
   async updateSequence({ sequence }: { sequence: Sequence }) {
     return this._db.updateSequence({ sequence });
+  }
+
+  async addClassSequence({
+    sequenceId,
+    classeId,
+  }: {
+    sequenceId: string;
+    classeId: string;
+  }) {
+    return this._db.addClasseSequence({ sequenceId, classeId });
+  }
+  async getClasseSequences({ classeId }: { classeId: string }) {
+    return this._db.getClasseSequences({ classeId });
   }
 }
 

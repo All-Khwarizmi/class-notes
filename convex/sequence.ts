@@ -180,27 +180,38 @@ export const getAllCoursInSequence = query({
   args: {
     userId: v.string(),
     sequenceId: v.string(),
+    type: v.optional(v.literal("sequence")),
   },
   handler: async (ctx, args) => {
-    const user = await ctx.db
-      .query("Users")
-      .filter((q) => q.eq(q.field("userId"), args.userId))
-      .first();
-
-    if (user) {
-      const sequence = await ctx.db
-        .query("Sequences")
+    if (args.type === "sequence") {
+      const classeSequence = await ctx.db
+        .query("ClasseSequence")
         .filter((q) => q.eq(q.field("_id"), args.sequenceId))
         .first();
 
-      if (sequence) {
-        const cours = await ctx.db
-          .query("Cours")
-          .withIndex("by_sequenceId")
-          .filter((q) => q.eq(q.field("sequenceId"), sequence._id))
-          .collect();
-        return cours;
+      if (classeSequence) {
+        const originalSequence = await ctx.db
+          .query("Sequences")
+          .filter((q) =>
+            q.eq(q.field("_id"), classeSequence.originalSequenceId)
+          )
+          .first();
+        if (originalSequence) {
+          const cours = await ctx.db
+            .query("Cours")
+            .withIndex("by_sequenceId")
+            .filter((q) => q.eq(q.field("sequenceId"), originalSequence._id))
+            .collect();
+          return cours;
+        }
       }
     }
+
+    const cours = await ctx.db
+      .query("Cours")
+      .withIndex("by_sequenceId")
+      .filter((q) => q.eq(q.field("sequenceId"), args.sequenceId))
+      .collect();
+    return cours;
   },
 });

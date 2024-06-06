@@ -31,8 +31,20 @@ export default class ClassEntity extends Entity<ClassType> {
    * @param props - The properties to be validated.
    * @returns A boolean indicating whether the properties are valid.
    */
-  public static validator(props: ClassType): boolean {
-    return classSchema.safeParse(props).success;
+  public static validator(
+    props: ClassType
+  ): Either<Failure<string>, ClassType> {
+    const classe = classSchema.safeParse(props);
+    if (!classe.success) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: props,
+          message: "Invalid value",
+          code: "DOM201",
+        })
+      );
+    }
+    return right(props);
   }
 
   /**
@@ -41,16 +53,6 @@ export default class ClassEntity extends Entity<ClassType> {
    * @returns A new instance of ClassEntity.
    */
   public static create(props: ClassType): ClassEntity {
-    if (!this.validator(props)) {
-      return new ClassEntity(
-        left(
-          Failure.invalidValue({
-            invalidValue: props,
-            message: "Invalid value",
-          })
-        )
-      );
-    }
-    return new ClassEntity(right(props));
+    return new ClassEntity(ClassEntity.validator(props));
   }
 }

@@ -119,9 +119,11 @@ export default abstract class IDatabase {
   abstract getSingleSequence({
     userId,
     sequenceId,
+    type,
   }: {
     userId: string;
     sequenceId: string;
+    type?: "template" | "sequence";
   }): Promise<Either<Failure<string>, DocumentData>>;
 
   abstract addCoursToSequence({
@@ -147,11 +149,25 @@ export default abstract class IDatabase {
   abstract getAllCoursFromSequence({
     userId,
     sequenceId,
+    type,
   }: {
     userId: string;
     sequenceId: string;
+    type?: "template" | "sequence";
   }): Promise<Either<Failure<string>, DocumentData[]>>;
 
+  abstract addClasseSequence({
+    sequenceId,
+    classeId,
+  }: {
+    sequenceId: string;
+    classeId: string;
+  }): Promise<Either<Failure<string>, string>>;
+  abstract getClasseSequences({
+    classeId,
+  }: {
+    classeId: string;
+  }): Promise<Either<Failure<string>, DocumentData[]>>;
   abstract addComplement({
     userId,
     complement,

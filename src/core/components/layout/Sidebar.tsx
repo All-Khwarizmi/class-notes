@@ -2,11 +2,9 @@
 import React, { useState } from "react";
 import { SideNav } from "@/core/components/layout/SideNav";
 import { NavItems } from "@/core/components/constants/side-nav";
-
 import { cn } from "@/lib/utils";
 import { useSidebar } from "@/core/application/common/useSidebar";
 import ArrowLeft from "../icons/ArrowLeft";
-import useNavItems from "@/core/application/common/useNavItems";
 import { NavItem } from "@/lib/types";
 
 interface SidebarProps {
