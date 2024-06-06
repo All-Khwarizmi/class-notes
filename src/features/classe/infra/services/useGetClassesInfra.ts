@@ -25,6 +25,7 @@ export default function useGetClassesInfra({ id }: { id: string }) {
           return classEntity.right;
         }
         return ClassEntity.create({
+          id: "Invalid",
           name: "Invalid",
           description: "Invalid",
           imageUrl: "Invalid",

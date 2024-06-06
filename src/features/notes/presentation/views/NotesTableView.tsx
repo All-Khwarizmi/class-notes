@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { ExternalLink, Folder, Plus, File, Delete, X } from "lucide-react";
+import { ExternalLink, Folder, Plus, File, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { TableCaption, TableHeader } from "@/core/components/ui/table";
 import {
@@ -11,7 +11,7 @@ import {
   TableCell,
 } from "@/core/components/ui/table";
 import { Note } from "../../domain/notes-schemas";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { Input } from "@/core/components/ui/input";
 import {
   Select,

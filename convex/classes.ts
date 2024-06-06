@@ -80,3 +80,83 @@ export const getClass = query({
       .first();
   },
 });
+
+export const addSequenceClass = mutation({
+  args: {
+    classId: v.string(),
+    sequenceId: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const sequence = await ctx.db
+      .query("Sequences")
+      .filter((q) => q.eq(q.field("_id"), args.sequenceId))
+      .first();
+    if (sequence) {
+      const result = await ctx.db.insert("ClasseSequence", {
+        originalSequenceId: sequence._id,
+        name: sequence.name,
+        body: sequence.body,
+        imageUrl: sequence.imageUrl,
+        coursIds: sequence.coursIds,
+        competencesIds: sequence.competencesIds,
+        description: sequence.description,
+        createdBy: sequence.createdBy,
+        createdAt: sequence.createdAt,
+        category: sequence.category,
+        publish: sequence.publish,
+
+        classeId: args.classId,
+      });
+      if (result) {
+        return { error: false, id: result };
+      }
+      return { error: true, id: "" };
+    }
+    return { error: true, id: "" };
+  },
+});
+
+export const getClassSequences = query({
+  args: {
+    classId: v.string(),
+  },
+  handler: async (ctx, args) => {
+    return ctx.db
+      .query("ClasseSequence")
+      .filter((q) => q.eq(q.field("classeId"), args.classId))
+      .collect();
+  },
+});
+
+export const deleteSequenceClass = mutation({
+  args: {
+    id: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const sequence = await ctx.db
+      .query("ClasseSequence")
+      .filter((q) => q.eq(q.field("_id"), args.id))
+      .first();
+    if (sequence) {
+      ctx.db.delete(sequence._id);
+      return { error: false, success: true };
+    }
+    return { error: true, success: false };
+  },
+});
+
+export const getClassSequence = query({
+  args: {
+    id: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const result = await ctx.db
+      .query("ClasseSequence")
+      .filter((q) => q.eq(q.field("_id"), args.id))
+      .first();
+    if (result) {
+      console.log(result);
+      return result;
+    }
+  },
+});

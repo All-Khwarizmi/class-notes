@@ -57,6 +57,7 @@ export const createCours = mutation({
 export const getAllCours = query({
   args: {
     userId: v.string(),
+  
   },
   handler: async (ctx, args) => {
     const user = await ctx.db

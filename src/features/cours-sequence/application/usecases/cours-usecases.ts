@@ -92,13 +92,16 @@ export default class CoursUsecases {
   async getSingleSequence({
     userId,
     sequenceId,
+    type,
   }: {
     userId: string;
     sequenceId: string;
+    type?: "template" | "sequence";
   }): Promise<Either<Failure<string>, Sequence>> {
     const eitherSequence = await this._repository.getSingleSequence({
       userId,
       sequenceId,
+      type,
     });
 
     if (isLeft(eitherSequence)) {
@@ -168,12 +171,14 @@ export default class CoursUsecases {
   async getAllCoursFromSequence({
     userId,
     sequenceId,
+    type,
   }: {
     userId: string;
     sequenceId: string;
+    type?: "template" | "sequence";
   }): Promise<Either<Failure<string>, Cours[]>> {
     const eitherSequencesCours = await this._repository.getAllCoursFromSequence(
-      { userId, sequenceId }
+      { userId, sequenceId, type }
     );
     if (isLeft(eitherSequencesCours)) {
       return eitherSequencesCours;
@@ -201,6 +206,48 @@ export default class CoursUsecases {
 
   async updateCours({ cours }: { cours: Cours }) {
     return this._repository.updateCours({ cours });
+  }
+
+  async addClassSequence({
+    sequenceId,
+    classeId,
+  }: {
+    sequenceId: string;
+    classeId: string;
+  }) {
+    return this._repository.addClassSequence({ sequenceId, classeId });
+  }
+
+  async getClasseSequences({
+    classeId,
+  }: {
+    classeId: string;
+  }): Promise<Either<Failure<string>, Sequence[]>> {
+    const eitherClasseSequences = await this._repository.getClasseSequences({
+      classeId,
+    });
+    if (isLeft(eitherClasseSequences)) {
+      return eitherClasseSequences;
+    }
+    const validateSequences: Sequence[] = [];
+    for (const sequence of eitherClasseSequences.right) {
+      const validateSequence = SequenceSchema.safeParse(sequence);
+      if (!validateSequence.success) {
+        return left(
+          Failure.invalidValue({
+            invalidValue: sequence,
+            message: `
+            Unable to validate sequences
+          
+              ${JSON.stringify(validateSequence.error)}
+            `,
+            code: "APP203",
+          })
+        );
+      }
+      validateSequences.push(validateSequence.data);
+    }
+    return right(validateSequences);
   }
 }
 

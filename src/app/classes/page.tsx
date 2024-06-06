@@ -1,8 +1,11 @@
-"use client";
-import useAuth from "@/core/auth/useAuth";
-import ClassesTable from "@/features/classe/presentation/components/ClassesTable";
+import LoadingSkeleton from "@/core/components/common/LoadingSkeleton";
+import { Suspense } from "react";
+import ClassesServerLayer from "./ClassesServerLayer";
 
-export default function Home() {
-  useAuth();
-  return <ClassesTable />;
+export default async function Home() {
+  return (
+    <Suspense fallback={<LoadingSkeleton />}>
+      <ClassesServerLayer slug="slug" />
+    </Suspense>
+  );
 }

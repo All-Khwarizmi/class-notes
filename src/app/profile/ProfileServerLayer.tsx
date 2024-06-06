@@ -1,14 +1,12 @@
 import React from "react";
-import LoadingPage from "@/core/components/common/LoadingPage";
 import { authUseCases } from "@/features/auth/application/usecases/auth-usecases";
 import { profileUseCases } from "@/features/profile/application/usecases/profile-usecases";
 import UserProfile from "@/features/profile/presentation/views/UserProfile";
 import { isLeft } from "fp-ts/lib/Either";
 import { redirect } from "next/navigation";
-import { Suspense } from "react";
 import Dashboard from "@/core/components/icons/Dashboard";
 import { NavItem } from "@/lib/types";
-import { BookCheck, NotebookPen } from "lucide-react";
+import { NotebookPen } from "lucide-react";
 import Sidebar from "@/core/components/layout/Sidebar";
 async function ProfileServerLayer() {
   const authUser = await authUseCases.getUserAuth();

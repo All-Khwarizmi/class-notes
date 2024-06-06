@@ -9,13 +9,12 @@ export default function useDeleteClasseUsecase({
 }) {
   const { setClasseToDeleteId, deleteClassePayload } = useDeleteClasseInfra();
 
-  
-
   useEffect(() => {
     if (deleteClassePayload?.error) {
       toast.error("La classe n'a pas pu être supprimée");
-    } 
+    }
     if (deleteClassePayload?.success) {
+      window.location.reload();
       toast.success("La classe a été supprimée avec succès");
     }
   }, [deleteClassePayload]);

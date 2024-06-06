@@ -7,7 +7,12 @@
 import { Button } from "@/core/components/ui/button";
 import Link from "next/link";
 
-export default function ErrorDialog(props: { message: string; path?: string }) {
+export default function ErrorDialog(props: {
+  message: string;
+  path?: string;
+  code?: string;
+  description?: string;
+}) {
   return (
     <div
       aria-label={`Displaying message: ${props.message}`}
@@ -24,9 +29,22 @@ export default function ErrorDialog(props: { message: string; path?: string }) {
           <div className="space-y-2">
             <h3 className="text-lg font-medium">What happened?</h3>
             {props.message ? (
-              <p className="text-gray-500 dark:text-gray-400 text-wrap break-words ">
-                {props.message}
-              </p>
+              <div>
+                <p className="text-gray-500 dark:text-gray-400 text-wrap break-words ">
+                  {props.message}
+                </p>
+                Details:
+                {props.description && (
+                  <div className="text-gray-500 dark:text-gray-400">
+                    {props.description}
+                  </div>
+                )}
+                {props.code && (
+                  <p className="text-gray-500 dark:text-gray-400">
+                    Error code: {props.code}
+                  </p>
+                )}
+              </div>
             ) : (
               <p className="text-gray-500 dark:text-gray-400">
                 We don&apos;t know what happened but we&apos;re working on it.

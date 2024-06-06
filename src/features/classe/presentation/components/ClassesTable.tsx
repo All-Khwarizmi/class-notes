@@ -1,3 +1,4 @@
+"use client";
 import {
   Table,
   TableBody,
@@ -9,36 +10,17 @@ import {
 import CustomDialog from "../../../../core/components/common/CustomDialog";
 import AddClassForm from "./AddClassForm";
 import AddIcon from "../../../../core/components/icons/AddIcon";
-import MessageFullScreen from "@/core/components/common/MessageFullScreen";
-import { isRight } from "fp-ts/lib/Either";
 import Link from "next/link";
 import { Button } from "@/core/components/ui/button";
 import { classeRepository } from "@/features/classe/application/repository/classe-repository";
-import { useAuthStore } from "@/core/auth/auth-store";
+import { ClassType } from "../../domain/class-schema";
+import { Pen } from "lucide-react";
 
-export default function ClassesTable() {
-  const { user } = useAuthStore((state) => ({
-    user: state.user,
-  }));
-  const getClasses = classeRepository.useGetClasses({
-    id: user.user?.id || "",
-  });
-  const { loading, classes, error } = getClasses();
+export default function ClassesTable(props: { classes: ClassType[] }) {
   const { setClasseId } = classeRepository.useDeleteClasse();
   const handleDelete = async (id: string) => {
     setClasseId(id);
   };
-
-  if (loading) {
-    return <MessageFullScreen message={"Chargement..."} />;
-  }
-  if (error) {
-    return (
-      <MessageFullScreen
-        message={"Une erreur s'est produite lors du chargement des classes"}
-      />
-    );
-  }
 
   return (
     <section className="flex flex-col  justify-between p-4  h-[100%]">
@@ -51,17 +33,7 @@ export default function ClassesTable() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {/* //! TODO :make  the failure to have an id 
-          //! TODO : make an adapter for the class entity to show in the UI */}
-          {classes?.map((c, index) => {
-            const classe = isRight(c.values)
-              ? c.values.right
-              : {
-                  id: c.values.left.code || index,
-                  name: "Invalid",
-                  description: "Invalid",
-                  imageUrl: "Invalid",
-                };
+          {props.classes.map((classe) => {
             return (
               <TableRow key={classe.id} className="cursor-pointer ">
                 <Link href={`/classes/class/${classe.id}`} legacyBehavior>
@@ -92,7 +64,7 @@ export default function ClassesTable() {
 
                   <Link href={`/classes/class/${classe.id}`}>
                     <Button data-testid="edit-class" variant="link">
-                      Edit
+                      <Pen size={16} />
                     </Button>
                   </Link>
                 </TableCell>
@@ -104,7 +76,7 @@ export default function ClassesTable() {
       <section className="flex justify-between items-center py-2 ">
         <footer className="flex h-full items-center">
           <h1 className="font-bold text-sm py-1 px-4 dark:bg-gray-600 rounded ">
-            Vous avez {classes?.length} classes
+            Vous avez {props.classes.length} classes
           </h1>
         </footer>
         <article className="flex flex-col gap-y-2">
