@@ -106,7 +106,7 @@ export const addSequenceClass = mutation({
         createdBy: sequence.createdBy,
         createdAt: sequence.createdAt,
         category: sequence.category,
-        publish: sequence.publish,
+        publish: sequence.publish ?? false,
 
         classeId: args.classId,
       });
