@@ -144,7 +144,8 @@ export const addSequenceClass = mutation({
               description: coursComplement.description,
               createdBy: coursComplement.createdBy,
               publish: coursComplement.publish,
-              publishDate: coursComplement.publish === true ? Date.now() : undefined,
+              publishDate:
+                coursComplement.publish === true ? Date.now() : undefined,
               coursId: newCours,
               type: coursComplement.type,
               contentType: coursComplement.contentType,
@@ -200,7 +201,6 @@ export const getClassSequence = query({
       .filter((q) => q.eq(q.field("_id"), args.id))
       .first();
     if (result) {
-      console.log(result);
       return result;
     }
   },
