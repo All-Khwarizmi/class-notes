@@ -27,7 +27,7 @@ function UserSpaceClasseCard(props: { classe: ClassType }) {
           {props.classe.description}
         </p>
         <Button variant="outline" className="w-full">
-          View Classe
+          <Link href={`/spaces/classes/${props.classe.id}`}>View Classe</Link>
         </Button>
       </div>
     </div>
