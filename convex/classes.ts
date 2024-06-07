@@ -205,3 +205,23 @@ export const getClassSequence = query({
     }
   },
 });
+
+export const updateClassVisibility = mutation({
+  args: {
+    id: v.string(),
+    visibility: v.boolean(),
+  },
+  handler: async (ctx, args) => {
+    const classe = await ctx.db
+      .query("Classes")
+      .filter((q) => q.eq(q.field("_id"), args.id))
+      .first();
+    if (classe) {
+      await ctx.db.patch(classe._id, {
+        publish: args.visibility,
+      });
+      return { error: false, success: true };
+    }
+    return { error: true, success: false };
+  },
+});

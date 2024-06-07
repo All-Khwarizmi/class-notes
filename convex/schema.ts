@@ -159,6 +159,7 @@ export default defineSchema({
     observations: v.array(v.string()),
     studentsId: v.optional(v.array(v.id("Students"))),
     evaluationsTemplatesId: v.array(v.id("EvaluationTemplates")),
+    publish: v.optional(v.boolean()),
   }),
 
   Students: defineTable({
