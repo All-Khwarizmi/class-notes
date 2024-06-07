@@ -98,18 +98,11 @@ export const getSingleSequence = query({
     sequenceId: v.string(),
   },
   handler: async (ctx, args) => {
-    const user = await ctx.db
-      .query("Users")
-      .filter((q) => q.eq(q.field("userId"), args.userId))
+    const sequence = await ctx.db
+      .query("Sequences")
+      .filter((q) => q.eq(q.field("_id"), args.sequenceId))
       .first();
-
-    if (user) {
-      const sequence = await ctx.db
-        .query("Sequences")
-        .filter((q) => q.eq(q.field("_id"), args.sequenceId))
-        .first();
-      return sequence;
-    }
+    return sequence;
   },
 });
 
