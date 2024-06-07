@@ -1,12 +1,8 @@
 import React from "react";
+import UserSpace from "./UserSpace";
 
 async function Page({ params }: { params: { slug: string } }) {
-  return (
-    <div>
-      <h1>Space: {params.slug}</h1>
-      <p>This is a page in the space.</p>
-    </div>
-  );
+  return <UserSpace slug={params.slug} />;
 }
 
 export default Page;
