@@ -7,7 +7,7 @@ import { useSidebar } from "@/core/application/common/useSidebar";
 import ArrowLeft from "../icons/ArrowLeft";
 import { NavItem } from "@/lib/types";
 
-interface SidebarProps {
+export interface SidebarProps {
   className?: string;
   navItems?: NavItem[];
 }
