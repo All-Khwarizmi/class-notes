@@ -56,6 +56,7 @@ export default class ClasseUseCases {
         description: c.description,
         imageUrl: c.imageUrl,
         students: c.students,
+        publish: c.publish,
       };
     });
 
