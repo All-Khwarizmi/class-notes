@@ -3,10 +3,8 @@ import { authUseCases } from "@/features/auth/application/usecases/auth-usecases
 import { classeUsecases } from "@/features/classe/application/usecases";
 import { isLeft } from "fp-ts/lib/Either";
 import { redirect } from "next/navigation";
-import React, { Suspense } from "react";
 import { ClassType } from "@/features/classe/domain/class-schema";
 import ErrorDialog from "@/core/components/common/ErrorDialog";
-import LoadingSkeleton from "@/core/components/common/LoadingSkeleton";
 import UserSpaceClassesGridView from "@/features/spaces/presentation/views/UserSpaceClassesGridView";
 import SpacesHeader from "@/core/components/layout/SpacesHeader";
 import Sidebar from "@/core/components/layout/Sidebar";
