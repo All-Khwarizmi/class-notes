@@ -82,6 +82,16 @@ export default class ClasseUseCases {
 
     return right(validClasses);
   }
+
+  async updateClasseVisibility({
+    id,
+    visibility,
+  }: {
+    id: string;
+    visibility: boolean;
+  }) {
+    return this._repository.updateClasseVisibility({ id, visibility });
+  }
 }
 
 export const classeUsecases = new ClasseUseCases(classeRepository);

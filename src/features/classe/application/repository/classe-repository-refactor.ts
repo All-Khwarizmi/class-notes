@@ -38,6 +38,16 @@ export default class ClasseRepository {
   async getClasses({ id }: { id: string }) {
     return await this._db.getClasses({ id });
   }
+
+  async updateClasseVisibility({
+    id,
+    visibility,
+  }: {
+    id: string;
+    visibility: boolean;
+  }) {
+    return this._db.updateClassVisibility({ id, visibility });
+  }
 }
 
 export const classeRepository = new ClasseRepository(convexDatabase);
