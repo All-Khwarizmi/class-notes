@@ -7,8 +7,11 @@ import React, { Suspense } from "react";
 import { ClassType } from "@/features/classe/domain/class-schema";
 import ErrorDialog from "@/core/components/common/ErrorDialog";
 import LoadingSkeleton from "@/core/components/common/LoadingSkeleton";
-import { User } from "lucide-react";
 import UserSpaceClassesGridView from "@/features/spaces/presentation/views/UserSpaceClassesGridView";
+import SpacesHeader from "@/core/components/layout/SpacesHeader";
+import Sidebar from "@/core/components/layout/Sidebar";
+import { NavItem } from "@/lib/types";
+import { Presentation } from "lucide-react";
 
 async function UserSpace(props: { slug: string }) {
   if (!props.slug) {
@@ -44,9 +47,20 @@ async function UserSpace(props: { slug: string }) {
       classes.push(classe);
     }
   }
+  const userSpaceNavItems: NavItem[] = classes.map((classe) => ({
+    title: classe.name,
+    href: `/spaces/classes/${classe.id}`,
+    icon: <Presentation size={16} />,
+  }));
   return (
     <Suspense fallback={<LoadingSkeleton />}>
-      <UserSpaceClassesGridView classes={classes} />
+      <SpacesHeader navItems={userSpaceNavItems} />
+      <section className="flex h-full w-full border-collapse overflow-hidden">
+        <Sidebar navItems={userSpaceNavItems} />
+        <div className="h-full w-full py-8 px-6">
+          <UserSpaceClassesGridView classes={classes} />
+        </div>
+      </section>
     </Suspense>
   );
 }
