@@ -366,10 +366,13 @@ export default class ConvexDatabase extends IDatabase {
 
   async updateSequence({
     sequence,
+    type,
   }: {
     sequence: Sequence;
+    type?: "template" | "sequence";
   }): Promise<Either<Failure<string>, void>> {
     try {
+      const defaultType = type === "sequence" ? "sequence" : undefined;
       await fetchMutation(this._db.sequence.updateSequence, {
         sequenceId: sequence._id,
         imageUrl: sequence.imageUrl,
@@ -378,6 +381,7 @@ export default class ConvexDatabase extends IDatabase {
         description: sequence.description,
         category: sequence.category,
         competencesIds: sequence.competencesIds,
+        type: defaultType,
       });
 
       return right(undefined);
@@ -565,16 +569,20 @@ export default class ConvexDatabase extends IDatabase {
     userId,
     sequenceId,
     body,
+    type,
   }: {
     userId: string;
     sequenceId: string;
     body: string;
+    type?: "template" | "sequence";
   }): Promise<Either<Failure<string>, void>> {
     try {
+      const defaultType = type === "sequence" ? "sequence" : undefined;
       await fetchMutation(this._db.sequence.addBodyToSequence, {
         userId,
         sequenceId,
         body,
+        type: defaultType,
       });
       return right(undefined);
     } catch (error) {

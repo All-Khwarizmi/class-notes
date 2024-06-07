@@ -85,8 +85,14 @@ export default class CoursUsecases {
     return this._repository.addSequence({ userId, sequence });
   }
 
-  async updateSequence({ sequence }: { sequence: Sequence }) {
-    return this._repository.updateSequence({ sequence });
+  async updateSequence({
+    sequence,
+    type,
+  }: {
+    sequence: Sequence;
+    type?: "template" | "sequence";
+  }) {
+    return this._repository.updateSequence({ sequence, type });
   }
 
   async getSingleSequence({
@@ -128,12 +134,19 @@ export default class CoursUsecases {
     userId,
     sequenceId,
     body,
+    type,
   }: {
     userId: string;
     sequenceId: string;
     body: string;
+    type?: "template" | "sequence";
   }) {
-    return this._repository.addBodyToSequence({ userId, sequenceId, body });
+    return this._repository.addBodyToSequence({
+      userId,
+      sequenceId,
+      body,
+      type,
+    });
   }
 
   async getAllSequences({
