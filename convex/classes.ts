@@ -91,7 +91,10 @@ export const addSequenceClass = mutation({
       .query("Sequences")
       .filter((q) => q.eq(q.field("_id"), args.sequenceId))
       .first();
+
     if (sequence) {
+      // Get the cours and create new ones to add to the new sequence
+
       const result = await ctx.db.insert("ClasseSequence", {
         originalSequenceId: sequence._id,
         name: sequence.name,
@@ -107,6 +110,48 @@ export const addSequenceClass = mutation({
 
         classeId: args.classId,
       });
+
+      for (const coursId of sequence.coursIds) {
+        const cours = await ctx.db
+          .query("Cours")
+          .filter((q) => q.eq(q.field("_id"), coursId))
+          .first();
+        if (cours) {
+          const newCours = await ctx.db.insert("Cours", {
+            name: cours.name,
+            body: cours.body,
+            imageUrl: cours.imageUrl,
+            sequenceId: result,
+            createdBy: cours.createdBy,
+            createdAt: cours.createdAt,
+            category: cours.category,
+            publish: cours.publish,
+            description: cours.description,
+            lessons: cours.lessons,
+            competences: cours.competences,
+          });
+
+          // Get the cours complement and create new ones to add to the new cours
+          const coursComplements = await ctx.db
+            .query("Complement")
+            .filter((q) => q.eq(q.field("coursId"), cours._id))
+            .collect();
+          for (const coursComplement of coursComplements) {
+            await ctx.db.insert("Complement", {
+              sequenceId: coursComplement.sequenceId,
+              name: coursComplement.name,
+              body: coursComplement.body,
+              description: coursComplement.description,
+              createdBy: coursComplement.createdBy,
+              publish: coursComplement.publish,
+              publishDate: coursComplement.publish === true ? Date.now() : undefined,
+              coursId: newCours,
+              type: coursComplement.type,
+              contentType: coursComplement.contentType,
+            });
+          }
+        }
+      }
       if (result) {
         return { error: false, id: result };
       }

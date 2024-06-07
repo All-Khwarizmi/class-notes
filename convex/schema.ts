@@ -112,7 +112,7 @@ export default defineSchema({
     imageUrl: v.string(),
     lessons: v.array(v.string()),
     competences: v.array(v.id("Competences")),
-    sequenceId: v.id("Sequences"),
+    sequenceId: v.string(),
     description: v.string(),
     createdBy: v.string(),
     createdAt: v.float64(),
