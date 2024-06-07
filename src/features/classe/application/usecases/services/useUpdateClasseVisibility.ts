@@ -11,7 +11,6 @@ function useUpdateClasseVisibility() {
 
   useEffect(() => {
     if (classeVisibilityOptions) {
-   
       const loadingToast = toast.loading("Updating class visibility...", {
         position: "top-center",
       });
@@ -26,6 +25,7 @@ function useUpdateClasseVisibility() {
               id: loadingToast,
               position: "top-center",
             });
+            window.location.reload();
           } else {
             toast.error("Failed to update class visibility", {
               id: loadingToast,
