@@ -13,7 +13,7 @@ import Sidebar from "@/core/components/layout/Sidebar";
 import { NavItem } from "@/lib/types";
 import { Presentation } from "lucide-react";
 
-async function UserSpace(props: { slug: string }) {
+async function UserSpaceServerLayer(props: { slug: string }) {
   if (!props.slug) {
     return <NotFound />;
   }
@@ -65,4 +65,4 @@ async function UserSpace(props: { slug: string }) {
   );
 }
 
-export default UserSpace;
+export default UserSpaceServerLayer;

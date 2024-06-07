@@ -1,10 +1,8 @@
 import React from "react";
-import UserSpace from "./UserSpace";
+import UserSpaceServerLayer from "./UserSpaceServerLayer";
 
 async function Page({ params }: { params: { slug: string } }) {
-  return(
-    
-    <UserSpace slug={params.slug} />);
+  return <UserSpaceServerLayer slug={params.slug} />;
 }
 
 export default Page;
