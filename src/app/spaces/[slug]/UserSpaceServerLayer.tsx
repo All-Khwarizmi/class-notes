@@ -53,7 +53,7 @@ async function UserSpaceServerLayer(props: { slug: string }) {
     icon: <Presentation size={16} />,
   }));
   return (
-    <Suspense fallback={<LoadingSkeleton />}>
+    <>
       <SpacesHeader navItems={userSpaceNavItems} />
       <section className="flex h-full w-full border-collapse overflow-hidden">
         <Sidebar navItems={userSpaceNavItems} />
@@ -61,7 +61,7 @@ async function UserSpaceServerLayer(props: { slug: string }) {
           <UserSpaceClassesGridView classes={classes} />
         </div>
       </section>
-    </Suspense>
+    </>
   );
 }
 

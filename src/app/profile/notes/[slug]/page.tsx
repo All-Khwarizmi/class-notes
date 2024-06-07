@@ -9,6 +9,7 @@ async function Page({
     slug: string;
   };
 }) {
+  
   return (
     <Suspense fallback={<LoadingSkeleton />}>
       <NotesServerLayer slug={params.slug} type="profile" />
