@@ -52,15 +52,13 @@ export default function CoursSequenceCard({
       </CardContent>
       <CardFooter className="p-4">
         <div className="flex gap-2">
-         {
-          !spacesMode && (
+          {!spacesMode && (
             <AfterMenuButton
               addButton={true}
-              path={`/sequences/${path}`}
+              path={path}
               icon={<PenIcon size={12} />}
             />
-          )
-         }
+          )}
           {showViewButton && (
             <AfterMenuButton
               addButton={true}
