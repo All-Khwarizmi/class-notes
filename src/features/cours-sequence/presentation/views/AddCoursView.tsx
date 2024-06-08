@@ -12,7 +12,7 @@ import ErrorDialog from "@/core/components/common/ErrorDialog";
 export interface CoursSequenceForm
   extends Pick<
     Cours,
-    "description" | "category" | "name" | "competences" | "imageUrl"
+    "description" | "category" | "name" | "competences" | "imageUrl" | "publish"
   > {}
 export default function AddUpdateCoursSequenceView({
   competences,

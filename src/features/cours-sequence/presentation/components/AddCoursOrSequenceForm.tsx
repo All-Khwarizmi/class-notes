@@ -122,6 +122,7 @@ export default function AddCoursOrSequenceForm({
                 ...form.getValues(),
                 competences: selectedCompetences.map((c) => c._id),
                 imageUrl: localImageUrl,
+                publish: false,
               });
             }}
             type="submit"
