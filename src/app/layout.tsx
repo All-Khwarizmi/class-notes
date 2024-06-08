@@ -37,7 +37,6 @@ export default function RootLayout({
           >
             <main className="flex fixed h-screen w-screen flex-col border-collapse overflow-scroll">
               {children}
-              <Footer />
             </main>
 
             <Toaster richColors expand />
