@@ -13,7 +13,7 @@ function SequencesListView({
 }) {
   return (
     <>
-      <div className=" h-full w-full flex flex-col justify-between">
+      <div className=" h-full w-full flex flex-col gap-4 justify-between pb-12">
         <div className="grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-5">
           {sequences.map((sequence) => (
             <CoursSequenceCard
@@ -30,9 +30,13 @@ function SequencesListView({
           ))}
         </div>
         {!spacesMode && (
-          <Button variant={"outline"}>
-            <Link href="/sequences/add">Add Sequence</Link>
-          </Button>
+          <div
+          className="flex justify-center pb-8"
+          >
+            <Button className="" variant={"default"}>
+              <Link href="/sequences/add">Add Sequence</Link>
+            </Button>
+          </div>
         )}
       </div>
     </>
