@@ -4,11 +4,9 @@ import EditorProviderWrapper from "../../../../core/components/common/editor/Edi
 import CoursSaveButton from "../../../../core/components/common/editor/CoursSaveButton";
 import SaveSequenceBodyButton from "../components/SaveSequenceBodyButton";
 import Link from "next/link";
-import CollapsibleCoursList from "../components/CallapsibleCoursList";
 import { Eye, Settings } from "lucide-react";
 import AfterMenuButton from "@/core/components/common/editor/AfterMenuButton";
 import AfterMenuBar from "@/core/components/common/editor/AfterMunuBar";
-import ComplementsTable from "../components/ComplementsTable";
 import { Complement } from "@/features/complement/domain/complement-schemas";
 
 export default function CoursSequenceView({
@@ -18,6 +16,7 @@ export default function CoursSequenceView({
   type,
   coursFromSequence,
   complements,
+  sequenceType,
 }: {
   type: "cours" | "sequence";
   cours?: Cours;
@@ -25,6 +24,7 @@ export default function CoursSequenceView({
   userId: string;
   coursFromSequence?: Cours[];
   complements?: Complement[];
+  sequenceType?: "template" | "sequence";
 }) {
   if (type === "cours" && cours && complements) {
     return (
@@ -58,7 +58,11 @@ export default function CoursSequenceView({
         <EditorProviderWrapper content={sequence.body}>
           <div className="flex flex-col gap-4 ">
             <AfterMenuBar>
-              <SaveSequenceBodyButton userId={userId} sequence={sequence} />
+              <SaveSequenceBodyButton
+                userId={userId}
+                sequence={sequence}
+                type={sequenceType}
+              />
               <AfterMenuButton>
                 <Link href={`/sequences/show/${sequence._id}`}>
                   <Eye size={12} />

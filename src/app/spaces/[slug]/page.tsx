@@ -1,18 +1,11 @@
 import React, { Suspense } from "react";
-import NotesServerLayer from "./NotesServerLayer";
+import UserSpaceServerLayer from "./UserSpaceServerLayer";
 import LoadingSkeleton from "@/core/components/common/LoadingSkeleton";
 
-async function Page({
-  params,
-}: {
-  params: {
-    slug: string;
-  };
-}) {
-  
+async function Page({ params }: { params: { slug: string } }) {
   return (
     <Suspense fallback={<LoadingSkeleton />}>
-      <NotesServerLayer slug={params.slug} type="profile" />
+      <UserSpaceServerLayer slug={params.slug} />
     </Suspense>
   );
 }

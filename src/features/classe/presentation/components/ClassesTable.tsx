@@ -15,6 +15,7 @@ import { Button } from "@/core/components/ui/button";
 import { classeRepository } from "@/features/classe/application/repository/classe-repository";
 import { ClassType } from "../../domain/class-schema";
 import { Pen } from "lucide-react";
+import ClasseVisibilitySwitch from "./ClasseVisibilitySwitch";
 
 export default function ClassesTable(props: { classes: ClassType[] }) {
   const { setClasseId } = classeRepository.useDeleteClasse();
@@ -30,10 +31,12 @@ export default function ClassesTable(props: { classes: ClassType[] }) {
             <TableHead>Name</TableHead>
             <TableHead>Description</TableHead>
             <TableHead>Actions</TableHead>
+            <TableHead>Show</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {props.classes.map((classe) => {
+            console.log({ classe })
             return (
               <TableRow key={classe.id} className="cursor-pointer ">
                 <Link href={`/classes/class/${classe.id}`} legacyBehavior>
@@ -67,6 +70,12 @@ export default function ClassesTable(props: { classes: ClassType[] }) {
                       <Pen size={16} />
                     </Button>
                   </Link>
+                </TableCell>
+                <TableCell>
+                  <ClasseVisibilitySwitch
+                    visible={classe.publish}
+                    id={classe.id}
+                  />
                 </TableCell>
               </TableRow>
             );

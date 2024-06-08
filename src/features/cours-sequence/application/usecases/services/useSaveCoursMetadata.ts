@@ -13,6 +13,7 @@ export interface SaveCoursMetadataOptions {
   cours: CoursMetadata;
   userId: string;
   sequenceId: string;
+  publish?: boolean;
 }
 
 export default function useSaveCoursMetadata() {
@@ -34,6 +35,7 @@ export default function useSaveCoursMetadata() {
           body: "",
           lessons: [],
           createdBy: saveCoursMetadata.userId,
+          publish: saveCoursMetadata.publish ?? false,
         },
         userId: saveCoursMetadata.userId,
       })

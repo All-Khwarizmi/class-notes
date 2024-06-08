@@ -106,7 +106,7 @@ export const addSequenceClass = mutation({
         createdBy: sequence.createdBy,
         createdAt: sequence.createdAt,
         category: sequence.category,
-        publish: sequence.publish,
+        publish: sequence.publish ?? false,
 
         classeId: args.classId,
       });
@@ -144,7 +144,8 @@ export const addSequenceClass = mutation({
               description: coursComplement.description,
               createdBy: coursComplement.createdBy,
               publish: coursComplement.publish,
-              publishDate: coursComplement.publish === true ? Date.now() : undefined,
+              publishDate:
+                coursComplement.publish === true ? Date.now() : undefined,
               coursId: newCours,
               type: coursComplement.type,
               contentType: coursComplement.contentType,
@@ -200,8 +201,27 @@ export const getClassSequence = query({
       .filter((q) => q.eq(q.field("_id"), args.id))
       .first();
     if (result) {
-      console.log(result);
       return result;
     }
+  },
+});
+
+export const updateClassVisibility = mutation({
+  args: {
+    id: v.string(),
+    visibility: v.boolean(),
+  },
+  handler: async (ctx, args) => {
+    const classe = await ctx.db
+      .query("Classes")
+      .filter((q) => q.eq(q.field("_id"), args.id))
+      .first();
+    if (classe) {
+      await ctx.db.patch(classe._id, {
+        publish: args.visibility,
+      });
+      return { error: false, success: true };
+    }
+    return { error: true, success: false };
   },
 });

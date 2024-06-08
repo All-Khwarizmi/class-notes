@@ -106,8 +106,10 @@ export default abstract class IDatabase {
 
   abstract updateSequence({
     sequence,
+    type,
   }: {
     sequence: Sequence;
+    type?: "template" | "sequence";
   }): Promise<Either<Failure<string>, void>>;
 
   abstract getSequences({
@@ -140,10 +142,12 @@ export default abstract class IDatabase {
     userId,
     sequenceId,
     body,
+    type,
   }: {
     userId: string;
     sequenceId: string;
     body: string;
+    type?: "template" | "sequence";
   }): Promise<Either<Failure<string>, void>>;
 
   abstract getAllCoursFromSequence({
@@ -272,4 +276,12 @@ export default abstract class IDatabase {
   }: {
     id: string;
   }): Promise<Either<Failure<string>, DocumentData>>;
+
+  abstract updateClassVisibility({
+    id,
+    visibility,
+  }: {
+    id: string;
+    visibility: boolean;
+  }): Promise<Either<Failure<string>, void>>;
 }

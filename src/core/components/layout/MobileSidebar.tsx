@@ -3,8 +3,9 @@ import { Sheet, SheetContent, SheetTrigger } from "@/core/components/ui/sheet";
 import { SideNav } from "@/core/components/layout/SideNav";
 import { NavItems } from "@/core/components/constants/side-nav";
 import MenuIcon from "../icons/MenuIcon";
+import { NavItem } from "@/lib/types";
 
-export const MobileSidebar = () => {
+export const MobileSidebar = (props: { navItems?: NavItem[] }) => {
   const [open, setOpen] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
 
@@ -26,7 +27,7 @@ export const MobileSidebar = () => {
         </SheetTrigger>
         <SheetContent side="left" className="w-72">
           <div className="px-1 py-6 pt-16">
-            <SideNav items={NavItems} setOpen={setOpen} />
+            <SideNav items={props.navItems ?? NavItems} setOpen={setOpen} />
           </div>
         </SheetContent>
       </Sheet>

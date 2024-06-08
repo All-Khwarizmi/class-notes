@@ -56,6 +56,7 @@ export default class ClasseUseCases {
         description: c.description,
         imageUrl: c.imageUrl,
         students: c.students,
+        publish: c.publish,
       };
     });
 
@@ -81,6 +82,16 @@ export default class ClasseUseCases {
     }
 
     return right(validClasses);
+  }
+
+  async updateClasseVisibility({
+    id,
+    visibility,
+  }: {
+    id: string;
+    visibility: boolean;
+  }) {
+    return this._repository.updateClasseVisibility({ id, visibility });
   }
 }
 

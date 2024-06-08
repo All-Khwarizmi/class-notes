@@ -80,6 +80,7 @@ export default async function SequenceServerLayer(props: {
             userId={authUser.right.userId}
             type="sequence"
             coursFromSequence={eitherCours.right}
+            sequenceType={props.type}
           />
         </div>
       </section>

@@ -8,6 +8,7 @@ export default function useUpdateSequenceBody() {
     userId: string;
     sequenceId: string;
     body: string;
+    type?: "template" | "sequence";
   } | null>(null);
 
   useEffect(() => {
@@ -36,5 +37,5 @@ export default function useUpdateSequenceBody() {
       });
   }, [updateSequenceBodyOptions]);
 
-  return {  setUpdateSequenceBodyOptions };
+  return { setUpdateSequenceBodyOptions };
 }

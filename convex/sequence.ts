@@ -98,18 +98,11 @@ export const getSingleSequence = query({
     sequenceId: v.string(),
   },
   handler: async (ctx, args) => {
-    const user = await ctx.db
-      .query("Users")
-      .filter((q) => q.eq(q.field("userId"), args.userId))
+    const sequence = await ctx.db
+      .query("Sequences")
+      .filter((q) => q.eq(q.field("_id"), args.sequenceId))
       .first();
-
-    if (user) {
-      const sequence = await ctx.db
-        .query("Sequences")
-        .filter((q) => q.eq(q.field("_id"), args.sequenceId))
-        .first();
-      return sequence;
-    }
+    return sequence;
   },
 });
 
@@ -122,29 +115,56 @@ export const updateSequence = mutation({
     description: v.string(),
     category: v.string(),
     imageUrl: v.string(),
+    type: v.optional(v.literal("sequence")),
   },
   handler: async (ctx, args) => {
-    const existingSequence = await ctx.db
-      .query("Sequences")
-      .filter((q) => q.eq(q.field("_id"), args.sequenceId))
-      .first();
+    console.log("type in convex update sequence", args.type);
+    if (args.type === "sequence") {
+      const classeSequence = await ctx.db
+        .query("ClasseSequence")
+        .filter((q) => q.eq(q.field("_id"), args.sequenceId))
+        .first();
 
-    if (existingSequence) {
-      const userComptences = await ctx.db
-        .query("Competences")
-        .filter((q) => q.eq(q.field("createdBy"), existingSequence.createdBy))
-        .collect();
+      if (classeSequence) {
+        const userComptences = await ctx.db
+          .query("Competences")
+          .filter((q) => q.eq(q.field("createdBy"), classeSequence.createdBy))
+          .collect();
 
-      await ctx.db.patch(existingSequence._id, {
-        name: args.name,
-        body: args.body,
-        competencesIds: userComptences
-          .filter((c) => args.competencesIds.includes(c._id))
-          .map((c) => c._id),
-        description: args.description,
-        category: args.category,
-        imageUrl: args.imageUrl,
-      });
+        await ctx.db.patch(classeSequence._id, {
+          name: args.name,
+          body: args.body,
+          competencesIds: userComptences
+            .filter((c) => args.competencesIds.includes(c._id))
+            .map((c) => c._id),
+          description: args.description,
+          category: args.category,
+          imageUrl: args.imageUrl,
+        });
+      }
+    } else {
+      const existingSequence = await ctx.db
+        .query("Sequences")
+        .filter((q) => q.eq(q.field("_id"), args.sequenceId))
+        .first();
+
+      if (existingSequence) {
+        const userComptences = await ctx.db
+          .query("Competences")
+          .filter((q) => q.eq(q.field("createdBy"), existingSequence.createdBy))
+          .collect();
+
+        await ctx.db.patch(existingSequence._id, {
+          name: args.name,
+          body: args.body,
+          competencesIds: userComptences
+            .filter((c) => args.competencesIds.includes(c._id))
+            .map((c) => c._id),
+          description: args.description,
+          category: args.category,
+          imageUrl: args.imageUrl,
+        });
+      }
     }
   },
 });
@@ -154,14 +174,23 @@ export const addBodyToSequence = mutation({
     userId: v.string(),
     sequenceId: v.string(),
     body: v.string(),
+    type: v.optional(v.literal("sequence")),
   },
   handler: async (ctx, args) => {
-    const user = await ctx.db
-      .query("Users")
-      .filter((q) => q.eq(q.field("userId"), args.userId))
-      .first();
+    console.log("type in convex add sequence body", args.type);
 
-    if (user) {
+    if (args.type === "sequence") {
+      const classeSequence = await ctx.db
+        .query("ClasseSequence")
+        .filter((q) => q.eq(q.field("_id"), args.sequenceId))
+        .first();
+
+      if (classeSequence) {
+        await ctx.db.patch(classeSequence._id, {
+          body: args.body,
+        });
+      }
+    } else {
       const existingSequence = await ctx.db
         .query("Sequences")
         .filter((q) => q.eq(q.field("_id"), args.sequenceId))

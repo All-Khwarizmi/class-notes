@@ -84,12 +84,14 @@ export default class CoursRepository {
     userId,
     sequenceId,
     body,
+    type,
   }: {
     userId: string;
     sequenceId: string;
     body: string;
+    type?: "template" | "sequence";
   }) {
-    return this._db.addBodyToSequence({ userId, sequenceId, body });
+    return this._db.addBodyToSequence({ userId, sequenceId, body, type });
   }
 
   async getAllSequences({ userId }: { userId: string }) {
@@ -99,7 +101,7 @@ export default class CoursRepository {
   async getAllCoursFromSequence({
     userId,
     sequenceId,
-    type
+    type,
   }: {
     userId: string;
     sequenceId: string;
@@ -111,8 +113,14 @@ export default class CoursRepository {
   async updateCours({ cours }: { cours: Cours }) {
     return this._db.updateCours({ cours });
   }
-  async updateSequence({ sequence }: { sequence: Sequence }) {
-    return this._db.updateSequence({ sequence });
+  async updateSequence({
+    sequence,
+    type,
+  }: {
+    sequence: Sequence;
+    type?: "template" | "sequence";
+  }) {
+    return this._db.updateSequence({ sequence, type });
   }
 
   async addClassSequence({
