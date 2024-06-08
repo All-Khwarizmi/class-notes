@@ -4,7 +4,13 @@ import CoursSequenceCard from "../components/CoursSequenceCard";
 import { Button } from "@/core/components/ui/button";
 import Link from "next/link";
 
-function SequencesListView({ sequences }: { sequences: Sequence[] }) {
+function SequencesListView({
+  sequences,
+  spacesMode = false,
+}: {
+  sequences: Sequence[];
+  spacesMode?: boolean;
+}) {
   return (
     <>
       <div className=" h-full w-full flex flex-col justify-between">
@@ -17,15 +23,17 @@ function SequencesListView({ sequences }: { sequences: Sequence[] }) {
               imageUrl={sequence.imageUrl}
               tags={sequence.category}
               showViewButton={true}
-              pathToView={`/sequences/show/${sequence._id}`}
+              pathToView={`/spaces/sequences/${sequence._id}`}
               path={`/sequences/${sequence._id}`}
+              spacesMode={spacesMode}
             />
           ))}
         </div>
-        {/* Add button for adding sequence */}
-        <Button variant={"outline"}>
-          <Link href="/sequences/add">Add Sequence</Link>
-        </Button>
+        {!spacesMode && (
+          <Button variant={"outline"}>
+            <Link href="/sequences/add">Add Sequence</Link>
+          </Button>
+        )}
       </div>
     </>
   );
