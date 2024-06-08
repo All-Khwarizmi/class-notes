@@ -57,7 +57,6 @@ export const createCours = mutation({
 export const getAllCours = query({
   args: {
     userId: v.string(),
-  
   },
   handler: async (ctx, args) => {
     const user = await ctx.db
@@ -81,18 +80,11 @@ export const getSingleCours = query({
     coursId: v.string(),
   },
   handler: async (ctx, args) => {
-    const user = await ctx.db
-      .query("Users")
-      .filter((q) => q.eq(q.field("userId"), args.userId))
+    const cours = await ctx.db
+      .query("Cours")
+      .filter((q) => q.eq(q.field("_id"), args.coursId))
       .first();
-
-    if (user) {
-      const cours = await ctx.db
-        .query("Cours")
-        .filter((q) => q.eq(q.field("_id"), args.coursId))
-        .first();
-      return cours;
-    }
+    return cours;
   },
 });
 
