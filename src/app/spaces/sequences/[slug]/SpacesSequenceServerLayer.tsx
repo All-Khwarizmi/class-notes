@@ -6,7 +6,7 @@ import { coursUsecases } from "@/features/cours-sequence/application/usecases/co
 import ShowSequence from "@/features/cours-sequence/presentation/views/ShowSequence";
 import { NavItem } from "@/lib/types";
 import { isLeft } from "fp-ts/lib/Either";
-import { BookA, Plus, BookCheck, NotebookPen } from "lucide-react";
+import { BookA, BookCheck,} from "lucide-react";
 import React from "react";
 
 async function SpacesSequenceServerLayer(props: { slug: string }) {
@@ -31,7 +31,7 @@ async function SpacesSequenceServerLayer(props: { slug: string }) {
 
   const coursesNavItems: NavItem[] = eitherCours.right.map((cours) => ({
     title: cours.name,
-    href: `spaces/cours/${cours._id}`,
+    href: `/spaces/cours/${cours._id}`,
     icon: <BookA size={16} />,
   }));
 
