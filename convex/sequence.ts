@@ -11,6 +11,7 @@ export const createSequence = mutation({
     userId: v.string(),
     category: v.string(),
     imageUrl: v.string(),
+    publish: v.optional(v.boolean()),
   },
   handler: async (ctx, args) => {
     const existingUser = await ctx.db
@@ -35,6 +36,7 @@ export const createSequence = mutation({
         createdBy: existingUser!._id,
         createdAt: Date.now(),
         category: args.category,
+        publish: args.publish,
       });
       return categoryId;
     }
