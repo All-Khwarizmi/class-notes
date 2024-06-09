@@ -67,6 +67,7 @@ async function ClassesServerLayer(props: { slug: string }) {
           <ClassesTable
             classes={eitherClasses.right}
             visibility={eitherVibility.right}
+            userId={authUser.right.userId}
           />
         </div>
       </section>
