@@ -7,9 +7,11 @@ import Link from "next/link";
 function SequencesListView({
   sequences,
   spacesMode = false,
+  userId,
 }: {
   sequences: Sequence[];
   spacesMode?: boolean;
+  userId: string;
 }) {
   return (
     <>
@@ -23,7 +25,7 @@ function SequencesListView({
               imageUrl={sequence.imageUrl}
               tags={sequence.category}
               showViewButton={true}
-              pathToView={`/spaces/sequences/${sequence._id}?user=${sequence.createdBy}`}
+              pathToView={`/spaces/sequences/${sequence._id}?user=${userId}`}
               path={`/sequences/${sequence._id}`}
               spacesMode={spacesMode}
             />

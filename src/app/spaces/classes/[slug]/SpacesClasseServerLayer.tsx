@@ -40,7 +40,7 @@ async function SpacesClasseServerLayer(props: {
 
   const sequenceNavItems: NavItem[] = sequences.map((sequence) => ({
     title: sequence.name,
-    href: `/spaces/classes/${props.slug}/${sequence._id}`,
+    href: `/spaces/sequences/${sequence._id}?user=${props.searchParams.user}`,
     icon: <Presentation size={16} />,
   }));
   return (
