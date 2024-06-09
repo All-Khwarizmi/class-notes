@@ -6,6 +6,7 @@ import { isLeft } from "fp-ts/lib/Either";
 import { useRouter } from "next/navigation";
 export interface UpdateSequenceMetadataOptions {
   sequence: Sequence;
+  type?: "sequence" | "template";
 }
 function useUpdateSequenceMetadata() {
   const [updateSequenceMetadata, setUpdateSequenceMetadata] =
@@ -21,6 +22,7 @@ function useUpdateSequenceMetadata() {
     coursUsecases
       .updateSequence({
         sequence: updateSequenceMetadata.sequence,
+        type: updateSequenceMetadata.type,
       })
       .then((eitherSequence) => {
         if (isLeft(eitherSequence)) {

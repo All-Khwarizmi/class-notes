@@ -15,6 +15,7 @@ function useGetSubmitFunction(options: {
   sequence?: Sequence;
   selectedCompetences: Competence[];
   authUser: UserAuth;
+  sequenceType: "template" | "sequence";
 }) {
   const { setSaveCoursMetadata } = useSaveCoursMetadata();
   const { setSaveSequenceMetadata } = useSaveSequenceMetadata();
@@ -64,6 +65,7 @@ function useGetSubmitFunction(options: {
     };
     setUpdateSequenceMetadata({
       sequence: newData,
+      type: options.sequenceType,
     });
   }
 
