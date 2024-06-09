@@ -69,7 +69,13 @@ export default function CoursSequenceView({
                 </Link>
               </AfterMenuButton>
               <AfterMenuButton>
-                <Link href={`/sequences/edit/${sequence._id}`}>
+                <Link
+                  href={
+                    sequenceType === "sequence"
+                      ? `/sequences/edit/${sequence._id}?type=sequence`
+                      : `/sequences/edit/${sequence._id}`
+                  }
+                >
                   <Settings size={12} />
                 </Link>
               </AfterMenuButton>

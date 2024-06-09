@@ -1,7 +1,6 @@
 import { defineSchema, defineTable } from "convex/server";
 import { v } from "convex/values";
 
-
 export default defineSchema({
   Users: defineTable({
     userId: v.string(),
@@ -12,10 +11,18 @@ export default defineSchema({
   }),
   VisibilityTable: defineTable({
     userId: v.string(),
+    classe: v.array(
+      v.object({
+        id: v.string(),
+        publish: v.boolean(),
+      })
+    ),
     sequences: v.array(
       v.object({
         id: v.string(),
         publish: v.boolean(),
+        classe: v.boolean(),
+        classeId: v.string(),
       })
     ),
     cours: v.array(

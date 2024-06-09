@@ -93,71 +93,140 @@ export const addSequenceClass = mutation({
       .filter((q) => q.eq(q.field("_id"), args.sequenceId))
       .first();
 
-    if (sequence) {
-      // Get the cours and create new ones to add to the new sequence
+    const classe = await ctx.db
+      .query("Classes")
+      .filter((q) => q.eq(q.field("_id"), args.classId))
+      .first();
 
-      const result = await ctx.db.insert("ClasseSequence", {
-        originalSequenceId: sequence._id,
-        name: sequence.name,
-        body: sequence.body,
-        imageUrl: sequence.imageUrl,
-        coursIds: sequence.coursIds,
-        competencesIds: sequence.competencesIds,
-        description: sequence.description,
-        createdBy: sequence.createdBy,
-        createdAt: sequence.createdAt,
-        category: sequence.category,
-        publish: sequence.publish ?? false,
+    if (sequence && classe) {
+      let visibilityTable = await ctx.db
+        .query("VisibilityTable")
+        .filter((q) => q.eq(q.field("userId"), sequence.createdBy))
+        .first();
 
-        classeId: args.classId,
-      });
+      if (!visibilityTable) {
+        await ctx.db.insert("VisibilityTable", {
+          userId: sequence.createdBy,
+          classe: [],
+          sequences: [],
+          cours: [],
+          complement: [],
+        });
+      }
 
-      for (const coursId of sequence.coursIds) {
-        const cours = await ctx.db
-          .query("Cours")
-          .filter((q) => q.eq(q.field("_id"), coursId))
-          .first();
-        if (cours) {
-          const newCours = await ctx.db.insert("Cours", {
-            name: cours.name,
-            body: cours.body,
-            imageUrl: cours.imageUrl,
-            sequenceId: result,
-            createdBy: cours.createdBy,
-            createdAt: cours.createdAt,
-            category: cours.category,
-            publish: cours.publish,
-            description: cours.description,
-            lessons: cours.lessons,
-            competences: cours.competences,
+      visibilityTable = await ctx.db
+        .query("VisibilityTable")
+        .filter((q) => q.eq(q.field("userId"), sequence.createdBy))
+        .first();
+
+      if (visibilityTable) {
+        // Check if the classe is already in the table
+        const classeExist = visibilityTable.classe.find(
+          (classe) => classe.id === args.classId
+        );
+        if (!classeExist) {
+          visibilityTable.classe.push({
+            id: args.classId,
+            publish: classe.publish ?? false,
           });
+        }
 
-          // Get the cours complement and create new ones to add to the new cours
-          const coursComplements = await ctx.db
-            .query("Complement")
-            .filter((q) => q.eq(q.field("coursId"), cours._id))
-            .collect();
-          for (const coursComplement of coursComplements) {
-            await ctx.db.insert("Complement", {
-              sequenceId: coursComplement.sequenceId,
-              name: coursComplement.name,
-              body: coursComplement.body,
-              description: coursComplement.description,
-              createdBy: coursComplement.createdBy,
-              publish: coursComplement.publish,
-              publishDate:
-                coursComplement.publish === true ? Date.now() : undefined,
-              coursId: newCours,
-              type: coursComplement.type,
-              contentType: coursComplement.contentType,
+        // Get the cours and create new ones to add to the new sequence
+        const result = await ctx.db.insert("ClasseSequence", {
+          originalSequenceId: sequence._id,
+          name: sequence.name,
+          body: sequence.body,
+          imageUrl: sequence.imageUrl,
+          coursIds: sequence.coursIds,
+          competencesIds: sequence.competencesIds,
+          description: sequence.description,
+          createdBy: sequence.createdBy,
+          createdAt: sequence.createdAt,
+          category: sequence.category,
+          publish: sequence.publish ?? false,
+
+          classeId: args.classId,
+        });
+
+        // Add the sequence to the table
+        visibilityTable.sequences.push({
+          id: result,
+          publish: sequence.publish ?? false,
+          classe: classe.publish ?? false,
+          classeId: result,
+        });
+
+        for (const coursId of sequence.coursIds) {
+          const cours = await ctx.db
+            .query("Cours")
+            .filter((q) => q.eq(q.field("_id"), coursId))
+            .first();
+          if (cours) {
+            const newCours = await ctx.db.insert("Cours", {
+              name: cours.name,
+              body: cours.body,
+              imageUrl: cours.imageUrl,
+              sequenceId: result,
+              createdBy: cours.createdBy,
+              createdAt: cours.createdAt,
+              category: cours.category,
+              publish: cours.publish,
+              description: cours.description,
+              lessons: cours.lessons,
+              competences: cours.competences,
             });
+
+            // Add the cours to the table
+            visibilityTable.cours.push({
+              id: newCours,
+              publish: cours.publish ?? false,
+              sequence: sequence.publish ?? false,
+              sequenceId: result,
+            });
+
+            // Get the cours complement and create new ones to add to the new cours
+            const coursComplements = await ctx.db
+              .query("Complement")
+              .filter((q) => q.eq(q.field("coursId"), cours._id))
+              .collect();
+            for (const coursComplement of coursComplements) {
+              const coursResult = await ctx.db.insert("Complement", {
+                sequenceId: coursComplement.sequenceId,
+                name: coursComplement.name,
+                body: coursComplement.body,
+                description: coursComplement.description,
+                createdBy: coursComplement.createdBy,
+                publish: coursComplement.publish,
+                publishDate:
+                  coursComplement.publish === true ? Date.now() : undefined,
+                coursId: newCours,
+                type: coursComplement.type,
+                contentType: coursComplement.contentType,
+              });
+
+              // Add the complement to the table
+              visibilityTable.complement.push({
+                id: coursResult,
+                publish: coursComplement.publish ?? false,
+                sequence: sequence.publish ?? false,
+                sequenceId: result,
+                cours: cours.publish ?? false,
+                coursId: newCours,
+              });
+            }
           }
         }
+        if (result) {
+          await ctx.db.patch(visibilityTable._id, {
+            classe: visibilityTable.classe,
+            sequences: visibilityTable.sequences,
+            cours: visibilityTable.cours,
+            complement: visibilityTable.complement,
+          });
+          return { error: false, id: result };
+        }
+        return { error: true, id: "" };
       }
-      if (result) {
-        return { error: false, id: result };
-      }
-      return { error: true, id: "" };
     }
     return { error: true, id: "" };
   },
@@ -227,7 +296,6 @@ export const updateClassVisibility = mutation({
         .filter((q) => q.eq(q.field("userId"), classe.userId))
         .first();
 
-     
       return { error: false, success: true };
     }
     return { error: true, success: false };

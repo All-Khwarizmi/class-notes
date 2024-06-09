@@ -118,9 +118,9 @@ export const updateSequence = mutation({
     category: v.string(),
     imageUrl: v.string(),
     type: v.optional(v.literal("sequence")),
+    publish: v.optional(v.boolean()),
   },
   handler: async (ctx, args) => {
-    console.log("type in convex update sequence", args.type);
     if (args.type === "sequence") {
       const classeSequence = await ctx.db
         .query("ClasseSequence")
@@ -133,6 +133,18 @@ export const updateSequence = mutation({
           .filter((q) => q.eq(q.field("createdBy"), classeSequence.createdBy))
           .collect();
 
+        // Check the publish status
+        if (args.publish) {
+          const isPublishChange = args.publish !== classeSequence.publish;
+          if (isPublishChange) {
+            const visibilityTable = await ctx.db
+              .query("VisibilityTable")
+              .filter((q) => q.eq(q.field("userId"), classeSequence.createdBy))
+              .first();
+
+          }
+        }
+
         await ctx.db.patch(classeSequence._id, {
           name: args.name,
           body: args.body,
@@ -142,6 +154,7 @@ export const updateSequence = mutation({
           description: args.description,
           category: args.category,
           imageUrl: args.imageUrl,
+          publish: args.publish,
         });
       }
     } else {

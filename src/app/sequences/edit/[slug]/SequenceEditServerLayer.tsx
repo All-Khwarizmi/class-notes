@@ -13,11 +13,16 @@ import {
 } from "@/features/cours-sequence/domain/entities/cours-schemas";
 import Failure from "@/core/failures/failures";
 
-async function SequenceEditServerLayer(props: { slug: string }) {
+async function SequenceEditServerLayer(props: {
+  slug: string;
+  searchParams?: { [key: string]: string | string[] | undefined };
+}) {
   const authUser = await authUseCases.getUserAuth();
   if (isLeft(authUser)) {
     redirect("/login");
   }
+  const type =
+    props.searchParams?.type === "sequence" ? "sequence" : "template";
   const batch = await Promise.allSettled([
     compCatUsecases.getCompetences({
       userId: authUser.right.userId,
@@ -25,6 +30,7 @@ async function SequenceEditServerLayer(props: { slug: string }) {
     coursUsecases.getSingleSequence({
       userId: authUser.right.userId,
       sequenceId: props.slug,
+      type,
     }),
   ]);
   let competences: Competence[] = [];
@@ -69,6 +75,7 @@ async function SequenceEditServerLayer(props: { slug: string }) {
     }
   });
   if (isFailure) {
+    console.log(failures);
     return (
       <ErrorDialog
         message={`
