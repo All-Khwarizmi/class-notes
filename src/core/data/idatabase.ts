@@ -284,4 +284,10 @@ export default abstract class IDatabase {
     id: string;
     visibility: boolean;
   }): Promise<Either<Failure<string>, void>>;
+
+  abstract getVisibility({
+    id,
+  }: {
+    id: string;
+  }): Promise<Either<Failure<string>, DocumentData>>;
 }

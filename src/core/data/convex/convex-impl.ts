@@ -374,20 +374,17 @@ export default class ConvexDatabase extends IDatabase {
   }): Promise<Either<Failure<string>, void>> {
     try {
       const defaultType = type === "sequence" ? "sequence" : undefined;
-      await fetchMutation(
-        this._db.sequence.updateSequence,
-        {
-          sequenceId: sequence._id,
-          imageUrl: sequence.imageUrl,
-          name: sequence.name,
-          body: sequence.body,
-          description: sequence.description,
-          category: sequence.category,
-          competencesIds: sequence.competencesIds,
-          type: defaultType,
-          publish: sequence.publish,
-        },
-      );
+      await fetchMutation(this._db.sequence.updateSequence, {
+        sequenceId: sequence._id,
+        imageUrl: sequence.imageUrl,
+        name: sequence.name,
+        body: sequence.body,
+        description: sequence.description,
+        category: sequence.category,
+        competencesIds: sequence.competencesIds,
+        type: defaultType,
+        publish: sequence.publish,
+      });
 
       return right(undefined);
     } catch (error) {
@@ -1092,6 +1089,36 @@ export default class ConvexDatabase extends IDatabase {
         Failure.invalidValue({
           invalidValue: id,
           message: "Error updating class visibility",
+          code: "INF101",
+        })
+      );
+    }
+  }
+
+  async getVisibility({
+    id,
+  }: {
+    id: string;
+  }): Promise<Either<Failure<string>, DocumentData>> {
+    try {
+      const result = await fetchQuery(this._db.visibility.getVisibility, {
+        userId: id,
+      });
+      if (!result) {
+        return left(
+          Failure.invalidValue({
+            invalidValue: id,
+            message: "Error getting visibility",
+            code: "INF103",
+          })
+        );
+      }
+      return right(result);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: id,
+          message: "Error getting visibility",
           code: "INF101",
         })
       );
