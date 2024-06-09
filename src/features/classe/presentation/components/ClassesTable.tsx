@@ -14,8 +14,7 @@ import Link from "next/link";
 import { Button } from "@/core/components/ui/button";
 import { classeRepository } from "@/features/classe/application/repository/classe-repository";
 import { ClassType } from "../../domain/class-schema";
-import { Pen } from "lucide-react";
-import ClasseVisibilitySwitch from "./ClasseVisibilitySwitch";
+import { Delete, Pen } from "lucide-react";
 import { VisibilityType } from "../../domain/visibility-schema";
 import VisibilitySwitch from "@/features/cours-sequence/presentation/components/VisibilitySwitch";
 
@@ -62,25 +61,25 @@ export default function ClassesTable(props: {
                   <TableCell>{classe.description}</TableCell>
                 </Link>
 
-                <TableCell className="flex justify-center">
+                <TableCell className="flex justify-center items-center gap-4">
                   {/* Delete */}
-                  <Button
-                    data-testid="delete-class"
-                    className="mr-2"
+                  <Delete
+                    className="cursor-pointer text-red-500"
                     onClick={async () => {
-                      await handleDelete(classe.id?.toString() || "");
+                      const confirmed = confirm(
+                        "Are you sure you want to delete this class?"
+                      );
+                      if (confirmed) {
+                        await handleDelete(classe.id?.toString() || "");
+                      }
                     }}
-                    variant="destructive"
-                  >
-                    -
-                  </Button>
+                    size={20}
+                  />
 
                   {/* Edit */}
 
                   <Link href={`/classes/class/${classe.id}`}>
-                    <Button data-testid="edit-class" variant="link">
-                      <Pen size={16} />
-                    </Button>
+                    <Pen size={16} />
                   </Link>
                 </TableCell>
                 <TableCell>
