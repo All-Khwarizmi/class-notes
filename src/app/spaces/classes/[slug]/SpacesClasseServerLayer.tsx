@@ -50,7 +50,11 @@ async function SpacesClasseServerLayer(props: {
         <Sidebar navItems={sequenceNavItems} />
         <div className="h-full w-full py-8 px-6">
           {sequences.length > 0 ? (
-            <SequencesListView sequences={sequences} spacesMode={true} />
+            <SequencesListView
+              sequences={sequences}
+              spacesMode={true}
+              userId={props.searchParams.user}
+            />
           ) : (
             <NothingToShow />
           )}
