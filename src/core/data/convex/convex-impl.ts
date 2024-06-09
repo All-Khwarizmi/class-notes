@@ -1101,7 +1101,7 @@ export default class ConvexDatabase extends IDatabase {
     id: string;
   }): Promise<Either<Failure<string>, DocumentData>> {
     try {
-      const result = await fetchQuery(this._db.visibility.getVisibility, {
+      const result = await fetchMutation(this._db.visibility.getVisibility, {
         userId: id,
       });
       if (!result) {
@@ -1137,7 +1137,6 @@ export default class ConvexDatabase extends IDatabase {
     typeId: string;
   }): Promise<Either<Failure<string>, void>> {
     try {
-      
       await fetchMutation(this._db.visibility.updateVisibility, {
         userId,
         publish,
