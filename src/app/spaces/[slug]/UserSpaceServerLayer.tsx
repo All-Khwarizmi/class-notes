@@ -13,16 +13,19 @@ import { Presentation } from "lucide-react";
 import getVisibility from "@/features/classe/application/adapters/actions/get-visibility";
 import NothingToShow from "@/core/components/common/editor/NothingToShow";
 
-async function UserSpaceServerLayer(props: { slug: string }) {
-  if (!props.slug) {
+async function UserSpaceServerLayer(props: {
+  slug: string;
+  searchParams: { [key: string]: string | undefined };
+}) {
+ 
+  if (!props.slug || !props.searchParams.user) {
     return <NotFound />;
   }
-  const authUser = await authUseCases.getUserAuth();
-  if (isLeft(authUser)) {
-    redirect("/login");
-  }
+  const userId = props.searchParams.user;
+
+
   const eitherVisibility = await getVisibility({
-    userId: authUser.right.userId,
+    userId: userId,
   });
   if (isLeft(eitherVisibility)) {
     return (
@@ -41,7 +44,7 @@ async function UserSpaceServerLayer(props: { slug: string }) {
     );
   }
   const eitherClasses = await classeUsecases.getClasses({
-    id: authUser.right.userId,
+    id: userId,
   });
   if (isLeft(eitherClasses)) {
     return (
