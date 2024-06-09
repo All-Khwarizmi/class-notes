@@ -6,7 +6,6 @@ import QueryProvider from "@/core/query/QueryProvider";
 import { Metadata } from "next";
 const inter = Inter({ subsets: ["latin"] });
 import { Toaster } from "@/core/components/ui/sonner";
-
 export const metadata: Metadata = {
   title: "ClassAI - Votre nouveau carnet de notes.",
   description:

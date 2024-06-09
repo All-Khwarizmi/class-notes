@@ -1,6 +1,5 @@
 import Sidebar from "@/core/components/layout/Sidebar";
 import { Metadata } from "next";
-
 export const metadata: Metadata = {
   title: "ClassAI - Votre nouveau carnet de notes.",
   description:
