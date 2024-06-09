@@ -1,8 +1,6 @@
 import { defineSchema, defineTable } from "convex/server";
 import { v } from "convex/values";
-import { id } from "fp-ts/lib/Refinement";
-import { vi } from "vitest";
-import { b } from "vitest/dist/suite-a18diDsI.js";
+
 
 export default defineSchema({
   Users: defineTable({
@@ -14,28 +12,28 @@ export default defineSchema({
   }),
   VisibilityTable: defineTable({
     userId: v.string(),
-    table: v.array(
+    sequences: v.array(
       v.object({
         id: v.string(),
         publish: v.boolean(),
-        sequences: v.optional(
-          v.object({
-            id: v.string(),
-            publish: v.boolean(),
-            cours: v.optional(
-              v.object({
-                id: v.string(),
-                publish: v.boolean(),
-                complements: v.optional(
-                  v.object({
-                    id: v.string(),
-                    publish: v.boolean(),
-                  })
-                ),
-              })
-            ),
-          })
-        ),
+      })
+    ),
+    cours: v.array(
+      v.object({
+        id: v.string(),
+        publish: v.boolean(),
+        sequence: v.boolean(),
+        sequenceId: v.string(),
+      })
+    ),
+    complement: v.array(
+      v.object({
+        id: v.string(),
+        publish: v.boolean(),
+        sequence: v.boolean(),
+        sequenceId: v.string(),
+        cours: v.boolean(),
+        coursId: v.string(),
       })
     ),
   }),
