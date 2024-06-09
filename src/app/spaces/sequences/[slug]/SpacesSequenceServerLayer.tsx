@@ -1,15 +1,15 @@
 import NotFound from "@/app/not-found";
-import Dashboard from "@/core/components/icons/Dashboard";
 import Sidebar from "@/core/components/layout/Sidebar";
 import SpacesHeader from "@/core/components/layout/SpacesHeader";
 import { coursUsecases } from "@/features/cours-sequence/application/usecases/cours-usecases";
 import ShowSequence from "@/features/cours-sequence/presentation/views/ShowSequence";
 import { NavItem } from "@/lib/types";
 import { isLeft } from "fp-ts/lib/Either";
-import { BookA, BookCheck,} from "lucide-react";
+import { BookA, BookCheck } from "lucide-react";
 import React from "react";
 
 async function SpacesSequenceServerLayer(props: { slug: string }) {
+
   const eitherSequence = await coursUsecases.getSingleSequence({
     userId: "",
     sequenceId: props.slug,
