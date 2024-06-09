@@ -287,14 +287,27 @@ export const updateClassVisibility = mutation({
       .filter((q) => q.eq(q.field("_id"), args.id))
       .first();
     if (classe) {
-      await ctx.db.patch(classe._id, {
-        publish: args.visibility,
-      });
       // Update visibility table
       const visibility = await ctx.db
         .query("VisibilityTable")
         .filter((q) => q.eq(q.field("userId"), classe.userId))
         .first();
+
+      if (visibility) {
+        const classeIndex = visibility.classe.findIndex(
+          (classe) => classe.id === args.id
+        );
+        if (classeIndex !== -1) {
+          visibility.classe[classeIndex].publish = args.visibility;
+          await ctx.db.patch(visibility._id, { classe: visibility.classe });
+        } else {
+          visibility.classe.push({
+            id: args.id,
+            publish: args.visibility,
+          });
+          await ctx.db.patch(visibility._id, { classe: visibility.classe });
+        }
+      }
 
       return { error: false, success: true };
     }
