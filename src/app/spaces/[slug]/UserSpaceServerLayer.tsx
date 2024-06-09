@@ -10,6 +10,7 @@ import SpacesHeader from "@/core/components/layout/SpacesHeader";
 import Sidebar from "@/core/components/layout/Sidebar";
 import { NavItem } from "@/lib/types";
 import { Presentation } from "lucide-react";
+import getVisibility from "@/features/classe/application/adapters/actions/get-visibility";
 
 async function UserSpaceServerLayer(props: { slug: string }) {
   if (!props.slug) {
@@ -18,6 +19,25 @@ async function UserSpaceServerLayer(props: { slug: string }) {
   const authUser = await authUseCases.getUserAuth();
   if (isLeft(authUser)) {
     redirect("/login");
+  }
+  const eitherVisibility = await getVisibility({
+    userId: authUser.right.userId,
+  });
+  if (isLeft(eitherVisibility)) {
+    return (
+      <ErrorDialog
+        message={`
+         Une erreur s'est produite lors du chargement des classes
+         ${
+           process.env.NODE_ENV === "development"
+             ? eitherVisibility.left.message
+             : ""
+         }
+        `}
+        code={eitherVisibility.left.code}
+        description={eitherVisibility.left.message}
+      />
+    );
   }
   const eitherClasses = await classeUsecases.getClasses({
     id: authUser.right.userId,
@@ -41,7 +61,10 @@ async function UserSpaceServerLayer(props: { slug: string }) {
   const classes: ClassType[] = [];
 
   for (const classe of eitherClasses.right) {
-    if (classe.publish === true) {
+    const isVisible = eitherVisibility.right.classe.find(
+      (vis) => vis.id === classe.id
+    )?.publish;
+    if (isVisible === true) {
       classes.push(classe);
     }
   }
