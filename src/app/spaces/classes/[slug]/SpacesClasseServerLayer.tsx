@@ -1,6 +1,7 @@
-import NotFound from "@/app/not-found";
+import NothingToShow from "@/core/components/common/editor/NothingToShow";
 import Sidebar from "@/core/components/layout/Sidebar";
 import SpacesHeader from "@/core/components/layout/SpacesHeader";
+import getVisibility from "@/features/classe/application/adapters/actions/get-visibility";
 import { coursUsecases } from "@/features/cours-sequence/application/usecases/cours-usecases";
 import { Sequence } from "@/features/cours-sequence/domain/entities/cours-schemas";
 import SequencesListView from "@/features/cours-sequence/presentation/views/SequencesListView";
@@ -9,16 +10,30 @@ import { isLeft } from "fp-ts/lib/Either";
 import { Presentation } from "lucide-react";
 import React from "react";
 
-async function SpacesClasseServerLayer(props: { slug: string }) {
+async function SpacesClasseServerLayer(props: {
+  slug: string;
+  searchParams: { [key: string]: string | undefined };
+}) {
   const eitherSequences = await coursUsecases.getClasseSequences({
     classeId: props.slug,
   });
-  if (isLeft(eitherSequences)) {
-    return <NotFound />;
+
+  if (isLeft(eitherSequences) || !props.searchParams.user) {
+    return <NothingToShow />;
+  }
+  const eitherVisibility = await getVisibility({
+    userId: props.searchParams.user,
+  });
+
+  if (isLeft(eitherVisibility)) {
+    return <NothingToShow />;
   }
   const sequences: Sequence[] = [];
   for (const sequence of eitherSequences.right) {
-    if (sequence.publish === true) {
+    const isVisible = eitherVisibility.right.sequences.find(
+      (visibility) => visibility.id === sequence._id
+    )?.publish;
+    if (isVisible) {
       sequences.push(sequence);
     }
   }
@@ -36,7 +51,11 @@ async function SpacesClasseServerLayer(props: { slug: string }) {
       <section className="flex h-full w-full border-collapse overflow-hidden">
         <Sidebar navItems={sequenceNavItems} />
         <div className="h-full w-full py-8 px-6">
-          <SequencesListView sequences={sequences} spacesMode={true} />
+          {sequences.length > 0 ? (
+            <SequencesListView sequences={sequences} spacesMode={true} />
+          ) : (
+            <NothingToShow />
+          )}
         </div>
       </section>
     </>
