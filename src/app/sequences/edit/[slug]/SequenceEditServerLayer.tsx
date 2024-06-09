@@ -106,6 +106,7 @@ async function SequenceEditServerLayer(props: {
       title="Edit Sequence"
       edit={true}
       type="sequence"
+      sequenceType={type}
     />
   );
 }
