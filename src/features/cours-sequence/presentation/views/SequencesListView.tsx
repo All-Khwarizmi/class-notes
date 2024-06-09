@@ -23,16 +23,14 @@ function SequencesListView({
               imageUrl={sequence.imageUrl}
               tags={sequence.category}
               showViewButton={true}
-              pathToView={`/spaces/sequences/${sequence._id}`}
+              pathToView={`/spaces/sequences/${sequence._id}?user=${sequence.createdBy}`}
               path={`/sequences/${sequence._id}`}
               spacesMode={spacesMode}
             />
           ))}
         </div>
         {!spacesMode && (
-          <div
-          className="flex justify-center pb-8"
-          >
+          <div className="flex justify-center pb-8">
             <Button className="" variant={"default"}>
               <Link href="/sequences/add">Add Sequence</Link>
             </Button>
