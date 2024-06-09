@@ -5,6 +5,7 @@ import ClasseRepository, {
 import { ClassType } from "../../domain/class-schema";
 import ClassEntity from "../../domain/class-entity";
 import Failure from "@/core/failures/failures";
+import { VisibilitySchema } from "../../domain/visibility-schema";
 
 export default class ClasseUseCases {
   private readonly _repository: ClasseRepository;
@@ -92,6 +93,29 @@ export default class ClasseUseCases {
     visibility: boolean;
   }) {
     return this._repository.updateClasseVisibility({ id, visibility });
+  }
+
+  async getVisibility({ userId }: { userId: string }) {
+    const eitherVibilityTable = await this._repository.getVisibility({
+      userId,
+    });
+    if (isLeft(eitherVibilityTable)) {
+      return eitherVibilityTable;
+    }
+
+    const visibility = VisibilitySchema.safeParse(eitherVibilityTable.right);
+
+    if (visibility.success) {
+      return right(visibility.data);
+    } else {
+      return left(
+        Failure.invalidValue({
+          invalidValue: eitherVibilityTable.right,
+          message: "Invalid value",
+          code: "DOM201",
+        })
+      );
+    }
   }
 }
 

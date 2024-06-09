@@ -48,6 +48,10 @@ export default class ClasseRepository {
   }) {
     return this._db.updateClassVisibility({ id, visibility });
   }
+
+  async getVisibility({ userId }: { userId: string }) {
+    return this._db.getVisibility({ id: userId });
+  }
 }
 
 export const classeRepository = new ClasseRepository(convexDatabase);
