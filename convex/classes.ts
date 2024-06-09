@@ -120,17 +120,6 @@ export const addSequenceClass = mutation({
         .first();
 
       if (visibilityTable) {
-        // Check if the classe is already in the table
-        const classeExist = visibilityTable.classe.find(
-          (classe) => classe.id === args.classId
-        );
-        if (!classeExist) {
-          visibilityTable.classe.push({
-            id: args.classId,
-            publish: classe.publish ?? false,
-          });
-        }
-
         // Get the cours and create new ones to add to the new sequence
         const result = await ctx.db.insert("ClasseSequence", {
           originalSequenceId: sequence._id,
