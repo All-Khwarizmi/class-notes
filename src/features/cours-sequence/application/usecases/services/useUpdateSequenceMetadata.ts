@@ -6,7 +6,9 @@ import { isLeft } from "fp-ts/lib/Either";
 import { useRouter } from "next/navigation";
 export interface UpdateSequenceMetadataOptions {
   sequence: Sequence;
+  type?: "sequence" | "template";
 }
+
 function useUpdateSequenceMetadata() {
   const [updateSequenceMetadata, setUpdateSequenceMetadata] =
     useState<UpdateSequenceMetadataOptions | null>(null);
@@ -21,6 +23,7 @@ function useUpdateSequenceMetadata() {
     coursUsecases
       .updateSequence({
         sequence: updateSequenceMetadata.sequence,
+        type: updateSequenceMetadata.type,
       })
       .then((eitherSequence) => {
         if (isLeft(eitherSequence)) {
@@ -36,7 +39,12 @@ function useUpdateSequenceMetadata() {
         toast.success("Sequence updated", {
           id: loadingToast,
         });
-        router.push(`/sequences/${updateSequenceMetadata.sequence._id}`);
+
+        const redirectPath =
+          updateSequenceMetadata.type === "sequence"
+            ? `/sequences/${updateSequenceMetadata.sequence._id}?type=sequence`
+            : `/sequences/${updateSequenceMetadata.sequence._id}`;
+        router.push(redirectPath);
       });
   }, [updateSequenceMetadata]);
 

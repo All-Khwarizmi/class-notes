@@ -26,6 +26,7 @@ import type * as sequence from "../sequence.js";
 import type * as students from "../students.js";
 import type * as template from "../template.js";
 import type * as users from "../users.js";
+import type * as visibility from "../visibility.js";
 
 /**
  * A utility for referencing Convex functions in your app's API.
@@ -48,6 +49,7 @@ declare const fullApi: ApiFromModules<{
   students: typeof students;
   template: typeof template;
   users: typeof users;
+  visibility: typeof visibility;
 }>;
 export declare const api: FilterApi<
   typeof fullApi,

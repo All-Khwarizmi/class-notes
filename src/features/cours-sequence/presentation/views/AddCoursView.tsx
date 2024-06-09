@@ -23,6 +23,7 @@ export default function AddUpdateCoursSequenceView({
   edit,
   cours,
   sequence,
+  sequenceType,
 }: {
   competences: Competence[];
   authUser: UserAuth;
@@ -32,6 +33,7 @@ export default function AddUpdateCoursSequenceView({
   sequence?: Sequence;
   title: string;
   sequenceId?: string;
+  sequenceType?: "sequence" | "template";
 }) {
   const { selectedCompetences, setSelectedCompetences } =
     useGetSelectedCompetences({
@@ -58,6 +60,7 @@ export default function AddUpdateCoursSequenceView({
     sequence,
     selectedCompetences,
     authUser,
+    sequenceType: sequenceType || "template",
   });
 
   function selectCompetences({

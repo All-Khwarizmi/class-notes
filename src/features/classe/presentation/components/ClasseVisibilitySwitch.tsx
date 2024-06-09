@@ -1,6 +1,6 @@
 import React from "react";
 import { Switch } from "@/core/components/ui/switch";
-import useUpdateClasseVisibility from "../../application/usecases/services/useUpdateClasseVisibility";
+import useUpdateClasseVisibility from "../../application/adapters/services/useUpdateClasseVisibility";
 function ClasseVisibilitySwitch(props: { visible?: boolean; id: string }) {
   const { setClasseVisibilityOptions } = useUpdateClasseVisibility();
   function handleChange(checked: boolean) {

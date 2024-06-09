@@ -26,6 +26,7 @@ function useAddClasseSequence() {
             position: "top-center",
             id: loadingToast,
           });
+          window.location.reload();
         })
         .catch((err) => {
           console.error(err);

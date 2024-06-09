@@ -341,6 +341,7 @@ export default class ConvexDatabase extends IDatabase {
         description: sequence.description,
         category: sequence.category,
         competencesIds: sequence.competencesIds,
+        publish: sequence.publish,
       });
       if (!result) {
         return left(
@@ -382,6 +383,7 @@ export default class ConvexDatabase extends IDatabase {
         category: sequence.category,
         competencesIds: sequence.competencesIds,
         type: defaultType,
+        publish: sequence.publish,
       });
 
       return right(undefined);
@@ -1087,6 +1089,67 @@ export default class ConvexDatabase extends IDatabase {
         Failure.invalidValue({
           invalidValue: id,
           message: "Error updating class visibility",
+          code: "INF101",
+        })
+      );
+    }
+  }
+
+  async getVisibility({
+    id,
+  }: {
+    id: string;
+  }): Promise<Either<Failure<string>, DocumentData>> {
+    try {
+      const result = await fetchMutation(this._db.visibility.getVisibility, {
+        userId: id,
+      });
+      if (!result) {
+        return left(
+          Failure.invalidValue({
+            invalidValue: id,
+            message: "Error getting visibility",
+            code: "INF103",
+          })
+        );
+      }
+      return right(result);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: id,
+          message: "Error getting visibility",
+          code: "INF101",
+        })
+      );
+    }
+  }
+
+  async updateVisibility({
+    userId,
+    publish,
+    type,
+    typeId,
+  }: {
+    userId: string;
+    publish: boolean;
+    type: "classe" | "sequence" | "cours" | "complement";
+    typeId: string;
+  }): Promise<Either<Failure<string>, void>> {
+    try {
+      await fetchMutation(this._db.visibility.updateVisibility, {
+        userId,
+        publish,
+        type,
+        typeId,
+      });
+
+      return right(undefined);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: userId,
+          message: "Error updating visibility",
           code: "INF101",
         })
       );

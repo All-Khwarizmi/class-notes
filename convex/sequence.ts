@@ -1,3 +1,4 @@
+import { a } from "vitest/dist/suite-a18diDsI.js";
 import { Id } from "./_generated/dataModel";
 import { mutation, query } from "./_generated/server";
 import { v } from "convex/values";
@@ -11,6 +12,7 @@ export const createSequence = mutation({
     userId: v.string(),
     category: v.string(),
     imageUrl: v.string(),
+    publish: v.optional(v.boolean()),
   },
   handler: async (ctx, args) => {
     const existingUser = await ctx.db
@@ -35,6 +37,7 @@ export const createSequence = mutation({
         createdBy: existingUser!._id,
         createdAt: Date.now(),
         category: args.category,
+        publish: args.publish,
       });
       return categoryId;
     }
@@ -116,9 +119,10 @@ export const updateSequence = mutation({
     category: v.string(),
     imageUrl: v.string(),
     type: v.optional(v.literal("sequence")),
+    publish: v.optional(v.boolean()),
   },
   handler: async (ctx, args) => {
-    console.log("type in convex update sequence", args.type);
+    console.log("hi from convex update sequence", { args });
     if (args.type === "sequence") {
       const classeSequence = await ctx.db
         .query("ClasseSequence")
@@ -131,6 +135,34 @@ export const updateSequence = mutation({
           .filter((q) => q.eq(q.field("createdBy"), classeSequence.createdBy))
           .collect();
 
+        // Check the publish status
+        if (args.publish !== undefined) {
+          const visibilityTable = await ctx.db
+            .query("VisibilityTable")
+            .filter((q) => q.eq(q.field("userId"), classeSequence.createdBy))
+            .first();
+
+          if (visibilityTable) {
+            const classeExist = visibilityTable.classe.find(
+              (classe) => classe.id === classeSequence._id
+            );
+            if (!classeExist) {
+              visibilityTable.classe.push({
+                id: classeSequence._id,
+                publish: args.publish,
+              });
+            } else {
+              const classeIndex = visibilityTable.classe.findIndex(
+                (classe) => classe.id === classeSequence._id
+              );
+              visibilityTable.classe[classeIndex].publish = args.publish;
+            }
+            await ctx.db.patch(visibilityTable._id, {
+              classe: visibilityTable.classe,
+            });
+          }
+        }
+
         await ctx.db.patch(classeSequence._id, {
           name: args.name,
           body: args.body,
@@ -140,6 +172,7 @@ export const updateSequence = mutation({
           description: args.description,
           category: args.category,
           imageUrl: args.imageUrl,
+          publish: args.publish,
         });
       }
     } else {
@@ -212,6 +245,7 @@ export const getAllCoursInSequence = query({
     type: v.optional(v.literal("sequence")),
   },
   handler: async (ctx, args) => {
+    console.log({ args });
     if (args.type === "sequence") {
       const classeSequence = await ctx.db
         .query("ClasseSequence")
@@ -219,20 +253,12 @@ export const getAllCoursInSequence = query({
         .first();
 
       if (classeSequence) {
-        const originalSequence = await ctx.db
-          .query("Sequences")
-          .filter((q) =>
-            q.eq(q.field("_id"), classeSequence.originalSequenceId)
-          )
-          .first();
-        if (originalSequence) {
-          const cours = await ctx.db
-            .query("Cours")
-            .withIndex("by_sequenceId")
-            .filter((q) => q.eq(q.field("sequenceId"), originalSequence._id))
-            .collect();
-          return cours;
-        }
+        const cours = await ctx.db
+          .query("Cours")
+          .withIndex("by_sequenceId")
+          .filter((q) => q.eq(q.field("sequenceId"), args.sequenceId))
+          .collect();
+        return cours;
       }
     }
 

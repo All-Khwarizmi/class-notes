@@ -28,7 +28,6 @@ export default async function SequenceServerLayer(props: {
     type: props.type,
   });
   if (isLeft(eitherSequence)) {
-    console.log(eitherSequence.left);
     return <NotFound />;
   }
   // Get all cours from the sequence

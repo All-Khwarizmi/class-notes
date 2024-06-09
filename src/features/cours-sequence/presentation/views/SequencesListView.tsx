@@ -7,13 +7,15 @@ import Link from "next/link";
 function SequencesListView({
   sequences,
   spacesMode = false,
+  userId,
 }: {
   sequences: Sequence[];
   spacesMode?: boolean;
+  userId: string;
 }) {
   return (
     <>
-      <div className=" h-full w-full flex flex-col justify-between">
+      <div className=" h-full w-full flex flex-col gap-4 justify-between pb-12">
         <div className="grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-5">
           {sequences.map((sequence) => (
             <CoursSequenceCard
@@ -23,16 +25,18 @@ function SequencesListView({
               imageUrl={sequence.imageUrl}
               tags={sequence.category}
               showViewButton={true}
-              pathToView={`/spaces/sequences/${sequence._id}`}
+              pathToView={`/spaces/sequences/${sequence._id}?user=${userId}`}
               path={`/sequences/${sequence._id}`}
               spacesMode={spacesMode}
             />
           ))}
         </div>
         {!spacesMode && (
-          <Button variant={"outline"}>
-            <Link href="/sequences/add">Add Sequence</Link>
-          </Button>
+          <div className="flex justify-center pb-8">
+            <Button className="" variant={"default"}>
+              <Link href="/sequences/add">Add Sequence</Link>
+            </Button>
+          </div>
         )}
       </div>
     </>
