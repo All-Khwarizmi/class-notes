@@ -383,6 +383,7 @@ export default class ConvexDatabase extends IDatabase {
         category: sequence.category,
         competencesIds: sequence.competencesIds,
         type: defaultType,
+        publish: sequence.publish,
       });
 
       return right(undefined);
