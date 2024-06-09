@@ -20,13 +20,7 @@ function VisibilitySwitch(props: {
   }
   if (eitherVisibility) {
     if (isLeft(eitherVisibility)) {
-      return (
-        <div className="flex items-center gap-2">
-          <div className="h-4 w-4 bg-red-500 rounded-full">
-            <Ban />
-          </div>
-        </div>
-      );
+      return <Ban size={16} />;
     } else {
       const isVisible = eitherVisibility.right[
         props.type === "sequence"
