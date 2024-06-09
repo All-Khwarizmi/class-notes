@@ -12,6 +12,7 @@ import {
   SequenceSchema,
 } from "@/features/cours-sequence/domain/entities/cours-schemas";
 import Failure from "@/core/failures/failures";
+import editSequence from "@/features/cours-sequence/application/adapters/actions/edit-sequence";
 
 async function SequenceEditServerLayer(props: {
   slug: string;
@@ -23,56 +24,11 @@ async function SequenceEditServerLayer(props: {
   }
   const type =
     props.searchParams?.type === "sequence" ? "sequence" : "template";
-  const batch = await Promise.allSettled([
-    compCatUsecases.getCompetences({
-      userId: authUser.right.userId,
-    }),
-    coursUsecases.getSingleSequence({
-      userId: authUser.right.userId,
-      sequenceId: props.slug,
-      type,
-    }),
-  ]);
-  let competences: Competence[] = [];
-  let sequence: Sequence | null = null;
-  let failures: Failure<string>[] = [];
-  const isFailure = batch.some((result, index) => {
-    if (result.status === "rejected") {
-      failures.push(result.reason);
-      return true;
-    }
-    if (isLeft(result.value)) {
-      failures.push(result.value.left);
-      return true;
-    }
-    if (index === 1) {
-      const validateSequence = SequenceSchema.safeParse(result.value.right);
-      if (!validateSequence.success) {
-        failures.push(
-          Failure.invalidValue({
-            invalidValue: result.value.right,
-            message: `
-            Unable to validate sequence with id: ${props.slug}
-            
-              ${JSON.stringify(validateSequence.error)}
-            `,
-          })
-        );
-        return true;
-      }
-      sequence = validateSequence.data;
-    }
-    if (index === 0) {
-      const eitherCompetences = result.value as Either<
-        Failure<string>,
-        Competence[]
-      >;
-      if (isLeft(eitherCompetences)) {
-        failures.push(eitherCompetences.left);
-        return true;
-      }
-      competences = eitherCompetences.right;
-    }
+
+  const { competences, sequence, failures, isFailure } = await editSequence({
+    userId: authUser.right.userId,
+    slug: props.slug,
+    type,
   });
   if (isFailure) {
     console.log(failures);
