@@ -1,8 +1,7 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { classeUsecases } from "../../usecases";
-import { useRouter } from "next/router";
 export default function useUpdateVisibility() {
-  const router = useRouter();
+  const queryCLient = useQueryClient();
   return useMutation({
     mutationKey: ["updateVisibility"],
 
@@ -20,7 +19,8 @@ export default function useUpdateVisibility() {
       });
     },
     onSuccess: () => {
-      router.reload();
+      // queryCLient.refetchQueries({ queryKey: ["getVisibility"] });
+        queryCLient.invalidateQueries({ queryKey: ["getVisibility"] });
     },
   });
 }

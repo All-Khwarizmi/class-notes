@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
-import { classeUsecases } from "../classe-usecases";
 import { toast } from "sonner";
 import { isRight } from "fp-ts/lib/Either";
+import { classeUsecases } from "../../usecases/classe-usecases";
 
 function useUpdateClasseVisibility() {
   const [classeVisibilityOptions, setClasseVisibilityOptions] = React.useState<{

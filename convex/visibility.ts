@@ -33,9 +33,14 @@ export const updateVisibility = mutation({
     publish: v.boolean(),
   },
   handler: async (ctx, args) => {
+    const user = await ctx.db
+      .query("Users")
+      .filter((q) => q.eq(q.field("userId"), args.userId))
+      .first();
+    if (!user) return;
     const visibility = await ctx.db
       .query("VisibilityTable")
-      .filter((q) => q.eq(q.field("userId"), args.userId))
+      .filter((q) => q.eq(q.field("userId"), user._id))
       .first();
     if (visibility) {
       const newVisibility = {

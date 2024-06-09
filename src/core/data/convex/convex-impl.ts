@@ -1137,6 +1137,7 @@ export default class ConvexDatabase extends IDatabase {
     typeId: string;
   }): Promise<Either<Failure<string>, void>> {
     try {
+      
       await fetchMutation(this._db.visibility.updateVisibility, {
         userId,
         publish,

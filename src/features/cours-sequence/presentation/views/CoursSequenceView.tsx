@@ -8,6 +8,7 @@ import { Eye, Settings } from "lucide-react";
 import AfterMenuButton from "@/core/components/common/editor/AfterMenuButton";
 import AfterMenuBar from "@/core/components/common/editor/AfterMunuBar";
 import { Complement } from "@/features/complement/domain/complement-schemas";
+import VisibilitySwitch from "../components/VisibilitySwitch";
 
 export default function CoursSequenceView({
   cours,
@@ -58,27 +59,37 @@ export default function CoursSequenceView({
         <EditorProviderWrapper content={sequence.body}>
           <div className="flex flex-col gap-4 ">
             <AfterMenuBar>
-              <SaveSequenceBodyButton
-                userId={userId}
-                sequence={sequence}
-                type={sequenceType}
-              />
-              <AfterMenuButton>
-                <Link href={`/sequences/show/${sequence._id}`}>
-                  <Eye size={12} />
-                </Link>
-              </AfterMenuButton>
-              <AfterMenuButton>
-                <Link
-                  href={
-                    sequenceType === "sequence"
-                      ? `/sequences/edit/${sequence._id}?type=sequence`
-                      : `/sequences/edit/${sequence._id}`
-                  }
-                >
-                  <Settings size={12} />
-                </Link>
-              </AfterMenuButton>
+              <div className="flex items-center justify-between w-full gap-4 ">
+                <div className="flex items-center gap-1">
+                  <SaveSequenceBodyButton
+                    userId={userId}
+                    sequence={sequence}
+                    type={sequenceType}
+                  />
+                  <AfterMenuButton>
+                    <Link href={`/sequences/show/${sequence._id}`}>
+                      <Eye size={12} />
+                    </Link>
+                  </AfterMenuButton>
+                  <AfterMenuButton>
+                    <Link
+                      href={
+                        sequenceType === "sequence"
+                          ? `/sequences/edit/${sequence._id}?type=sequence`
+                          : `/sequences/edit/${sequence._id}`
+                      }
+                    >
+                      <Settings size={12} />
+                    </Link>
+                  </AfterMenuButton>
+                </div>
+                <VisibilitySwitch
+                  userId={userId}
+                  type="sequence"
+                  typeId={sequence._id}
+                  publish={sequence.publish ?? false}
+                />
+              </div>
             </AfterMenuBar>
             {/* <section>
               <CollapsibleCoursList
