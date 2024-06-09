@@ -1124,6 +1124,37 @@ export default class ConvexDatabase extends IDatabase {
       );
     }
   }
+
+  async updateVisibility({
+    userId,
+    publish,
+    type,
+    typeId,
+  }: {
+    userId: string;
+    publish: boolean;
+    type: "classe" | "sequence" | "cours" | "complement";
+    typeId: string;
+  }): Promise<Either<Failure<string>, void>> {
+    try {
+      await fetchMutation(this._db.visibility.updateVisibility, {
+        userId,
+        publish,
+        type,
+        typeId,
+      });
+
+      return right(undefined);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: userId,
+          message: "Error updating visibility",
+          code: "INF101",
+        })
+      );
+    }
+  }
 }
 
 export const convexDatabase = new ConvexDatabase({ db: api });
