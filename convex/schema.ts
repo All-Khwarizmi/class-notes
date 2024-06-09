@@ -31,6 +31,8 @@ export default defineSchema({
         publish: v.boolean(),
         sequence: v.boolean(),
         sequenceId: v.string(),
+        classe: v.boolean(),
+        classeId: v.string(),
       })
     ),
     complement: v.array(
@@ -41,6 +43,8 @@ export default defineSchema({
         sequenceId: v.string(),
         cours: v.boolean(),
         coursId: v.string(),
+        classe: v.boolean(),
+        classeId: v.string(),
       })
     ),
   }),
