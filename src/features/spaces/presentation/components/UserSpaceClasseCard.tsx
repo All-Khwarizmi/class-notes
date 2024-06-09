@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 import Link from "next/link";
 import React from "react";
 
-function UserSpaceClasseCard(props: { classe: ClassType }) {
+function UserSpaceClasseCard(props: { classe: ClassType; userId: string }) {
   return (
     <div
       className={cn(
@@ -27,7 +27,11 @@ function UserSpaceClasseCard(props: { classe: ClassType }) {
           {props.classe.description}
         </p>
         <Button variant="outline" className="w-full">
-          <Link href={`/spaces/classes/${props.classe.id}`}>View Classe</Link>
+          <Link
+            href={`/spaces/classes/${props.classe.id}?user=${props.userId}`}
+          >
+            View Classe
+          </Link>
         </Button>
       </div>
     </div>
