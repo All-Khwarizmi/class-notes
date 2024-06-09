@@ -54,14 +54,11 @@ export default function CoursSequenceView({
                   userId={userId}
                   type="cours"
                   typeId={cours._id}
-                  publish={cours.publish ?? false}
                 />
               </div>
             </AfterMenuBar>
           </div>
         </EditorProviderWrapper>
-
-        {/* <ComplementsTable complements={complements} coursId={cours._id} /> */}
       </>
     );
   }
@@ -102,16 +99,10 @@ export default function CoursSequenceView({
                   userId={userId}
                   type="sequence"
                   typeId={sequence._id}
-                  publish={sequence.publish ?? false}
                 />
               </div>
             </AfterMenuBar>
-            {/* <section>
-              <CollapsibleCoursList
-                cours={coursFromSequence}
-                sequenceId={sequence._id}
-              />
-            </section> */}
+        
           </div>
         </EditorProviderWrapper>
       </>
