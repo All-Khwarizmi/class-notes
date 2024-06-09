@@ -31,7 +31,10 @@ async function SequencesServerLayer() {
       <Sidebar />
       <section className="h-full flex-1  overflow-x-hidden">
         <div className="h-full py-8 px-6">
-          <SequencesListView sequences={eitherSequences.right} />
+          <SequencesListView
+            sequences={eitherSequences.right}
+            userId={authUser.right.userId}
+          />
         </div>
       </section>
     </>
