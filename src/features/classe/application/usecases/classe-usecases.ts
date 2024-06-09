@@ -5,7 +5,10 @@ import ClasseRepository, {
 import { ClassType } from "../../domain/class-schema";
 import ClassEntity from "../../domain/class-entity";
 import Failure from "@/core/failures/failures";
-import { VisibilitySchema } from "../../domain/visibility-schema";
+import {
+  VisibilitySchema,
+  VisibilityType,
+} from "../../domain/visibility-schema";
 
 export default class ClasseUseCases {
   private readonly _repository: ClasseRepository;
@@ -95,7 +98,11 @@ export default class ClasseUseCases {
     return this._repository.updateClasseVisibility({ id, visibility });
   }
 
-  async getVisibility({ userId }: { userId: string }) {
+  async getVisibility({
+    userId,
+  }: {
+    userId: string;
+  }): Promise<Either<Failure<string>, VisibilityType>> {
     const eitherVibilityTable = await this._repository.getVisibility({
       userId,
     });
