@@ -7,6 +7,7 @@ import ErrorDialog from "@/core/components/common/ErrorDialog";
 import ClassesTable from "@/features/classe/presentation/components/ClassesTable";
 import { classeUsecases } from "@/features/classe/application/usecases/classe-usecases";
 import Sidebar from "@/core/components/layout/Sidebar";
+import getVisibility from "@/features/classe/application/adapters/actions/get-visibility";
 
 async function ClassesServerLayer(props: { slug: string }) {
   if (!props.slug) {
@@ -17,6 +18,27 @@ async function ClassesServerLayer(props: { slug: string }) {
     redirect("/login");
   }
 
+  const eitherVibility = await getVisibility({
+    userId: authUser.right.userId,
+  });
+
+  if (isLeft(eitherVibility)) {
+    console.log(eitherVibility);
+    return (
+      <ErrorDialog
+        message={`
+        Une erreur s'est produite lors du chargement des classes
+        ${
+          process.env.NODE_ENV === "development"
+            ? eitherVibility.left.message
+            : ""
+        }
+    `}
+        code={eitherVibility.left.code}
+        description={eitherVibility.left.message}
+      />
+    );
+  }
   const eitherClasses = await classeUsecases.getClasses({
     id: authUser.right.userId,
   });
@@ -42,7 +64,10 @@ async function ClassesServerLayer(props: { slug: string }) {
       <Sidebar />
       <section className="h-full flex-1  overflow-x-hidden">
         <div className="h-full py-8 px-6">
-          <ClassesTable classes={eitherClasses.right} />
+          <ClassesTable
+            classes={eitherClasses.right}
+            visibility={eitherVibility.right}
+          />
         </div>
       </section>
     </>

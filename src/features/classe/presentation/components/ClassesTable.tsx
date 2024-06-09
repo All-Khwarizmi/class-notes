@@ -16,8 +16,12 @@ import { classeRepository } from "@/features/classe/application/repository/class
 import { ClassType } from "../../domain/class-schema";
 import { Pen } from "lucide-react";
 import ClasseVisibilitySwitch from "./ClasseVisibilitySwitch";
+import { VisibilityType } from "../../domain/visibility-schema";
 
-export default function ClassesTable(props: { classes: ClassType[] }) {
+export default function ClassesTable(props: {
+  classes: ClassType[];
+  visibility: VisibilityType;
+}) {
   const { setClasseId } = classeRepository.useDeleteClasse();
   const handleDelete = async (id: string) => {
     setClasseId(id);
@@ -36,7 +40,13 @@ export default function ClassesTable(props: { classes: ClassType[] }) {
         </TableHeader>
         <TableBody>
           {props.classes.map((classe) => {
-            console.log({ classe })
+            const visibilityClasseIndex = props.visibility.classe.findIndex(
+              (vis) => vis.id === classe.id
+            );
+            const isVisible =
+              visibilityClasseIndex !== -1
+                ? props.visibility.classe[visibilityClasseIndex].publish
+                : false;
             return (
               <TableRow key={classe.id} className="cursor-pointer ">
                 <Link href={`/classes/class/${classe.id}`} legacyBehavior>
@@ -72,10 +82,7 @@ export default function ClassesTable(props: { classes: ClassType[] }) {
                   </Link>
                 </TableCell>
                 <TableCell>
-                  <ClasseVisibilitySwitch
-                    visible={classe.publish}
-                    id={classe.id}
-                  />
+                  <ClasseVisibilitySwitch visible={isVisible} id={classe.id} />
                 </TableCell>
               </TableRow>
             );

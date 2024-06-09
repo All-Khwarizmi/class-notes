@@ -72,3 +72,5 @@ export const VisibilitySchema = z.object({
     })
   ),
 });
+
+export type VisibilityType = z.infer<typeof VisibilitySchema>;
