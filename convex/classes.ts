@@ -182,6 +182,8 @@ export const addSequenceClass = mutation({
               publish: cours.publish ?? false,
               sequence: sequence.publish ?? false,
               sequenceId: result,
+              classe: classe.publish ?? false,
+              classeId: args.classId,
             });
 
             // Get the cours complement and create new ones to add to the new cours
@@ -212,6 +214,8 @@ export const addSequenceClass = mutation({
                 sequenceId: result,
                 cours: cours.publish ?? false,
                 coursId: newCours,
+                classe: classe.publish ?? false,
+                classeId: args.classId,
               });
             }
           }
