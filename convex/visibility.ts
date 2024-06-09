@@ -53,6 +53,30 @@ export const updateVisibility = mutation({
           newVisibility.classe = visibility.classe.map((c) =>
             c.id === args.typeId ? classe : c
           );
+          newVisibility.sequences = visibility.sequences.map((s) =>
+            s.classeId === args.typeId
+              ? {
+                  ...s,
+                  classe: classe.publish,
+                }
+              : s
+          );
+          newVisibility.cours = visibility.cours.map((c) =>
+            c.classeId === args.typeId
+              ? {
+                  ...c,
+                  classe: classe.publish,
+                }
+              : c
+          );
+          newVisibility.complement = visibility.complement.map((c) =>
+            c.classeId === args.typeId
+              ? {
+                  ...c,
+                  classe: classe.publish,
+                }
+              : c
+          );
         }
       } else if (args.type === "sequence") {
         const sequence = visibility.sequences.find((s) => s.id === args.typeId);
@@ -61,6 +85,22 @@ export const updateVisibility = mutation({
           newVisibility.sequences = visibility.sequences.map((s) =>
             s.id === args.typeId ? sequence : s
           );
+          newVisibility.cours = visibility.cours.map((c) =>
+            c.sequenceId === args.typeId
+              ? {
+                  ...c,
+                  sequence: sequence.publish,
+                }
+              : c
+          );
+          newVisibility.complement = visibility.complement.map((c) =>
+            c.sequenceId === args.typeId
+              ? {
+                  ...c,
+                  sequence: sequence.publish,
+                }
+              : c
+          );
         }
       } else if (args.type === "cours") {
         const cours = visibility.cours.find((c) => c.id === args.typeId);
@@ -68,6 +108,14 @@ export const updateVisibility = mutation({
           cours.publish = args.publish;
           newVisibility.cours = visibility.cours.map((c) =>
             c.id === args.typeId ? cours : c
+          );
+          newVisibility.complement = visibility.complement.map((c) =>
+            c.coursId === args.typeId
+              ? {
+                  ...c,
+                  cours: cours.publish,
+                }
+              : c
           );
         }
       } else if (args.type === "complement") {
