@@ -142,7 +142,7 @@ export const addSequenceClass = mutation({
           id: result,
           publish: sequence.publish ?? false,
           classe: classe.publish ?? false,
-          classeId: result,
+          classeId: classe._id,
         });
 
         for (const coursId of sequence.coursIds) {

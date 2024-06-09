@@ -64,6 +64,7 @@ export const updateVisibility = mutation({
       };
       if (args.type === "classe") {
         const classe = visibility.classe.find((c) => c.id === args.typeId);
+
         if (classe) {
           classe.publish = args.publish;
           newVisibility.classe = visibility.classe.map((c) =>

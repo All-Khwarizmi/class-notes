@@ -1,4 +1,5 @@
 import NotFound from "@/app/not-found";
+import NothingToShow from "@/core/components/common/editor/NothingToShow";
 import Sidebar from "@/core/components/layout/Sidebar";
 import SpacesHeader from "@/core/components/layout/SpacesHeader";
 import getVisibility from "@/features/classe/application/adapters/actions/get-visibility";
@@ -26,6 +27,27 @@ async function SpacesSequenceServerLayer(props: {
   const eitherVisibility = await getVisibility({
     userId,
   });
+  if (isLeft(eitherVisibility)) {
+    return <NotFound />;
+  }
+  const sequenceVisibility = eitherVisibility.right.sequences.find(
+    (visibility) => visibility.id === props.slug
+  );
+  const isSequenceVisible =
+    sequenceVisibility?.publish === true && sequenceVisibility.classe; // Check if the sequence is visible
+
+  if (!isSequenceVisible) {
+    return (
+      <>
+        <SpacesHeader />
+        <section className="flex h-full w-full border-collapse overflow-hidden">
+          <div className="h-full w-full py-8 px-6">
+            <NothingToShow />
+          </div>
+        </section>
+      </>
+    );
+  }
   // Get all cours from the sequence
   const eitherCours = await coursUsecases.getAllCoursFromSequence({
     userId: "",
@@ -38,11 +60,13 @@ async function SpacesSequenceServerLayer(props: {
 
   const coursesNavItems: NavItem[] = [];
   eitherCours.right.forEach((cours) => {
-    console.log({ cours });
-    console.table(eitherVisibility.right.cours);
-    const isVisible = eitherVisibility.right.cours.find(
+    const coursVisibility = eitherVisibility.right.cours.find(
       (visibility) => visibility.id === cours._id
-    )?.publish;
+    );
+    const isVisible =
+      coursVisibility?.publish &&
+      coursVisibility.sequence &&
+      coursVisibility.classe;
     if (isVisible === true) {
       coursesNavItems.push({
         title: cours.name,
