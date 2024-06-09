@@ -38,8 +38,6 @@ async function SpacesClasseServerLayer(props: {
     }
   }
 
-  //! Handle the case where there are no sequences
-
   const sequenceNavItems: NavItem[] = sequences.map((sequence) => ({
     title: sequence.name,
     href: `/spaces/classes/${props.slug}/${sequence._id}`,
