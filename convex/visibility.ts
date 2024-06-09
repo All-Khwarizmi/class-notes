@@ -1,7 +1,7 @@
 import { mutation, query } from "./_generated/server";
 import { v } from "convex/values";
 
-export const getVisibility = query({
+export const getVisibility = mutation({
   args: {
     userId: v.string(),
   },
@@ -15,6 +15,22 @@ export const getVisibility = query({
         .query("VisibilityTable")
         .filter((q) => q.eq(q.field("userId"), user._id))
         .first();
+      if (!visibility) {
+        // Fetch all classes and add them to the visibility table
+        const classes = await ctx.db
+          .query("Classes")
+          .filter((q) => q.eq(q.field("userId"), user._id))
+          .collect();
+        const visibility = {
+          userId: user._id,
+          classe: classes.map((c) => ({ id: c._id, publish: false })),
+          sequences: [],
+          cours: [],
+          complement: [],
+        };
+        await ctx.db.insert("VisibilityTable", visibility);
+        return visibility;
+      }
       return visibility;
     }
   },
