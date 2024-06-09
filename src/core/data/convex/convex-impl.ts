@@ -374,17 +374,20 @@ export default class ConvexDatabase extends IDatabase {
   }): Promise<Either<Failure<string>, void>> {
     try {
       const defaultType = type === "sequence" ? "sequence" : undefined;
-      await fetchMutation(this._db.sequence.updateSequence, {
-        sequenceId: sequence._id,
-        imageUrl: sequence.imageUrl,
-        name: sequence.name,
-        body: sequence.body,
-        description: sequence.description,
-        category: sequence.category,
-        competencesIds: sequence.competencesIds,
-        type: defaultType,
-        publish: sequence.publish,
-      });
+      await fetchMutation(
+        this._db.sequence.updateSequence,
+        {
+          sequenceId: sequence._id,
+          imageUrl: sequence.imageUrl,
+          name: sequence.name,
+          body: sequence.body,
+          description: sequence.description,
+          category: sequence.category,
+          competencesIds: sequence.competencesIds,
+          type: defaultType,
+          publish: sequence.publish,
+        },
+      );
 
       return right(undefined);
     } catch (error) {

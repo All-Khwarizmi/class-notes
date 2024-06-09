@@ -121,6 +121,7 @@ export const updateSequence = mutation({
     publish: v.optional(v.boolean()),
   },
   handler: async (ctx, args) => {
+    console.log("hi from convex update sequence", { args });
     if (args.type === "sequence") {
       const classeSequence = await ctx.db
         .query("ClasseSequence")
@@ -134,14 +135,30 @@ export const updateSequence = mutation({
           .collect();
 
         // Check the publish status
-        if (args.publish) {
-          const isPublishChange = args.publish !== classeSequence.publish;
-          if (isPublishChange) {
-            const visibilityTable = await ctx.db
-              .query("VisibilityTable")
-              .filter((q) => q.eq(q.field("userId"), classeSequence.createdBy))
-              .first();
+        if (args.publish !== undefined) {
+          const visibilityTable = await ctx.db
+            .query("VisibilityTable")
+            .filter((q) => q.eq(q.field("userId"), classeSequence.createdBy))
+            .first();
 
+          if (visibilityTable) {
+            const classeExist = visibilityTable.classe.find(
+              (classe) => classe.id === classeSequence._id
+            );
+            if (!classeExist) {
+              visibilityTable.classe.push({
+                id: classeSequence._id,
+                publish: args.publish,
+              });
+            } else {
+              const classeIndex = visibilityTable.classe.findIndex(
+                (classe) => classe.id === classeSequence._id
+              );
+              visibilityTable.classe[classeIndex].publish = args.publish;
+            }
+            await ctx.db.patch(visibilityTable._id, {
+              classe: visibilityTable.classe,
+            });
           }
         }
 
