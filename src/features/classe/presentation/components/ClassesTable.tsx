@@ -20,7 +20,6 @@ import VisibilitySwitch from "@/features/cours-sequence/presentation/components/
 
 export default function ClassesTable(props: {
   classes: ClassType[];
-  visibility: VisibilityType;
   userId: string;
 }) {
   const { setClasseId } = classeRepository.useDeleteClasse();
@@ -41,13 +40,7 @@ export default function ClassesTable(props: {
         </TableHeader>
         <TableBody>
           {props.classes.map((classe) => {
-            const visibilityClasseIndex = props.visibility.classe.findIndex(
-              (vis) => vis.id === classe.id
-            );
-            const isVisible =
-              visibilityClasseIndex !== -1
-                ? props.visibility.classe[visibilityClasseIndex].publish
-                : false;
+          
             return (
               <TableRow key={classe.id} className="cursor-pointer ">
                 <Link href={`/classes/class/${classe.id}`} legacyBehavior>
