@@ -227,33 +227,7 @@ export const updateClassVisibility = mutation({
         .filter((q) => q.eq(q.field("userId"), classe.userId))
         .first();
 
-      if (visibility) {
-        const classeVisibilityIndex = visibility.table.findIndex(
-          (v) => v.id === classe._id
-        );
-        if (classeVisibilityIndex !== -1) {
-          visibility.table[classeVisibilityIndex].publish = args.visibility;
-        } else {
-          visibility.table.push({
-            id: classe._id,
-            publish: args.visibility,
-          });
-        }
-
-        await ctx.db.patch(visibility._id, {
-          table: visibility.table,
-        });
-      } else {
-        await ctx.db.insert("VisibilityTable", {
-          userId: classe.userId,
-          table: [
-            {
-              id: classe._id,
-              publish: args.visibility,
-            },
-          ],
-        });
-      }
+     
       return { error: false, success: true };
     }
     return { error: true, success: false };
