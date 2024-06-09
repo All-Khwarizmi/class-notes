@@ -22,5 +22,6 @@ export default function useUpdateVisibility() {
       // queryCLient.refetchQueries({ queryKey: ["getVisibility"] });
         queryCLient.invalidateQueries({ queryKey: ["getVisibility"] });
     },
+    
   });
 }
