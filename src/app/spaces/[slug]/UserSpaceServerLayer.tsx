@@ -11,6 +11,7 @@ import Sidebar from "@/core/components/layout/Sidebar";
 import { NavItem } from "@/lib/types";
 import { Presentation } from "lucide-react";
 import getVisibility from "@/features/classe/application/adapters/actions/get-visibility";
+import NothingToShow from "@/core/components/common/editor/NothingToShow";
 
 async function UserSpaceServerLayer(props: { slug: string }) {
   if (!props.slug) {
@@ -79,7 +80,11 @@ async function UserSpaceServerLayer(props: { slug: string }) {
       <section className="flex h-full w-full border-collapse overflow-hidden">
         <Sidebar navItems={userSpaceNavItems} />
         <div className="h-full w-full py-8 px-6">
-          <UserSpaceClassesGridView classes={classes} />
+          {classes.length > 0 ? (
+            <UserSpaceClassesGridView classes={classes} />
+          ) : (
+            <NothingToShow />
+          )}
         </div>
       </section>
     </>
