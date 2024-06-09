@@ -17,10 +17,12 @@ import { ClassType } from "../../domain/class-schema";
 import { Pen } from "lucide-react";
 import ClasseVisibilitySwitch from "./ClasseVisibilitySwitch";
 import { VisibilityType } from "../../domain/visibility-schema";
+import VisibilitySwitch from "@/features/cours-sequence/presentation/components/VisibilitySwitch";
 
 export default function ClassesTable(props: {
   classes: ClassType[];
   visibility: VisibilityType;
+  userId: string;
 }) {
   const { setClasseId } = classeRepository.useDeleteClasse();
   const handleDelete = async (id: string) => {
@@ -82,7 +84,11 @@ export default function ClassesTable(props: {
                   </Link>
                 </TableCell>
                 <TableCell>
-                  <ClasseVisibilitySwitch visible={isVisible} id={classe.id} />
+                  <VisibilitySwitch
+                    userId={props.userId}
+                    type="classe"
+                    typeId={classe.id}
+                  />
                 </TableCell>
               </TableRow>
             );
