@@ -1,3 +1,4 @@
+import { a } from "vitest/dist/suite-a18diDsI.js";
 import { Id } from "./_generated/dataModel";
 import { mutation, query } from "./_generated/server";
 import { v } from "convex/values";
@@ -244,6 +245,7 @@ export const getAllCoursInSequence = query({
     type: v.optional(v.literal("sequence")),
   },
   handler: async (ctx, args) => {
+    console.log({ args });
     if (args.type === "sequence") {
       const classeSequence = await ctx.db
         .query("ClasseSequence")
@@ -251,20 +253,12 @@ export const getAllCoursInSequence = query({
         .first();
 
       if (classeSequence) {
-        const originalSequence = await ctx.db
-          .query("Sequences")
-          .filter((q) =>
-            q.eq(q.field("_id"), classeSequence.originalSequenceId)
-          )
-          .first();
-        if (originalSequence) {
-          const cours = await ctx.db
-            .query("Cours")
-            .withIndex("by_sequenceId")
-            .filter((q) => q.eq(q.field("sequenceId"), originalSequence._id))
-            .collect();
-          return cours;
-        }
+        const cours = await ctx.db
+          .query("Cours")
+          .withIndex("by_sequenceId")
+          .filter((q) => q.eq(q.field("sequenceId"), args.sequenceId))
+          .collect();
+        return cours;
       }
     }
 
