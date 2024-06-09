@@ -9,7 +9,6 @@ function VisibilitySwitch(props: {
   userId: string;
   type: "classe" | "sequence" | "cours" | "complement";
   typeId: string;
-  publish: boolean;
 }) {
   const { data: eitherVisibility, isPending } = useGetVisibility({
     userId: props.userId,
