@@ -124,6 +124,20 @@ export default class ClasseUseCases {
       );
     }
   }
+
+  async updateVisibility({
+    userId,
+    publish,
+    type,
+    typeId,
+  }: {
+    userId: string;
+    publish: boolean;
+    type: "classe" | "sequence" | "cours" | "complement";
+    typeId: string;
+  }) {
+    return this._repository.updateVisibility({ userId, publish, type, typeId });
+  }
 }
 
 export const classeUsecases = new ClasseUseCases(classeRepository);
