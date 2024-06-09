@@ -6,10 +6,16 @@ export const getVisibility = query({
     userId: v.string(),
   },
   handler: async (ctx, args) => {
-    const visibility = await ctx.db
-      .query("VisibilityTable")
+    const user = await ctx.db
+      .query("Users")
       .filter((q) => q.eq(q.field("userId"), args.userId))
       .first();
-    return visibility;
+    if (user) {
+      const visibility = await ctx.db
+        .query("VisibilityTable")
+        .filter((q) => q.eq(q.field("userId"), user._id))
+        .first();
+      return visibility;
+    }
   },
 });
