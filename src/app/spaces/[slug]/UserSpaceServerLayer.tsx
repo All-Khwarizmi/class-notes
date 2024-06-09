@@ -1,8 +1,6 @@
 import NotFound from "@/app/not-found";
-import { authUseCases } from "@/features/auth/application/usecases/auth-usecases";
 import { classeUsecases } from "@/features/classe/application/usecases";
 import { isLeft } from "fp-ts/lib/Either";
-import { redirect } from "next/navigation";
 import { ClassType } from "@/features/classe/domain/class-schema";
 import ErrorDialog from "@/core/components/common/ErrorDialog";
 import UserSpaceClassesGridView from "@/features/spaces/presentation/views/UserSpaceClassesGridView";
@@ -17,12 +15,10 @@ async function UserSpaceServerLayer(props: {
   slug: string;
   searchParams: { [key: string]: string | undefined };
 }) {
- 
   if (!props.slug || !props.searchParams.user) {
     return <NotFound />;
   }
   const userId = props.searchParams.user;
-
 
   const eitherVisibility = await getVisibility({
     userId: userId,
@@ -84,7 +80,7 @@ async function UserSpaceServerLayer(props: {
         <Sidebar navItems={userSpaceNavItems} />
         <div className="h-full w-full py-8 px-6">
           {classes.length > 0 ? (
-            <UserSpaceClassesGridView classes={classes} />
+            <UserSpaceClassesGridView userId={userId} classes={classes} />
           ) : (
             <NothingToShow />
           )}
