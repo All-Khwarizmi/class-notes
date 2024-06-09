@@ -39,6 +39,7 @@ function useUpdateSequenceMetadata() {
         toast.success("Sequence updated", {
           id: loadingToast,
         });
+
         const redirectPath =
           updateSequenceMetadata.type === "sequence"
             ? `/sequences/${updateSequenceMetadata.sequence._id}?type=sequence`
