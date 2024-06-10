@@ -8,7 +8,6 @@ import { coursUsecases } from "@/features/cours-sequence/application/usecases/co
 import ShowSequence from "@/features/cours-sequence/presentation/views/ShowSequence";
 import { isLeft } from "fp-ts/lib/Either";
 import { ClipboardType, ScrollText } from "lucide-react";
-import Error from "next/error";
 import React from "react";
 
 async function SpacesCoursServerLayer(props: {
@@ -89,7 +88,7 @@ async function SpacesCoursServerLayer(props: {
 
   const complementNavItems = complements.map((complement) => ({
     title: complement.name,
-    href: `/spaces/complement/${complement.id}`,
+    href: `/spaces/complement/${complement.id}?user=${userId}`,
     icon:
       complement.type === "Lesson" ? (
         <ScrollText size={16} />
