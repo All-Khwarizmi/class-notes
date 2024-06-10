@@ -25,25 +25,13 @@ async function ComplementServerLayer(props: { slug: string }) {
       />
     );
   }
-  const parsedComplement = {
-    ...complement.right,
-    createdAt: complement.right._creationTime,
-    id: complement.right._id,
-  };
-  const validatedComplement = ComplementSchema.safeParse(parsedComplement);
-  if (!validatedComplement.success) {
-    return (
-      <ErrorDialog
-        message={`Unable to fetch complement with id: ${props.slug}
-            ${validatedComplement.error}
-            Code: APP203
-          `}
-      />
-    );
-  }
 
   return (
-    <ComplementView slug={props.slug} complement={validatedComplement.data} />
+    <ComplementView
+      slug={props.slug}
+      complement={complement.right}
+      userId={authUser.right.userId}
+    />
   );
 }
 

@@ -40,7 +40,7 @@ export default function CoursSequenceView({
                 <div className="flex items-center gap-1">
                   <CoursSaveButton userId={userId} cours={cours} />
                   <AfterMenuButton>
-                    <Link href={`/cours/show/${cours._id}`}>
+                    <Link href={`/spaces/cours/${cours._id}?user=${userId}`}>
                       <Eye size={12} />
                     </Link>
                   </AfterMenuButton>
@@ -79,7 +79,9 @@ export default function CoursSequenceView({
                     type={sequenceType}
                   />
                   <AfterMenuButton>
-                    <Link href={`/sequences/show/${sequence._id}`}>
+                    <Link
+                      href={`/spaces/sequences/${sequence._id}?user=${userId}`}
+                    >
                       <Eye size={12} />
                     </Link>
                   </AfterMenuButton>
@@ -102,7 +104,6 @@ export default function CoursSequenceView({
                 />
               </div>
             </AfterMenuBar>
-        
           </div>
         </EditorProviderWrapper>
       </>

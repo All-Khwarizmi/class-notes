@@ -83,7 +83,31 @@ export default class ComplementUsecases {
   }
 
   async getCoursComplement({ id }: { id: string }) {
-    return this._repository.getComplement({ id });
+    const eitherComplement = await this._repository.getComplement({ id });
+    if (isLeft(eitherComplement)) {
+      return eitherComplement;
+    }
+    const parsedComplement = {
+      ...eitherComplement.right,
+      id: eitherComplement.right._id,
+      createdAt: eitherComplement.right._creationTime,
+    };
+    const validatedComplement = ComplementSchema.safeParse(parsedComplement);
+    if (!validatedComplement.success) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: eitherComplement.right,
+          message: `
+          Unable to validate complement with id: ${eitherComplement.right.id}
+          
+          ${JSON.stringify(validatedComplement.error)}
+          
+          `,
+          code: "APP203",
+        })
+      );
+    }
+    return right(validatedComplement.data);
   }
 
   async updateCoursComplement({

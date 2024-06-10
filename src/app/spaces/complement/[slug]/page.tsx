@@ -1,6 +1,6 @@
 import LoadingSkeleton from "@/core/components/common/LoadingSkeleton";
 import React, { Suspense } from "react";
-import SpacesCoursServerLayer from "./SpacesCoursServerLayer";
+import SpacesComplementServerLayer from "./SpacesComplementServerLayer";
 
 function Page({
   params,
@@ -11,7 +11,10 @@ function Page({
 }) {
   return (
     <Suspense fallback={<LoadingSkeleton />}>
-      <SpacesCoursServerLayer slug={params.slug} searchParams={searchParams} />
+      <SpacesComplementServerLayer
+        slug={params.slug}
+        searchParams={searchParams}
+      />
     </Suspense>
   );
 }
