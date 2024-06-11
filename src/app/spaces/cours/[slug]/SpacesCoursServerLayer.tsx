@@ -58,7 +58,10 @@ async function SpacesCoursServerLayer(props: {
     (visibility) => visibility.id === props.slug
   );
   const isCoursVisible =
-    coursVisibility?.publish === true && coursVisibility.classe && coursVisibility.sequence;
+    coursVisibility?.publish === true &&
+    coursVisibility.classe &&
+    coursVisibility.sequence;
+
   if (!isCoursVisible) {
     return (
       <>
