@@ -24,7 +24,6 @@ async function SpacesComplementServerLayer(props: {
   const userId = props.searchParams.user;
   const eitherVibility = await getVisibility({ userId });
   if (isLeft(eitherVibility)) {
-    console.log(eitherVibility.left);
     return (
       <ErrorDialog
         message="An error occured while fetching the course visibility"
@@ -57,8 +56,22 @@ async function SpacesComplementServerLayer(props: {
   const visibilityComplement = eitherVibility.right.complement.find(
     (complement) => complement.id === props.slug
   );
-  if (!visibilityComplement || !visibilityComplement.publish) {
-    return <NothingToShow />;
+  const isVisible =
+    visibilityComplement?.publish === true &&
+    visibilityComplement.classe &&
+    visibilityComplement.sequence &&
+    visibilityComplement.cours;
+  if (isVisible === false) {
+    return (
+      <>
+        <SpacesHeader />
+        <section className="flex h-full w-full border-collapse overflow-hidden">
+          <div className="h-full w-full py-8 px-6">
+            <NothingToShow />
+          </div>
+        </section>
+      </>
+    );
   }
   return (
     <>

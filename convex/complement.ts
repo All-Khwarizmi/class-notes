@@ -39,6 +39,11 @@ export const createComplement = mutation({
       type: args.type,
       contentType: args.contentType,
     });
+
+    if (!categoryId) {
+      throw new Error("Could not create complement");
+    }
+
     return categoryId;
   },
 });

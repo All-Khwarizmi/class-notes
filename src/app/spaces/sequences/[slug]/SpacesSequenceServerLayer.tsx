@@ -20,7 +20,6 @@ async function SpacesSequenceServerLayer(props: {
     type: "sequence",
   });
   if (isLeft(eitherSequence) || !props.searchParams.user) {
-    console.log({ eitherSequence, searchParams: props.searchParams });
     return <NotFound />;
   }
   const userId = props.searchParams.user;

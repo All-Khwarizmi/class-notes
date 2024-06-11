@@ -12,10 +12,12 @@ import {
   TableCell,
 } from "@/core/components/ui/table";
 import { Switch } from "@/core/components/ui/switch";
+import VisibilitySwitch from "./VisibilitySwitch";
 
 function ComplementsTable(props: {
   complements: Complement[];
   coursId: string;
+  userId: string;
 }) {
   return (
     <div className="w-full h-full py-4">
@@ -35,6 +37,7 @@ function ComplementsTable(props: {
         </TableHeader>
         <TableBody>
           {props.complements.map((complement) => {
+            console.log({ complement });
             return (
               <TableRow key={complement.id}>
                 <TableCell className="w-[200px]">{complement.name}</TableCell>
@@ -43,7 +46,11 @@ function ComplementsTable(props: {
                 </TableCell>
                 <TableCell className="w-[200px]">{complement.type}</TableCell>
                 <TableCell className="w-[200px]">
-                  <Switch checked={complement.publish} />
+                  <VisibilitySwitch
+                    userId={props.userId}
+                    type="complement"
+                    typeId={complement.id}
+                  />
                 </TableCell>
                 <TableCell className="w-[200px]">
                   {complement.publishDate

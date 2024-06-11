@@ -1,4 +1,5 @@
 import ErrorDialog from "@/core/components/common/ErrorDialog";
+import NothingToShow from "@/core/components/common/editor/NothingToShow";
 import Sidebar from "@/core/components/layout/Sidebar";
 import SpacesHeader from "@/core/components/layout/SpacesHeader";
 import getVisibility from "@/features/classe/application/adapters/actions/get-visibility";
@@ -29,7 +30,6 @@ async function SpacesCoursServerLayer(props: {
     coursId: props.slug,
   });
   if (isLeft(eitherCours)) {
-    console.log(eitherCours.left);
     return (
       <ErrorDialog
         message="An error occured while fetching the course"
@@ -42,7 +42,6 @@ async function SpacesCoursServerLayer(props: {
   }
   const eitherVibility = await getVisibility({ userId });
   if (isLeft(eitherVibility)) {
-    console.log(eitherVibility.left);
     return (
       <ErrorDialog
         message="An error occured while fetching the course visibility"
@@ -53,6 +52,26 @@ async function SpacesCoursServerLayer(props: {
             : ""
         }
       />
+    );
+  }
+  const coursVisibility = eitherVibility.right.cours.find(
+    (visibility) => visibility.id === props.slug
+  );
+  const isCoursVisible =
+    coursVisibility?.publish === true &&
+    coursVisibility.classe &&
+    coursVisibility.sequence;
+
+  if (!isCoursVisible) {
+    return (
+      <>
+        <SpacesHeader />
+        <section className="flex h-full w-full border-collapse overflow-hidden">
+          <div className="h-full w-full py-8 px-6">
+            <NothingToShow />
+          </div>
+        </section>
+      </>
     );
   }
   const eitherComplements = await complementUsecases.getAllCoursComplement({
