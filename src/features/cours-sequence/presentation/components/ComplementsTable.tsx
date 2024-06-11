@@ -12,6 +12,7 @@ import {
   TableCell,
 } from "@/core/components/ui/table";
 import { Switch } from "@/core/components/ui/switch";
+import VisibilitySwitch from "./VisibilitySwitch";
 
 function ComplementsTable(props: {
   complements: Complement[];
@@ -43,7 +44,11 @@ function ComplementsTable(props: {
                 </TableCell>
                 <TableCell className="w-[200px]">{complement.type}</TableCell>
                 <TableCell className="w-[200px]">
-                  <Switch checked={complement.publish} />
+                  <VisibilitySwitch
+                    userId="userId"
+                    type="complement"
+                    typeId={complement.id}
+                  />
                 </TableCell>
                 <TableCell className="w-[200px]">
                   {complement.publishDate
