@@ -53,7 +53,11 @@ async function ComplementsServerLayer(props: { slug: string }) {
     <>
       <Sidebar />
       <section className="h-full flex-1 px-4 overflow-x-hidden">
-        <ComplementsView complements={complements} coursId={props.slug} />
+        <ComplementsView
+          complements={complements}
+          coursId={props.slug}
+          userId={authUser.right.userId}
+        />
       </section>
     </>
   );

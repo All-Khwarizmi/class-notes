@@ -17,6 +17,7 @@ import VisibilitySwitch from "./VisibilitySwitch";
 function ComplementsTable(props: {
   complements: Complement[];
   coursId: string;
+  userId: string;
 }) {
   return (
     <div className="w-full h-full py-4">
@@ -36,6 +37,7 @@ function ComplementsTable(props: {
         </TableHeader>
         <TableBody>
           {props.complements.map((complement) => {
+            console.log({ complement });
             return (
               <TableRow key={complement.id}>
                 <TableCell className="w-[200px]">{complement.name}</TableCell>
@@ -45,7 +47,7 @@ function ComplementsTable(props: {
                 <TableCell className="w-[200px]">{complement.type}</TableCell>
                 <TableCell className="w-[200px]">
                   <VisibilitySwitch
-                    userId="userId"
+                    userId={props.userId}
                     type="complement"
                     typeId={complement.id}
                   />
