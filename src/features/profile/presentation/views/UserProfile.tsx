@@ -81,9 +81,14 @@ export default function UserProfile({ user }: { user: UserType }) {
               );
             }}
           />
-          <Button data-testid="submit-onboarding-form" type="submit">
-            Save
-          </Button>
+          <div
+            className="flex justify-end gap-4"
+            data-testid="user-form-actions"
+          >
+            <Button data-testid="submit-onboarding-form" type="submit">
+              Save
+            </Button>
+          </div>
         </form>
       </Form>
     </div>
