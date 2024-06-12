@@ -9,18 +9,7 @@ export const NavItems: NavItem[] = [
     href: "/dashboard",
     color: "text-sky-500",
   },
-  {
-    title: "Profile",
-    icon: <User size={16} />,
-    href: "/profile",
-    color: "text-sky-500",
-  },
-  {
-    title: "Competences",
-    icon: <BookmarkCheck size={16} />,
-    href: "/competences",
-    color: "text-sky-500",
-  },
+
   {
     title: "Classes",
     icon: CopyClipboard(),
@@ -39,5 +28,18 @@ export const NavItems: NavItem[] = [
     icon: CopyClipboard(),
     href: "/evaluations",
     color: "text-green-500",
+  },
+  {
+    title: "Competences",
+    icon: <BookmarkCheck size={16} />,
+    href: "/competences",
+    color: "text-sky-500",
+  },
+
+  {
+    title: "Profile",
+    icon: <User size={16} />,
+    href: "/profile",
+    color: "text-sky-500",
   },
 ];
