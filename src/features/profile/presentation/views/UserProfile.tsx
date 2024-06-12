@@ -14,9 +14,16 @@ import {
   FormItem,
   FormLabel,
 } from "@/core/components/ui/form";
+import { useAuthStore } from "@/core/auth/auth-store";
+
 import { Input } from "@/core/components/ui/input";
 import useSaveUser from "../../application/adapters/services/useSaveUser";
+import { UserButton, SignInButton } from "@clerk/nextjs";
+import { Button } from "@/core/components/ui/button";
 export default function UserProfile({ user }: { user: UserType }) {
+  const { isLoggedIn } = useAuthStore((state) => ({
+    isLoggedIn: state.isLoggedIn,
+  }));
   const { setSaveUserOptions, loading, error } = useSaveUser();
   const form = useForm<UserType>({
     resolver: zodResolver(
@@ -28,7 +35,6 @@ export default function UserProfile({ user }: { user: UserType }) {
   });
 
   function onSubmit(data: UserType) {
-    console.log({ data });
     setSaveUserOptions({
       userId: user._id,
       ...data,
@@ -37,6 +43,15 @@ export default function UserProfile({ user }: { user: UserType }) {
 
   return (
     <div data-testid="user-form" className="py-8 px-6">
+      <div className="flex justify-end gap-4 pb-4">
+        {isLoggedIn() ? (
+          <UserButton />
+        ) : (
+          <SignInButton>
+            <Button>Se Connecter</Button>
+          </SignInButton>
+        )}
+      </div>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
           <FormField
@@ -77,13 +92,9 @@ export default function UserProfile({ user }: { user: UserType }) {
               );
             }}
           />
-          <button
-            data-testid="submit-onboarding-form"
-            type="submit"
-            className="bg-blue-500 text-white px-4 py-2 rounded"
-          >
+          <Button data-testid="submit-onboarding-form" type="submit">
             Save
-          </button>
+          </Button>
         </form>
       </Form>
     </div>
