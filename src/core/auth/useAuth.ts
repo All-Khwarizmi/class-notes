@@ -7,18 +7,16 @@ import oldAuthRepositoy from "@/features/auth/application/repository/old-auth-re
 export default function useAuth() {
   const { authUserId } = oldAuthRepositoy.useGetUserId();
   const { user, error } = userRepositry.useGetUser();
-  const { setUser, setOnboarding, onboarding } = useAuthStore(
-    (state) => ({
-      setUser: state.setUser,
-      setOnboarding: state.setOnboarding,
-      onboarding: state.onboarding,
-    })
-  );
+  const { setUser, setOnboarding, onboarding } = useAuthStore((state) => ({
+    setUser: state.setUser,
+    setOnboarding: state.setOnboarding,
+    onboarding: state.onboarding,
+  }));
 
   useEffect(() => {
     if (authUserId) {
       setUser({ user: { id: authUserId } });
-    } 
+    }
   }, [authUserId]);
 
   useEffect(() => {
