@@ -36,7 +36,7 @@ async function ProfileServerLayer() {
     <>
       <Sidebar navItems={notesNavItems} />
       <section className="h-full flex-1  overflow-x-hidden">
-        <div className="h-full py-8 px-6">
+        <div className="h-full py-4 ">
           <UserProfile user={user.right} />
         </div>
       </section>

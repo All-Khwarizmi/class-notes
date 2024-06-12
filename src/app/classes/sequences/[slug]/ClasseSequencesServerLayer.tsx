@@ -29,7 +29,7 @@ async function ClasseSequencesServerLayer(props: { slug: string }) {
     <>
       <Sidebar />
       <section className="h-full flex-1  overflow-x-hidden">
-        <div className="h-full py-8 px-6">
+        <div className="h-full pt-4 px-6">
           <ClasseSequencesTableView
             sequences={eitherSequences.right}
             classeId={props.slug}

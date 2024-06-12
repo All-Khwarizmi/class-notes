@@ -8,7 +8,11 @@ export default class ClerkAuth extends IAuth {
     const user = await currentUser();
     if (!user) {
       return left(
-        Failure.invalidValue({ message: "User not found", invalidValue: user })
+        Failure.invalidValue({
+          message: "User not found",
+          invalidValue: user,
+          code: "AUTH101",
+        })
       );
     }
     return right({

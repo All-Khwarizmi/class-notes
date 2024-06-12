@@ -61,7 +61,7 @@ async function ClasseServerLayer(props: { slug: string }) {
     <>
       <Sidebar navItems={classeNavItems} />
       <section className="h-full flex-1  overflow-x-hidden">
-        <div className="h-full py-8 px-6">
+        <div className="h-full pt-4 px-6">
           <StudentsTable classId={props.slug} />
         </div>
       </section>
