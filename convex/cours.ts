@@ -20,7 +20,7 @@ export const createCours = mutation({
       .filter((q) => q.eq(q.field("userId"), args.userId))
       .first();
 
-    if (existingUser) {
+    if (!existingUser) {
       throw new Error("User not found");
     }
 
