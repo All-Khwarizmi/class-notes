@@ -44,6 +44,32 @@ export const createComplement = mutation({
       throw new Error("Could not create complement");
     }
 
+    // Add the complement to the visibility table
+    const visibilityTable = await ctx.db
+      .query("VisibilityTable")
+      .filter((q) => q.eq(q.field("userId"), existingCours.createdBy))
+      .first();
+
+    if (visibilityTable) {
+      const newTable = {
+        ...visibilityTable,
+        cours: [
+          ...visibilityTable.cours,
+          {
+            id: categoryId,
+            publish: args.publish ?? false,
+            classe: true,
+            classeId: "",
+            sequenceId: existingCours.sequenceId,
+            sequence: existingCours.publish ?? false,
+            cours: existingCours.publish ?? false,
+            coursId: existingCours._id,
+          },
+        ],
+      };
+      await ctx.db.patch(visibilityTable._id, newTable);
+    }
+
     return categoryId;
   },
 });
