@@ -1,6 +1,8 @@
 import { useCurrentEditor } from "@tiptap/react";
 import {
   Code,
+  Indent,
+  IndentDecrease,
   Italic,
   List,
   ListOrdered,
@@ -111,14 +113,14 @@ export const MenuBar = () => {
         disabled={!editor.can().chain().focus().increaseIndent().run()}
         nodeName="indent"
       >
-        <Plus size={12} />
+        <Indent size={12} />
       </MenuButton>
       <MenuButton
         onClick={() => editor.chain().focus().decreaseIndent().run()}
         disabled={!editor.can().chain().focus().decreaseIndent().run()}
         nodeName="indent"
       >
-        <Minus size={12} />
+        <IndentDecrease size={12} />
       </MenuButton>
 
       {/* <button
