@@ -39,6 +39,10 @@ export const createSequence = mutation({
         publish: args.publish,
       });
 
+      if (!categoryId) {
+        throw new Error("Could not create sequence");
+      }
+
       // Add the sequence to the visibility table
       const visibilityTable = await ctx.db
         .query("VisibilityTable")
