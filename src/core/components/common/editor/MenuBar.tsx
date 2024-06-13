@@ -13,6 +13,7 @@ import {
   Redo,
   Strikethrough,
   Undo,
+  Video,
 } from "lucide-react";
 
 import MenuBold from "./MenuBold";
@@ -121,6 +122,21 @@ export const MenuBar = () => {
         nodeName="indent"
       >
         <IndentDecrease size={12} />
+      </MenuButton>
+      <MenuButton
+        onClick={() => {
+          const videoUrl = prompt("Enter the video URL");
+          if (!videoUrl) {
+            return;
+          }
+          editor.commands.setYoutubeVideo({
+            src: videoUrl,
+            width: 480,
+          });
+        }}
+        nodeName="paragraph"
+      >
+        <Video size={12} />
       </MenuButton>
 
       {/* <button
