@@ -1,3 +1,4 @@
+import { sequence } from "fp-ts/lib/Traversable";
 import { mutation, query } from "./_generated/server";
 import { v } from "convex/values";
 
@@ -20,37 +21,67 @@ export const createCours = mutation({
       .first();
 
     if (existingUser) {
-      const existingSequence = await ctx.db
-        .query("Sequences")
-        .filter((q) => q.eq(q.field("_id"), args.sequenceId))
-        .first();
-
-      // get all competences
-      const competences = await ctx.db
-        .query("Competences")
-        .filter((q) => q.eq(q.field("createdBy"), existingUser!._id))
-        .collect();
-
-      const categoryId = await ctx.db.insert("Cours", {
-        imageUrl: args.imageUrl,
-        sequenceId: existingSequence!._id,
-        name: args.name,
-        body: args.body,
-        lessons: args.lessons,
-        competences: competences.map((c) => c._id),
-        description: args.description,
-        createdBy: existingUser!._id,
-        createdAt: Date.now(),
-        category: args.category,
-      });
-
-      // Add the cours to the sequence
-      await ctx.db.patch(existingSequence!._id, {
-        coursIds: [...existingSequence!.coursIds, categoryId],
-      });
-
-      return categoryId;
+      throw new Error("User not found");
     }
+
+    const existingSequence = await ctx.db
+      .query("Sequences")
+      .filter((q) => q.eq(q.field("_id"), args.sequenceId))
+      .first();
+
+    if (!existingSequence) {
+      throw new Error("Sequence not found");
+    }
+
+    // get all competences
+    const competences = await ctx.db
+      .query("Competences")
+      .filter((q) => q.eq(q.field("createdBy"), existingUser!._id))
+      .collect();
+
+    const categoryId = await ctx.db.insert("Cours", {
+      imageUrl: args.imageUrl,
+      sequenceId: existingSequence!._id,
+      name: args.name,
+      body: args.body,
+      lessons: args.lessons,
+      competences: competences.map((c) => c._id),
+      description: args.description,
+      createdBy: existingUser!._id,
+      createdAt: Date.now(),
+      category: args.category,
+    });
+
+    // Add the cours to the sequence
+    await ctx.db.patch(existingSequence._id, {
+      coursIds: [...existingSequence.coursIds, categoryId],
+    });
+
+    // Add the cours to the visibility table
+    const visibilityTable = await ctx.db
+      .query("VisibilityTable")
+      .filter((q) => q.eq(q.field("userId"), existingUser!._id))
+      .first();
+
+    if (visibilityTable) {
+      const newTable = {
+        ...visibilityTable,
+        cours: [
+          ...visibilityTable.cours,
+          {
+            id: categoryId,
+            publish: false,
+            classe: true,
+            classeId: "",
+            sequenceId: existingSequence._id,
+            sequence: existingSequence.publish ?? false,
+          },
+        ],
+      };
+      await ctx.db.patch(visibilityTable._id, newTable);
+    }
+
+    return categoryId;
   },
 });
 
