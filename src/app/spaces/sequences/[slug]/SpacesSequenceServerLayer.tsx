@@ -14,10 +14,17 @@ async function SpacesSequenceServerLayer(props: {
   slug: string;
   searchParams: { [key: string]: string | undefined };
 }) {
+  const sequenceType =
+    props.searchParams.type !== null
+      ? props.searchParams.type === "template"
+        ? "template"
+        : "sequence"
+      : "sequence";
+
   const eitherSequence = await coursUsecases.getSingleSequence({
     userId: "",
     sequenceId: props.slug,
-    type: "sequence",
+    type: sequenceType,
   });
   if (isLeft(eitherSequence) || !props.searchParams.user) {
     return <NotFound />;

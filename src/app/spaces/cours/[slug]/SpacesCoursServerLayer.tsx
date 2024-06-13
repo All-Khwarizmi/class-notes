@@ -61,7 +61,6 @@ async function SpacesCoursServerLayer(props: {
     coursVisibility?.publish === true &&
     coursVisibility.classe &&
     coursVisibility.sequence;
-
   if (!isCoursVisible) {
     return (
       <>

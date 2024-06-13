@@ -1,4 +1,3 @@
-import { a } from "vitest/dist/suite-a18diDsI.js";
 import { Id } from "./_generated/dataModel";
 import { mutation, query } from "./_generated/server";
 import { v } from "convex/values";
@@ -39,6 +38,33 @@ export const createSequence = mutation({
         category: args.category,
         publish: args.publish,
       });
+
+      if (!categoryId) {
+        throw new Error("Could not create sequence");
+      }
+
+      // Add the sequence to the visibility table
+      const visibilityTable = await ctx.db
+        .query("VisibilityTable")
+        .filter((q) => q.eq(q.field("userId"), existingUser!._id))
+        .first();
+
+      if (visibilityTable) {
+        const newTable = {
+          ...visibilityTable,
+          sequences: [
+            ...visibilityTable.sequences,
+            {
+              id: categoryId,
+              publish: args.publish ?? false,
+              classe: true,
+              classeId: "",
+            },
+          ],
+        };
+        await ctx.db.patch(visibilityTable._id, newTable);
+      }
+
       return categoryId;
     }
   },
@@ -245,7 +271,6 @@ export const getAllCoursInSequence = query({
     type: v.optional(v.literal("sequence")),
   },
   handler: async (ctx, args) => {
-    console.log({ args });
     if (args.type === "sequence") {
       const classeSequence = await ctx.db
         .query("ClasseSequence")

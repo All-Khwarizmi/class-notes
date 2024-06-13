@@ -63,6 +63,10 @@ export default function CoursSequenceView({
     );
   }
   if (type === "sequence" && sequence && coursFromSequence) {
+    const viewPath =
+      sequenceType === "sequence"
+        ? `/spaces/sequences/${sequence._id}?user=${userId}`
+        : `/spaces/sequences/${sequence._id}?user=${userId}&type=template`;
     return (
       <>
         <h1 className="text-2xl font-bold pb-4 dark:text-slate-300 text-slate-500 ">
@@ -79,9 +83,7 @@ export default function CoursSequenceView({
                     type={sequenceType}
                   />
                   <AfterMenuButton>
-                    <Link
-                      href={`/spaces/sequences/${sequence._id}?user=${userId}`}
-                    >
+                    <Link href={viewPath}>
                       <Eye size={12} />
                     </Link>
                   </AfterMenuButton>
