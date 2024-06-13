@@ -52,6 +52,10 @@ export const createCours = mutation({
       category: args.category,
     });
 
+    if (!categoryId) {
+      throw new Error("Could not create cours");
+    }
+
     // Add the cours to the sequence
     await ctx.db.patch(existingSequence._id, {
       coursIds: [...existingSequence.coursIds, categoryId],
