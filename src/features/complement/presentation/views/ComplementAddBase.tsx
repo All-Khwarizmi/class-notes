@@ -34,7 +34,6 @@ const ComplementBaseSchema = z.object({
     .string()
     .default("Lesson")
     .refine((value) => {
-      console.log(value);
       return ["Lesson", "Exercise", "Additional"].includes(value);
     })
     .optional(),
