@@ -7,9 +7,12 @@ import ResizableImageExtension from "../common/editor/ImageResize";
 import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight";
 import { common, createLowlight } from "lowlight";
 import { IndentExtension } from "../common/editor/Indent";
+import YouTube from "@tiptap/extension-youtube";
+
 const lowlight = createLowlight(common);
 
 export const EXTENSIONS = [
+  YouTube,
   IndentExtension,
   CodeBlockLowlight.configure({
     lowlight,
