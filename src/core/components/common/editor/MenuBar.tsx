@@ -4,6 +4,9 @@ import {
   Italic,
   List,
   ListOrdered,
+  Menu,
+  Minus,
+  Plus,
   Quote,
   Redo,
   Strikethrough,
@@ -17,6 +20,7 @@ import MenuImage from "./MenuImage";
 import MenuButton from "@/core/components/common/editor/MenuButton";
 import MenuTextAlign from "@/core/components/common/editor/MenuTextAlign";
 import { cn } from "@/lib/utils";
+import AfterMenuButton from "./AfterMenuButton";
 
 export const MenuBar = () => {
   const { editor } = useCurrentEditor();
@@ -100,6 +104,21 @@ export const MenuBar = () => {
         nodeName="redo"
       >
         <Redo size={12} />
+      </MenuButton>
+      {/* A butto to handle the identation */}
+      <MenuButton
+        onClick={() => editor.chain().focus().increaseIndent().run()}
+        disabled={!editor.can().chain().focus().increaseIndent().run()}
+        nodeName="indent"
+      >
+        <Plus size={12} />
+      </MenuButton>
+      <MenuButton
+        onClick={() => editor.chain().focus().decreaseIndent().run()}
+        disabled={!editor.can().chain().focus().decreaseIndent().run()}
+        nodeName="indent"
+      >
+        <Minus size={12} />
       </MenuButton>
 
       {/* <button

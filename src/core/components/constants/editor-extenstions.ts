@@ -6,10 +6,11 @@ import { TextAlign } from "@tiptap/extension-text-align";
 import ResizableImageExtension from "../common/editor/ImageResize";
 import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight";
 import { common, createLowlight } from "lowlight";
-
+import { IndentExtension } from "../common/editor/Indent";
 const lowlight = createLowlight(common);
 
 export const EXTENSIONS = [
+  IndentExtension,
   CodeBlockLowlight.configure({
     lowlight,
   }),

@@ -48,7 +48,7 @@ function MenuTextAlign() {
         <DropdownMenuTrigger asChild>
           <button
             className={cn(
-              editor.isActive("bold") ? "is-active" : "",
+              editor.isActive("align") ? "is-active" : "",
               "bg-slate-400 rounded-md p-1 px-2"
             )}
           >
