@@ -79,7 +79,7 @@ export const MenuBar = () => {
       </MenuButton>
 
       <MenuButton
-        onClick={() => editor.chain().focus().toggleCode().run()}
+        onClick={() => editor.chain().focus().toggleCodeBlock().run()}
         disabled={!editor.can().chain().focus().toggleCode().run()}
         nodeName="code"
       >
