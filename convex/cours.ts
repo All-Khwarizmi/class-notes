@@ -30,7 +30,70 @@ export const createCours = mutation({
       .first();
 
     if (!existingSequence) {
-      throw new Error("Sequence not found");
+      // Use the Classe Sequence table to get the sequence
+      const existingClasseSequence = await ctx.db
+        .query("ClasseSequence")
+        .filter((q) => q.eq(q.field("_id"), args.sequenceId))
+        .first();
+
+      if (!existingClasseSequence) {
+        throw new Error("Sequence not found");
+      }
+
+      // get all competences
+
+      const competences = await ctx.db
+        .query("Competences")
+        .filter((q) => q.eq(q.field("createdBy"), existingUser!._id))
+        .collect();
+
+      const categoryId = await ctx.db.insert("Cours", {
+        imageUrl: args.imageUrl,
+        sequenceId: existingClasseSequence.originalSequenceId,
+        name: args.name,
+        body: args.body,
+        lessons: args.lessons,
+        competences: competences.map((c) => c._id),
+        description: args.description,
+        createdBy: existingUser!._id,
+        createdAt: Date.now(),
+        category: args.category,
+      });
+
+      if (!categoryId) {
+        throw new Error("Could not create cours");
+      }
+
+      // Add the cours to the sequence
+      await ctx.db.patch(existingClasseSequence._id, {
+        coursIds: [...existingClasseSequence.coursIds, categoryId],
+      });
+
+      // Add the cours to the visibility table
+      const visibilityTable = await ctx.db
+        .query("VisibilityTable")
+        .filter((q) => q.eq(q.field("userId"), existingUser!._id))
+        .first();
+
+      if (visibilityTable) {
+        const newTable = {
+          ...visibilityTable,
+          cours: [
+            ...visibilityTable.cours,
+            {
+              id: categoryId,
+              publish: false,
+              classe: true,
+              classeId: existingClasseSequence._id,
+              sequenceId: existingClasseSequence.originalSequenceId,
+              sequence: existingClasseSequence.publish ?? false,
+            },
+          ],
+        };
+        await ctx.db.patch(visibilityTable._id, newTable);
+      }
+
+      return categoryId;
     }
 
     // get all competences
