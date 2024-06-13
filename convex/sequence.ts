@@ -245,7 +245,6 @@ export const getAllCoursInSequence = query({
     type: v.optional(v.literal("sequence")),
   },
   handler: async (ctx, args) => {
-    console.log({ args });
     if (args.type === "sequence") {
       const classeSequence = await ctx.db
         .query("ClasseSequence")
