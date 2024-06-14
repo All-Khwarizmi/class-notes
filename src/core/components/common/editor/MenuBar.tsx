@@ -1,6 +1,8 @@
 import { useCurrentEditor } from "@tiptap/react";
 import {
   Code,
+  Indent,
+  IndentDecrease,
   Italic,
   List,
   ListOrdered,
@@ -8,6 +10,7 @@ import {
   Redo,
   Strikethrough,
   Undo,
+  Video,
 } from "lucide-react";
 
 import MenuBold from "./MenuBold";
@@ -101,86 +104,36 @@ export const MenuBar = () => {
       >
         <Redo size={12} />
       </MenuButton>
-
-      {/* <button
-        onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
-        className={editor.isActive("heading", { level: 1 }) ? "is-active" : ""}
+      {/* A butto to handle the identation */}
+      <MenuButton
+        onClick={() => editor.chain().focus().increaseIndent().run()}
+        disabled={!editor.can().chain().focus().increaseIndent().run()}
+        nodeName="indent"
       >
-        h1
-      </button>
-
-      <button
-        onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
-        className={editor.isActive("heading", { level: 2 }) ? "is-active" : ""}
+        <Indent size={12} />
+      </MenuButton>
+      <MenuButton
+        onClick={() => editor.chain().focus().decreaseIndent().run()}
+        disabled={!editor.can().chain().focus().decreaseIndent().run()}
+        nodeName="indent"
       >
-        h2
-      </button>
-
-      <button
-        onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
-        className={editor.isActive("heading", { level: 3 }) ? "is-active" : ""}
+        <IndentDecrease size={12} />
+      </MenuButton>
+      <MenuButton
+        onClick={() => {
+          const videoUrl = prompt("Enter the video URL");
+          if (!videoUrl) {
+            return;
+          }
+          editor.commands.setYoutubeVideo({
+            src: videoUrl,
+            width: 480,
+          });
+        }}
+        nodeName="paragraph"
       >
-        h3
-      </button> */}
-
-      {/* <button
-        onClick={() => editor.chain().focus().toggleStrike().run()}
-        disabled={!editor.can().chain().focus().toggleStrike().run()}
-        className={editor.isActive("strike") ? "is-active" : ""}
-      >
-        strike
-      </button> */}
-
-      {/* <button
-        onClick={() => editor.chain().focus().toggleCode().run()}
-        disabled={!editor.can().chain().focus().toggleCode().run()}
-        className={editor.isActive("code") ? "is-active" : ""}
-      >
-        code
-      </button> */}
-
-      {/* <button onClick={() => editor.chain().focus().unsetAllMarks().run()}>
-        clear marks
-      </button> */}
-
-      {/* <button onClick={() => editor.chain().focus().clearNodes().run()}>
-        clear nodes
-      </button> */}
-
-      {/* <button
-        onClick={() => editor.chain().focus().toggleCodeBlock().run()}
-        className={editor.isActive("codeBlock") ? "is-active" : ""}
-      >
-        code block
-      </button> */}
-
-      {/* <button
-        onClick={() => editor.chain().focus().toggleHeading({ level: 4 }).run()}
-        className={editor.isActive("heading", { level: 4 }) ? "is-active" : ""}
-      >
-        h4
-      </button> */}
-
-      {/* <button
-        onClick={() => editor.chain().focus().toggleHeading({ level: 5 }).run()}
-        className={editor.isActive("heading", { level: 5 }) ? "is-active" : ""}
-      >
-        h5
-      </button> */}
-
-      {/* <button
-        onClick={() => editor.chain().focus().toggleHeading({ level: 6 }).run()}
-        className={editor.isActive("heading", { level: 6 }) ? "is-active" : ""}
-      >
-        h6
-      </button> */}
-
-      {/* <button
-        onClick={() => editor.chain().focus().setParagraph().run()}
-        className={editor.isActive("paragraph") ? "is-active" : ""}
-      >
-        paragraph
-      </button> */}
+        <Video size={12} />
+      </MenuButton>
     </div>
   );
 };

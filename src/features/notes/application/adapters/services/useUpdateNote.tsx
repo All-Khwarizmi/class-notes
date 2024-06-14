@@ -10,8 +10,8 @@ function useUpdateNote() {
   const router = useRouter();
   useEffect(() => {
     if (note) {
-      const loadingToast = toast.loading("Updating note...", {
-        position: "top-center",
+      const loadingToast = toast.loading("", {
+        position: "bottom-right",
       });
       notesUsecases.updateNote({ note }).then((eitherNote) => {
         if (isLeft(eitherNote)) {
@@ -19,8 +19,9 @@ function useUpdateNote() {
             position: "top-center",
           });
         } else {
-          toast.success("Note updated successfully", {
-            position: "top-center",
+          toast.success("", {
+            position: "bottom-right",
+            duration: 500,
           });
           router.refresh();
         }

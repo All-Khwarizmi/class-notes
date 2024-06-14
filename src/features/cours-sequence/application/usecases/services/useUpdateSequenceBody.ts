@@ -13,8 +13,8 @@ export default function useUpdateSequenceBody() {
 
   useEffect(() => {
     if (!updateSequenceBodyOptions) return;
-    const loadingToast = toast.loading("Updating sequence body...", {
-      position: "top-center",
+    const loadingToast = toast.loading("", {
+      position: "bottom-right",
     });
     coursUsecases
       .addBodyToSequence(updateSequenceBodyOptions)
@@ -26,9 +26,10 @@ export default function useUpdateSequenceBody() {
           });
           return;
         }
-        toast.success("Sequence body updated successfully", {
-          position: "top-center",
-          duration: 3000,
+        toast.success("", {
+          id: loadingToast,
+          position: "bottom-right",
+          duration: 500,
         });
       })
       .finally(() => {

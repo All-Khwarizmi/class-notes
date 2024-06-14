@@ -16,6 +16,11 @@ function UpdateNoteButton(props: { note: Note }) {
     <AfterMenuButton
       props={{
         onClick: () => {
+          const prevContent = props.note.content;
+          const currentContent = editor.getHTML();
+          if (prevContent === currentContent) {
+            return alert("No changes to save");
+          }
           setNote({
             ...props.note,
             content: editor.getHTML(),

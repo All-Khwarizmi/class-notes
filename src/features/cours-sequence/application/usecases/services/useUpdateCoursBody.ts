@@ -1,42 +1,41 @@
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import {coursUsecases} from "../cours-usecases";
+import { coursUsecases } from "../cours-usecases";
 import { isLeft } from "fp-ts/lib/Either";
 
 export default function useUpdateCoursBody() {
+  const [updateCoursBodyOptions, setUpdateCoursBodyOptions] = useState<{
+    userId: string;
+    coursId: string;
+    body: string;
+  } | null>(null);
 
-    const [updateCoursBodyOptions, setUpdateCoursBodyOptions] = useState<
-    {
-        userId: string;
-        coursId: string;
-        body: string;
-    } | null>(null);
-
-    useEffect(() => {
-        if (!updateCoursBodyOptions) return;
-        const loadingToast = toast.loading("Updating cours body...", {
+  useEffect(() => {
+    if (!updateCoursBodyOptions) return;
+    const loadingToast = toast.loading("", {
+      position: "bottom-right",
+    });
+    coursUsecases
+      .updateCourseBody(updateCoursBodyOptions)
+      .then((eitherCours) => {
+        if (isLeft(eitherCours)) {
+          toast.error("Failed to update cours body", {
             position: "top-center",
+            description: eitherCours.left.message,
+          });
+          return;
+        }
+        toast.success("", {
+          id: loadingToast,
+          position: "bottom-right",
+          duration: 500,
         });
-        coursUsecases.updateCourseBody(updateCoursBodyOptions).then((eitherCours) => {
-            if (isLeft(eitherCours)) {
-                toast.error("Failed to update cours body", {
-                    position: "top-center",
-                    description: eitherCours.left.message,
-                });
-                return;
-            }
-            toast.success("Cours body updated successfully", {
-                position: "top-center",
-                duration: 3000,
-            });
-        }
-        ).finally(() => {
-            setUpdateCoursBodyOptions(null);
-            toast.dismiss(loadingToast);
-        }
-        );
-    }, [updateCoursBodyOptions]);
+      })
+      .finally(() => {
+        setUpdateCoursBodyOptions(null);
+        toast.dismiss(loadingToast);
+      });
+  }, [updateCoursBodyOptions]);
 
-
-    return { setUpdateCoursBodyOptions }
+  return { setUpdateCoursBodyOptions };
 }

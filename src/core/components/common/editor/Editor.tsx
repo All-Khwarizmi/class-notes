@@ -5,9 +5,11 @@ function Editor(props: {
   content: string;
   children?: React.ReactNode;
   slotafter?: React.ReactNode;
+  onUpdate?: (content: string) => void;
 }) {
   return (
     <EditorProviderWrapper
+      onUpdate={props.onUpdate}
       content={
         props.content !== ""
           ? props.content
