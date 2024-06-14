@@ -9,6 +9,7 @@ import AfterMenuButton from "@/core/components/common/editor/AfterMenuButton";
 import AfterMenuBar from "@/core/components/common/editor/AfterMunuBar";
 import { Complement } from "@/features/complement/domain/complement-schemas";
 import VisibilitySwitch from "../components/VisibilitySwitch";
+import useUpdateSequenceBody from "../../application/usecases/services/useUpdateSequenceBody";
 
 export default function CoursSequenceView({
   cours,
@@ -27,6 +28,7 @@ export default function CoursSequenceView({
   complements?: Complement[];
   sequenceType?: "template" | "sequence";
 }) {
+  const { setUpdateSequenceBodyOptions } = useUpdateSequenceBody();
   if (type === "cours" && cours && complements) {
     return (
       <>
@@ -72,7 +74,22 @@ export default function CoursSequenceView({
         <h1 className="text-2xl font-bold pb-4 dark:text-slate-300 text-slate-500 ">
           {sequence.name}
         </h1>
-        <EditorProviderWrapper content={sequence.body}>
+        <EditorProviderWrapper
+          content={sequence.body}
+          onUpdate={(content) => {
+            // debounce the update
+            
+              
+            
+
+            setUpdateSequenceBodyOptions({
+              userId,
+              sequenceId: sequence._id,
+              body: content,
+              type: sequenceType,
+            });
+          }}
+        >
           <div className="flex flex-col gap-4 ">
             <AfterMenuBar>
               <div className="flex items-center justify-between w-full gap-4 ">
