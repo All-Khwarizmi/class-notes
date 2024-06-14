@@ -1,19 +1,16 @@
 import { z } from "zod";
 
-// Make a criteria type:
-// criterias: v.array(  // Array of criteria objects for the evaluation
-//     v.object({
-//       id: v.string(),  // Unique identifier for the criterion
-//       weight: v.optional(v.number()),  // Optional weight of the criterion
-//       name: v.string(),  // Name of the criterion
-//       description: v.string(),  // Description of the criterion
-//       isGraded: v.boolean(),  // Indicates if this criterion is graded
-//       gradeType: v.optional(v.string()),  // Optional specific grade type for this criterion
-//       grade: v.optional(v.union(v.string(), v.number())),  // Optional grade value (string or number)
-//       feedback: v.string(),  // Feedback for the criterion
-//       createdBy: v.string(),  // ID of the user who created the criterion
-//     })
-//   ),
+export const EvaluationBaseTypeFormSchema = z.object({
+  name: z.string().min(3, "Name must be at least 3 characters long"),
+  description: z.string().optional(),
+  isGraded: z.boolean(),
+
+  // Using the GradeTypeUnionSchema from EvaluationBaseSchema
+});
+
+export type EvaluationBaseTypeForm = z.infer<
+  typeof EvaluationBaseTypeFormSchema
+>;
 
 // Numeric Grading Schemas
 const NumericGradeSchema = z.object({

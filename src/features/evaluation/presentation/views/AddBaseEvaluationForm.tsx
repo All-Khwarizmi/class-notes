@@ -1,5 +1,4 @@
 "use client";
-
 import { Button } from "@/core/components/ui/button";
 import {
   Form,
@@ -27,30 +26,20 @@ import { z } from "zod";
 import { toast } from "sonner";
 import {
   EvaluationBaseType,
+  EvaluationBaseTypeForm,
+  EvaluationBaseTypeFormSchema,
   EvaluationCriteriaType,
   GradeTypeUnionType,
 } from "../../domain/entities/evaluation-schema";
 import { useEffect, useState } from "react";
 import { X } from "lucide-react";
 
-
 import useCreateBaseEvaluation from "../../application/adapters/services/useCreateBaseEvaluation";
 import { getGradeTypeByName } from "../../application/adapters/utils/grade-helpers";
 
-// Define the Zod schema for EvaluationBase
-const EvaluationBaseSchema = z.object({
-  name: z.string().min(3, "Name must be at least 3 characters long"),
-  description: z.string().optional(),
-  isGraded: z.boolean(),
-
-  // Using the GradeTypeUnionSchema from EvaluationBaseSchema
-});
-
-export type EvaluationBaseTypeForm = z.infer<typeof EvaluationBaseSchema>;
-
 export default function EvaluationBaseForm(props: { userId: string }) {
   const form = useForm({
-    resolver: zodResolver(EvaluationBaseSchema),
+    resolver: zodResolver(EvaluationBaseTypeFormSchema),
     defaultValues: {
       name: "",
       description: "",
@@ -99,7 +88,7 @@ export default function EvaluationBaseForm(props: { userId: string }) {
       criterias,
       createdBy: props.userId,
     };
-    const isValid = EvaluationBaseSchema.safeParse(evaluation);
+    const isValid = EvaluationBaseTypeFormSchema.safeParse(evaluation);
     if (!isValid.success) {
       toast.error("Invalid evaluation base data");
       return;
@@ -365,4 +354,3 @@ export default function EvaluationBaseForm(props: { userId: string }) {
     </div>
   );
 }
-
