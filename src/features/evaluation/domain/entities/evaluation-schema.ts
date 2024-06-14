@@ -1,5 +1,20 @@
 import { z } from "zod";
 
+// Make a criteria type:
+// criterias: v.array(  // Array of criteria objects for the evaluation
+//     v.object({
+//       id: v.string(),  // Unique identifier for the criterion
+//       weight: v.optional(v.number()),  // Optional weight of the criterion
+//       name: v.string(),  // Name of the criterion
+//       description: v.string(),  // Description of the criterion
+//       isGraded: v.boolean(),  // Indicates if this criterion is graded
+//       gradeType: v.optional(v.string()),  // Optional specific grade type for this criterion
+//       grade: v.optional(v.union(v.string(), v.number())),  // Optional grade value (string or number)
+//       feedback: v.string(),  // Feedback for the criterion
+//       createdBy: v.string(),  // ID of the user who created the criterion
+//     })
+//   ),
+
 // Numeric Grading Schemas
 const NumericGradeSchema = z.object({
   name: z.literal("Numeric"),
@@ -240,16 +255,28 @@ export const GradeTypeUnionSchema = z.union([
   SportResultSchema,
   SportPerformanceSchema,
 ]);
+
+export const EvaluationCriteriaSchema = z.object({
+  id: z.string(),
+  weight: z.optional(z.number()).default(1),
+  name: z.string(),
+  description: z.string(),
+  isGraded: z.boolean(),
+  gradeType: GradeTypeUnionSchema,
+  createdBy: z.string(),
+});
 // Combine all into EvaluationSchema
 export const EvaluationBaseSchema = z.object({
   id: z.string(),
   name: z.string(),
-  description: z.string(),
+  description: z.string().optional(),
+  isGraded: z.boolean(),
   createdBy: z.string(),
-  createdAt: z.number(),
   gradeType: GradeTypeUnionSchema,
+  criterias: z.array(EvaluationCriteriaSchema),
 });
 
+export type EvaluationCriteriaType = z.infer<typeof EvaluationCriteriaSchema>;
 export type EvaluationBaseType = z.infer<typeof EvaluationBaseSchema>;
 export type NumericGradeType = z.infer<typeof NumericGradeSchema>;
 export type PercentageGradeType = z.infer<typeof PercentageGradeSchema>;
