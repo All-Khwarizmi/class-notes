@@ -82,7 +82,7 @@ export default function EvaluationBaseForm(props: { userId: string }) {
     const gradeType = getGradeTypeByName(
       gradeVal as GradeTypeUnionType["name"]
     );
-    const evaluation: Omit<EvaluationBaseType, "id"> = {
+    const evaluation: Omit<EvaluationBaseType, "id" | "createdAt"> = {
       ...values,
       gradeType,
       criterias,
