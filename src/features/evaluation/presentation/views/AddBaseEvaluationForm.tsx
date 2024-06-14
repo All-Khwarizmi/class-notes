@@ -32,12 +32,16 @@ import {
   GradeTypeUnionType,
 } from "../../domain/entities/evaluation-schema";
 import { useEffect, useState } from "react";
-import { X } from "lucide-react";
+import { ChevronsDownUp, X } from "lucide-react";
 
 import useCreateBaseEvaluation from "../../application/adapters/services/useCreateBaseEvaluation";
 import { getGradeTypeByName } from "../../application/adapters/utils/grade-helpers";
 import useUpdateBaseEvaluation from "../../application/adapters/services/useUpdateBaseEvaluation";
-
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/core/components/ui/collapsible";
 export default function EvaluationBaseForm(props: {
   userId: string;
   evaluation?: EvaluationBaseType;
@@ -149,8 +153,6 @@ export default function EvaluationBaseForm(props: {
     createEvaluation(evaluation);
   }
 
-  
-
   useEffect(() => {
     if (isSuccess) {
       toast.success("Evaluation base created successfully!");
@@ -161,7 +163,7 @@ export default function EvaluationBaseForm(props: {
     }
   }, [isSuccess, isUpdateSuccess]);
   return (
-    <div className="space-y-8 py-8  rounded-lg shadow-md">
+    <div className="space-y-8 py-8 px-4 md:px-0  rounded-lg shadow-md">
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
@@ -292,83 +294,89 @@ export default function EvaluationBaseForm(props: {
             )}
           />
           {/* Render criteria fields dynamically */}
-          <div className="space-y-4 px-2">
-            {criterias.map((criteria, index) => (
-              <div
-                key={index}
-                className="border p-4 rounded-lg space-y-2 relative"
-              >
-                <div className="flex items-center justify-between pb-2">
-                  <h3 className="text-lg font-semibold">
-                    Criteria {index + 1}
-                  </h3>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      const updatedCriterias = [...criterias];
-                      updatedCriterias.splice(index, 1);
-                      setCriterias(updatedCriterias);
-                    }}
-                  >
-                    <X size={16} />
-                  </button>
+          {criterias.map((criteria, index) => (
+            <Collapsible key={criteria.id} className=" space-y-2">
+              <CollapsibleTrigger className="flex justify-between items-center">
+                <div className="flex justify-between items-center gap-2 ">
+                  <FormLabel>Criteria {index + 1}</FormLabel>{" "}
+                  <span>
+                    <ChevronsDownUp size={16} />
+                  </span>
                 </div>
-                <Input
-                  placeholder="Criteria Name"
-                  value={criteria.name}
-                  onChange={(e) => {
-                    const updatedCriterias = [...criterias];
-                    updatedCriterias[index].name = e.target.value;
-                    setCriterias(updatedCriterias);
-                  }}
-                />
-                <Input
-                  placeholder="Criteria Description"
-                  value={criteria.description}
-                  onChange={(e) => {
-                    const updatedCriterias = [...criterias];
-                    updatedCriterias[index].description = e.target.value;
-                    setCriterias(updatedCriterias);
-                  }}
-                />
-                <Input
-                  placeholder="Criteria Weight"
-                  type="number"
-                  value={criteria.weight}
-                  disabled={!criteria.isGraded}
-                  onChange={(e) => {
-                    // Check if the weight is at least 0.5
-                    if (Number(e.target.value) < 0.5) {
-                      toast.info("Criteria weight must be at least 0.5", {
-                        description: ` Tip: Criteria weight is used to calculate the total score for the evaluation.
+              </CollapsibleTrigger>
+              <CollapsibleContent>
+                <div className="space-y-4">
+                  <div className="border p-4 rounded-lg space-y-2 relative">
+                    <div className="flex items-center justify-between pb-2">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const updatedCriterias = [...criterias];
+                          updatedCriterias.splice(index, 1);
+                          setCriterias(updatedCriterias);
+                        }}
+                      >
+                        <X size={16} />
+                      </button>
+                    </div>
+                    <Input
+                      placeholder="Criteria Name"
+                      value={criteria.name}
+                      onChange={(e) => {
+                        const updatedCriterias = [...criterias];
+                        updatedCriterias[index].name = e.target.value;
+                        setCriterias(updatedCriterias);
+                      }}
+                    />
+                    <Input
+                      placeholder="Criteria Description"
+                      value={criteria.description}
+                      onChange={(e) => {
+                        const updatedCriterias = [...criterias];
+                        updatedCriterias[index].description = e.target.value;
+                        setCriterias(updatedCriterias);
+                      }}
+                    />
+                    <Input
+                      placeholder="Criteria Weight"
+                      type="number"
+                      value={criteria.weight}
+                      disabled={!criteria.isGraded}
+                      onChange={(e) => {
+                        // Check if the weight is at least 0.5
+                        if (Number(e.target.value) < 0.5) {
+                          toast.info("Criteria weight must be at least 0.5", {
+                            description: ` Tip: Criteria weight is used to calculate the total score for the evaluation.
                         If you want to remove the criteria, click the delete button on the right side of the criteria box.
                         If you want to disable grading for this criteria, toggle the switch below the criteria name.`,
-                      });
-                      return;
-                    }
-                    const updatedCriterias = [...criterias];
-                    updatedCriterias[index].weight = Number(e.target.value);
-                    setCriterias(updatedCriterias);
-                  }}
-                />
-                <Switch
-                  checked={criteria.isGraded}
-                  onCheckedChange={(checked) => {
-                    const updatedCriterias = [...criterias];
-                    updatedCriterias[index].isGraded = checked;
-                    setCriterias(updatedCriterias);
-                  }}
-                />
-              </div>
-            ))}
-          </div>
+                          });
+                          return;
+                        }
+                        const updatedCriterias = [...criterias];
+                        updatedCriterias[index].weight = Number(e.target.value);
+                        setCriterias(updatedCriterias);
+                      }}
+                    />
+                    <Switch
+                      checked={criteria.isGraded}
+                      onCheckedChange={(checked) => {
+                        const updatedCriterias = [...criterias];
+                        updatedCriterias[index].isGraded = checked;
+                        setCriterias(updatedCriterias);
+                      }}
+                    />
+                  </div>
+                </div>
+              </CollapsibleContent>
+            </Collapsible>
+          ))}
 
           <div className="flex justify-between items-center space-x-4">
             {/* Button to add a new criteria */}
             <Button variant={"outline"} type="button" onClick={addCriteria}>
               Add Criteria
             </Button>
-            <Button disabled={isPending || isUpdatePending } type="submit">
+            <Button disabled={isPending || isUpdatePending} type="submit">
               Submit
             </Button>
           </div>
