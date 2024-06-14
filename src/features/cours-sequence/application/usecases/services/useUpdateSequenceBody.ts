@@ -8,12 +8,13 @@ export default function useUpdateSequenceBody() {
     userId: string;
     sequenceId: string;
     body: string;
+    type?: "template" | "sequence";
   } | null>(null);
 
   useEffect(() => {
     if (!updateSequenceBodyOptions) return;
-    const loadingToast = toast.loading("Updating sequence body...", {
-      position: "top-center",
+    const loadingToast = toast.loading("", {
+      position: "bottom-right",
     });
     coursUsecases
       .addBodyToSequence(updateSequenceBodyOptions)
@@ -25,9 +26,10 @@ export default function useUpdateSequenceBody() {
           });
           return;
         }
-        toast.success("Sequence body updated successfully", {
-          position: "top-center",
-          duration: 3000,
+        toast.success("", {
+          id: loadingToast,
+          position: "bottom-right",
+          duration: 500,
         });
       })
       .finally(() => {
@@ -36,5 +38,5 @@ export default function useUpdateSequenceBody() {
       });
   }, [updateSequenceBodyOptions]);
 
-  return {  setUpdateSequenceBodyOptions };
+  return { setUpdateSequenceBodyOptions };
 }

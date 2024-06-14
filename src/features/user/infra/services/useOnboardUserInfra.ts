@@ -3,7 +3,6 @@ import { useMutation } from "convex/react";
 import { api } from "../../../../../convex/_generated/api";
 import { OnboarUserDataType } from "@/features/user/application/usecases/useOnboardUserUsecase";
 import { Id } from "../../../../../convex/_generated/dataModel";
-import { cons } from "fp-ts/lib/ReadonlyNonEmptyArray";
 
 export type IUserInfra = {
   userId: Id<"Users"> | false | string;

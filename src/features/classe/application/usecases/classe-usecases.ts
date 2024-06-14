@@ -5,6 +5,10 @@ import ClasseRepository, {
 import { ClassType } from "../../domain/class-schema";
 import ClassEntity from "../../domain/class-entity";
 import Failure from "@/core/failures/failures";
+import {
+  VisibilitySchema,
+  VisibilityType,
+} from "../../domain/visibility-schema";
 
 export default class ClasseUseCases {
   private readonly _repository: ClasseRepository;
@@ -56,6 +60,7 @@ export default class ClasseUseCases {
         description: c.description,
         imageUrl: c.imageUrl,
         students: c.students,
+        publish: c.publish,
       };
     });
 
@@ -81,6 +86,57 @@ export default class ClasseUseCases {
     }
 
     return right(validClasses);
+  }
+
+  async updateClasseVisibility({
+    id,
+    visibility,
+  }: {
+    id: string;
+    visibility: boolean;
+  }) {
+    return this._repository.updateClasseVisibility({ id, visibility });
+  }
+
+  async getVisibility({
+    userId,
+  }: {
+    userId: string;
+  }): Promise<Either<Failure<string>, VisibilityType>> {
+    const eitherVibilityTable = await this._repository.getVisibility({
+      userId,
+    });
+    if (isLeft(eitherVibilityTable)) {
+      return eitherVibilityTable;
+    }
+
+    const visibility = VisibilitySchema.safeParse(eitherVibilityTable.right);
+
+    if (visibility.success) {
+      return right(visibility.data);
+    } else {
+      return left(
+        Failure.invalidValue({
+          invalidValue: eitherVibilityTable.right,
+          message: "Invalid value",
+          code: "DOM201",
+        })
+      );
+    }
+  }
+
+  async updateVisibility({
+    userId,
+    publish,
+    type,
+    typeId,
+  }: {
+    userId: string;
+    publish: boolean;
+    type: "classe" | "sequence" | "cours" | "complement";
+    typeId: string;
+  }) {
+    return this._repository.updateVisibility({ userId, publish, type, typeId });
   }
 }
 

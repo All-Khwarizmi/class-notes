@@ -6,12 +6,14 @@ import ComplementsTable from "@/features/cours-sequence/presentation/components/
 function ComplementsView(props: {
   complements: Complement[];
   coursId: string;
+  userId: string;
 }) {
   return (
     <>
       <ComplementsTable
         complements={props.complements}
         coursId={props.coursId}
+        userId={props.userId}
       />
     </>
   );

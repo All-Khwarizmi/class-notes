@@ -46,7 +46,7 @@ export default function CompetenceForm({
     defaultValues: {
       name: "",
       description: "",
-      category: categories[0].name,
+      category: categories.length > 0 ? categories[0].name : "",
     },
   });
 

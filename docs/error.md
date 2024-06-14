@@ -13,3 +13,7 @@
 | Presentation Layer | PRE301     | Missing required field     |
 | Presentation Layer | PRE302     | Unsupported media type     |
 | Presentation Layer | PRE303     | Could not fetch ressource  |
+| Auth Layer         | AUTH101    | User not found             |
+| Auth Layer         | AUTH102    | Invalid password           |
+| Auth Layer         | AUTH103    | Invalid token              |
+| Auth Layer         | AUTH104    | Could not authenticate user|

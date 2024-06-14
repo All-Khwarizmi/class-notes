@@ -1,5 +1,4 @@
 import { Competence } from "@/features/comp-cat/domain/entities/schemas";
-import React from "react";
 import { Cours, Sequence } from "../../domain/entities/cours-schemas";
 import { useForm } from "react-hook-form";
 import { CoursSequenceForm } from "../views/AddCoursView";
@@ -20,6 +19,7 @@ function useGetFormValues(options: {
             name: options.cours?.name,
             competences: options.cours?.competences || [],
             imageUrl: options.cours?.imageUrl,
+            publish: options.cours?.publish,
           }
         : options.sequence !== undefined
         ? {
@@ -28,6 +28,7 @@ function useGetFormValues(options: {
             name: options.sequence?.name,
             competences: options.sequence?.competencesIds || [],
             imageUrl: options.sequence?.imageUrl,
+            publish: options.sequence?.publish,
           }
         : {
             description: "",
@@ -35,6 +36,7 @@ function useGetFormValues(options: {
             name: "",
             competences: [],
             imageUrl: "",
+            publish: false,
           },
   });
   return { form };

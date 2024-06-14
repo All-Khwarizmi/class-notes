@@ -12,6 +12,7 @@ export const CoursSchema = z.object({
   createdBy: z.string(),
   createdAt: z.number(),
   category: z.string(),
+  publish: z.boolean().optional(),
 });
 
 export type Cours = z.infer<typeof CoursSchema>;
@@ -28,6 +29,7 @@ export const SequenceSchema = z.object({
   createdBy: z.string(),
   createdAt: z.number(),
   category: z.string(),
+  publish: z.boolean().optional(),
 });
 
 export type Sequence = z.infer<typeof SequenceSchema>;

@@ -16,6 +16,7 @@ export default function CoursSequenceCard({
   path,
   showViewButton,
   pathToView,
+  spacesMode,
 }: {
   title: string;
   description: string;
@@ -24,6 +25,7 @@ export default function CoursSequenceCard({
   path: string;
   showViewButton?: boolean;
   pathToView?: string;
+  spacesMode?: boolean;
 }) {
   return (
     <Card className=" max-w-sm">
@@ -50,14 +52,13 @@ export default function CoursSequenceCard({
       </CardContent>
       <CardFooter className="p-4">
         <div className="flex gap-2">
-          <AfterMenuButton
-            addButton={true}
-            path={path}
-            icon={<PenIcon size={12} />}
-          >
-            <PenIcon size={12} />
-          </AfterMenuButton>
-
+          {!spacesMode && (
+            <AfterMenuButton
+              addButton={true}
+              path={path}
+              icon={<PenIcon size={12} />}
+            />
+          )}
           {showViewButton && (
             <AfterMenuButton
               addButton={true}

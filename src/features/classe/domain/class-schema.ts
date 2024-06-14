@@ -8,6 +8,7 @@ const classSchema = z.object({
   description: z.string().optional(),
   imageUrl: z.string().optional(),
   students: z.array(z.string()).optional(),
+  publish: z.boolean().optional(),
 });
 export default classSchema;
 

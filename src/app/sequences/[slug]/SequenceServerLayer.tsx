@@ -28,7 +28,6 @@ export default async function SequenceServerLayer(props: {
     type: props.type,
   });
   if (isLeft(eitherSequence)) {
-    console.log(eitherSequence.left);
     return <NotFound />;
   }
   // Get all cours from the sequence
@@ -80,6 +79,7 @@ export default async function SequenceServerLayer(props: {
             userId={authUser.right.userId}
             type="sequence"
             coursFromSequence={eitherCours.right}
+            sequenceType={props.type}
           />
         </div>
       </section>

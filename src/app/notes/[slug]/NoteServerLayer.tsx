@@ -64,45 +64,45 @@ async function NoteServerLayer(props: { slug: string }) {
       icon: Dashboard(),
     },
 
-    {
-      title: "Folders",
-      href: `/profile/notes/${authUser.right.userId}`,
-      icon: <Folder size={16} />,
-      isChidren: true,
-      children: validatedNote.data.folders.map((folder) => {
-        return {
-          title: folder.name,
-          href: `/notes/${folder.id}`,
-          icon: <Folder size={16} />,
-        };
-      }),
-    },
-    {
-      title: "Notes",
-      href: `/notes/${authUser.right.userId}`,
-      icon: <File size={16} />,
-      isChidren: true,
-      children: validatedNote.data.pathDictionary.map((note) => {
-        return {
-          title: note.name,
-          href: `/notes/${note.id}`,
-          icon: <File size={16} />,
-        };
-      }),
-    },
+    // {
+    //   title: "Folders",
+    //   href: `/profile/notes/${authUser.right.userId}`,
+    //   icon: <Folder size={16} />,
+    //   isChidren: true,
+    //   children: validatedNote.data.folders.map((folder) => {
+    //     return {
+    //       title: folder.name,
+    //       href: `/notes/${folder.id}`,
+    //       icon: <Folder size={16} />,
+    //     };
+    //   }),
+    // },
+    // {
+    //   title: "Notes",
+    //   href: `/notes/${authUser.right.userId}`,
+    //   icon: <File size={16} />,
+    //   isChidren: true,
+    //   children: validatedNote.data.pathDictionary.map((note) => {
+    //     return {
+    //       title: note.name,
+    //       href: `/notes/${note.id}`,
+    //       icon: <File size={16} />,
+    //     };
+    //   }),
+    // },
   ];
 
-  noteNavItems[1].children?.push({
-    title: "New Note",
-    href: `/notes/${props.slug}/add`,
-    icon: <Plus size={16} />,
-  });
+  // noteNavItems[1].children?.push({
+  //   title: "New Note",
+  //   href: `/notes/${props.slug}/add`,
+  //   icon: <Plus size={16} />,
+  // });
 
-  noteNavItems[2].children?.push({
-    title: "New Folder",
-    href: `/notes/${props.slug}/add-folder`,
-    icon: <Plus size={16} />,
-  });
+  // noteNavItems[2].children?.push({
+  //   title: "New Folder",
+  //   href: `/notes/${props.slug}/add-folder`,
+  //   icon: <Plus size={16} />,
+  // });
 
   return (
     <>

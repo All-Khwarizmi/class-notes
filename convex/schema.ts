@@ -1,7 +1,5 @@
 import { defineSchema, defineTable } from "convex/server";
 import { v } from "convex/values";
-import { id } from "fp-ts/lib/Refinement";
-import { b } from "vitest/dist/suite-a18diDsI.js";
 
 export default defineSchema({
   Users: defineTable({
@@ -10,6 +8,45 @@ export default defineSchema({
     name: v.string(),
     onboarding: v.boolean(),
     hostname: v.optional(v.string()),
+  }),
+  VisibilityTable: defineTable({
+    userId: v.string(),
+    classe: v.array(
+      v.object({
+        id: v.string(),
+        publish: v.boolean(),
+      })
+    ),
+    sequences: v.array(
+      v.object({
+        id: v.string(),
+        publish: v.boolean(),
+        classe: v.boolean(),
+        classeId: v.string(),
+      })
+    ),
+    cours: v.array(
+      v.object({
+        id: v.string(),
+        publish: v.boolean(),
+        sequence: v.boolean(),
+        sequenceId: v.string(),
+        classe: v.boolean(),
+        classeId: v.string(),
+      })
+    ),
+    complement: v.array(
+      v.object({
+        id: v.string(),
+        publish: v.boolean(),
+        sequence: v.boolean(),
+        sequenceId: v.string(),
+        cours: v.boolean(),
+        coursId: v.string(),
+        classe: v.boolean(),
+        classeId: v.string(),
+      })
+    ),
   }),
   Category: defineTable({
     name: v.string(),
@@ -112,7 +149,7 @@ export default defineSchema({
     imageUrl: v.string(),
     lessons: v.array(v.string()),
     competences: v.array(v.id("Competences")),
-    sequenceId: v.id("Sequences"),
+    sequenceId: v.string(),
     description: v.string(),
     createdBy: v.string(),
     createdAt: v.float64(),
@@ -159,6 +196,7 @@ export default defineSchema({
     observations: v.array(v.string()),
     studentsId: v.optional(v.array(v.id("Students"))),
     evaluationsTemplatesId: v.array(v.id("EvaluationTemplates")),
+    publish: v.optional(v.boolean()),
   }),
 
   Students: defineTable({

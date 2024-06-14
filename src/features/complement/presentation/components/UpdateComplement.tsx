@@ -16,6 +16,11 @@ function UpdateComplement(props: { complement: Complement }) {
     <AfterMenuButton
       props={{
         onClick: () => {
+          const prevContent = props.complement.body;
+          const currentContent = editor.getHTML();
+          if (prevContent === currentContent) {
+            return alert("No changes to save");
+          }
           setComplementOptions({
             ...props.complement,
             body: editor.getHTML(),

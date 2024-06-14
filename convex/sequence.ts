@@ -11,6 +11,7 @@ export const createSequence = mutation({
     userId: v.string(),
     category: v.string(),
     imageUrl: v.string(),
+    publish: v.optional(v.boolean()),
   },
   handler: async (ctx, args) => {
     const existingUser = await ctx.db
@@ -35,7 +36,35 @@ export const createSequence = mutation({
         createdBy: existingUser!._id,
         createdAt: Date.now(),
         category: args.category,
+        publish: args.publish,
       });
+
+      if (!categoryId) {
+        throw new Error("Could not create sequence");
+      }
+
+      // Add the sequence to the visibility table
+      const visibilityTable = await ctx.db
+        .query("VisibilityTable")
+        .filter((q) => q.eq(q.field("userId"), existingUser!._id))
+        .first();
+
+      if (visibilityTable) {
+        const newTable = {
+          ...visibilityTable,
+          sequences: [
+            ...visibilityTable.sequences,
+            {
+              id: categoryId,
+              publish: args.publish ?? false,
+              classe: true,
+              classeId: "",
+            },
+          ],
+        };
+        await ctx.db.patch(visibilityTable._id, newTable);
+      }
+
       return categoryId;
     }
   },
@@ -98,18 +127,11 @@ export const getSingleSequence = query({
     sequenceId: v.string(),
   },
   handler: async (ctx, args) => {
-    const user = await ctx.db
-      .query("Users")
-      .filter((q) => q.eq(q.field("userId"), args.userId))
+    const sequence = await ctx.db
+      .query("Sequences")
+      .filter((q) => q.eq(q.field("_id"), args.sequenceId))
       .first();
-
-    if (user) {
-      const sequence = await ctx.db
-        .query("Sequences")
-        .filter((q) => q.eq(q.field("_id"), args.sequenceId))
-        .first();
-      return sequence;
-    }
+    return sequence;
   },
 });
 
@@ -122,29 +144,86 @@ export const updateSequence = mutation({
     description: v.string(),
     category: v.string(),
     imageUrl: v.string(),
+    type: v.optional(v.literal("sequence")),
+    publish: v.optional(v.boolean()),
   },
   handler: async (ctx, args) => {
-    const existingSequence = await ctx.db
-      .query("Sequences")
-      .filter((q) => q.eq(q.field("_id"), args.sequenceId))
-      .first();
+    console.log("hi from convex update sequence", { args });
+    if (args.type === "sequence") {
+      const classeSequence = await ctx.db
+        .query("ClasseSequence")
+        .filter((q) => q.eq(q.field("_id"), args.sequenceId))
+        .first();
 
-    if (existingSequence) {
-      const userComptences = await ctx.db
-        .query("Competences")
-        .filter((q) => q.eq(q.field("createdBy"), existingSequence.createdBy))
-        .collect();
+      if (classeSequence) {
+        const userComptences = await ctx.db
+          .query("Competences")
+          .filter((q) => q.eq(q.field("createdBy"), classeSequence.createdBy))
+          .collect();
 
-      await ctx.db.patch(existingSequence._id, {
-        name: args.name,
-        body: args.body,
-        competencesIds: userComptences
-          .filter((c) => args.competencesIds.includes(c._id))
-          .map((c) => c._id),
-        description: args.description,
-        category: args.category,
-        imageUrl: args.imageUrl,
-      });
+        // Check the publish status
+        if (args.publish !== undefined) {
+          const visibilityTable = await ctx.db
+            .query("VisibilityTable")
+            .filter((q) => q.eq(q.field("userId"), classeSequence.createdBy))
+            .first();
+
+          if (visibilityTable) {
+            const classeExist = visibilityTable.classe.find(
+              (classe) => classe.id === classeSequence._id
+            );
+            if (!classeExist) {
+              visibilityTable.classe.push({
+                id: classeSequence._id,
+                publish: args.publish,
+              });
+            } else {
+              const classeIndex = visibilityTable.classe.findIndex(
+                (classe) => classe.id === classeSequence._id
+              );
+              visibilityTable.classe[classeIndex].publish = args.publish;
+            }
+            await ctx.db.patch(visibilityTable._id, {
+              classe: visibilityTable.classe,
+            });
+          }
+        }
+
+        await ctx.db.patch(classeSequence._id, {
+          name: args.name,
+          body: args.body,
+          competencesIds: userComptences
+            .filter((c) => args.competencesIds.includes(c._id))
+            .map((c) => c._id),
+          description: args.description,
+          category: args.category,
+          imageUrl: args.imageUrl,
+          publish: args.publish,
+        });
+      }
+    } else {
+      const existingSequence = await ctx.db
+        .query("Sequences")
+        .filter((q) => q.eq(q.field("_id"), args.sequenceId))
+        .first();
+
+      if (existingSequence) {
+        const userComptences = await ctx.db
+          .query("Competences")
+          .filter((q) => q.eq(q.field("createdBy"), existingSequence.createdBy))
+          .collect();
+
+        await ctx.db.patch(existingSequence._id, {
+          name: args.name,
+          body: args.body,
+          competencesIds: userComptences
+            .filter((c) => args.competencesIds.includes(c._id))
+            .map((c) => c._id),
+          description: args.description,
+          category: args.category,
+          imageUrl: args.imageUrl,
+        });
+      }
     }
   },
 });
@@ -154,14 +233,23 @@ export const addBodyToSequence = mutation({
     userId: v.string(),
     sequenceId: v.string(),
     body: v.string(),
+    type: v.optional(v.literal("sequence")),
   },
   handler: async (ctx, args) => {
-    const user = await ctx.db
-      .query("Users")
-      .filter((q) => q.eq(q.field("userId"), args.userId))
-      .first();
+    console.log("type in convex add sequence body", args.type);
 
-    if (user) {
+    if (args.type === "sequence") {
+      const classeSequence = await ctx.db
+        .query("ClasseSequence")
+        .filter((q) => q.eq(q.field("_id"), args.sequenceId))
+        .first();
+
+      if (classeSequence) {
+        await ctx.db.patch(classeSequence._id, {
+          body: args.body,
+        });
+      }
+    } else {
       const existingSequence = await ctx.db
         .query("Sequences")
         .filter((q) => q.eq(q.field("_id"), args.sequenceId))
@@ -190,20 +278,12 @@ export const getAllCoursInSequence = query({
         .first();
 
       if (classeSequence) {
-        const originalSequence = await ctx.db
-          .query("Sequences")
-          .filter((q) =>
-            q.eq(q.field("_id"), classeSequence.originalSequenceId)
-          )
-          .first();
-        if (originalSequence) {
-          const cours = await ctx.db
-            .query("Cours")
-            .withIndex("by_sequenceId")
-            .filter((q) => q.eq(q.field("sequenceId"), originalSequence._id))
-            .collect();
-          return cours;
-        }
+        const cours = await ctx.db
+          .query("Cours")
+          .withIndex("by_sequenceId")
+          .filter((q) => q.eq(q.field("sequenceId"), args.sequenceId))
+          .collect();
+        return cours;
       }
     }
 

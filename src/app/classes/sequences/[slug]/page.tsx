@@ -1,9 +1,10 @@
 import React, { Suspense } from "react";
 import ClasseSequencesServerLayer from "./ClasseSequencesServerLayer";
+import LoadingSkeleton from "@/core/components/common/LoadingSkeleton";
 
 async function Page({ params }: { params: { slug: string } }) {
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<LoadingSkeleton />}>
       <ClasseSequencesServerLayer slug={params.slug} />
     </Suspense>
   );

@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export default function Title({
   size,
-  title = "ClassAI",
+  title = "La Classe",
 }: {
   size?: string;
   title?: string;

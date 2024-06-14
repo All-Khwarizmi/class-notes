@@ -1,5 +1,4 @@
 "use client";
-
 import {
   UserType,
   userSchema,
@@ -16,6 +15,9 @@ import {
 } from "@/core/components/ui/form";
 import { Input } from "@/core/components/ui/input";
 import useSaveUser from "../../application/adapters/services/useSaveUser";
+import { UserButton } from "@clerk/nextjs";
+import { Button } from "@/core/components/ui/button";
+
 export default function UserProfile({ user }: { user: UserType }) {
   const { setSaveUserOptions, loading, error } = useSaveUser();
   const form = useForm<UserType>({
@@ -28,7 +30,6 @@ export default function UserProfile({ user }: { user: UserType }) {
   });
 
   function onSubmit(data: UserType) {
-    console.log({ data });
     setSaveUserOptions({
       userId: user._id,
       ...data,
@@ -37,6 +38,9 @@ export default function UserProfile({ user }: { user: UserType }) {
 
   return (
     <div data-testid="user-form" className="py-8 px-6">
+      <div className="flex justify-end gap-4 pb-4">
+        <UserButton />
+      </div>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
           <FormField
@@ -77,13 +81,14 @@ export default function UserProfile({ user }: { user: UserType }) {
               );
             }}
           />
-          <button
-            data-testid="submit-onboarding-form"
-            type="submit"
-            className="bg-blue-500 text-white px-4 py-2 rounded"
+          <div
+            className="flex justify-end gap-4"
+            data-testid="user-form-actions"
           >
-            Save
-          </button>
+            <Button data-testid="submit-onboarding-form" type="submit">
+              Save
+            </Button>
+          </div>
         </form>
       </Form>
     </div>

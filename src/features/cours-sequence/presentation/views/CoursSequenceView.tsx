@@ -4,12 +4,13 @@ import EditorProviderWrapper from "../../../../core/components/common/editor/Edi
 import CoursSaveButton from "../../../../core/components/common/editor/CoursSaveButton";
 import SaveSequenceBodyButton from "../components/SaveSequenceBodyButton";
 import Link from "next/link";
-import CollapsibleCoursList from "../components/CallapsibleCoursList";
 import { Eye, Settings } from "lucide-react";
 import AfterMenuButton from "@/core/components/common/editor/AfterMenuButton";
 import AfterMenuBar from "@/core/components/common/editor/AfterMunuBar";
-import ComplementsTable from "../components/ComplementsTable";
 import { Complement } from "@/features/complement/domain/complement-schemas";
+import VisibilitySwitch from "../components/VisibilitySwitch";
+import useUpdateSequenceBody from "../../application/usecases/services/useUpdateSequenceBody";
+import useUpdateCoursBody from "../../application/usecases/services/useUpdateCoursBody";
 
 export default function CoursSequenceView({
   cours,
@@ -18,6 +19,7 @@ export default function CoursSequenceView({
   type,
   coursFromSequence,
   complements,
+  sequenceType,
 }: {
   type: "cours" | "sequence";
   cours?: Cours;
@@ -25,57 +27,108 @@ export default function CoursSequenceView({
   userId: string;
   coursFromSequence?: Cours[];
   complements?: Complement[];
+  sequenceType?: "template" | "sequence";
 }) {
+  const { setUpdateSequenceBodyOptions } = useUpdateSequenceBody();
+  const { setUpdateCoursBodyOptions } = useUpdateCoursBody();
   if (type === "cours" && cours && complements) {
     return (
       <>
         <h1 className="text-2xl font-bold pb-4 dark:text-slate-300 text-slate-500 ">
           {cours.name}
         </h1>
-        <EditorProviderWrapper content={cours.body}>
+        <EditorProviderWrapper
+          content={cours.body}
+          onUpdate={(content) => {
+            setUpdateCoursBodyOptions({
+              userId,
+              coursId: cours._id,
+              body: content,
+            });
+          }}
+        >
           <div className=" flex flex-col gap-4 ">
             <AfterMenuBar>
-              <CoursSaveButton userId={userId} cours={cours} />
-              <AfterMenuButton>
-                <Link href={`/cours/edit/${cours._id}`}>
-                  <Settings size={12} />
-                </Link>
-              </AfterMenuButton>
+              <div className="flex items-center justify-between w-full gap-4 ">
+                <div className="flex items-center gap-1">
+                  <CoursSaveButton userId={userId} cours={cours} />
+                  <AfterMenuButton>
+                    <Link href={`/spaces/cours/${cours._id}?user=${userId}`}>
+                      <Eye size={12} />
+                    </Link>
+                  </AfterMenuButton>
+                  <AfterMenuButton>
+                    <Link href={`/cours/edit/${cours._id}`}>
+                      <Settings size={12} />
+                    </Link>
+                  </AfterMenuButton>
+                </div>
+                <VisibilitySwitch
+                  userId={userId}
+                  type="cours"
+                  typeId={cours._id}
+                />
+              </div>
             </AfterMenuBar>
           </div>
         </EditorProviderWrapper>
-
-        {/* <ComplementsTable complements={complements} coursId={cours._id} /> */}
       </>
     );
   }
   if (type === "sequence" && sequence && coursFromSequence) {
+    const viewPath =
+      sequenceType === "sequence"
+        ? `/spaces/sequences/${sequence._id}?user=${userId}`
+        : `/spaces/sequences/${sequence._id}?user=${userId}&type=template`;
     return (
       <>
         <h1 className="text-2xl font-bold pb-4 dark:text-slate-300 text-slate-500 ">
           {sequence.name}
         </h1>
-        <EditorProviderWrapper content={sequence.body}>
+        <EditorProviderWrapper
+          content={sequence.body}
+          onUpdate={(content) => {
+            setUpdateSequenceBodyOptions({
+              userId,
+              sequenceId: sequence._id,
+              body: content,
+              type: sequenceType,
+            });
+          }}
+        >
           <div className="flex flex-col gap-4 ">
             <AfterMenuBar>
-              <SaveSequenceBodyButton userId={userId} sequence={sequence} />
-              <AfterMenuButton>
-                <Link href={`/sequences/show/${sequence._id}`}>
-                  <Eye size={12} />
-                </Link>
-              </AfterMenuButton>
-              <AfterMenuButton>
-                <Link href={`/sequences/edit/${sequence._id}`}>
-                  <Settings size={12} />
-                </Link>
-              </AfterMenuButton>
+              <div className="flex items-center justify-between w-full gap-4 ">
+                <div className="flex items-center gap-1">
+                  <SaveSequenceBodyButton
+                    userId={userId}
+                    sequence={sequence}
+                    type={sequenceType}
+                  />
+                  <AfterMenuButton>
+                    <Link href={viewPath}>
+                      <Eye size={12} />
+                    </Link>
+                  </AfterMenuButton>
+                  <AfterMenuButton>
+                    <Link
+                      href={
+                        sequenceType === "sequence"
+                          ? `/sequences/edit/${sequence._id}?type=sequence`
+                          : `/sequences/edit/${sequence._id}`
+                      }
+                    >
+                      <Settings size={12} />
+                    </Link>
+                  </AfterMenuButton>
+                </div>
+                <VisibilitySwitch
+                  userId={userId}
+                  type="sequence"
+                  typeId={sequence._id}
+                />
+              </div>
             </AfterMenuBar>
-            {/* <section>
-              <CollapsibleCoursList
-                cours={coursFromSequence}
-                sequenceId={sequence._id}
-              />
-            </section> */}
           </div>
         </EditorProviderWrapper>
       </>

@@ -12,7 +12,7 @@ import ErrorDialog from "@/core/components/common/ErrorDialog";
 export interface CoursSequenceForm
   extends Pick<
     Cours,
-    "description" | "category" | "name" | "competences" | "imageUrl"
+    "description" | "category" | "name" | "competences" | "imageUrl" | "publish"
   > {}
 export default function AddUpdateCoursSequenceView({
   competences,
@@ -23,6 +23,7 @@ export default function AddUpdateCoursSequenceView({
   edit,
   cours,
   sequence,
+  sequenceType,
 }: {
   competences: Competence[];
   authUser: UserAuth;
@@ -32,6 +33,7 @@ export default function AddUpdateCoursSequenceView({
   sequence?: Sequence;
   title: string;
   sequenceId?: string;
+  sequenceType?: "sequence" | "template";
 }) {
   const { selectedCompetences, setSelectedCompetences } =
     useGetSelectedCompetences({
@@ -58,6 +60,7 @@ export default function AddUpdateCoursSequenceView({
     sequence,
     selectedCompetences,
     authUser,
+    sequenceType: sequenceType || "template",
   });
 
   function selectCompetences({

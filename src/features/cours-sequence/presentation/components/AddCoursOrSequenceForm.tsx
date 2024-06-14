@@ -15,6 +15,7 @@ import { UseFormReturn } from "react-hook-form";
 import { CoursSequenceForm } from "../views/AddCoursView";
 import SelectImageUrl from "./SelectImageUrl";
 import { useState } from "react";
+import { Switch } from "@/core/components/ui/switch";
 
 export default function AddCoursOrSequenceForm({
   form,
@@ -52,20 +53,40 @@ export default function AddCoursOrSequenceForm({
       <h1 className="text-2xl font-bold pb-4 ">{title}</h1>
       <Form {...form}>
         <form className="space-y-4">
-          <FormField
-            control={form.control}
-            name="name"
-            render={({ field }) => {
-              return (
-                <FormItem>
-                  <FormLabel htmlFor={field.name}>Name</FormLabel>
-                  <FormControl>
-                    <Input {...field} placeholder={`Name `} />
-                  </FormControl>
-                </FormItem>
-              );
-            }}
-          />
+          <div className="flex justify-between items-center">
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => {
+                return (
+                  <FormItem>
+                    <FormLabel htmlFor={field.name}>Name</FormLabel>
+                    <FormControl>
+                      <Input {...field} placeholder={`Name `} />
+                    </FormControl>
+                  </FormItem>
+                );
+              }}
+            />
+            {/* Add a switch to controll visibility */}
+            <FormField
+              control={form.control}
+              name="publish"
+              render={({ field }) => {
+                return (
+                  <FormItem className="flex flex-col gap-2  justify-center">
+                    <FormLabel htmlFor={field.name}>Publish</FormLabel>
+                    <FormControl>
+                      <Switch
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                      />
+                    </FormControl>
+                  </FormItem>
+                );
+              }}
+            />
+          </div>
           <FormField
             control={form.control}
             name="category"
@@ -118,6 +139,7 @@ export default function AddCoursOrSequenceForm({
           <Button
             onClick={(event) => {
               event.preventDefault();
+              console.log("form.getValues()", form.getValues());
               onSubmit({
                 ...form.getValues(),
                 competences: selectedCompetences.map((c) => c._id),

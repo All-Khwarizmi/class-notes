@@ -341,6 +341,7 @@ export default class ConvexDatabase extends IDatabase {
         description: sequence.description,
         category: sequence.category,
         competencesIds: sequence.competencesIds,
+        publish: sequence.publish,
       });
       if (!result) {
         return left(
@@ -366,10 +367,13 @@ export default class ConvexDatabase extends IDatabase {
 
   async updateSequence({
     sequence,
+    type,
   }: {
     sequence: Sequence;
+    type?: "template" | "sequence";
   }): Promise<Either<Failure<string>, void>> {
     try {
+      const defaultType = type === "sequence" ? "sequence" : undefined;
       await fetchMutation(this._db.sequence.updateSequence, {
         sequenceId: sequence._id,
         imageUrl: sequence.imageUrl,
@@ -378,6 +382,8 @@ export default class ConvexDatabase extends IDatabase {
         description: sequence.description,
         category: sequence.category,
         competencesIds: sequence.competencesIds,
+        type: defaultType,
+        publish: sequence.publish,
       });
 
       return right(undefined);
@@ -565,16 +571,20 @@ export default class ConvexDatabase extends IDatabase {
     userId,
     sequenceId,
     body,
+    type,
   }: {
     userId: string;
     sequenceId: string;
     body: string;
+    type?: "template" | "sequence";
   }): Promise<Either<Failure<string>, void>> {
     try {
+      const defaultType = type === "sequence" ? "sequence" : undefined;
       await fetchMutation(this._db.sequence.addBodyToSequence, {
         userId,
         sequenceId,
         body,
+        type: defaultType,
       });
       return right(undefined);
     } catch (error) {
@@ -1043,6 +1053,103 @@ export default class ConvexDatabase extends IDatabase {
         Failure.invalidValue({
           invalidValue: id,
           message: "Error getting class",
+          code: "INF101",
+        })
+      );
+    }
+  }
+
+  async updateClassVisibility({
+    id,
+    visibility,
+  }: {
+    id: string;
+    visibility: boolean;
+  }): Promise<Either<Failure<string>, void>> {
+    try {
+      const result = await fetchMutation(
+        this._db.classes.updateClassVisibility,
+        {
+          id,
+          visibility,
+        }
+      );
+      if (!result.success) {
+        return left(
+          Failure.invalidValue({
+            invalidValue: id,
+            message: "Error updating class visibility",
+            code: "INF103",
+          })
+        );
+      }
+      return right(undefined);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: id,
+          message: "Error updating class visibility",
+          code: "INF101",
+        })
+      );
+    }
+  }
+
+  async getVisibility({
+    id,
+  }: {
+    id: string;
+  }): Promise<Either<Failure<string>, DocumentData>> {
+    try {
+      const result = await fetchMutation(this._db.visibility.getVisibility, {
+        userId: id,
+      });
+      if (!result) {
+        return left(
+          Failure.invalidValue({
+            invalidValue: id,
+            message: "Error getting visibility",
+            code: "INF103",
+          })
+        );
+      }
+      return right(result);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: id,
+          message: "Error getting visibility",
+          code: "INF101",
+        })
+      );
+    }
+  }
+
+  async updateVisibility({
+    userId,
+    publish,
+    type,
+    typeId,
+  }: {
+    userId: string;
+    publish: boolean;
+    type: "classe" | "sequence" | "cours" | "complement";
+    typeId: string;
+  }): Promise<Either<Failure<string>, void>> {
+    try {
+      await fetchMutation(this._db.visibility.updateVisibility, {
+        userId,
+        publish,
+        type,
+        typeId,
+      });
+
+      return right(undefined);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: userId,
+          message: "Error updating visibility",
           code: "INF101",
         })
       );
