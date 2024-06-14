@@ -24,7 +24,7 @@ export default function StudentsTable({ classId }: { classId: string }) {
   );
 
   return (
-    <section className="flex flex-col justify-between h-full px-4 py-4">
+    <section className="flex flex-col justify-between h-full pb-4">
       <Table>
         {isStudents && (
           <>
