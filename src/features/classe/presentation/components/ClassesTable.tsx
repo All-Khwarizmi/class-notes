@@ -11,11 +11,9 @@ import CustomDialog from "../../../../core/components/common/CustomDialog";
 import AddClassForm from "./AddClassForm";
 import AddIcon from "../../../../core/components/icons/AddIcon";
 import Link from "next/link";
-import { Button } from "@/core/components/ui/button";
 import { classeRepository } from "@/features/classe/application/repository/classe-repository";
 import { ClassType } from "../../domain/class-schema";
 import { Delete, Pen } from "lucide-react";
-import { VisibilityType } from "../../domain/visibility-schema";
 import VisibilitySwitch from "@/features/cours-sequence/presentation/components/VisibilitySwitch";
 
 export default function ClassesTable(props: {
@@ -28,7 +26,7 @@ export default function ClassesTable(props: {
   };
 
   return (
-    <section className="flex flex-col  justify-between p-4  h-[100%]">
+    <section className="flex flex-col  justify-between h-[100%]">
       <Table data-testid="classes-table" className="">
         <TableHeader>
           <TableRow>
@@ -40,7 +38,6 @@ export default function ClassesTable(props: {
         </TableHeader>
         <TableBody>
           {props.classes.map((classe) => {
-          
             return (
               <TableRow key={classe.id} className="cursor-pointer ">
                 <Link href={`/classes/class/${classe.id}`} legacyBehavior>
