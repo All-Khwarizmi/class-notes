@@ -7,6 +7,7 @@ export interface CreateEvaluationOptions {
   name: string;
   createdBy: string;
   description?: string;
+  isGraded: boolean;
   gradeType: GradeTypeUnionType;
   criterias: EvaluationCriteriaType[];
 }
