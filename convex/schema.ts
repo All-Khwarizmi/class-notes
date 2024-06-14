@@ -201,7 +201,7 @@ export default defineSchema({
   EvaluationBase: defineTable({
     name: v.string(),
     description: v.string(),
-    createdBy: v.id("Users"),
+    createdBy: v.string(),
     createdAt: v.float64(),
     gradeType: v.union(
       v.object({
