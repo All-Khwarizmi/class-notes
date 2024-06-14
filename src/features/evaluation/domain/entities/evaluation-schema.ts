@@ -1,3 +1,4 @@
+import { create } from "lodash";
 import { z } from "zod";
 
 export const EvaluationBaseTypeFormSchema = z.object({
@@ -269,6 +270,7 @@ export const EvaluationBaseSchema = z.object({
   description: z.string().optional(),
   isGraded: z.boolean(),
   createdBy: z.string(),
+  createdAt: z.number(),
   gradeType: GradeTypeUnionSchema,
   criterias: z.array(EvaluationCriteriaSchema),
 });
