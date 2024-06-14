@@ -30,8 +30,9 @@ import {
   EvaluationCriteriaType,
   GradeTypeUnionType,
 } from "../../domain/entities/evaluation-schema";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Cross, X } from "lucide-react";
+import useCreateBaseEvaluation from "../../application/adapters/services/useCreateBaseEvaluation";
 
 // Define the Zod schema for EvaluationBase
 const EvaluationBaseSchema = z.object({
@@ -41,40 +42,40 @@ const EvaluationBaseSchema = z.object({
 
   // Using the GradeTypeUnionSchema from EvaluationBaseSchema
 });
-const gradeTypes = [
+const gradeTypes: GradeTypeUnionType[] = [
   {
     name: "Numeric",
     type: "Numeric",
-    range: ["1-4", "1-5", "1-10", "1-20", "0-100"],
+    range: "0-100",
     grade: 0,
   },
   { name: "Percentage", type: "Percentage", grade: 0 },
   {
     name: "US Letter Grades",
     type: "A/B/C/D/F",
-    grade: ["A", "B", "C", "D", "F"],
+    grade: "A",
   },
   {
     name: "US Letter Grades with Pass/Fail",
     type: "A/B/C/D/F/Pass/Fail",
-    grade: ["A", "B", "C", "D", "F", "Pass", "Fail"],
+    grade: "A",
   },
   {
     name: "US Letter Grades with Pass/Fail/None",
     type: "A/B/C/D/F/Pass/Fail/None",
-    grade: ["A", "B", "C", "D", "F", "Pass", "Fail", "None"],
+    grade: "A",
   },
-  { name: "Pass/Fail", type: "Pass/Fail", grade: ["Pass", "Fail"] },
+  { name: "Pass/Fail", type: "Pass/Fail", grade: "Pass" },
   {
     name: "Descriptive Grades",
     type: "Excellent/Good/Satisfactory/Needs Improvement",
-    grade: ["Excellent", "Good", "Satisfactory", "Needs Improvement"],
+    grade: "Excellent",
   },
   { name: "US 4.0 Scale", type: "4.0 Scale", grade: 0 },
   {
     name: "UK Honors",
     type: "First/Upper Second/Lower Second/Third",
-    grade: ["First", "Upper Second", "Lower Second", "Third"],
+    grade: "First",
   },
   { name: "10-point Scale", type: "10-point Scale", grade: 0 },
   { name: "20-point Scale", type: "20-point Scale", grade: 0 },
@@ -84,36 +85,25 @@ const gradeTypes = [
   {
     name: "Australian Grading",
     type: "HD/D/C/P/F",
-    grade: ["HD", "D", "C", "P", "F"],
+    grade: "HD",
   },
   { name: "Spanish Grading", type: "10-point Scale", grade: 0 },
   {
     name: "Sport Points",
     type: "Points",
-    range: ["0-10", "0-20", "0-100", "0-1000"],
+    range: "0-100",
     grade: 0,
   },
   {
     name: "Sport Ranking",
     type: "Ranking",
-    grade: [
-      "1st",
-      "2nd",
-      "3rd",
-      "4th",
-      "5th",
-      "6th",
-      "7th",
-      "8th",
-      "9th",
-      "10th",
-    ],
+    grade: "10th",
   },
-  { name: "Sport Result", type: "Win/Loss/Tie", grade: ["Win", "Loss", "Tie"] },
+  { name: "Sport Result", type: "Win/Loss/Tie", grade: "Win" },
   {
     name: "Sport Performance",
     type: "Performance Level",
-    grade: ["Excellent", "Good", "Average", "Poor"],
+    grade: "Excellent",
   },
 ];
 export type EvaluationBaseTypeForm = z.infer<typeof EvaluationBaseSchema>;
@@ -128,9 +118,23 @@ export default function EvaluationBaseForm(props: { userId: string }) {
       gradeType: { name: "Numeric", type: "Numeric", range: "0-100", grade: 0 }, // Default value for gradeType
     },
   });
+  const {
+    mutate: createEvaluation,
+    isPending,
+    isSuccess,
+  } = useCreateBaseEvaluation();
   const [criterias, setCriterias] = useState<EvaluationCriteriaType[]>([]);
   // Handler to add a new criteria
   const addCriteria = () => {
+    // If the gradeType is not selected, show an error message
+    if (!form.getValues("gradeType")) {
+      toast.error("Please select a grade type before adding criteria");
+      return;
+    }
+    const gradeVal = form.getValues("gradeType") as unknown;
+    const gradeType = getGradeTypeByName(
+      gradeVal as GradeTypeUnionType["name"]
+    );
     setCriterias([
       ...criterias,
       {
@@ -139,18 +143,21 @@ export default function EvaluationBaseForm(props: { userId: string }) {
         name: "",
         description: "",
         isGraded: true,
-        gradeType: form.getValues("gradeType") as GradeTypeUnionType,
+        gradeType,
         createdBy: props.userId,
       },
     ]);
   };
   function onSubmit(values: EvaluationBaseTypeForm) {
-    // Here you would typically handle form submission, like sending the data to your API
+    const gradeVal = form.getValues("gradeType") as unknown;
+    const gradeType = getGradeTypeByName(
+      gradeVal as GradeTypeUnionType["name"]
+    );
     const evaluation: Omit<EvaluationBaseType, "id"> = {
       ...values,
+      gradeType,
       criterias,
       createdBy: props.userId,
-      gradeType: form.getValues("gradeType") as GradeTypeUnionType,
     };
     const isValid = EvaluationBaseSchema.safeParse(evaluation);
     if (!isValid.success) {
@@ -189,9 +196,15 @@ export default function EvaluationBaseForm(props: { userId: string }) {
       return;
     }
     console.log("Form Submitted:", evaluation);
-    toast.success("Evaluation base created successfully!");
+    createEvaluation(evaluation);
   }
 
+  useEffect(() => {
+    if (isSuccess) {
+      toast.success("Evaluation base created successfully!");
+      form.reset();
+    }
+  }, [isSuccess]);
   return (
     <div className="space-y-8 py-8  rounded-lg shadow-md">
       <Form {...form}>
@@ -403,7 +416,9 @@ export default function EvaluationBaseForm(props: { userId: string }) {
             <Button variant={"outline"} type="button" onClick={addCriteria}>
               Add Criteria
             </Button>
-            <Button type="submit">Submit</Button>
+            <Button disabled={isPending} type="submit">
+              Submit
+            </Button>
           </div>
         </form>
       </Form>
@@ -414,4 +429,15 @@ export default function EvaluationBaseForm(props: { userId: string }) {
 // Helper function to validate the selected grade type
 function isValidGradeType(selectedType: string) {
   return gradeTypes.some((gradeType) => gradeType.type === selectedType);
+}
+
+function getGradeTypeByName(gradeTypeName: GradeTypeUnionType["name"]) {
+  return (
+    gradeTypes.find((gradeType) => gradeType.name === gradeTypeName) || {
+      name: "Numeric",
+      type: "Numeric",
+      range: "0-100",
+      grade: 0,
+    }
+  );
 }
