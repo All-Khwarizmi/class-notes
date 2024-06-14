@@ -23,6 +23,11 @@ function SaveSequenceBodyButton({
     <AfterMenuButton
       props={{
         onClick: () => {
+          const prevContent = sequence.body;
+          const currentContent = editor.getHTML();
+          if (prevContent === currentContent) {
+            return alert("No changes to save");
+          }
           setUpdateSequenceBodyOptions({
             userId,
             sequenceId: sequence._id,

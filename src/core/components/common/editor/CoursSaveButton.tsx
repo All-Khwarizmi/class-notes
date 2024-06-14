@@ -15,6 +15,11 @@ function CoursSaveButton({ cours, userId }: { cours: Cours; userId: string }) {
     <AfterMenuButton
       props={{
         onClick: () => {
+          const prevContent = cours.body;
+          const currentContent = editor.getHTML();
+          if (prevContent === currentContent) {
+            return alert("No changes to save");
+          }
           setUpdateCoursBodyOptions({
             userId,
             coursId: cours._id,
