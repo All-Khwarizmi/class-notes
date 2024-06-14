@@ -69,8 +69,11 @@ export default class EvaluationUsecases {
       const validatedEval = EvaluationBaseSchema.safeParse({
         ...evaluation,
         id: evaluation._id,
+      
       });
-      if (!validatedEval.success) {
+      
+      if (validatedEval.success === false) {
+        console.log("Invalid Evaluation Base", validatedEval.error.errors);
         return left(
           Failure.invalidValue({
             message: "Invalid Evaluation Base",
