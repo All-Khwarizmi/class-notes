@@ -1,6 +1,6 @@
 import ErrorDialog from "@/core/components/common/ErrorDialog";
 import { authUseCases } from "@/features/auth/application/usecases/auth-usecases";
-import getEvaluations from "@/features/evaluation/application/adapters/utils/actions/get-evaluations";
+import getEvaluations from "@/features/evaluation/application/adapters/actions/get-evaluations";
 import EvaluationTableView from "@/features/evaluation/presentation/views/EvaluationTableView";
 import { isLeft } from "fp-ts/lib/Either";
 import { redirect } from "next/navigation";
@@ -22,9 +22,7 @@ async function EvaluationsServerLayer() {
       />
     );
   }
-  return (
-    <EvaluationTableView evaluations={eitherEvals.right} /> 
-  );
+  return <EvaluationTableView evaluations={eitherEvals.right} />;
 }
 
 export default EvaluationsServerLayer;
