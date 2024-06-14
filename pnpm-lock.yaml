@@ -140,6 +140,9 @@ importers:
       next-themes:
         specifier: 0.3.0
         version: 0.3.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      prosemirror-inputrules:
+        specifier: ^1.4.0
+        version: 1.4.0
       prosemirror-model:
         specifier: ^1.21.0
         version: 1.21.0
