@@ -17,6 +17,7 @@ function ComplementView(props: {
   //! Check complement type and return the right component
   return (
     <Editor
+     
       content={props.complement.body}
       slotafter={
         <div className=" flex flex-col gap-4 ">

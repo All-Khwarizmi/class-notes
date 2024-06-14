@@ -3,16 +3,31 @@ import { EditorProvider } from "@tiptap/react";
 
 import { MenuBar } from "./MenuBar";
 import { EXTENSIONS } from "@/core/components/constants/editor-extenstions";
+import { debounce } from "lodash";
 
 export default function EditorProviderWrapper({
   children,
   content,
+  onUpdate,
 }: {
   content: string;
   children: React.ReactNode;
+  onUpdate?: (content: string) => void;
 }) {
+  const debouncedUpdate = debounce((content: string) => {
+    onUpdate!(content);
+  }, 4000);
   return (
     <EditorProvider
+      onUpdate={(editor) => {
+        const content = editor.editor.getHTML();
+        if (onUpdate) {
+          console.log("updating...");
+          debouncedUpdate(content);
+          return;
+        }
+        console.log("no update function");
+      }}
       autofocus
       content={
         content !== ""
