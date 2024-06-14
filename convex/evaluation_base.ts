@@ -1,3 +1,4 @@
+import { is } from "immutable";
 import { mutation, query } from "./_generated/server";
 import { v } from "convex/values";
 
@@ -6,6 +7,7 @@ export const createEvaluationBase = mutation({
     name: v.string(),
     description: v.optional(v.string()),
     createdBy: v.string(),
+    isGraded: v.boolean(),
     gradeType: v.union(
       v.object({
         name: v.literal("Numeric"),
@@ -397,6 +399,7 @@ export const createEvaluationBase = mutation({
       gradeType: args.gradeType,
       createdAt: Date.now(),
       criterias: args.criterias,
+      isGraded: args.isGraded,
     });
     if (evaluationId === null) {
       throw new Error("Failed to create evaluation");
