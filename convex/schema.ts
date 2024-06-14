@@ -200,7 +200,7 @@ export default defineSchema({
   }),
   EvaluationBase: defineTable({
     name: v.string(),
-    description: v.string(),
+    description: v.optional(v.string()),
     createdBy: v.string(),
     createdAt: v.float64(),
     criterias: v.array(
