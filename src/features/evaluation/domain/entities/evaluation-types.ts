@@ -1,10 +1,14 @@
-import { GradeTypeUnionType } from "./evaluation-schema";
+import {
+  EvaluationCriteriaType,
+  GradeTypeUnionType,
+} from "./evaluation-schema";
 
 export interface CreateEvaluationOptions {
   name: string;
   createdBy: string;
   description: string;
   gradeType: GradeTypeUnionType;
+  criterias: EvaluationCriteriaType[];
 }
 
 export interface GetEvaluationBaseOptions {
