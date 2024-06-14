@@ -1175,6 +1175,7 @@ export default class ConvexDatabase extends IDatabase {
           createdBy: options.createdBy,
           gradeType: options.gradeType,
           criterias: options.criterias,
+          isGraded: options.isGraded,
         }
       );
       if (!result) {
