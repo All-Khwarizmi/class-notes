@@ -217,12 +217,7 @@ const SportPerformanceSchema = z.object({
   ]),
 });
 
-// Time Grading Schema
-const TimeGradeSchema = z.object({
-  name: z.literal("Time"),
-  type: z.literal("Time"),
-  grade: z.string(), // Time expressed in format "HH:MM:SS" or "MM:SS"
-});
+
 export const GradeTypeUnionSchema = z.union([
   NumericGradeSchema,
   PercentageGradeSchema,
@@ -245,7 +240,6 @@ export const GradeTypeUnionSchema = z.union([
   SportRankingSchema,
   SportResultSchema,
   SportPerformanceSchema,
-  TimeGradeSchema,
 ]);
 // Combine all into EvaluationSchema
 export const EvaluationBaseSchema = z.object({
@@ -282,5 +276,4 @@ export type SportPointsType = z.infer<typeof SportPointsSchema>;
 export type SportRankingType = z.infer<typeof SportRankingSchema>;
 export type SportResultType = z.infer<typeof SportResultSchema>;
 export type SportPerformanceType = z.infer<typeof SportPerformanceSchema>;
-export type TimeGradeType = z.infer<typeof TimeGradeSchema>;
 export type GradeTypeUnionType = z.infer<typeof GradeTypeUnionSchema>;

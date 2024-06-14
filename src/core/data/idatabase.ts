@@ -12,6 +12,7 @@ import {
 } from "@/features/cours-sequence/domain/entities/cours-schemas";
 import { Complement } from "@/features/complement/domain/complement-schemas";
 import { Note } from "@/features/notes/domain/notes-schemas";
+import { GradeTypeUnionType } from "@/features/evaluation/domain/entities/evaluation-schema";
 
 export default abstract class IDatabase {
   abstract getUser({
@@ -302,4 +303,26 @@ export default abstract class IDatabase {
     type: "classe" | "sequence" | "cours" | "complement";
     typeId: string;
   }): Promise<Either<Failure<string>, void>>;
+
+  abstract createEvaluationBase(options: {
+    name: string;
+    description: string;
+    createdBy: string;
+    gradeType: GradeTypeUnionType;
+  }): Promise<Either<Failure<string>, string>>;
+
+  abstract getEvaluationBase(options: {
+    evaluationId: string;
+  }): Promise<Either<Failure<string>, DocumentData>>;
+
+  abstract getEvaluationBases(options: {
+    createdBy: string;
+  }): Promise<Either<Failure<string>, DocumentData[]>>;
+
+  abstract updateEvaluationBase(options: {
+    evaluationId: string;
+    name: string;
+    description: string;
+    gradeType: GradeTypeUnionType;
+  }): Promise<Either<Failure<string>, void>>; 
 }
