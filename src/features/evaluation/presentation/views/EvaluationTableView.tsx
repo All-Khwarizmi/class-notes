@@ -15,7 +15,6 @@ import {
 import { Button } from "@/core/components/ui/button";
 import { EvaluationBaseType } from "../../domain/entities/evaluation-schema";
 
-
 function EvaluationTableView({
   evaluations,
 }: {
@@ -46,14 +45,14 @@ function EvaluationTableView({
               <TableCell className="w-[100px]">
                 {evaluation.isGraded ? "Yes" : "No"}
               </TableCell>
-              
+
               <TableCell className="w-[200px]">
-                {new Date(evaluation.createdAt).toLocaleDateString()}
+                {new Date(evaluation.createdAt).toDateString()}
               </TableCell>
               <TableCell className="w-[150px]">
                 <Link href={`/evaluation/${evaluation.id}`}>
                   <Button variant="link">
-                    <ExternalLink size={16} className="mr-2" /> 
+                    <ExternalLink size={16} className="mr-2" />
                   </Button>
                 </Link>
               </TableCell>
