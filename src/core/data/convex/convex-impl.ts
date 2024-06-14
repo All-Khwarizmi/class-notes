@@ -19,6 +19,7 @@ import { GradeTypeUnionType } from "@/features/evaluation/domain/entities/evalua
 import {
   CreateEvaluationOptions,
   GetEvaluationBaseOptions,
+  GetEvaluationBasesOptions,
 } from "@/features/evaluation/domain/entities/evaluation-types";
 
 export interface ConvexDatabaseOptions {
@@ -1226,9 +1227,9 @@ export default class ConvexDatabase extends IDatabase {
     }
   }
 
-  async getEvaluationBases(options: {
-    createdBy: string;
-  }): Promise<Either<Failure<string>, DocumentData[]>> {
+  async getEvaluationBases(
+    options: GetEvaluationBasesOptions
+  ): Promise<Either<Failure<string>, DocumentData[]>> {
     try {
       const result = await fetchQuery(
         this._db.evaluation_base.listEvaluationsBase,

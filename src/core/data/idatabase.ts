@@ -13,7 +13,7 @@ import {
 import { Complement } from "@/features/complement/domain/complement-schemas";
 import { Note } from "@/features/notes/domain/notes-schemas";
 import { GradeTypeUnionType } from "@/features/evaluation/domain/entities/evaluation-schema";
-import { CreateEvaluationOptions, GetEvaluationBaseOptions } from "@/features/evaluation/domain/entities/evaluation-types";
+import { CreateEvaluationOptions, GetEvaluationBaseOptions, GetEvaluationBasesOptions } from "@/features/evaluation/domain/entities/evaluation-types";
 
 export default abstract class IDatabase {
   abstract getUser({
@@ -313,9 +313,9 @@ export default abstract class IDatabase {
     options: GetEvaluationBaseOptions
   ): Promise<Either<Failure<string>, DocumentData>>;
 
-  abstract getEvaluationBases(options: {
-    createdBy: string;
-  }): Promise<Either<Failure<string>, DocumentData[]>>;
+  abstract getEvaluationBases(
+    options: GetEvaluationBasesOptions
+  ): Promise<Either<Failure<string>, DocumentData[]>>;
 
   abstract updateEvaluationBase(options: {
     evaluationId: string;
