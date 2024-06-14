@@ -202,6 +202,7 @@ export default defineSchema({
     name: v.string(),
     description: v.optional(v.string()),
     createdBy: v.string(),
+    isGraded: v.boolean(),
     createdAt: v.float64(),
     criterias: v.array(
       v.object({
