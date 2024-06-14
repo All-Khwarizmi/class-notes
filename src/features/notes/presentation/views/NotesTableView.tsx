@@ -88,25 +88,9 @@ function NotesTableView(props: { notes: Note[]; parentId: string }) {
                 setOpen={setIsFileFormVisible}
               />
             )}
-            {isFolderFormVisible && (
-              <NoteFolderFormRow
-                handleSubmit={handleSubmit}
-                setOpen={setIsFolderFormVisible}
-              />
-            )}
           </TableBody>
         </Table>
         <div className="flex justify-center py-4 gap-4">
-          <button
-            onClick={() => {
-              setIsFolderFormVisible(true);
-            }}
-            className={cn(
-              "bg-transparent rounded-md p-1 px-2 flex items-center ml-2 hover:bg-slate-400 border border-slate-400 hover:border-slate-400"
-            )}
-          >
-            <Folder size={12} />
-          </button>
           <button
             onClick={() => {
               setIsFileFormVisible(true);
