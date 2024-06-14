@@ -31,8 +31,11 @@ import {
   GradeTypeUnionType,
 } from "../../domain/entities/evaluation-schema";
 import { useEffect, useState } from "react";
-import { Cross, X } from "lucide-react";
+import { X } from "lucide-react";
+
+
 import useCreateBaseEvaluation from "../../application/adapters/services/useCreateBaseEvaluation";
+import { getGradeTypeByName } from "../../application/adapters/utils/grade-helpers";
 
 // Define the Zod schema for EvaluationBase
 const EvaluationBaseSchema = z.object({
@@ -42,70 +45,7 @@ const EvaluationBaseSchema = z.object({
 
   // Using the GradeTypeUnionSchema from EvaluationBaseSchema
 });
-const gradeTypes: GradeTypeUnionType[] = [
-  {
-    name: "Numeric",
-    type: "Numeric",
-    range: "0-100",
-    grade: 0,
-  },
-  { name: "Percentage", type: "Percentage", grade: 0 },
-  {
-    name: "US Letter Grades",
-    type: "A/B/C/D/F",
-    grade: "A",
-  },
-  {
-    name: "US Letter Grades with Pass/Fail",
-    type: "A/B/C/D/F/Pass/Fail",
-    grade: "A",
-  },
-  {
-    name: "US Letter Grades with Pass/Fail/None",
-    type: "A/B/C/D/F/Pass/Fail/None",
-    grade: "A",
-  },
-  { name: "Pass/Fail", type: "Pass/Fail", grade: "Pass" },
-  {
-    name: "Descriptive Grades",
-    type: "Excellent/Good/Satisfactory/Needs Improvement",
-    grade: "Excellent",
-  },
-  { name: "US 4.0 Scale", type: "4.0 Scale", grade: 0 },
-  {
-    name: "UK Honors",
-    type: "First/Upper Second/Lower Second/Third",
-    grade: "First",
-  },
-  { name: "10-point Scale", type: "10-point Scale", grade: 0 },
-  { name: "20-point Scale", type: "20-point Scale", grade: 0 },
-  { name: "Grade Points", type: "Grade Points", grade: 0 },
-  { name: "French Grading", type: "20-point Scale", grade: 0 },
-  { name: "German Grading", type: "Numeric", range: "1-5", grade: 0 },
-  {
-    name: "Australian Grading",
-    type: "HD/D/C/P/F",
-    grade: "HD",
-  },
-  { name: "Spanish Grading", type: "10-point Scale", grade: 0 },
-  {
-    name: "Sport Points",
-    type: "Points",
-    range: "0-100",
-    grade: 0,
-  },
-  {
-    name: "Sport Ranking",
-    type: "Ranking",
-    grade: "10th",
-  },
-  { name: "Sport Result", type: "Win/Loss/Tie", grade: "Win" },
-  {
-    name: "Sport Performance",
-    type: "Performance Level",
-    grade: "Excellent",
-  },
-];
+
 export type EvaluationBaseTypeForm = z.infer<typeof EvaluationBaseSchema>;
 
 export default function EvaluationBaseForm(props: { userId: string }) {
@@ -426,18 +366,3 @@ export default function EvaluationBaseForm(props: { userId: string }) {
   );
 }
 
-// Helper function to validate the selected grade type
-function isValidGradeType(selectedType: string) {
-  return gradeTypes.some((gradeType) => gradeType.type === selectedType);
-}
-
-function getGradeTypeByName(gradeTypeName: GradeTypeUnionType["name"]) {
-  return (
-    gradeTypes.find((gradeType) => gradeType.name === gradeTypeName) || {
-      name: "Numeric",
-      type: "Numeric",
-      range: "0-100",
-      grade: 0,
-    }
-  );
-}
