@@ -20,6 +20,7 @@ import {
   CreateEvaluationOptions,
   GetEvaluationBaseOptions,
   GetEvaluationBasesOptions,
+  UpdateEvaluationBaseOptions,
 } from "@/features/evaluation/domain/entities/evaluation-types";
 
 export interface ConvexDatabaseOptions {
@@ -1258,12 +1259,9 @@ export default class ConvexDatabase extends IDatabase {
     }
   }
 
-  async updateEvaluationBase(options: {
-    evaluationId: string;
-    name: string;
-    description: string;
-    gradeType: GradeTypeUnionType;
-  }): Promise<Either<Failure<string>, void>> {
+  async updateEvaluationBase(
+    options: UpdateEvaluationBaseOptions
+  ): Promise<Either<Failure<string>, void>> {
     try {
       await fetchMutation(this._db.evaluation_base.updateEvaluationBase, {
         evaluationId: options.evaluationId,
