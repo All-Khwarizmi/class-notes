@@ -8,6 +8,8 @@ import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight";
 import { common, createLowlight } from "lowlight";
 import { IndentExtension } from "../common/editor/Indent";
 import YouTube from "@tiptap/extension-youtube";
+import DoubleCurlyBracesExtension from "../common/editor/DoubleCurlyBracesExtension";
+import { DoubleBrakets } from "../common/editor/DoubleBrakets";
 
 const lowlight = createLowlight(common);
 
@@ -16,9 +18,21 @@ export const EXTENSIONS = [
   IndentExtension,
   CodeBlockLowlight.configure({
     lowlight,
+    defaultLanguage: "typescript",
   }),
+  DoubleCurlyBracesExtension,
+  DoubleBrakets,
+
   TextAlign.configure({
-    types: ["heading", "paragraph", "img"],
+    types: [
+      "heading",
+      "paragraph",
+      "img",
+      "codeBlock",
+      "code",
+      "blockquote",
+      "pre",
+    ],
     alignments: ["left", "center", "right", "justify"],
     defaultAlignment: "left",
   }),
