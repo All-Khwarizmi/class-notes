@@ -4,7 +4,7 @@ import { v } from "convex/values";
 export const createEvaluationBase = mutation({
   args: {
     name: v.string(),
-    description: v.string(),
+    description: v.optional(v.string()),
     createdBy: v.string(),
     gradeType: v.union(
       v.object({
