@@ -6,7 +6,7 @@ import {
 export interface CreateEvaluationOptions {
   name: string;
   createdBy: string;
-  description: string;
+  description?: string;
   gradeType: GradeTypeUnionType;
   criterias: EvaluationCriteriaType[];
 }
