@@ -36,15 +36,19 @@ import { X } from "lucide-react";
 
 import useCreateBaseEvaluation from "../../application/adapters/services/useCreateBaseEvaluation";
 import { getGradeTypeByName } from "../../application/adapters/utils/grade-helpers";
+import useUpdateBaseEvaluation from "../../application/adapters/services/useUpdateBaseEvaluation";
 
-export default function EvaluationBaseForm(props: { userId: string }) {
+export default function EvaluationBaseForm(props: {
+  userId: string;
+  evaluation?: EvaluationBaseType;
+}) {
   const form = useForm({
     resolver: zodResolver(EvaluationBaseTypeFormSchema),
     defaultValues: {
-      name: "",
-      description: "",
-      isGraded: true,
-      gradeType: { name: "Numeric", type: "Numeric", range: "0-100", grade: 0 }, // Default value for gradeType
+      name: props.evaluation?.name || "",
+      description: props.evaluation?.description || "",
+      gradeType: props.evaluation?.gradeType.name || "Numeric",
+      isGraded: props.evaluation?.isGraded || true,
     },
   });
   const {
@@ -52,9 +56,17 @@ export default function EvaluationBaseForm(props: { userId: string }) {
     isPending,
     isSuccess,
   } = useCreateBaseEvaluation();
-  const [criterias, setCriterias] = useState<EvaluationCriteriaType[]>([]);
+  const {
+    mutate: updateEvaluation,
+    isPending: isUpdatePending,
+    isSuccess: isUpdateSuccess,
+  } = useUpdateBaseEvaluation();
+  const [criterias, setCriterias] = useState<EvaluationCriteriaType[]>(
+    props.evaluation?.criterias || []
+  );
   // Handler to add a new criteria
   const addCriteria = () => {
+    console.log("Adding criteria", form.getValues("gradeType"));
     // If the gradeType is not selected, show an error message
     if (!form.getValues("gradeType")) {
       toast.error("Please select a grade type before adding criteria");
@@ -64,6 +76,7 @@ export default function EvaluationBaseForm(props: { userId: string }) {
     const gradeType = getGradeTypeByName(
       gradeVal as GradeTypeUnionType["name"]
     );
+    console.log("Grade Type:", gradeType);
     setCriterias([
       ...criterias,
       {
@@ -88,6 +101,7 @@ export default function EvaluationBaseForm(props: { userId: string }) {
       criterias,
       createdBy: props.userId,
     };
+    console.log("Evaluation:", evaluation);
     const isValid = EvaluationBaseTypeFormSchema.safeParse(evaluation);
     if (!isValid.success) {
       toast.error("Invalid evaluation base data");
@@ -125,15 +139,27 @@ export default function EvaluationBaseForm(props: { userId: string }) {
       return;
     }
     console.log("Form Submitted:", evaluation);
+    if (props.evaluation) {
+      updateEvaluation({
+        evaluationId: props.evaluation.id,
+        ...evaluation,
+      });
+      return;
+    }
     createEvaluation(evaluation);
   }
+
+  
 
   useEffect(() => {
     if (isSuccess) {
       toast.success("Evaluation base created successfully!");
       form.reset();
     }
-  }, [isSuccess]);
+    if (isUpdateSuccess) {
+      toast.success("Evaluation base updated successfully!");
+    }
+  }, [isSuccess, isUpdateSuccess]);
   return (
     <div className="space-y-8 py-8  rounded-lg shadow-md">
       <Form {...form}>
@@ -175,10 +201,7 @@ export default function EvaluationBaseForm(props: { userId: string }) {
               <FormItem>
                 <FormLabel htmlFor={field.name}>Grade Type</FormLabel>
                 <FormControl>
-                  <Select
-                    onValueChange={field.onChange}
-                    value={field.value.type}
-                  >
+                  <Select onValueChange={field.onChange} value={field.value}>
                     <SelectTrigger className="w-[180px]">
                       <SelectValue placeholder="Select a grade type" />
                     </SelectTrigger>
@@ -345,7 +368,7 @@ export default function EvaluationBaseForm(props: { userId: string }) {
             <Button variant={"outline"} type="button" onClick={addCriteria}>
               Add Criteria
             </Button>
-            <Button disabled={isPending} type="submit">
+            <Button disabled={isPending || isUpdatePending } type="submit">
               Submit
             </Button>
           </div>
