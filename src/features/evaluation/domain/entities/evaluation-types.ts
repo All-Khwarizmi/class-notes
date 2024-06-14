@@ -23,6 +23,8 @@ export interface GetEvaluationBasesOptions {
 export interface UpdateEvaluationBaseOptions {
   evaluationId: string;
   name: string;
-  description: string;
+  isGraded: boolean;
+  description?: string;
   gradeType: GradeTypeUnionType;
+  criterias: EvaluationCriteriaType[];
 }
