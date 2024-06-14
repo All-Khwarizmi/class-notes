@@ -10,6 +10,7 @@ import AfterMenuBar from "@/core/components/common/editor/AfterMunuBar";
 import { Complement } from "@/features/complement/domain/complement-schemas";
 import VisibilitySwitch from "../components/VisibilitySwitch";
 import useUpdateSequenceBody from "../../application/usecases/services/useUpdateSequenceBody";
+import useUpdateCoursBody from "../../application/usecases/services/useUpdateCoursBody";
 
 export default function CoursSequenceView({
   cours,
@@ -29,13 +30,23 @@ export default function CoursSequenceView({
   sequenceType?: "template" | "sequence";
 }) {
   const { setUpdateSequenceBodyOptions } = useUpdateSequenceBody();
+  const { setUpdateCoursBodyOptions } = useUpdateCoursBody();
   if (type === "cours" && cours && complements) {
     return (
       <>
         <h1 className="text-2xl font-bold pb-4 dark:text-slate-300 text-slate-500 ">
           {cours.name}
         </h1>
-        <EditorProviderWrapper content={cours.body}>
+        <EditorProviderWrapper
+          content={cours.body}
+          onUpdate={(content) => {
+            setUpdateCoursBodyOptions({
+              userId,
+              coursId: cours._id,
+              body: content,
+            });
+          }}
+        >
           <div className=" flex flex-col gap-4 ">
             <AfterMenuBar>
               <div className="flex items-center justify-between w-full gap-4 ">
@@ -77,11 +88,6 @@ export default function CoursSequenceView({
         <EditorProviderWrapper
           content={sequence.body}
           onUpdate={(content) => {
-            // debounce the update
-            
-              
-            
-
             setUpdateSequenceBodyOptions({
               userId,
               sequenceId: sequence._id,
