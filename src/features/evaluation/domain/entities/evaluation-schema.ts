@@ -217,7 +217,6 @@ const SportPerformanceSchema = z.object({
   ]),
 });
 
-
 export const GradeTypeUnionSchema = z.union([
   NumericGradeSchema,
   PercentageGradeSchema,
@@ -243,6 +242,7 @@ export const GradeTypeUnionSchema = z.union([
 ]);
 // Combine all into EvaluationSchema
 export const EvaluationBaseSchema = z.object({
+  id: z.string(),
   name: z.string(),
   description: z.string(),
   createdBy: z.string(),
