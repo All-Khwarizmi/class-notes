@@ -53,8 +53,36 @@ export default class EvaluationUsecases {
     return right(validatedEval.data);
   }
 
-  async getEvaluationBases(options: GetEvaluationBasesOptions) {
-    return await this._evaluationRepository.getEvaluationBases(options);
+  async getEvaluationBases(
+    options: GetEvaluationBasesOptions
+  ): Promise<Either<Failure<string>, EvaluationBaseType[]>> {
+    const eitherEvals = await this._evaluationRepository.getEvaluationBases(
+      options
+    );
+
+    if (isLeft(eitherEvals)) {
+      return eitherEvals;
+    }
+
+    const validatedEvals: EvaluationBaseType[] = [];
+    for (const evaluation of eitherEvals.right) {
+      const validatedEval = EvaluationBaseSchema.safeParse({
+        ...evaluation,
+        id: evaluation._id,
+      });
+      if (!validatedEval.success) {
+        return left(
+          Failure.invalidValue({
+            message: "Invalid Evaluation Base",
+            invalidValue: evaluation,
+            code: "APP203",
+          })
+        );
+      }
+      validatedEvals.push(validatedEval.data);
+    }
+
+    return right(validatedEvals);
   }
 
   async updateEvaluationBase(options: UpdateEvaluationBaseOptions) {
