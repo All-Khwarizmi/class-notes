@@ -8,16 +8,23 @@ import { Eye } from "lucide-react";
 import Link from "next/link";
 import AfterMenuButton from "@/core/components/common/editor/AfterMenuButton";
 import VisibilitySwitch from "@/features/cours-sequence/presentation/components/VisibilitySwitch";
+import useUpdateComplement from "../../application/adapters/services/useUpdateComplement";
 
 function ComplementView(props: {
   slug: string;
   complement: Complement;
   userId: string;
 }) {
+  const { setComplementOptions } = useUpdateComplement();
   //! Check complement type and return the right component
   return (
     <Editor
-     
+      onUpdate={(content) => {
+        setComplementOptions({
+          ...props.complement,
+          body: content,
+        });
+      }}
       content={props.complement.body}
       slotafter={
         <div className=" flex flex-col gap-4 ">
