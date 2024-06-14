@@ -16,6 +16,7 @@ import {
 import { Complement } from "@/features/complement/domain/complement-schemas";
 import { Note } from "@/features/notes/domain/notes-schemas";
 import { GradeTypeUnionType } from "@/features/evaluation/domain/entities/evaluation-schema";
+import { CreateEvaluationOptions } from "@/features/evaluation/domain/entities/evaluation-types";
 
 export interface ConvexDatabaseOptions {
   db: typeof api;
@@ -1157,12 +1158,9 @@ export default class ConvexDatabase extends IDatabase {
     }
   }
 
-  async createEvaluationBase(options: {
-    name: string;
-    description: string;
-    createdBy: string;
-    gradeType: GradeTypeUnionType;
-  }): Promise<Either<Failure<string>, string>> {
+  async createEvaluationBase(
+    options: CreateEvaluationOptions
+  ): Promise<Either<Failure<string>, string>> {
     try {
       const result = await fetchMutation(
         this._db.evaluation_base.createEvaluationBase,
