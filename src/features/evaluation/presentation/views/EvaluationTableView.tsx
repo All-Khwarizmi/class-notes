@@ -50,7 +50,7 @@ function EvaluationTableView({
                 {new Date(evaluation.createdAt).toDateString()}
               </TableCell>
               <TableCell className="w-[150px]">
-                <Link href={`/evaluation/${evaluation.id}`}>
+                <Link href={`/evaluations/${evaluation.id}`}>
                   <Button variant="link">
                     <ExternalLink size={16} className="mr-2" />
                   </Button>
