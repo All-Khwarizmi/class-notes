@@ -24,3 +24,7 @@ const EvaluationWithGradeSchema = z.object({
   evaluationBaseId: z.string(), // ID referencing the base evaluation schema
   grades: z.array(StudentGradeSchema), // Array of student grade objects
 });
+
+export type EvaluationWithGradeType = z.infer<typeof EvaluationWithGradeSchema>;
+export type StudentGradeType = z.infer<typeof StudentGradeSchema>;
+export type Grade = z.infer<typeof GradeSchema>;
