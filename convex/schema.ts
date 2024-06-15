@@ -1,7 +1,7 @@
 import { defineSchema, defineTable } from "convex/server";
 import { v } from "convex/values";
-import { EvaluationWithGrade } from "./tables/evaluations_with_grades";
-import { EvaluationBase } from "./tables/evaluation_base";
+import { EvaluationWithGrade } from "./tables/evaluations_with_grades_convex_schema";
+import { EvaluationBase } from "./tables/evaluation_base_convex_schema";
 
 export default defineSchema({
   Users: defineTable({
