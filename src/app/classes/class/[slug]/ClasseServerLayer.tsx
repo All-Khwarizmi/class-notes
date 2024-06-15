@@ -6,7 +6,7 @@ import StudentsTable from "@/features/classe/presentation/components/StudentsTab
 import { coursUsecases } from "@/features/cours-sequence/application/usecases/cours-usecases";
 import { NavItem } from "@/lib/types";
 import { isLeft } from "fp-ts/lib/Either";
-import { NotebookPen, Plus, Presentation } from "lucide-react";
+import { CandlestickChart, NotebookPen, Plus, Presentation } from "lucide-react";
 import { redirect } from "next/navigation";
 import React from "react";
 
@@ -50,6 +50,11 @@ async function ClasseServerLayer(props: { slug: string }) {
       icon: <Presentation size={16} />,
       isChidren: true,
       children: sequenceNavItems,
+    },
+    {
+      title: "Evaluations",
+      href: `/evaluations/assign/${props.slug}`,
+      icon: <CandlestickChart size={16} />,
     },
     {
       title: "Notes",

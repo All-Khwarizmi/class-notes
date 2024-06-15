@@ -3,7 +3,6 @@ import { defineTable } from "convex/server";
 import { gradeType } from "../fields/grade_type";
 
 const EvaluationWithGrade = defineTable({
-  id: v.string(), // Unique identifier for the evaluation
   publishDate: v.float64(), // Date when the evaluation is published
   evaluationDate: v.float64(), // Date when the evaluation is conducted
   classeId: v.string(), // ID of the class being evaluated
