@@ -1,95 +1,130 @@
+import {
+  Grade,
+  StudentGradeType,
+} from "@/features/evaluation/domain/entities/evaluation-with-grades-schema";
 import { mutation, query } from "./_generated/server";
 import { v } from "convex/values";
 
-export const createEvaluationWithGrades = mutation({
+export const assignEvaluationToClasse = mutation({
   args: {
-    templateId: v.id("EvaluationTemplates"),
-    classId: v.id("Classes"),
-    studentId: v.id("Students"),
-    conductedBy: v.id("Users"),
-    overallGrade: v.optional(v.union(v.string(), v.number())),
-    feedback: v.optional(v.string()),
-    studentGrades: v.array(
-      v.object({
-        studentId: v.id("Students"),
-        grade: v.union(v.string(), v.number()),
-        feedback: v.optional(v.string()),
-      })
-    ),
+    classeId: v.string(),
+    evaluationId: v.string(),
   },
   handler: async (ctx, args) => {
-    const evaluationId = await ctx.db.insert("EvaluationsWithGrades", {
-      templateId: args.templateId,
-      classId: args.classId,
-      conductedBy: args.conductedBy,
-      conductedAt: Date.now(),
-      overallGrade: args.overallGrade,
-      feedback: args.feedback,
-      criterias: [],
-      studentId: args.studentId,
+    const evaluationBase = await ctx.db
+      .query("EvaluationBase")
+      .filter((q) => q.eq(q.field("_id"), args.evaluationId))
+      .first();
+
+    if (!evaluationBase) {
+      throw new Error("Evaluation base not found");
+    }
+    const students = await ctx.db
+      .query("Students")
+      .filter((q) => q.eq(q.field("classId"), args.classeId))
+      .collect();
+
+    if (!students) {
+      throw new Error("Students not found");
+    }
+    // Create default grades for each student
+    const grades: StudentGradeType[] = students.map((student) => ({
+      studentId: student._id,
+      feedback: "",
+      grades: evaluationBase.criterias.map((criteria) => ({
+        criteriaId: criteria.id,
+        gradeType: criteria.gradeType,
+        grade: "",
+      })),
+    }));
+    // Create the evaluation with grades
+    const resultId = await ctx.db.insert("EvaluationsWithGrades", {
+      publishDate: Date.now(),
+      evaluationDate: Date.now(),
+      classeId: args.classeId,
+      evaluationBaseId: args.evaluationId,
+      grades,
     });
-    return evaluationId;
+
+    if (!resultId) {
+      throw new Error("Failed to create evaluation with grades");
+    }
+
+    return resultId;
   },
 });
 
-export const updateEvaluationWithGrades = mutation({
+export const updateGrade = mutation({
   args: {
-    evaluationId: v.id("EvaluationsWithGrades"),
-    updates: v.object({
-      overallGrade: v.optional(v.union(v.string(), v.number())),
-      feedback: v.optional(v.string()),
-      studentGrades: v.optional(
-        v.array(
-          v.object({
-            studentId: v.id("Students"),
-            grade: v.union(v.string(), v.number()),
-            feedback: v.optional(v.string()),
-          })
-        )
-      ),
-    }),
+    evaluationId: v.string(),
+    studentId: v.string(),
+    criteriaId: v.string(),
+    grade: v.union(v.number(), v.string()),
   },
   handler: async (ctx, args) => {
-    await ctx.db.patch(args.evaluationId, {
-      ...(args.updates.overallGrade && {
-        overallGrade: args.updates.overallGrade,
-      }),
-      ...(args.updates.feedback && { feedback: args.updates.feedback }),
-      ...(args.updates.studentGrades && {
-        studentGrades: args.updates.studentGrades,
-      }),
-    });
+    const evaluation = await ctx.db
+      .query("EvaluationsWithGrades")
+      .filter((q) => q.eq(q.field("_id"), args.evaluationId))
+      .first();
+
+    if (!evaluation) {
+      throw new Error("Evaluation not found");
+    }
+
+    const studentGrade = evaluation.grades.find(
+      (grade) => grade.studentId === args.studentId
+    );
+
+    if (!studentGrade) {
+      throw new Error("Student not found");
+    }
+
+    const criteriaGrade = studentGrade.grades.find(
+      (grade) => grade.criteriaId === args.criteriaId
+    );
+
+    if (!criteriaGrade) {
+      throw new Error("Criteria not found");
+    }
+
+    criteriaGrade.grade = args.grade;
+
+    await ctx.db.patch(evaluation._id, evaluation);
+
+    return evaluation;
   },
 });
 
-export const listEvaluationsByClassOrTeacher = query({
+export const getEvaluationWithGrade = query({
   args: {
-    classId: v.optional(v.id("Classes")),
-    conductedBy: v.optional(v.id("Users")),
+    evaluationId: v.string(),
   },
+
   handler: async (ctx, args) => {
-    // Start with a base query
-    let query = ctx.db.query("EvaluationsWithGrades");
+    const evaluation = await ctx.db
+      .query("EvaluationsWithGrades")
+      .filter((q) => q.eq(q.field("_id"), args.evaluationId))
+      .first();
 
-    // Conditionally add filters based on provided arguments
-    if (args.classId) {
-      query = query.filter((q) => q.eq(q.field("classId"), args.classId));
-    }
-    if (args.conductedBy) {
-      query = query.filter((q) =>
-        q.eq(q.field("conductedBy"), args.conductedBy)
-      );
+    if (!evaluation) {
+      throw new Error("Evaluation not found");
     }
 
-    // Execute the constructed query
-    const evaluations = await query.collect();
+    return evaluation;
+  },
+});
+
+export const getEvaluationsWithGrades = query({
+  args: {
+    classeId: v.string(),
+  },
+
+  handler: async (ctx, args) => {
+    const evaluations = await ctx.db
+      .query("EvaluationsWithGrades")
+      .filter((q) => q.eq(q.field("classeId"), args.classeId))
+      .collect();
+
     return evaluations;
-  },
-});
-
-export const deleteEvaluationWithGrades = mutation({
-  args: { evaluationId: v.id("EvaluationsWithGrades") },
-  handler: async (ctx, args) => {
-    await ctx.db.delete(args.evaluationId);
   },
 });

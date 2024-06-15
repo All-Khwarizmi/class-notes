@@ -15,6 +15,17 @@ import {
 } from "@/features/cours-sequence/domain/entities/cours-schemas";
 import { Complement } from "@/features/complement/domain/complement-schemas";
 import { Note } from "@/features/notes/domain/notes-schemas";
+import { GradeTypeUnionType } from "@/features/evaluation/domain/entities/evaluation-schema";
+import {
+  AssignEvaluationOptions,
+  CreateEvaluationOptions,
+  GetEvaluationBaseOptions,
+  GetEvaluationBasesOptions,
+  GetEvaluationOptions,
+  GetEvaluationsListOptions,
+  UpdateEvaluationBaseOptions,
+  UpdateGradeOptions,
+} from "@/features/evaluation/domain/entities/evaluation-types";
 
 export interface ConvexDatabaseOptions {
   db: typeof api;
@@ -1150,6 +1161,242 @@ export default class ConvexDatabase extends IDatabase {
         Failure.invalidValue({
           invalidValue: userId,
           message: "Error updating visibility",
+          code: "INF101",
+        })
+      );
+    }
+  }
+
+  async createEvaluationBase(
+    options: CreateEvaluationOptions
+  ): Promise<Either<Failure<string>, string>> {
+    try {
+      const result = await fetchMutation(
+        this._db.evaluation_base.createEvaluationBase,
+        {
+          name: options.name,
+          description: options.description,
+          createdBy: options.createdBy,
+          gradeType: options.gradeType,
+          criterias: options.criterias,
+          isGraded: options.isGraded,
+        }
+      );
+      if (!result) {
+        return left(
+          Failure.invalidValue({
+            invalidValue: options,
+            message: "Error creating evaluation base",
+            code: "INF103",
+          })
+        );
+      }
+      return right(result);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: options,
+          message: "Error creating evaluation base",
+          code: "INF101",
+        })
+      );
+    }
+  }
+
+  async getEvaluationBase(
+    options: GetEvaluationBaseOptions
+  ): Promise<Either<Failure<string>, DocumentData>> {
+    try {
+      const result = await fetchQuery(
+        this._db.evaluation_base.getEvaluationBase,
+        {
+          evaluationId: options.evaluationId,
+        }
+      );
+      if (!result) {
+        return left(
+          Failure.invalidValue({
+            invalidValue: options.evaluationId,
+            message: "Error getting evaluation base",
+            code: "INF103",
+          })
+        );
+      }
+      return right(result);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: options.evaluationId,
+          message: "Error getting evaluation base",
+          code: "INF101",
+        })
+      );
+    }
+  }
+
+  async getEvaluationBases(
+    options: GetEvaluationBasesOptions
+  ): Promise<Either<Failure<string>, DocumentData[]>> {
+    try {
+      const result = await fetchQuery(
+        this._db.evaluation_base.listEvaluationsBase,
+        {
+          createdBy: options.createdBy,
+        }
+      );
+      if (!result) {
+        return left(
+          Failure.invalidValue({
+            invalidValue: options.createdBy,
+            message: "Error getting evaluation bases",
+            code: "INF103",
+          })
+        );
+      }
+      return right(result);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: options.createdBy,
+          message: "Error getting evaluation bases",
+          code: "INF101",
+        })
+      );
+    }
+  }
+
+  async updateEvaluationBase(
+    options: UpdateEvaluationBaseOptions
+  ): Promise<Either<Failure<string>, void>> {
+    try {
+      await fetchMutation(this._db.evaluation_base.updateEvaluationBase, {
+        evaluationId: options.evaluationId,
+        updates: {
+          name: options.name,
+          description: options.description,
+          gradeType: options.gradeType,
+          criterias: options.criterias,
+          isGraded: options.isGraded,
+        },
+      });
+      return right(undefined);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: options,
+          message: "Error updating evaluation base",
+          code: "INF101",
+        })
+      );
+    }
+  }
+
+  async assignEvaluationBaseToClasse(
+    options: AssignEvaluationOptions
+  ): Promise<Either<Failure<string>, string>> {
+    try {
+      const resultId = await fetchMutation(
+        this._db.evaluation_with_grades.assignEvaluationToClasse,
+        {
+          classeId: options.classeId,
+          evaluationId: options.evaluationId,
+        }
+      );
+      if (!resultId) {
+        return left(
+          Failure.invalidValue({
+            invalidValue: options,
+            message: "Failed to assign evaluation to class",
+            code: "INF103",
+          })
+        );
+      }
+      return right(resultId);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: options,
+          message: "Failed to create evaluation with grades",
+          code: "INF101",
+        })
+      );
+    }
+  }
+
+  async updateGrade(
+    options: UpdateGradeOptions
+  ): Promise<Either<Failure<string>, void>> {
+    try {
+      await fetchMutation(this._db.evaluation_with_grades.updateGrade, {
+        evaluationId: options.evaluationId,
+        studentId: options.studentId,
+        criteriaId: options.criteriaId,
+        grade: options.grade,
+      });
+      return right(undefined);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: options,
+          message: "Failed to update grade",
+          code: "INF101",
+        })
+      );
+    }
+  }
+
+  async getEvaluationWithGrade(
+    options: GetEvaluationOptions
+  ): Promise<Either<Failure<string>, DocumentData>> {
+    try {
+      const result = await fetchQuery(
+        this._db.evaluation_with_grades.getEvaluationWithGrade,
+        options
+      );
+      if (!result) {
+        return left(
+          Failure.invalidValue({
+            invalidValue: options,
+            message: "Error getting evaluation with grade",
+            code: "INF103",
+          })
+        );
+      }
+      return right(result);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: options,
+          message: "Error getting evaluation with grade",
+          code: "INF101",
+        })
+      );
+    }
+  }
+
+  async getEvaluationsListWithGrade(
+    options: GetEvaluationsListOptions
+  ): Promise<Either<Failure<string>, DocumentData[]>> {
+    try {
+      const result = await fetchQuery(
+        this._db.evaluation_with_grades.getEvaluationsWithGrades,
+        options
+      );
+      if (!result) {
+        return left(
+          Failure.invalidValue({
+            invalidValue: options,
+            message: "Error getting evaluations with grades",
+            code: "INF103",
+          })
+        );
+      }
+      return right(result);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: options,
+          message: "Error getting evaluations with grades",
           code: "INF101",
         })
       );

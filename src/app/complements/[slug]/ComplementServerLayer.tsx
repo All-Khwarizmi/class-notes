@@ -1,7 +1,6 @@
 import ErrorDialog from "@/core/components/common/ErrorDialog";
 import { authUseCases } from "@/features/auth/application/usecases/auth-usecases";
 import { complementUsecases } from "@/features/complement/application/usecases/complement-usecases";
-import { ComplementSchema } from "@/features/complement/domain/complement-schemas";
 import ComplementView from "@/features/complement/presentation/views/ComplementView";
 import { isLeft } from "fp-ts/lib/Either";
 import { redirect } from "next/navigation";

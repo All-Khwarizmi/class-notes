@@ -1,5 +1,7 @@
 import { defineSchema, defineTable } from "convex/server";
 import { v } from "convex/values";
+import { EvaluationWithGrade } from "./tables/evaluations_with_grades_convex_schema";
+import { EvaluationBase } from "./tables/evaluation_base_convex_schema";
 
 export default defineSchema({
   Users: defineTable({
@@ -198,6 +200,7 @@ export default defineSchema({
     evaluationsTemplatesId: v.array(v.id("EvaluationTemplates")),
     publish: v.optional(v.boolean()),
   }),
+  EvaluationBase,
 
   Students: defineTable({
     name: v.string(),
@@ -266,19 +269,7 @@ export default defineSchema({
     gradeType: v.string(),
     criteriaIds: v.array(v.id("Criteria")),
   }).index("by_createdBy", ["createdBy"]),
-  EvaluationsWithGrades: defineTable({
-    templateId: v.id("EvaluationTemplates"),
-    classId: v.id("Classes"),
-    studentId: v.id("Students"),
-    conductedBy: v.id("Users"),
-    conductedAt: v.float64(),
-    overallGrade: v.optional(v.union(v.string(), v.number())),
-    feedback: v.optional(v.string()),
-    criterias: v.array(v.id("CriteriaWithGrades")),
-  })
-    .index("by_classId", ["classId"])
-    .index("by_studentId", ["studentId"])
-    .index("by_conductedBy", ["conductedBy"]),
+  EvaluationsWithGrades: EvaluationWithGrade,
   RapportStudent: defineTable({
     studentId: v.id("Students"),
     rapport: v.string(),
