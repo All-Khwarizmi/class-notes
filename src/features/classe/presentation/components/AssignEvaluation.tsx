@@ -11,10 +11,15 @@ import { SelectGroup } from "@radix-ui/react-select";
 import useGetEvaluationsBaseList from "@/features/evaluation/application/adapters/services/useGetEvaluationsBaseList";
 import { isRight } from "fp-ts/lib/Either";
 import { Button } from "@/core/components/ui/button";
-function AssignEvaluation(props: { userId: string }) {
+import useAssignEvaluation from "@/features/evaluation/application/adapters/services/useAssignEvaluation";
+import { Loader } from "lucide-react";
+import { toast } from "sonner";
+function AssignEvaluation(props: { userId: string; classeId: string }) {
   const { data: eitherEvaluations, isPending } = useGetEvaluationsBaseList({
     userId: props.userId,
   });
+  const { mutate: assignEvaluation, isPending: isAssignPending } =
+    useAssignEvaluation();
 
   const [selectedEvaluation, setSelectedEvaluation] =
     useState<EvaluationBaseType | null>(null);
@@ -28,9 +33,17 @@ function AssignEvaluation(props: { userId: string }) {
       return eitherEvaluations.right;
     }
     return [];
-  }, [eitherEvaluations]);
+  }, [eitherEvaluations, isPending]);
+
   function handleSubmit() {
-    console.log("Submit");
+    if (selectedEvaluation) {
+      assignEvaluation({
+        evaluationId: selectedEvaluation.id,
+        classeId: props.classeId,
+      });
+    } else {
+      toast.error("Please select an evaluation");
+    }
   }
   function handleChange(value: string) {
     console.log(value);
@@ -58,7 +71,11 @@ function AssignEvaluation(props: { userId: string }) {
           </SelectGroup>
         </SelectContent>
       </Select>
-      <Button onClick={handleSubmit}>Assign</Button>
+      {isAssignPending ? (
+        <Loader className="animate-spin" />
+      ) : (
+        <Button onClick={handleSubmit}>Assign</Button>
+      )}
     </div>
   );
 }
