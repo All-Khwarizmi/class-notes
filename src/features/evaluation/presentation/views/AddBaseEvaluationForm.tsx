@@ -32,7 +32,7 @@ import {
   GradeTypeUnionType,
 } from "../../domain/entities/evaluation-schema";
 import { useEffect, useState } from "react";
-import { ChevronsDownUp, ChevronsUpDown, X } from "lucide-react";
+import { ChevronDown, ChevronsDownUp, ChevronsUpDown, X } from "lucide-react";
 
 import useCreateBaseEvaluation from "../../application/adapters/services/useCreateBaseEvaluation";
 import { getGradeTypeByName } from "../../application/adapters/utils/grade-helpers";
@@ -42,6 +42,7 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/core/components/ui/collapsible";
+import { cn } from "@/lib/utils";
 export default function EvaluationBaseForm(props: {
   userId: string;
   evaluation?: EvaluationBaseType;
@@ -312,15 +313,19 @@ export default function EvaluationBaseForm(props: {
                 <div className="flex justify-between items-center gap-2 ">
                   <FormLabel>Criteria {index + 1}</FormLabel>{" "}
                   <span>
-                    {openArray[index] ? (
-                      <ChevronsDownUp size={16} />
-                    ) : (
-                      <ChevronsUpDown size={16} />
-                    )}
+                    <ChevronDown
+                      className={cn(
+                        "transform transition-transform duration-500",
+                        {
+                          "rotate-180": openArray[index],
+                        }
+                      )}
+                      size={16}
+                    />
                   </span>
                 </div>
               </CollapsibleTrigger>
-              <CollapsibleContent>
+              <CollapsibleContent className="CollapsibleContent">
                 <div className="space-y-4">
                   <div className="border p-4 rounded-lg space-y-2 relative">
                     <div className="flex items-center justify-between pb-2">
