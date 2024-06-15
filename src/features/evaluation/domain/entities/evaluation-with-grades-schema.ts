@@ -5,6 +5,7 @@ import { GradeTypeUnionSchema } from "./evaluation-schema";
 const GradeSchema = z.object({
   criteriaId: z.string(), // ID of the grading criteria
   gradeType: GradeTypeUnionSchema, // The specific grade type object from EvaluationBaseSchema
+  grade: z.union([z.number(), z.string()]), // The grade value
 });
 
 // Student grade schema, which uses the GradeSchema
