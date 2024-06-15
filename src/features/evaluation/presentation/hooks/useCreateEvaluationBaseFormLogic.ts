@@ -12,6 +12,7 @@ import { toast } from "sonner";
 import { getGradeTypeByName } from "../../application/adapters/utils/grade-helpers";
 import useCreateBaseEvaluation from "../../application/adapters/services/useCreateBaseEvaluation";
 import useUpdateBaseEvaluation from "../../application/adapters/services/useUpdateBaseEvaluation";
+import { add } from "lodash";
 
 function useCreateEvaluationBaseFormLogic(props: {
   userId: string;
@@ -68,6 +69,7 @@ function useCreateEvaluationBaseFormLogic(props: {
         createdBy: props.userId,
       },
     ]);
+    setOpenArray([...openArray, true]);
   };
   function onSubmit(values: EvaluationBaseTypeForm) {
     const gradeVal = form.getValues("gradeType") as unknown;
