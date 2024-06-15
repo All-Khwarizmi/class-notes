@@ -101,7 +101,7 @@ export default function CustomDialog({
             <button
               onClick={() => setOpen?.(true)}
               className={cn(
-                `text-gray-300 text-sm bg-green-900 p-2 rounded-xl  hover:text-gray-900 dark:text-gray-50 dark:hover:bg-green-600  focus:outline-none`,
+                `text-gray-300 text-sm bg-green-900 p-2 rounded-xl  hover:text-gray-900 dark:text-gray-50 dark:hover:bg-slate-600  focus:outline-none`,
                 `${buttonClassName}`
               )}
               data-testid={testId}
