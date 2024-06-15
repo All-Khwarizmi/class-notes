@@ -35,8 +35,40 @@ export const createEvaluationWithGrade = mutation({
       throw new Error("Failed to create evaluation with grades");
     }
 
-    
-
     return resultId;
+  },
+});
+
+export const getEvaluationWithGrade = query({
+  args: {
+    evaluationId: v.string(),
+  },
+
+  handler: async (ctx, args) => {
+    const evaluation = await ctx.db
+      .query("EvaluationsWithGrades")
+      .filter((q) => q.eq(q.field("_id"), args.evaluationId))
+      .first();
+
+    if (!evaluation) {
+      throw new Error("Evaluation not found");
+    }
+
+    return evaluation;
+  },
+});
+
+export const getEvaluationsWithGrades = query({
+  args: {
+    classeId: v.string(),
+  },
+
+  handler: async (ctx, args) => {
+    const evaluations = await ctx.db
+      .query("EvaluationsWithGrades")
+      .filter((q) => q.eq(q.field("classeId"), args.classeId))
+      .collect();
+
+    return evaluations;
   },
 });
