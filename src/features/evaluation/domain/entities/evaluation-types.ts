@@ -28,3 +28,23 @@ export interface UpdateEvaluationBaseOptions {
   gradeType: GradeTypeUnionType;
   criterias: EvaluationCriteriaType[];
 }
+
+export interface AssignEvaluationOptions {
+  evaluationId: string;
+  classeId: string;
+}
+
+export interface UpdateGradeOptions {
+  evaluationId: string;
+  studentId: string;
+  criteriaId: string;
+  grade: number | string;
+}
+
+export interface GetEvaluationOptions {
+  evaluationId: string;
+}
+
+export interface GetEvaluationsListOptions {
+  classeId: string;
+}
