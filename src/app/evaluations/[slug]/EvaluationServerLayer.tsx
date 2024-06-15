@@ -1,7 +1,7 @@
 import ErrorDialog from "@/core/components/common/ErrorDialog";
 import { authUseCases } from "@/features/auth/application/usecases/auth-usecases";
 import getEvaluation from "@/features/evaluation/application/adapters/actions/get-evaluation";
-import EvaluationBaseForm from "@/features/evaluation/presentation/views/AddBaseEvaluationForm";
+import EvaluationBaseForm from "@/features/evaluation/presentation/views/EvaluationBaseForm";
 import { isLeft } from "fp-ts/lib/Either";
 import { redirect } from "next/navigation";
 import React from "react";
