@@ -1,10 +1,14 @@
 import { convexDatabase } from "@/core/data/convex/convex-impl";
 import IDatabase from "@/core/data/idatabase";
 import {
+  AssignEvaluationOptions,
   CreateEvaluationOptions,
   GetEvaluationBaseOptions,
   GetEvaluationBasesOptions,
+  GetEvaluationOptions,
+  GetEvaluationsListOptions,
   UpdateEvaluationBaseOptions,
+  UpdateGradeOptions,
 } from "../../domain/entities/evaluation-types";
 
 export default class EvaluatioRepository {
@@ -28,6 +32,22 @@ export default class EvaluatioRepository {
 
   async updateEvaluationBase(options: UpdateEvaluationBaseOptions) {
     return await this._db.updateEvaluationBase(options);
+  }
+
+  async assignEvaluation(options: AssignEvaluationOptions) {
+    return await this._db.assignEvaluationBaseToClasse(options);
+  }
+
+  async updateGrade(options: UpdateGradeOptions) {
+    return await this._db.updateGrade(options);
+  }
+
+  async getEvaluation(options: GetEvaluationOptions) {
+    return await this._db.getEvaluationWithGrade(options);
+  }
+
+  async getEvaluationsList(options: GetEvaluationsListOptions) {
+    return await this._db.getEvaluationsListWithGrade(options);
   }
 }
 
