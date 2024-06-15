@@ -74,13 +74,18 @@ async function ClasseServerLayer(props: { slug: string }) {
     students: eitherStudents.right,
     evaluations: eitherCompoundEvaluations.right,
   };
+  console.log(tableData);
   return (
     <>
       <Sidebar navItems={classeNavItems} />
       <section className="h-full flex-1  overflow-x-hidden">
         <div className="h-full pt-4 px-4">
           {/* <StudentsTable classId={props.slug} /> */}
-          <StudentsEvaluationTableView {...tableData} />
+          <StudentsEvaluationTableView
+            tableData={tableData}
+            classeId={props.slug}
+            userId={authUser.right.userId}
+          />
         </div>
       </section>
     </>
