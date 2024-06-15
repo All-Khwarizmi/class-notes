@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState } from "react";
-import Link from "next/link";
 import {
   Table,
   TableRow,
@@ -11,9 +10,7 @@ import {
   TableCaption,
   TableHeader,
 } from "@/core/components/ui/table";
-import { Button } from "@/core/components/ui/button";
 import {
-  EvaluationWithGradeType,
   Grade,
   StudentGradeType,
 } from "@/features/evaluation/domain/entities/evaluation-with-grades-schema";
@@ -47,15 +44,6 @@ export const StudentsEvaluationTableView = (props: {
       ).toFixed(2);
     }
     return "N/A";
-  };
-
-  // Handler to open the dialog with detailed grades
-  const openGradeDetails = (
-    evaluation: CompoundEvaluationType,
-    studentGrade: StudentGradeType
-  ) => {
-    setSelectedEvaluation(evaluation);
-    setSelectedStudentGrade(studentGrade);
   };
 
   return (
@@ -119,114 +107,6 @@ export const StudentsEvaluationTableView = (props: {
           <AssignEvaluation classeId={props.classeId} userId={props.userId} />
         </CustomDialog>
       </div>
-      {/* Detailed Criteria Dialog */}
-      {/* {selectedEvaluation && selectedStudentGrade && (
-        <div className="dialog">
-          <h3>
-            Detailed Criteria for {selectedStudentGrade.studentId} in{" "}
-            {selectedEvaluation.}
-          </h3>
-          <ul>
-            {selectedStudentGrade.grades.map((grade) => (
-              <li key={grade.criteriaId}>
-                {grade.criteriaId}: {grade.grade} ({grade.gradeType})
-              </li>
-            ))}
-          </ul>
-          <Button
-            onClick={() => {
-              setSelectedEvaluation(null);
-              setSelectedStudentGrade(null);
-            }}
-          >
-            Close
-          </Button>
-        </div>
-      )} */}
     </div>
   );
 };
-
-// Example usage with mock data
-const mockClasseTableData = {
-  students: [
-    { id: "student-001", name: "John Doe" },
-    { id: "student-002", name: "Jane Smith" },
-    { id: "student-003", name: "Alice Johnson" },
-  ],
-  evaluations: [
-    {
-      id: "eval-001",
-      name: "Midterm Exam",
-      evaluationDate: 1672444800000,
-      grades: [
-        {
-          studentId: "student-001",
-          feedback: "Excellent performance!",
-          grades: [
-            { criteriaId: "criteria-001", gradeType: "Numeric", grade: 95 },
-            { criteriaId: "criteria-002", gradeType: "Numeric", grade: 85 },
-          ],
-        },
-        {
-          studentId: "student-002",
-          feedback: "Good effort, needs improvement in algorithms.",
-          grades: [
-            { criteriaId: "criteria-001", gradeType: "Numeric", grade: 70 },
-            { criteriaId: "criteria-002", gradeType: "Numeric", grade: 75 },
-          ],
-        },
-        {
-          studentId: "student-003",
-          feedback: "Satisfactory work.",
-          grades: [
-            { criteriaId: "criteria-001", gradeType: "Numeric", grade: 60 },
-            { criteriaId: "criteria-002", gradeType: "Numeric", grade: 65 },
-          ],
-        },
-      ],
-    },
-    {
-      id: "eval-002",
-      name: "Final Project",
-      evaluationDate: 1672531200000,
-      grades: [
-        {
-          studentId: "student-001",
-          feedback: "Great job on the project!",
-          grades: [
-            { criteriaId: "criteria-003", gradeType: "Numeric", grade: 90 },
-            { criteriaId: "criteria-004", gradeType: "Numeric", grade: 95 },
-          ],
-        },
-        {
-          studentId: "student-002",
-          feedback: "Solid work, but presentation could be better.",
-          grades: [
-            { criteriaId: "criteria-003", gradeType: "Numeric", grade: 80 },
-            { criteriaId: "criteria-004", gradeType: "Numeric", grade: 85 },
-          ],
-        },
-        {
-          studentId: "student-003",
-          feedback: "Good effort overall.",
-          grades: [
-            { criteriaId: "criteria-003", gradeType: "Numeric", grade: 70 },
-            { criteriaId: "criteria-004", gradeType: "Numeric", grade: 75 },
-          ],
-        },
-      ],
-    },
-  ],
-};
-
-// export default function Example() {
-//   return (
-//     <div className="container mx-auto">
-//       <StudentsEvaluationTableView
-//         students={mockClasseTableData.students}
-//         evaluations={mockClasseTableData.evaluations}
-//       />
-//     </div>
-//   );
-// }
