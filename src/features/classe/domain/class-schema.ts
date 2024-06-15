@@ -21,9 +21,10 @@ export const CompoundEvaluationSchema = z.object({
   base: EvaluationBaseSchema,
   grade: EvaluationWithGradeSchema,
 });
+export type CompoundEvaluationType = z.infer<typeof CompoundEvaluationSchema>;
+
 export const ClasseTableSchema = z.object({
   students: z.array(StudentSchema),
   evaluations: z.array(CompoundEvaluationSchema),
 });
 export type ClasseTableType = z.infer<typeof ClasseTableSchema>;
-export type CompoundEvaluationType = z.infer<typeof CompoundEvaluationSchema>;
