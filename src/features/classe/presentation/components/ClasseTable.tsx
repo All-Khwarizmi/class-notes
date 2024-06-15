@@ -21,11 +21,14 @@ import {
   ClasseTableType,
   CompoundEvaluationType,
 } from "../../domain/class-schema";
+import CustomDialog from "@/core/components/common/CustomDialog";
+import AssignEvaluation from "./AssignEvaluation";
 
-export const StudentsEvaluationTableView = ({
-  students,
-  evaluations,
-}: ClasseTableType) => {
+export const StudentsEvaluationTableView = (props: {
+  tableData: ClasseTableType;
+  classeId: string;
+  userId: string;
+}) => {
   const [selectedEvaluation, setSelectedEvaluation] =
     useState<CompoundEvaluationType | null>(null);
   const [selectedStudentGrade, setSelectedStudentGrade] =
@@ -64,7 +67,7 @@ export const StudentsEvaluationTableView = ({
         <TableHeader>
           <TableRow>
             <TableHead className="w-[200px]">Student</TableHead>
-            {evaluations.map((evaluation) => (
+            {props.tableData.evaluations.map((evaluation) => (
               <TableHead key={evaluation.grade.id} className="w-[200px]">
                 {evaluation.base.name}
               </TableHead>
@@ -72,10 +75,10 @@ export const StudentsEvaluationTableView = ({
           </TableRow>
         </TableHeader>
         <TableBody>
-          {students.map((student, index) => (
+          {props.tableData.students.map((student, index) => (
             <TableRow key={student.id}>
               <TableCell className="w-[200px]">{student.name}</TableCell>
-              {evaluations.map((evaluation) => {
+              {props.tableData.evaluations.map((evaluation) => {
                 const studentGrade = evaluation.grade.grades.find(
                   (grade) => grade.studentId === student.id
                 );
@@ -99,7 +102,18 @@ export const StudentsEvaluationTableView = ({
           ))}
         </TableBody>
       </Table>
-
+      <div className="flex justify-center mt-4">
+        <CustomDialog
+          title="Assign Evaluation"
+          buttonText="Assign Evaluation"
+          buttonClassName="bg-transparent dark text-white px-4 py-2 rounded-md border border-white"
+        >
+          <AssignEvaluation
+            classeId={props.classeId}
+            userId={props.userId}
+          />
+        </CustomDialog>
+      </div>
       {/* Detailed Criteria Dialog */}
       {/* {selectedEvaluation && selectedStudentGrade && (
         <div className="dialog">
