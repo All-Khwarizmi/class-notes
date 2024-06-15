@@ -18,9 +18,7 @@ import {
 } from "@/core/components/ui/select";
 import { Switch } from "@/core/components/ui/switch";
 import { toast } from "sonner";
-import {
-  EvaluationBaseType,
-} from "../../domain/entities/evaluation-schema";
+import { EvaluationBaseType } from "../../domain/entities/evaluation-schema";
 import { useEffect } from "react";
 import CollapsibleCriteriaList from "../components/CollapsibleCriteriaList";
 import GradeTypeSelectGroup from "../components/GradeTypeSelectGroup";
@@ -32,7 +30,7 @@ export default function EvaluationBaseForm(props: {
   userId: string;
   evaluation?: EvaluationBaseType;
 }) {
- const {
+  const {
     form,
     criterias,
     setCriterias,
@@ -42,8 +40,9 @@ export default function EvaluationBaseForm(props: {
     isUpdatePending,
     isSuccess,
     isUpdateSuccess,
+    addCriteria,
     onSubmit,
- } = useCreateEvaluationBaseFormLogic(props);
+  } = useCreateEvaluationBaseFormLogic(props);
 
   useEffect(() => {
     if (isSuccess) {
@@ -141,9 +140,16 @@ export default function EvaluationBaseForm(props: {
 
           <div className="flex justify-between items-center space-x-4">
             {/* Button to add a new criteria */}
-            <Button disabled={isPending || isUpdatePending} type="submit">
-              Submit
+            <Button
+              variant={"outline"}
+              type="button"
+              onClick={() => {
+                addCriteria();
+              }}
+            >
+              Add Criteria
             </Button>
+
             {isPending || isUpdatePending ? (
               <Loader className={cn("animate-spin", "text-blue-500")} />
             ) : (
