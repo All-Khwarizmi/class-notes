@@ -46,12 +46,10 @@ function AssignEvaluation(props: { userId: string; classeId: string }) {
     }
   }
   function handleChange(value: string) {
-    console.log(value);
     const evaluation = evaluations!.find(
       (evaluation) => evaluation.id === value
     );
     if (evaluation) {
-      console.log({ evaluation });
       setSelectedEvaluation(evaluation);
     }
   }

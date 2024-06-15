@@ -23,6 +23,7 @@ import {
 } from "../../domain/class-schema";
 import CustomDialog from "@/core/components/common/CustomDialog";
 import AssignEvaluation from "./AssignEvaluation";
+import UpdateStudentGradeForm from "./UpdateStudentGradeForm";
 
 export const StudentsEvaluationTableView = (props: {
   tableData: ClasseTableType;
@@ -82,19 +83,26 @@ export const StudentsEvaluationTableView = (props: {
                 const studentGrade = evaluation.grade.grades.find(
                   (grade) => grade.studentId === student.id
                 );
+                console.log({ studentGrade });
                 const overallGrade = studentGrade
                   ? calculateOverallGrade(studentGrade.grades)
                   : "N/A";
                 return (
                   <TableCell key={evaluation.grade.id} className="w-[200px]">
-                    <Button
-                      variant="link"
-                      onClick={() =>
-                        openGradeDetails(evaluation, studentGrade!)
-                      }
-                    >
-                      {overallGrade}
-                    </Button>
+                    {studentGrade ? (
+                      <CustomDialog
+                        title="Detailed Criteria"
+                        buttonText={overallGrade}
+                        buttonClassName="bg-transparent dark text-white px-4 py-2 rounded-md border border-white"
+                      >
+                        <UpdateStudentGradeForm
+                          studentGrade={studentGrade}
+                          evaluationBase={evaluation.base}
+                        />
+                      </CustomDialog>
+                    ) : (
+                      "N/A"
+                    )}
                   </TableCell>
                 );
               })}
@@ -108,10 +116,7 @@ export const StudentsEvaluationTableView = (props: {
           buttonText="Assign Evaluation"
           buttonClassName="bg-transparent dark text-white px-4 py-2 rounded-md border border-white"
         >
-          <AssignEvaluation
-            classeId={props.classeId}
-            userId={props.userId}
-          />
+          <AssignEvaluation classeId={props.classeId} userId={props.userId} />
         </CustomDialog>
       </div>
       {/* Detailed Criteria Dialog */}
