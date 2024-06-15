@@ -1,6 +1,6 @@
 import { v } from "convex/values";
 import { defineTable } from "convex/server";
-import { gradeType } from "../fields/grade-type";
+import { gradeType } from "../fields/grade_type";
 
 const EvaluationWithGrade = defineTable({
   id: v.string(), // Unique identifier for the evaluation
