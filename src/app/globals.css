@@ -4,13 +4,13 @@
  
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --background: 10 5% 95%;;
+    --foreground:222.2 80% 15%;;
 
-    --card: 0 0% 100%;
+    --card: 0 0% 98%;
     --card-foreground: 222.2 84% 4.9%;
  
-    --popover: 0 0% 100%;
+    --popover: 0 0% 98%;
     --popover-foreground: 222.2 84% 4.9%;
  
     --primary: 222.2 47.4% 11.2%;
@@ -36,7 +36,7 @@
   }
  
   .dark {
-    --background: 222.2 84% 4.9%;
+    --background: 222.2 84% 7.9%;
     --foreground: 210 40% 98%;
  
     --card: 222.2 84% 4.9%;
@@ -250,17 +250,18 @@ pre {
   .hljs-string,
   .hljs-symbol,
   .hljs-bullet {
-    color: #b9f18d;
+    color: #FF8A08;
   }
 
   .hljs-title,
   .hljs-section {
-    color: #faf594;
+    color: #2C7865;
+    font-weight: 700;
   }
 
   .hljs-keyword,
   .hljs-selector-tag {
-    color: #70cff8;
+    color: #B51B75;
   }
 
   .hljs-emphasis {
