@@ -1,9 +1,13 @@
 import { Either, isLeft, left, right } from "fp-ts/lib/Either";
 import {
+  AssignEvaluationOptions,
   CreateEvaluationOptions,
   GetEvaluationBaseOptions,
   GetEvaluationBasesOptions,
+  GetEvaluationOptions,
+  GetEvaluationsListOptions,
   UpdateEvaluationBaseOptions,
+  UpdateGradeOptions,
 } from "../../domain/entities/evaluation-types";
 import EvaluatioRepository, {
   evaluatioRepository,
@@ -13,7 +17,10 @@ import {
   EvaluationBaseType,
 } from "../../domain/entities/evaluation-schema";
 import Failure from "@/core/failures/failures";
-import { id } from "fp-ts/lib/Refinement";
+import {
+  EvaluationWithGradeSchema,
+  EvaluationWithGradeType,
+} from "../../domain/entities/evaluation-with-grades-schema";
 
 export default class EvaluationUsecases {
   private readonly _evaluationRepository: EvaluatioRepository;
@@ -69,9 +76,8 @@ export default class EvaluationUsecases {
       const validatedEval = EvaluationBaseSchema.safeParse({
         ...evaluation,
         id: evaluation._id,
-      
       });
-      
+
       if (validatedEval.success === false) {
         console.log("Invalid Evaluation Base", validatedEval.error.errors);
         return left(
@@ -90,6 +96,69 @@ export default class EvaluationUsecases {
 
   async updateEvaluationBase(options: UpdateEvaluationBaseOptions) {
     return await this._evaluationRepository.updateEvaluationBase(options);
+  }
+
+  async assignEvaluation(options: AssignEvaluationOptions) {
+    return await this._evaluationRepository.assignEvaluation(options);
+  }
+
+  async updateGrade(options: UpdateGradeOptions) {
+    return await this._evaluationRepository.updateGrade(options);
+  }
+
+  async getEvaluation(options: GetEvaluationOptions) {
+    const eitherEval = await this._evaluationRepository.getEvaluation(options);
+    if (isLeft(eitherEval)) {
+      return eitherEval;
+    }
+    const validateEval = EvaluationWithGradeSchema.safeParse({
+      ...eitherEval.right,
+      id: eitherEval.right._id,
+    });
+
+    if (!validateEval.success) {
+      return left(
+        Failure.invalidValue({
+          message: "Invalid Evaluation",
+          invalidValue: eitherEval.right,
+          code: "APP203",
+        })
+      );
+    }
+
+    return right(validateEval.data);
+  }
+
+  async getEvaluationsList(options: GetEvaluationsListOptions) {
+    const eitherEvals = await this._evaluationRepository.getEvaluationsList(
+      options
+    );
+
+    if (isLeft(eitherEvals)) {
+      return eitherEvals;
+    }
+    const validatedEvals: EvaluationWithGradeType[] = [];
+
+    for (const evaluation of eitherEvals.right) {
+      const validatedEval = EvaluationWithGradeSchema.safeParse({
+        ...evaluation,
+        id: evaluation._id,
+      });
+
+      if (validatedEval.success === false) {
+        console.log("Invalid Evaluation", validatedEval.error.errors);
+        return left(
+          Failure.invalidValue({
+            message: "Invalid Evaluation",
+            invalidValue: evaluation,
+            code: "APP203",
+          })
+        );
+      }
+      validatedEvals.push(validatedEval.data);
+    }
+
+    return right(validatedEvals);
   }
 }
 
