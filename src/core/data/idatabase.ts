@@ -12,8 +12,16 @@ import {
 } from "@/features/cours-sequence/domain/entities/cours-schemas";
 import { Complement } from "@/features/complement/domain/complement-schemas";
 import { Note } from "@/features/notes/domain/notes-schemas";
-import { GradeTypeUnionType } from "@/features/evaluation/domain/entities/evaluation-schema";
-import { CreateEvaluationOptions, GetEvaluationBaseOptions, GetEvaluationBasesOptions, UpdateEvaluationBaseOptions } from "@/features/evaluation/domain/entities/evaluation-types";
+import {
+  AssignEvaluationOptions,
+  CreateEvaluationOptions,
+  GetEvaluationBaseOptions,
+  GetEvaluationBasesOptions,
+  GetEvaluationOptions,
+  GetEvaluationsListOptions,
+  UpdateEvaluationBaseOptions,
+  UpdateGradeOptions,
+} from "@/features/evaluation/domain/entities/evaluation-types";
 
 export default abstract class IDatabase {
   abstract getUser({
@@ -320,4 +328,20 @@ export default abstract class IDatabase {
   abstract updateEvaluationBase(
     options: UpdateEvaluationBaseOptions
   ): Promise<Either<Failure<string>, void>>;
+
+  abstract assignEvaluationBaseToClasse(
+    options: AssignEvaluationOptions
+  ): Promise<Either<Failure<string>, string>>;
+
+  abstract updateGrade(
+    options: UpdateGradeOptions
+  ): Promise<Either<Failure<string>, void>>;
+
+  abstract getEvaluationWithGrade(
+    options: GetEvaluationOptions
+  ): Promise<Either<Failure<string>, DocumentData>>;
+
+  abstract getEvaluationsListWithGrade(
+    options: GetEvaluationsListOptions
+  ): Promise<Either<Failure<string>, DocumentData[]>>;
 }
