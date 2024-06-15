@@ -32,7 +32,7 @@ import {
   GradeTypeUnionType,
 } from "../../domain/entities/evaluation-schema";
 import { useEffect, useState } from "react";
-import { ChevronsDownUp, X } from "lucide-react";
+import { ChevronsDownUp, ChevronsUpDown, X } from "lucide-react";
 
 import useCreateBaseEvaluation from "../../application/adapters/services/useCreateBaseEvaluation";
 import { getGradeTypeByName } from "../../application/adapters/utils/grade-helpers";
@@ -67,6 +67,9 @@ export default function EvaluationBaseForm(props: {
   } = useUpdateBaseEvaluation();
   const [criterias, setCriterias] = useState<EvaluationCriteriaType[]>(
     props.evaluation?.criterias || []
+  );
+  const [openArray, setOpenArray] = useState<boolean[]>(
+    props.evaluation?.criterias.map(() => false) || []
   );
   // Handler to add a new criteria
   const addCriteria = () => {
@@ -295,12 +298,25 @@ export default function EvaluationBaseForm(props: {
           />
           {/* Render criteria fields dynamically */}
           {criterias.map((criteria, index) => (
-            <Collapsible key={criteria.id} className=" space-y-2">
+            <Collapsible
+              key={criteria.id}
+              className=" space-y-2"
+              open={openArray[index]}
+              onOpenChange={(isOpen) => {
+                const updatedOpenArray = [...openArray];
+                updatedOpenArray[index] = isOpen;
+                setOpenArray(updatedOpenArray);
+              }}
+            >
               <CollapsibleTrigger className="flex justify-between items-center">
                 <div className="flex justify-between items-center gap-2 ">
                   <FormLabel>Criteria {index + 1}</FormLabel>{" "}
                   <span>
-                    <ChevronsDownUp size={16} />
+                    {openArray[index] ? (
+                      <ChevronsDownUp size={16} />
+                    ) : (
+                      <ChevronsUpDown size={16} />
+                    )}
                   </span>
                 </div>
               </CollapsibleTrigger>
