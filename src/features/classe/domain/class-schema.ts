@@ -1,4 +1,8 @@
+import { EvaluationWithGradeSchema } from "@/features/evaluation/domain/entities/evaluation-with-grades-schema";
 import { z } from "zod";
+import { EvaluationBase } from "../../../../convex/tables/evaluation_base_convex_schema";
+import { EvaluationBaseSchema } from "@/features/evaluation/domain/entities/evaluation-schema";
+import { StudentSchema } from "../presentation/components/student-schema";
 
 const classSchema = z.object({
   id: z.string(),
@@ -13,3 +17,13 @@ const classSchema = z.object({
 export default classSchema;
 
 export type ClassType = z.infer<typeof classSchema>;
+export const CompoundEvaluationSchema = z.object({
+  base: EvaluationBaseSchema,
+  grade: EvaluationWithGradeSchema,
+});
+export const ClasseTableSchema = z.object({
+  students: z.array(StudentSchema),
+  evaluations: z.array(CompoundEvaluationSchema),
+});
+export type ClasseTableType = z.infer<typeof ClasseTableSchema>;
+export type CompoundEvaluationType = z.infer<typeof CompoundEvaluationSchema>;
