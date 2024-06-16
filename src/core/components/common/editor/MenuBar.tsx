@@ -4,6 +4,7 @@ import {
   Indent,
   IndentDecrease,
   Italic,
+  Link,
   List,
   ListOrdered,
   Quote,
@@ -50,27 +51,27 @@ export const MenuBar = () => {
         disabled={!editor.can().chain().focus().toggleItalic().run()}
         nodeName="italic"
       >
-        <Italic size={12} />
+        <Italic size={14} />
       </MenuButton>
       <MenuButton
         onClick={() => editor.chain().focus().toggleBulletList().run()}
         nodeName="bulletList"
       >
-        <List size={12} />
+        <List size={14} />
       </MenuButton>
 
       <MenuButton
         onClick={() => editor.chain().focus().toggleOrderedList().run()}
         nodeName="orderedList"
       >
-        <ListOrdered size={12} />
+        <ListOrdered size={14} />
       </MenuButton>
 
       <MenuButton
         onClick={() => editor.chain().focus().toggleBlockquote().run()}
         nodeName="blockquote"
       >
-        <Quote size={12} />
+        <Quote size={14} />
       </MenuButton>
 
       <MenuButton
@@ -78,7 +79,7 @@ export const MenuBar = () => {
         disabled={!editor.can().chain().focus().toggleStrike().run()}
         nodeName="strike"
       >
-        <Strikethrough size={12} />
+        <Strikethrough size={14} />
       </MenuButton>
 
       <MenuButton
@@ -86,7 +87,7 @@ export const MenuBar = () => {
         disabled={!editor.can().chain().focus().toggleCode().run()}
         nodeName="code"
       >
-        <Code size={12} />
+        <Code size={14} />
       </MenuButton>
 
       <MenuButton
@@ -94,7 +95,7 @@ export const MenuBar = () => {
         disabled={!editor.can().chain().focus().undo().run()}
         nodeName="undo"
       >
-        <Undo size={12} />
+        <Undo size={14} />
       </MenuButton>
 
       <MenuButton
@@ -102,7 +103,7 @@ export const MenuBar = () => {
         disabled={!editor.can().chain().focus().redo().run()}
         nodeName="redo"
       >
-        <Redo size={12} />
+        <Redo size={14} />
       </MenuButton>
       {/* A butto to handle the identation */}
       <MenuButton
@@ -110,14 +111,14 @@ export const MenuBar = () => {
         disabled={!editor.can().chain().focus().increaseIndent().run()}
         nodeName="indent"
       >
-        <Indent size={12} />
+        <Indent size={14} />
       </MenuButton>
       <MenuButton
         onClick={() => editor.chain().focus().decreaseIndent().run()}
         disabled={!editor.can().chain().focus().decreaseIndent().run()}
         nodeName="indent"
       >
-        <IndentDecrease size={12} />
+        <IndentDecrease size={14} />
       </MenuButton>
       <MenuButton
         onClick={() => {
@@ -130,9 +131,21 @@ export const MenuBar = () => {
             width: 480,
           });
         }}
-        nodeName="paragraph"
+        nodeName="youtube"
       >
-        <Video size={12} />
+        <Video size={14} />
+      </MenuButton>
+      <MenuButton
+        onClick={() => {
+          const url = prompt("Enter the URL");
+          if (!url) {
+            return;
+          }
+          editor.chain().focus().setLink({ href: url }).run();
+        }}
+        nodeName="link"
+      >
+        <Link size={14} />
       </MenuButton>
     </div>
   );
