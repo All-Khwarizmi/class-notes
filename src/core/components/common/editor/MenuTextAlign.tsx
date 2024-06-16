@@ -49,7 +49,7 @@ function MenuTextAlign() {
           <button
             className={cn(
               editor.isActive("align") ? "is-active" : "",
-              "bg-slate-400 rounded-md p-1 px-2"
+              "bg-slate-400 rounded-md py-2 px-2"
             )}
           >
             {whichAlignement()}
