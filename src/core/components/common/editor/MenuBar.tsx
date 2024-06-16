@@ -32,7 +32,7 @@ export const MenuBar = () => {
   return (
     <div
       className={cn(
-        "flex gap-1 flex-wrap p-2 bg-muted  border rounded-tr-lg rounded-tl-lg",
+        "flex gap-1 flex-wrap p-2 bg-muted justify-center border rounded-tr-lg rounded-tl-lg",
         `${editor.isFocused ? "border-blue-300 border-2" : "border-gray-600"}`
       )}
     >
