@@ -14,7 +14,11 @@ import { Button } from "@/core/components/ui/button";
 import useAssignEvaluation from "@/features/evaluation/application/adapters/services/useAssignEvaluation";
 import { Loader } from "lucide-react";
 import { toast } from "sonner";
-function AssignEvaluation(props: { userId: string; classeId: string }) {
+function AssignEvaluation(props: {
+  userId: string;
+  classeId: string;
+  alreadyAssignedEvaluationIds: string[];
+}) {
   const { data: eitherEvaluations, isPending } = useGetEvaluationsBaseList({
     userId: props.userId,
   });
@@ -61,11 +65,15 @@ function AssignEvaluation(props: { userId: string; classeId: string }) {
         </SelectTrigger>
         <SelectContent>
           <SelectGroup>
-            {evaluations.map((evaluation) => (
-              <SelectItem key={evaluation.id} value={evaluation.id}>
-                {evaluation.name}
-              </SelectItem>
-            ))}
+            {evaluations.map((evaluation) => {
+              if (!props.alreadyAssignedEvaluationIds.includes(evaluation.id)) {
+                return (
+                  <SelectItem key={evaluation.id} value={evaluation.id}>
+                    {evaluation.name}
+                  </SelectItem>
+                );
+              }
+            })}
           </SelectGroup>
         </SelectContent>
       </Select>

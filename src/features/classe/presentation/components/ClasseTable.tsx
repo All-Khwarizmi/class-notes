@@ -104,7 +104,13 @@ export const StudentsEvaluationTableView = (props: {
           buttonText="Assign Evaluation"
           buttonClassName="bg-transparent dark text-white px-4 py-2 rounded-md border border-white"
         >
-          <AssignEvaluation classeId={props.classeId} userId={props.userId} />
+          <AssignEvaluation
+            classeId={props.classeId}
+            userId={props.userId}
+            alreadyAssignedEvaluationIds={props.tableData.evaluations.map(
+              (evaluation) => evaluation.base.id
+            )}
+          />
         </CustomDialog>
       </div>
     </div>
