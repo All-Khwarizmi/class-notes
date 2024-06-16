@@ -29,6 +29,7 @@ function TenPointsCriteriaForm(props: {
   studentGrade: StudentGradeTenPointsExtension;
   evaluationBase: EvaluationBaseType;
   evaluationId: string;
+  classeId: string;
 }) {
   const {
     isSuccess,
@@ -41,10 +42,6 @@ function TenPointsCriteriaForm(props: {
     resolver: zodResolver(StudentGradeTenPointsSchemaExtension),
     defaultValues: props.studentGrade,
   });
-  const values = form.watch();
-  useEffect(() => {
-    console.log({ values });
-  }, [values]);
 
   function onSubmit(data: StudentGradeTenPointsExtension) {
     const grade: UpdateGradeOptions = {
@@ -53,7 +50,7 @@ function TenPointsCriteriaForm(props: {
       evaluationId: props.evaluationId,
       grades: data.grades,
     };
-    updateGrade(grade);
+    updateGrade({ options: grade, classeId: props.classeId });
   }
 
   return (
