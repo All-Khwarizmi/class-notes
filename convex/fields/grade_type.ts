@@ -167,7 +167,7 @@ export const gradeType = v.union(
     type: v.literal("Other"),
     description: v.string(), // Description for the custom grading system
     grade: v.union(
-     v.string(), // Flexible grade value as string
+      v.string(), // Flexible grade value as string
       v.literal("N/G"), // Not Graded
       v.literal("M"), // Missing
       v.literal("N/D") // Not Done
@@ -276,6 +276,16 @@ export const gradeType = v.union(
       v.literal("N/G"), // Not Graded
       v.literal("M"), // Missing
       v.literal("N/D") // Not Done
+    ),
+  }),
+  v.object({
+    name: v.literal("Competence-Based Evaluation"),
+    type: v.literal("Competence"),
+    grade: v.union(
+      v.literal("Expertise"), // la compétence est maîtrisée dans l’ensemble des situations professionnelles qui la mobilisent.
+      v.literal("Maîtrise"), // la compétence est maîtrisée dans les situations professionnelles qui la mobilisent, avec une réelle autonomie.
+      v.literal("À développer"), // la compétence est repérable à l’œuvre dans certaines situations professionnelles, mais nécessite encore des efforts pour être maîtrisée.
+      v.literal("À acquérir") // la compétence n’est pas mise en œuvre ou est mise en œuvre de manière incomplète.
     ),
   })
 );
