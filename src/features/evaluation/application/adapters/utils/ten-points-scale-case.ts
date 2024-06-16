@@ -19,7 +19,7 @@ import { z } from "zod";
 export function spanishGradingCalc({
   grade,
 }: {
-  grade: SpanishGradingType;
+  grade: Grade;
 }): number | SpecialGradeType {
   const check = checkSpecialGradeType(grade.grade);
   if (check.shouldReturn === true) {
@@ -43,8 +43,9 @@ export function tenPointsScaleCase(
   for (const grade of grades) {
     const validatedGrade = SpanishGradingSchema.safeParse(grade.gradeType);
     if (validatedGrade.success) {
+      
       const result = spanishGradingCalc({
-        grade: validatedGrade.data,
+        grade,
       });
       if (typeof result === "string") return result;
 
