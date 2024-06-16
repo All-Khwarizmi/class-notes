@@ -176,7 +176,6 @@ export const GradePointsSchema = z.object({
 export const CustomGradeSchema = z.object({
   name: z.literal("Custom"),
   type: z.literal("Other"),
-  description: z.string(), // Description for the custom grading system
   grade: z.union([
     z.string(), // Flexible grade value as string
     z.literal("N/G"), // Not Graded
