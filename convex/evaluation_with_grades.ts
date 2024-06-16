@@ -58,8 +58,12 @@ export const updateGrade = mutation({
   args: {
     evaluationId: v.string(),
     studentId: v.string(),
-    criteriaId: v.string(),
-    grade: v.union(v.number(), v.string()),
+    grades: v.array(
+      v.object({
+        criteriaId: v.string(),
+        grade: v.union(v.number(), v.string()),
+      })
+    ),
   },
   handler: async (ctx, args) => {
     const evaluation = await ctx.db
@@ -79,15 +83,28 @@ export const updateGrade = mutation({
       throw new Error("Student not found");
     }
 
-    const criteriaGrade = studentGrade.grades.find(
-      (grade) => grade.criteriaId === args.criteriaId
-    );
+    studentGrade.grades = studentGrade.grades.map((grade) => {
+      const updatedGrade = args.grades.find(
+        (g) => g.criteriaId === grade.criteriaId
+      );
 
-    if (!criteriaGrade) {
-      throw new Error("Criteria not found");
-    }
+      if (updatedGrade) {
+        return {
+          ...grade,
+          grade: updatedGrade.grade,
+        };
+      }
 
-    criteriaGrade.grade = args.grade;
+      return grade;
+    });
+
+    evaluation.grades = evaluation.grades.map((grade) => {
+      if (grade.studentId === args.studentId) {
+        return studentGrade;
+      }
+
+      return grade;
+    });
 
     await ctx.db.patch(evaluation._id, evaluation);
 

@@ -1327,12 +1327,7 @@ export default class ConvexDatabase extends IDatabase {
     options: UpdateGradeOptions
   ): Promise<Either<Failure<string>, void>> {
     try {
-      await fetchMutation(this._db.evaluation_with_grades.updateGrade, {
-        evaluationId: options.evaluationId,
-        studentId: options.studentId,
-        criteriaId: options.criteriaId,
-        grade: options.grade,
-      });
+      await fetchMutation(this._db.evaluation_with_grades.updateGrade, options);
       return right(undefined);
     } catch (error) {
       return left(
