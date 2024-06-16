@@ -37,7 +37,6 @@ export default function calculateOverallGrade({
   // Switch between the different types of grades
   switch (gradeType.type) {
     case "10-point Scale":
-      console.log("10-point Scale", grades);
       return tenPointsScaleCase(grades, criteria);
     case "Competence":
       return competenceCase(grades, criteria);

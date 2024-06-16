@@ -42,12 +42,10 @@ export function tenPointsScaleCase(
   let totalPoints: number = 0;
   for (const grade of grades) {
     const validatedGrade = SpanishGradingSchema.safeParse(grade.gradeType);
-    console.log(validatedGrade);
     if (validatedGrade.success) {
       const result = spanishGradingCalc({
         grade: validatedGrade.data,
       });
-      console.log(result);
       if (typeof result === "string") return result;
 
       totalPoints += result;

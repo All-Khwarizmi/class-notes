@@ -25,6 +25,7 @@ import { StudentGradeTenPointsSchemaExtension } from "@/features/evaluation/appl
 export default function UpdateStudentGradeForm(props: {
   studentGrade: StudentGradeType;
   evaluationBase: EvaluationBaseType;
+  evaluationId: string;
 }) {
   const form = useForm<StudentGradeType>({
     resolver: zodResolver(StudentGradeSchema),
@@ -67,7 +68,7 @@ export default function UpdateStudentGradeForm(props: {
       <TenPointsCriteriaForm
         studentGrade={studentGrade.data}
         evaluationBase={props.evaluationBase}
-        evaluationId={props.evaluationBase.id}
+        evaluationId={props.evaluationId}
       />
     );
   }

@@ -37,9 +37,11 @@ export interface AssignEvaluationOptions {
 export interface UpdateGradeOptions {
   evaluationId: string;
   studentId: string;
+  feedback: string;
   grades: {
     criteriaId: string;
     grade: number | string;
+    gradeType: GradeTypeUnionType;
   }[];
 }
 

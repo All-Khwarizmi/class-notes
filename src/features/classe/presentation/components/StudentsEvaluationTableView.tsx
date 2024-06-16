@@ -68,6 +68,7 @@ export function StudentsEvaluationTableView(props: {
                 const studentGrade = evaluation.grade.grades.find(
                   (grade) => grade.studentId === student.id
                 );
+
                 const overallGrade = studentGrade
                   ? calculateOverallGrade({
                       grades: studentGrade.grades,
@@ -86,6 +87,7 @@ export function StudentsEvaluationTableView(props: {
                         <UpdateStudentGradeForm
                           studentGrade={studentGrade}
                           evaluationBase={evaluation.base}
+                          evaluationId={evaluation.grade.id}
                         />
                       </CustomDialog>
                     ) : (

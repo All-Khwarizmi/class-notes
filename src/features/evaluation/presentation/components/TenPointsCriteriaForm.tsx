@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   StudentGradeTenPointsExtension,
   StudentGradeTenPointsSchemaExtension,
@@ -23,6 +23,7 @@ import {
 } from "../../domain/entities/evaluation-with-grades-schema";
 import useUpdateGrade from "../../application/adapters/services/useUpdateGrade";
 import { UpdateGradeOptions } from "../../domain/entities/evaluation-types";
+import { Loader } from "lucide-react";
 
 function TenPointsCriteriaForm(props: {
   studentGrade: StudentGradeTenPointsExtension;
@@ -40,6 +41,10 @@ function TenPointsCriteriaForm(props: {
     resolver: zodResolver(StudentGradeTenPointsSchemaExtension),
     defaultValues: props.studentGrade,
   });
+  const values = form.watch();
+  useEffect(() => {
+    console.log({ values });
+  }, [values]);
 
   function onSubmit(data: StudentGradeTenPointsExtension) {
     const grade: UpdateGradeOptions = {
@@ -50,16 +55,14 @@ function TenPointsCriteriaForm(props: {
     };
     updateGrade(grade);
   }
-  function handleSubmit() {
-    return form.handleSubmit((data) => {
-      onSubmit(data);
-    });
-  }
+
   return (
     <div className="space-y-8 py-8 px-4 md:px-0 rounded-lg shadow-md">
       <Form {...form}>
         <form
-          onSubmit={handleSubmit}
+          onSubmit={form.handleSubmit((data) => {
+            onSubmit(data);
+          })}
           className="space-y-4 w-full max-w-lg mx-auto"
         >
           {/* Feedback */}
@@ -83,7 +86,7 @@ function TenPointsCriteriaForm(props: {
             );
             const maxGrade = criteria?.weight ?? 1;
             return (
-              <Controller
+              <FormField
                 key={grade.criteriaId}
                 name={`grades.${index}.grade`}
                 control={form.control}
@@ -99,11 +102,18 @@ function TenPointsCriteriaForm(props: {
                     </FormDescription>
                     <FormControl>
                       <Input
+                        min={0}
                         max={maxGrade}
                         placeholder={`Enter grade for ${
                           criteria ? criteria.name : grade.criteriaId
                         }`}
-                        {...field}
+                        onChange={(e) => {
+                          let value = Number(e.target.value);
+                          if (value > maxGrade) {
+                            value = maxGrade;
+                          }
+                          field.onChange(maxGrade);
+                        }}
                         type={"number"}
                       />
                     </FormControl>
@@ -115,7 +125,11 @@ function TenPointsCriteriaForm(props: {
           })}
 
           <div className="flex justify-between items-center space-x-4">
-            <Button type="submit">Submit</Button>
+            {isPending ? (
+              <Loader size={24} color="white" className="animate-spin" />
+            ) : (
+              <Button type="submit">Submit</Button>
+            )}
           </div>
         </form>
       </Form>
