@@ -34,7 +34,7 @@ export const assignEvaluationToClasse = mutation({
       grades: evaluationBase.criterias.map((criteria) => ({
         criteriaId: criteria.id,
         gradeType: criteria.gradeType,
-        grade: "",
+        grade: "N/G",
       })),
     }));
     // Create the evaluation with grades

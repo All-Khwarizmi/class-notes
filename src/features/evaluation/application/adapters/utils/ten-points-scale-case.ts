@@ -1,24 +1,26 @@
-import { Grade } from "@/features/evaluation/domain/entities/evaluation-with-grades-schema";
+import {
+  Grade,
+  GradeSchema,
+  StudentGradeSchema,
+} from "@/features/evaluation/domain/entities/evaluation-with-grades-schema";
 import {
   EvaluationCriteriaType,
+  SpanishGradingSchema,
+  SpanishGradingType,
   TenPointScaleSchema,
   TenPointScaleType,
 } from "@/features/evaluation/domain/entities/evaluation-schema";
 import checkSpecialGradeType, {
   SpecialGradeType,
+  SpecialGradeTypes,
 } from "./checkSpecialGradeType";
 import { z } from "zod";
 
-export function tenPointsScaleCalc({
+export function spanishGradingCalc({
   grade,
-  criterias,
 }: {
-  grade: TenPointScaleType;
-  criterias: EvaluationCriteriaType[];
+  grade: SpanishGradingType;
 }): number | SpecialGradeType {
-  const criteria = criterias.find((criteria) => criteria.id === grade.name);
-  if (!criteria) return "Error";
-
   const check = checkSpecialGradeType(grade.grade);
   if (check.shouldReturn === true) {
     return check.returnValue;
@@ -39,12 +41,13 @@ export function tenPointsScaleCase(
   );
   let totalPoints: number = 0;
   for (const grade of grades) {
-    const validatedGrade = TenPointScaleSchema.safeParse(grade.gradeType);
+    const validatedGrade = SpanishGradingSchema.safeParse(grade.gradeType);
+    console.log(validatedGrade);
     if (validatedGrade.success) {
-      const result = tenPointsScaleCalc({
+      const result = spanishGradingCalc({
         grade: validatedGrade.data,
-        criterias: criterias,
       });
+      console.log(result);
       if (typeof result === "string") return result;
 
       totalPoints += result;
@@ -54,3 +57,20 @@ export function tenPointsScaleCase(
   }
   return (totalPoints / totalWeight) * 10;
 }
+
+export const TenPointsGradeSchemaExtension = GradeSchema.extend({
+  gradeType: SpanishGradingSchema,
+  grade: z.union([SpecialGradeTypes, z.number()]),
+});
+
+export type TenPointsGradeExtension = z.infer<
+  typeof TenPointsGradeSchemaExtension
+>;
+
+export const StudentGradeTenPointsSchemaExtension = StudentGradeSchema.extend({
+  grades: z.array(TenPointsGradeSchemaExtension),
+});
+
+export type StudentGradeTenPointsExtension = z.infer<
+  typeof StudentGradeTenPointsSchemaExtension
+>;

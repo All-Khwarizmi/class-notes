@@ -1,7 +1,7 @@
 import { z, ZodLiteral } from "zod";
 
 // Define the specific new grade types
-const SpecialGradeTypes = z.union([
+export const SpecialGradeTypes = z.union([
   z.literal("N/G"), // Not Graded
   z.literal("M"), // Missing
   z.literal("N/D"), // Not Done

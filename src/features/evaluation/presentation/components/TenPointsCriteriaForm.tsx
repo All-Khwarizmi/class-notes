@@ -1,6 +1,9 @@
-"use client";
-
-import { useState, useEffect } from "react";
+import React from "react";
+import {
+  StudentGradeTenPointsExtension,
+  StudentGradeTenPointsSchemaExtension,
+} from "../../application/adapters/utils/ten-points-scale-case";
+import { EvaluationBaseType } from "../../domain/entities/evaluation-schema";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/core/components/ui/button";
@@ -15,61 +18,42 @@ import {
   FormDescription,
 } from "@/core/components/ui/form";
 import {
-  StudentGradeSchema,
   StudentGradeType,
-} from "@/features/evaluation/domain/entities/evaluation-with-grades-schema";
-import { EvaluationBaseType } from "@/features/evaluation/domain/entities/evaluation-schema";
-import TenPointsCriteriaForm from "@/features/evaluation/presentation/components/TenPointsCriteriaForm";
-import { StudentGradeTenPointsSchemaExtension } from "@/features/evaluation/application/adapters/utils/ten-points-scale-case";
+  StudentGradeSchema,
+} from "../../domain/entities/evaluation-with-grades-schema";
+import useUpdateGrade from "../../application/adapters/services/useUpdateGrade";
+import { UpdateGradeOptions } from "../../domain/entities/evaluation-types";
 
-export default function UpdateStudentGradeForm(props: {
-  studentGrade: StudentGradeType;
+function TenPointsCriteriaForm(props: {
+  studentGrade: StudentGradeTenPointsExtension;
   evaluationBase: EvaluationBaseType;
+  evaluationId: string;
 }) {
-  const form = useForm<StudentGradeType>({
-    resolver: zodResolver(StudentGradeSchema),
+  const {
+    isSuccess,
+    isError,
+    error,
+    isPending,
+    mutate: updateGrade,
+  } = useUpdateGrade();
+  const form = useForm<StudentGradeTenPointsExtension>({
+    resolver: zodResolver(StudentGradeTenPointsSchemaExtension),
     defaultValues: props.studentGrade,
   });
 
-  // Reset form when the props.studentGrade changes
-  useEffect(() => {
-    form.reset(props.studentGrade);
-  }, [props.studentGrade]);
-
-  function onSubmit(data: StudentGradeType) {
-    const grade = {
+  function onSubmit(data: StudentGradeTenPointsExtension) {
+    const grade: UpdateGradeOptions = {
       ...data,
       studentId: props.studentGrade.studentId,
-      grades: data.grades.map((g) => ({
-        ...g,
-        grade: typeof g.grade === "string" ? parseFloat(g.grade) : g.grade,
-      })),
+      evaluationId: props.evaluationId,
+      grades: data.grades,
     };
-    console.log(data);
+    updateGrade(grade);
   }
-
   function handleSubmit() {
     return form.handleSubmit((data) => {
       onSubmit(data);
     });
-  }
-
-  if (props.evaluationBase.gradeType.type === "10-point Scale") {
-    console.log(props.studentGrade);
-    const studentGrade = StudentGradeTenPointsSchemaExtension.safeParse(
-      props.studentGrade
-    );
-    if (!studentGrade.success) {
-      console.error(studentGrade.error.errors);
-      return <div>Invalid student grade</div>;
-    }
-    return (
-      <TenPointsCriteriaForm
-        studentGrade={studentGrade.data}
-        evaluationBase={props.evaluationBase}
-        evaluationId={props.evaluationBase.id}
-      />
-    );
   }
   return (
     <div className="space-y-8 py-8 px-4 md:px-0 rounded-lg shadow-md">
@@ -97,6 +81,7 @@ export default function UpdateStudentGradeForm(props: {
             const criteria = props.evaluationBase.criterias.find(
               (c) => c.id === grade.criteriaId
             );
+            const maxGrade = criteria?.weight ?? 1;
             return (
               <Controller
                 key={grade.criteriaId}
@@ -110,18 +95,16 @@ export default function UpdateStudentGradeForm(props: {
                         : `Criterion: ${grade.criteriaId}`}
                     </FormLabel>
                     <FormDescription>
-                      Please enter a{" "}
-                      {props.studentGrade.grades[index].gradeType.type} grade.
+                      {`Max grade: ${maxGrade}`}
                     </FormDescription>
                     <FormControl>
                       <Input
+                        max={maxGrade}
                         placeholder={`Enter grade for ${
                           criteria ? criteria.name : grade.criteriaId
                         }`}
                         {...field}
-                        type={
-                          typeof grade.grade === "number" ? "number" : "text"
-                        }
+                        type={"number"}
                       />
                     </FormControl>
                     <FormMessage />
@@ -139,3 +122,5 @@ export default function UpdateStudentGradeForm(props: {
     </div>
   );
 }
+
+export default TenPointsCriteriaForm;

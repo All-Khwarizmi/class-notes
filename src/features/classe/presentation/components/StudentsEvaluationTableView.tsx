@@ -68,7 +68,6 @@ export function StudentsEvaluationTableView(props: {
                 const studentGrade = evaluation.grade.grades.find(
                   (grade) => grade.studentId === student.id
                 );
-                console.log({ studentGrade });
                 const overallGrade = studentGrade
                   ? calculateOverallGrade({
                       grades: studentGrade.grades,
