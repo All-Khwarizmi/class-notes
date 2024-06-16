@@ -138,7 +138,7 @@ export default function EvaluationBaseForm(props: {
             setCriterias={setCriterias}
           />
 
-          <div className="flex justify-between items-center space-x-4">
+          <div className="flex justify-end items-center space-x-4">
             {/* Button to add a new criteria */}
             <Button
               variant={"outline"}
