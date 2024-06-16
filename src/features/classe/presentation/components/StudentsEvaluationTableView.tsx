@@ -81,7 +81,7 @@ export function StudentsEvaluationTableView(props: {
                     {studentGrade ? (
                       <CustomDialog
                         title="Detailed Criteria"
-                        buttonText={overallGrade.toString()}
+                        buttonText={overallGrade.toString().slice(0, 4)}
                         buttonClassName="bg-transparent dark text-white px-4 py-2 rounded-md border border-white"
                       >
                         <UpdateStudentGradeForm
