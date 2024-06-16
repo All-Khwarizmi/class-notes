@@ -30,21 +30,13 @@ export const GRADE_TYPES: GradeTypeUnionType[] = [
     grade: "Excellent",
   },
   { name: "US 4.0 Scale", type: "4.0 Scale", grade: 0 },
-  {
-    name: "UK Honors",
-    type: "First/Upper Second/Lower Second/Third",
-    grade: "First",
-  },
+ 
   { name: "10-point Scale", type: "10-point Scale", grade: 0 },
   { name: "20-point Scale", type: "20-point Scale", grade: 0 },
   { name: "Grade Points", type: "Grade Points", grade: 0 },
   { name: "French Grading", type: "20-point Scale", grade: 0 },
   { name: "German Grading", type: "Numeric", range: "1-5", grade: 0 },
-  {
-    name: "Australian Grading",
-    type: "HD/D/C/P/F",
-    grade: "HD",
-  },
+ 
   { name: "Spanish Grading", type: "10-point Scale", grade: 0 },
   {
     name: "Sport Points",
