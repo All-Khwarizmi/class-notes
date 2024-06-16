@@ -54,11 +54,11 @@ export default function EvaluationBaseForm(props: {
     }
   }, [isSuccess, isUpdateSuccess]);
   return (
-    <div className="space-y-8 py-8 px-4 md:px-0  rounded-lg shadow-md">
+    <div className="space-y-8 py-8 px-4  flex w-full justify-center rounded-lg shadow-md">
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="space-y-4 w-full max-w-lg mx-auto"
+          className="space-y-4 md:px-4 flex-1"
         >
           <FormField
             control={form.control}
