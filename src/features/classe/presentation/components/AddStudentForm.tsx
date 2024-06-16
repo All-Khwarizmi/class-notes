@@ -1,7 +1,7 @@
 import { useMutation } from "convex/react";
 import { api } from "../../../../../convex/_generated/api";
 import { Id } from "../../../../../convex/_generated/dataModel";
-import { Student, studentSchema } from "./student-schema";
+import { Student, StudentSchema } from "./student-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import {
@@ -24,7 +24,7 @@ export default function AddStudentForm({
 }) {
   const addStudent = useMutation(api.students.createStudent);
   const form = useForm<Student>({
-    resolver: zodResolver(studentSchema),
+    resolver: zodResolver(StudentSchema),
     defaultValues: {
       name: "",
       classId,

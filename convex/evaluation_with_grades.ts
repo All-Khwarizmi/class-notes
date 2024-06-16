@@ -4,6 +4,7 @@ import {
 } from "@/features/evaluation/domain/entities/evaluation-with-grades-schema";
 import { mutation, query } from "./_generated/server";
 import { v } from "convex/values";
+import { gradeType } from "./fields/grade_type";
 
 export const assignEvaluationToClasse = mutation({
   args: {
@@ -34,7 +35,7 @@ export const assignEvaluationToClasse = mutation({
       grades: evaluationBase.criterias.map((criteria) => ({
         criteriaId: criteria.id,
         gradeType: criteria.gradeType,
-        grade: "",
+        grade: "N/G",
       })),
     }));
     // Create the evaluation with grades
@@ -58,8 +59,14 @@ export const updateGrade = mutation({
   args: {
     evaluationId: v.string(),
     studentId: v.string(),
-    criteriaId: v.string(),
-    grade: v.union(v.number(), v.string()),
+    feedback: v.string(),
+    grades: v.array(
+      v.object({
+        criteriaId: v.string(),
+        grade: v.union(v.number(), v.string()),
+        gradeType,
+      })
+    ),
   },
   handler: async (ctx, args) => {
     const evaluation = await ctx.db
@@ -79,15 +86,28 @@ export const updateGrade = mutation({
       throw new Error("Student not found");
     }
 
-    const criteriaGrade = studentGrade.grades.find(
-      (grade) => grade.criteriaId === args.criteriaId
-    );
+    studentGrade.grades = studentGrade.grades.map((grade) => {
+      const updatedGrade = args.grades.find(
+        (g) => g.criteriaId === grade.criteriaId
+      );
 
-    if (!criteriaGrade) {
-      throw new Error("Criteria not found");
-    }
+      if (updatedGrade) {
+        return {
+          ...grade,
+          grade: updatedGrade.grade,
+        };
+      }
 
-    criteriaGrade.grade = args.grade;
+      return grade;
+    });
+
+    evaluation.grades = evaluation.grades.map((grade) => {
+      if (grade.studentId === args.studentId) {
+        return studentGrade;
+      }
+
+      return grade;
+    });
 
     await ctx.db.patch(evaluation._id, evaluation);
 

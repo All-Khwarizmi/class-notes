@@ -21,6 +21,7 @@ import {
   EvaluationWithGradeSchema,
   EvaluationWithGradeType,
 } from "../../domain/entities/evaluation-with-grades-schema";
+import { CompoundEvaluationType } from "@/features/classe/domain/class-schema";
 
 export default class EvaluationUsecases {
   private readonly _evaluationRepository: EvaluatioRepository;
@@ -137,7 +138,7 @@ export default class EvaluationUsecases {
     if (isLeft(eitherEvals)) {
       return eitherEvals;
     }
-    const validatedEvals: EvaluationWithGradeType[] = [];
+    const validatedEvals: CompoundEvaluationType[] = [];
 
     for (const evaluation of eitherEvals.right) {
       const validatedEval = EvaluationWithGradeSchema.safeParse({
@@ -155,7 +156,18 @@ export default class EvaluationUsecases {
           })
         );
       }
-      validatedEvals.push(validatedEval.data);
+      const eitherEvalBase = await this.getEvaluationBase({
+        evaluationId: evaluation.evaluationBaseId,
+      });
+      if (isLeft(eitherEvalBase)) {
+        return eitherEvalBase;
+      }
+      const compoundEval: CompoundEvaluationType = {
+        grade: validatedEval.data,
+        base: eitherEvalBase.right,
+      };
+
+      validatedEvals.push(compoundEval);
     }
 
     return right(validatedEvals);

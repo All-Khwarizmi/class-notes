@@ -2,7 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
-import { ExternalLink } from "lucide-react";
+import { ExternalLink, Plus } from "lucide-react";
 import {
   Table,
   TableRow,
@@ -60,6 +60,13 @@ function EvaluationTableView({
           ))}
         </TableBody>
       </Table>
+      <div className="flex justify-center mt-4">
+        <Link href="/evaluations/add">
+          <Button variant="outline">
+            <Plus size={16} />
+          </Button>
+        </Link>
+      </div>
     </div>
   );
 }

@@ -4,6 +4,8 @@ import { Note } from "../../domain/notes-schemas";
 import Editor from "@/core/components/common/editor/Editor";
 import UpdateNoteButton from "../components/UpdateNote";
 import useUpdateNote from "../../application/adapters/services/useUpdateNote";
+import { cn } from "@/lib/utils";
+import AfterMenuBar from "@/core/components/common/editor/AfterMunuBar";
 
 function NoteEditorView(props: { note: Note }) {
   const { setNote } = useUpdateNote();
@@ -17,9 +19,9 @@ function NoteEditorView(props: { note: Note }) {
       }}
       content={props.note.content}
       slotafter={
-        <div className=" flex flex-col gap-4 ">
+        <AfterMenuBar>
           <UpdateNoteButton note={props.note} />
-        </div>
+        </AfterMenuBar>
       }
     />
   );

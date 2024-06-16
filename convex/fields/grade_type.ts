@@ -1,6 +1,7 @@
 import { v } from "convex/values";
 
 export const gradeType = v.union(
+  // Numeric Grading Schema
   v.object({
     name: v.literal("Numeric"),
     type: v.literal("Numeric"),
@@ -11,13 +12,27 @@ export const gradeType = v.union(
       v.literal("1-20"),
       v.literal("0-100")
     ),
-    grade: v.number(), // Numerical grade value
+    grade: v.union(
+      v.number(), // Numerical grade value
+      v.literal("N/G"), // Not Graded
+      v.literal("M"), // Missing
+      v.literal("N/D") // Not Done
+    ),
   }),
+
+  // Percentage Grading Schema
   v.object({
     name: v.literal("Percentage"),
     type: v.literal("Percentage"),
-    grade: v.number(), // Percentage grade value
+    grade: v.union(
+      v.number(), // Percentage grade value
+      v.literal("N/G"), // Not Graded
+      v.literal("M"), // Missing
+      v.literal("N/D") // Not Done
+    ),
   }),
+
+  // US Letter Grades Schema
   v.object({
     name: v.literal("US Letter Grades"),
     type: v.literal("A/B/C/D/F"),
@@ -26,9 +41,14 @@ export const gradeType = v.union(
       v.literal("B"),
       v.literal("C"),
       v.literal("D"),
-      v.literal("F")
+      v.literal("F"),
+      v.literal("N/G"), // Not Graded
+      v.literal("M"), // Missing
+      v.literal("N/D") // Not Done
     ),
   }),
+
+  // US Letter Grades with Pass/Fail Schema
   v.object({
     name: v.literal("US Letter Grades with Pass/Fail"),
     type: v.literal("A/B/C/D/F/Pass/Fail"),
@@ -39,9 +59,14 @@ export const gradeType = v.union(
       v.literal("D"),
       v.literal("F"),
       v.literal("Pass"),
-      v.literal("Fail")
+      v.literal("Fail"),
+      v.literal("N/G"), // Not Graded
+      v.literal("M"), // Missing
+      v.literal("N/D") // Not Done
     ),
   }),
+
+  // US Letter Grades with Pass/Fail/None Schema
   v.object({
     name: v.literal("US Letter Grades with Pass/Fail/None"),
     type: v.literal("A/B/C/D/F/Pass/Fail/None"),
@@ -53,14 +78,27 @@ export const gradeType = v.union(
       v.literal("F"),
       v.literal("Pass"),
       v.literal("Fail"),
-      v.literal("None")
+      v.literal("None"),
+      v.literal("N/G"), // Not Graded
+      v.literal("M"), // Missing
+      v.literal("N/D") // Not Done
     ),
   }),
+
+  // Pass/Fail Schema
   v.object({
     name: v.literal("Pass/Fail"),
     type: v.literal("Pass/Fail"),
-    grade: v.union(v.literal("Pass"), v.literal("Fail")),
+    grade: v.union(
+      v.literal("Pass"),
+      v.literal("Fail"),
+      v.literal("N/G"), // Not Graded
+      v.literal("M"), // Missing
+      v.literal("N/D") // Not Done
+    ),
   }),
+
+  // Descriptive Grades Schema
   v.object({
     name: v.literal("Descriptive Grades"),
     type: v.literal("Excellent/Good/Satisfactory/Needs Improvement"),
@@ -68,76 +106,111 @@ export const gradeType = v.union(
       v.literal("Excellent"),
       v.literal("Good"),
       v.literal("Satisfactory"),
-      v.literal("Needs Improvement")
+      v.literal("Needs Improvement"),
+      v.literal("N/G"), // Not Graded
+      v.literal("M"), // Missing
+      v.literal("N/D") // Not Done
     ),
   }),
+
+  // US 4.0 Scale Schema
   v.object({
     name: v.literal("US 4.0 Scale"),
     type: v.literal("4.0 Scale"),
-    grade: v.number(), // Grade on a 4.0 scale
-  }),
-  v.object({
-    name: v.literal("UK Honors"),
-    type: v.literal("First/Upper Second/Lower Second/Third"),
     grade: v.union(
-      v.literal("First"),
-      v.literal("Upper Second"),
-      v.literal("Lower Second"),
-      v.literal("Third")
+      v.number(), // Grade on a 4.0 scale
+      v.literal("N/G"), // Not Graded
+      v.literal("M"), // Missing
+      v.literal("N/D") // Not Done
     ),
   }),
+
+  // 10-point Scale Schema
   v.object({
     name: v.literal("10-point Scale"),
     type: v.literal("10-point Scale"),
-    grade: v.number(), // Grade on a 10-point scale
+    grade: v.union(
+      v.number(), // Grade on a 10-point scale
+      v.literal("N/G"), // Not Graded
+      v.literal("M"), // Missing
+      v.literal("N/D") // Not Done
+    ),
   }),
+
+  // 20-point Scale Schema
   v.object({
     name: v.literal("20-point Scale"),
     type: v.literal("20-point Scale"),
-    grade: v.number(), // Grade on a 20-point scale
+    grade: v.union(
+      v.number(), // Grade on a 20-point scale
+      v.literal("N/G"), // Not Graded
+      v.literal("M"), // Missing
+      v.literal("N/D") // Not Done
+    ),
   }),
+
+  // Grade Points Schema
   v.object({
     name: v.literal("Grade Points"),
     type: v.literal("Grade Points"),
-    grade: v.number(), // General grade points
+    grade: v.union(
+      v.number(), // General grade points
+      v.literal("N/G"), // Not Graded
+      v.literal("M"), // Missing
+      v.literal("N/D") // Not Done
+    ),
   }),
+
+  // Custom Grading Schema
   v.object({
     name: v.literal("Custom"),
     type: v.literal("Other"),
-    description: v.string(), // Description for the custom grading system
-    grade: v.string(), // Flexible grade value as string
+    grade: v.union(
+      v.string(), // Flexible grade value as string
+      v.literal("N/G"), // Not Graded
+      v.literal("M"), // Missing
+      v.literal("N/D") // Not Done
+    ),
   }),
-  // French Grading System (out of 20)
+
+  // French Grading Schema (out of 20)
   v.object({
     name: v.literal("French Grading"),
     type: v.literal("20-point Scale"),
-    grade: v.number(), // French grades are typically on a 0-20 scale
+    grade: v.union(
+      v.number(), // French grades are typically on a 0-20 scale
+      v.literal("N/G"), // Not Graded
+      v.literal("M"), // Missing
+      v.literal("N/D") // Not Done
+    ),
   }),
-  // German Grading System (1.0 to 5.0, where 1.0 is the best and 5.0 is failing)
+
+  // German Grading Schema (1.0 to 5.0)
   v.object({
     name: v.literal("German Grading"),
     type: v.literal("Numeric"),
     range: v.literal("1-5"),
-    grade: v.number(), // German grades are typically 1.0 to 5.0, sometimes to 6.0
-  }),
-  // Australian Grading System (HD, D, C, P, F)
-  v.object({
-    name: v.literal("Australian Grading"),
-    type: v.literal("HD/D/C/P/F"),
     grade: v.union(
-      v.literal("HD"), // High Distinction
-      v.literal("D"), // Distinction
-      v.literal("C"), // Credit
-      v.literal("P"), // Pass
-      v.literal("F") // Fail
+      v.number(), // German grades are typically 1.0 to 5.0, sometimes to 6.0
+      v.literal("N/G"), // Not Graded
+      v.literal("M"), // Missing
+      v.literal("N/D") // Not Done
     ),
   }),
-  // Spanish Grading System (0-10 scale)
+
+  // Spanish Grading Schema (0-10 scale)
   v.object({
     name: v.literal("Spanish Grading"),
     type: v.literal("10-point Scale"),
-    grade: v.number(), // Spanish grades are typically on a 0-10 scale
+    grade: v.union(
+      v.number(), // Spanish grades are typically on a 0-10 scale
+      v.literal("N/G"), // Not Graded
+      v.literal("M"), // Missing
+      v.literal("N/D") // Not Done
+    ),
   }),
+
+  // Sport Points System Schema
   v.object({
     name: v.literal("Sport Points"),
     type: v.literal("Points"),
@@ -147,9 +220,15 @@ export const gradeType = v.union(
       v.literal("0-100"),
       v.literal("0-1000")
     ),
-    grade: v.number(), // Numeric points score
+    grade: v.union(
+      v.number(), // Numeric points score
+      v.literal("N/G"), // Not Graded
+      v.literal("M"), // Missing
+      v.literal("N/D") // Not Done
+    ),
   }),
-  // Sport Grading: Rank System (e.g., 1st, 2nd, 3rd)
+
+  // Sport Ranking System Schema
   v.object({
     name: v.literal("Sport Ranking"),
     type: v.literal("Ranking"),
@@ -163,16 +242,28 @@ export const gradeType = v.union(
       v.literal("7th"),
       v.literal("8th"),
       v.literal("9th"),
-      v.literal("10th")
+      v.literal("10th"),
+      v.literal("N/G"), // Not Graded
+      v.literal("M"), // Missing
+      v.literal("N/D") // Not Done
     ),
   }),
-  // Sport Grading: Win/Loss/Tie notation
+
+  // Sport Win/Loss/Tie Schema
   v.object({
     name: v.literal("Sport Result"),
     type: v.literal("Win/Loss/Tie"),
-    grade: v.union(v.literal("Win"), v.literal("Loss"), v.literal("Tie")),
+    grade: v.union(
+      v.literal("Win"),
+      v.literal("Loss"),
+      v.literal("Tie"),
+      v.literal("N/G"), // Not Graded
+      v.literal("M"), // Missing
+      v.literal("N/D") // Not Done
+    ),
   }),
-  // Sport Grading: Performance Level (e.g., Excellent/Good/Average/Poor)
+
+  // Sport Performance Level Schema
   v.object({
     name: v.literal("Sport Performance"),
     type: v.literal("Performance Level"),
@@ -180,7 +271,20 @@ export const gradeType = v.union(
       v.literal("Excellent"),
       v.literal("Good"),
       v.literal("Average"),
-      v.literal("Poor")
+      v.literal("Poor"),
+      v.literal("N/G"), // Not Graded
+      v.literal("M"), // Missing
+      v.literal("N/D") // Not Done
+    ),
+  }),
+  v.object({
+    name: v.literal("Competence-Based Evaluation"),
+    type: v.literal("Competence"),
+    grade: v.union(
+      v.literal("Expertise"), // la compétence est maîtrisée dans l’ensemble des situations professionnelles qui la mobilisent.
+      v.literal("Maîtrise"), // la compétence est maîtrisée dans les situations professionnelles qui la mobilisent, avec une réelle autonomie.
+      v.literal("À développer"), // la compétence est repérable à l’œuvre dans certaines situations professionnelles, mais nécessite encore des efforts pour être maîtrisée.
+      v.literal("À acquérir") // la compétence n’est pas mise en œuvre ou est mise en œuvre de manière incomplète.
     ),
   })
 );

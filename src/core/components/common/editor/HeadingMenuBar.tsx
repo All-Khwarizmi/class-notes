@@ -20,7 +20,8 @@ export function HeadingMenuBar() {
   }
 
   function setHeading(level: Level) {
-    editor!.chain().focus().setHeading({ level }).run();
+    editor!.chain().focus().setHeading({ level }).scrollIntoView().run();
+
   }
 
   return (
