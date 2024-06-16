@@ -88,6 +88,7 @@ export function StudentsEvaluationTableView(props: {
                           studentGrade={studentGrade}
                           evaluationBase={evaluation.base}
                           evaluationId={evaluation.grade.id}
+                          classeId={props.classeId}
                         />
                       </CustomDialog>
                     ) : (

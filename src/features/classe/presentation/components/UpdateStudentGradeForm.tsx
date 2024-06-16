@@ -26,6 +26,7 @@ export default function UpdateStudentGradeForm(props: {
   studentGrade: StudentGradeType;
   evaluationBase: EvaluationBaseType;
   evaluationId: string;
+  classeId: string;
 }) {
   const form = useForm<StudentGradeType>({
     resolver: zodResolver(StudentGradeSchema),
@@ -46,7 +47,6 @@ export default function UpdateStudentGradeForm(props: {
         grade: typeof g.grade === "string" ? parseFloat(g.grade) : g.grade,
       })),
     };
-    console.log(data);
   }
 
   function handleSubmit() {
@@ -56,12 +56,10 @@ export default function UpdateStudentGradeForm(props: {
   }
 
   if (props.evaluationBase.gradeType.type === "10-point Scale") {
-    console.log(props.studentGrade);
     const studentGrade = StudentGradeTenPointsSchemaExtension.safeParse(
       props.studentGrade
     );
     if (!studentGrade.success) {
-      console.error(studentGrade.error.errors);
       return <div>Invalid student grade</div>;
     }
     return (
@@ -69,6 +67,7 @@ export default function UpdateStudentGradeForm(props: {
         studentGrade={studentGrade.data}
         evaluationBase={props.evaluationBase}
         evaluationId={props.evaluationId}
+        classeId={props.classeId}
       />
     );
   }
