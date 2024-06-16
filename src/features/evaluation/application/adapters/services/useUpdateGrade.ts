@@ -19,7 +19,7 @@ export default function useUpdateGrade() {
       //! Revalidate the cache for the classes page
       const path = `/classes/class/${variables.classeId}`;
       console.log("Revalidating path", path);
-      revalidatePath(path, "page");
+      // revalidatePath(path, "page");
     },
   });
 }
