@@ -14,7 +14,7 @@ export type EvaluationBaseTypeForm = z.infer<
 >;
 
 // Numeric Grading Schemas
-const NumericGradeSchema = z.object({
+export const NumericGradeSchema = z.object({
   name: z.literal("Numeric"),
   type: z.literal("Numeric"),
   range: z.union([
@@ -28,14 +28,14 @@ const NumericGradeSchema = z.object({
 });
 
 // Percentage Grading Schema
-const PercentageGradeSchema = z.object({
+export const PercentageGradeSchema = z.object({
   name: z.literal("Percentage"),
   type: z.literal("Percentage"),
   grade: z.number(), // Percentage grade value
 });
 
 // US Letter Grades
-const USLetterGradeSchema = z.object({
+export const USLetterGradeSchema = z.object({
   name: z.literal("US Letter Grades"),
   type: z.literal("A/B/C/D/F"),
   grade: z.union([
@@ -48,7 +48,7 @@ const USLetterGradeSchema = z.object({
 });
 
 // US Letter Grades with Pass/Fail
-const USLetterGradePassFailSchema = z.object({
+export const USLetterGradePassFailSchema = z.object({
   name: z.literal("US Letter Grades with Pass/Fail"),
   type: z.literal("A/B/C/D/F/Pass/Fail"),
   grade: z.union([
@@ -63,7 +63,7 @@ const USLetterGradePassFailSchema = z.object({
 });
 
 // US Letter Grades with Pass/Fail/None
-const USLetterGradePassFailNoneSchema = z.object({
+export const USLetterGradePassFailNoneSchema = z.object({
   name: z.literal("US Letter Grades with Pass/Fail/None"),
   type: z.literal("A/B/C/D/F/Pass/Fail/None"),
   grade: z.union([
@@ -79,14 +79,14 @@ const USLetterGradePassFailNoneSchema = z.object({
 });
 
 // Pass/Fail Schema
-const PassFailSchema = z.object({
+export const PassFailSchema = z.object({
   name: z.literal("Pass/Fail"),
   type: z.literal("Pass/Fail"),
   grade: z.union([z.literal("Pass"), z.literal("Fail")]),
 });
 
 // Descriptive Grades Schema
-const DescriptiveGradeSchema = z.object({
+export const DescriptiveGradeSchema = z.object({
   name: z.literal("Descriptive Grades"),
   type: z.literal("Excellent/Good/Satisfactory/Needs Improvement"),
   grade: z.union([
@@ -98,14 +98,14 @@ const DescriptiveGradeSchema = z.object({
 });
 
 // US 4.0 Scale Schema
-const USScale4Schema = z.object({
+export const USScale4Schema = z.object({
   name: z.literal("US 4.0 Scale"),
   type: z.literal("4.0 Scale"),
   grade: z.number(), // Grade on a 4.0 scale
 });
 
 // UK Honors Schema
-const UKHonorsSchema = z.object({
+export const UKHonorsSchema = z.object({
   name: z.literal("UK Honors"),
   type: z.literal("First/Upper Second/Lower Second/Third"),
   grade: z.union([
@@ -117,28 +117,28 @@ const UKHonorsSchema = z.object({
 });
 
 // 10-point Scale Schema
-const TenPointScaleSchema = z.object({
+export const TenPointScaleSchema = z.object({
   name: z.literal("10-point Scale"),
   type: z.literal("10-point Scale"),
   grade: z.number(), // Grade on a 10-point scale
 });
 
 // 20-point Scale Schema
-const TwentyPointScaleSchema = z.object({
+export const TwentyPointScaleSchema = z.object({
   name: z.literal("20-point Scale"),
   type: z.literal("20-point Scale"),
   grade: z.number(), // Grade on a 20-point scale
 });
 
 // Grade Points Schema
-const GradePointsSchema = z.object({
+export const GradePointsSchema = z.object({
   name: z.literal("Grade Points"),
   type: z.literal("Grade Points"),
   grade: z.number(), // General grade points
 });
 
 // Custom Grading Schema
-const CustomGradeSchema = z.object({
+export const CustomGradeSchema = z.object({
   name: z.literal("Custom"),
   type: z.literal("Other"),
   description: z.string(), // Description for the custom grading system
@@ -146,14 +146,14 @@ const CustomGradeSchema = z.object({
 });
 
 // French Grading Schema (out of 20)
-const FrenchGradingSchema = z.object({
+export const FrenchGradingSchema = z.object({
   name: z.literal("French Grading"),
   type: z.literal("20-point Scale"),
   grade: z.number(), // French grades are typically on a 0-20 scale
 });
 
 // German Grading Schema (1.0 to 5.0)
-const GermanGradingSchema = z.object({
+export const GermanGradingSchema = z.object({
   name: z.literal("German Grading"),
   type: z.literal("Numeric"),
   range: z.literal("1-5"),
@@ -161,7 +161,7 @@ const GermanGradingSchema = z.object({
 });
 
 // Australian Grading Schema (HD, D, C, P, F)
-const AustralianGradingSchema = z.object({
+export const AustralianGradingSchema = z.object({
   name: z.literal("Australian Grading"),
   type: z.literal("HD/D/C/P/F"),
   grade: z.union([
@@ -174,14 +174,14 @@ const AustralianGradingSchema = z.object({
 });
 
 // Spanish Grading Schema (0-10 scale)
-const SpanishGradingSchema = z.object({
+export const SpanishGradingSchema = z.object({
   name: z.literal("Spanish Grading"),
   type: z.literal("10-point Scale"),
   grade: z.number(), // Spanish grades are typically on a 0-10 scale
 });
 
 // Sport Points System Schema
-const SportPointsSchema = z.object({
+export const SportPointsSchema = z.object({
   name: z.literal("Sport Points"),
   type: z.literal("Points"),
   range: z.union([
@@ -194,7 +194,7 @@ const SportPointsSchema = z.object({
 });
 
 // Sport Ranking System Schema
-const SportRankingSchema = z.object({
+export const SportRankingSchema = z.object({
   name: z.literal("Sport Ranking"),
   type: z.literal("Ranking"),
   grade: z.union([
@@ -212,14 +212,14 @@ const SportRankingSchema = z.object({
 });
 
 // Sport Win/Loss/Tie Schema
-const SportResultSchema = z.object({
+export const SportResultSchema = z.object({
   name: z.literal("Sport Result"),
   type: z.literal("Win/Loss/Tie"),
   grade: z.union([z.literal("Win"), z.literal("Loss"), z.literal("Tie")]),
 });
 
 // Sport Performance Level Schema
-const SportPerformanceSchema = z.object({
+export const SportPerformanceSchema = z.object({
   name: z.literal("Sport Performance"),
   type: z.literal("Performance Level"),
   grade: z.union([
