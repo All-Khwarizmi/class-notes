@@ -47,7 +47,7 @@ export const StudentsEvaluationTableView = (props: {
   };
 
   return (
-    <div className="w-full h-full py-4">
+    <div className="w-full h-full">
       <Table className="w-full">
         <TableCaption>
           Overall grades of students in different evaluations. Click on the
