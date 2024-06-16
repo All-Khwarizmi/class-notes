@@ -22,11 +22,11 @@ import CustomDialog from "@/core/components/common/CustomDialog";
 import AssignEvaluation from "./AssignEvaluation";
 import UpdateStudentGradeForm from "./UpdateStudentGradeForm";
 
-export const StudentsEvaluationTableView = (props: {
+export function StudentsEvaluationTableView(props: {
   tableData: ClasseTableType;
   classeId: string;
   userId: string;
-}) => {
+}) {
   const [selectedEvaluation, setSelectedEvaluation] =
     useState<CompoundEvaluationType | null>(null);
   const [selectedStudentGrade, setSelectedStudentGrade] =
@@ -115,4 +115,4 @@ export const StudentsEvaluationTableView = (props: {
       </div>
     </div>
   );
-};
+}
