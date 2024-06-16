@@ -52,11 +52,11 @@ function TenPointsCriteriaForm(props: {
   }
 
   useEffect(() => {
-    if (isSuccess) {
+    if (isSuccess === true) {
       toast.success("Grade updated successfully");
     }
-    if (isError) {
-      toast.error("An error occurred while updating the grade");
+    if (isError === true) {
+      toast.error("An error occurred while updating the grade", {});
     }
   }, [isSuccess, isError, error]);
 
