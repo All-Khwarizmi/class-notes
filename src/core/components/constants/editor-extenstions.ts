@@ -10,10 +10,12 @@ import { IndentExtension } from "../common/editor/Indent";
 import YouTube from "@tiptap/extension-youtube";
 import DoubleCurlyBracesExtension from "../common/editor/DoubleCurlyBracesExtension";
 import { DoubleBrakets } from "../common/editor/DoubleBrakets";
+import Link from "@tiptap/extension-link";
 
 const lowlight = createLowlight(common);
 
 export const EXTENSIONS = [
+  Link,
   YouTube,
   IndentExtension,
   CodeBlockLowlight.configure({
