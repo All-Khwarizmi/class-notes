@@ -4,6 +4,7 @@ import {
 } from "@/features/evaluation/domain/entities/evaluation-with-grades-schema";
 import { mutation, query } from "./_generated/server";
 import { v } from "convex/values";
+import { gradeType } from "./fields/grade_type";
 
 export const assignEvaluationToClasse = mutation({
   args: {
@@ -58,10 +59,12 @@ export const updateGrade = mutation({
   args: {
     evaluationId: v.string(),
     studentId: v.string(),
+    feedback: v.string(),
     grades: v.array(
       v.object({
         criteriaId: v.string(),
         grade: v.union(v.number(), v.string()),
+        gradeType,
       })
     ),
   },
