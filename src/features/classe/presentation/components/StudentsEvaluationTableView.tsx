@@ -21,6 +21,7 @@ import {
 import CustomDialog from "@/core/components/common/CustomDialog";
 import AssignEvaluation from "./AssignEvaluation";
 import UpdateStudentGradeForm from "./UpdateStudentGradeForm";
+import calculateOverallGrade from "@/features/evaluation/application/adapters/utils/calculate-overall-grade";
 
 export function StudentsEvaluationTableView(props: {
   tableData: ClasseTableType;
@@ -31,20 +32,6 @@ export function StudentsEvaluationTableView(props: {
     useState<CompoundEvaluationType | null>(null);
   const [selectedStudentGrade, setSelectedStudentGrade] =
     useState<StudentGradeType | null>(null);
-
-  // Calculate the overall grade for a student in an evaluation
-  const calculateOverallGrade = (grades: Grade[]) => {
-    if (!grades || grades.length === 0) return "N/A";
-    const numericGrades = grades
-      .map((grade) => (typeof grade.grade === "number" ? grade.grade : null))
-      .filter(Boolean) as number[];
-    if (numericGrades.length > 0) {
-      return (
-        numericGrades.reduce((a, b) => a + b, 0) / numericGrades.length
-      ).toFixed(2);
-    }
-    return "N/A";
-  };
 
   return (
     <div className="w-full h-full">
