@@ -107,12 +107,13 @@ function TenPointsCriteriaForm(props: {
                         placeholder={`Enter grade for ${
                           criteria ? criteria.name : grade.criteriaId
                         }`}
+                        value={field.value}
                         onChange={(e) => {
                           let value = Number(e.target.value);
                           if (value > maxGrade) {
                             value = maxGrade;
                           }
-                          field.onChange(maxGrade);
+                          field.onChange(value);
                         }}
                         type={"number"}
                       />
