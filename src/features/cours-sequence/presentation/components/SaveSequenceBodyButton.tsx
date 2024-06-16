@@ -37,7 +37,7 @@ function SaveSequenceBodyButton({
         },
       }}
     >
-      <Save size={12} />
+      <Save size={14} />
     </AfterMenuButton>
   );
 }

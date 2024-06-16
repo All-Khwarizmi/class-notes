@@ -28,7 +28,7 @@ function CoursSaveButton({ cours, userId }: { cours: Cours; userId: string }) {
         },
       }}
     >
-      <Save size={12} />
+      <Save size={14} />
     </AfterMenuButton>
   );
 }
