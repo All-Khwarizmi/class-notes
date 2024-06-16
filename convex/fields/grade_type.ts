@@ -165,7 +165,6 @@ export const gradeType = v.union(
   v.object({
     name: v.literal("Custom"),
     type: v.literal("Other"),
-    description: v.string(), // Description for the custom grading system
     grade: v.union(
       v.string(), // Flexible grade value as string
       v.literal("N/G"), // Not Graded
