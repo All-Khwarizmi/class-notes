@@ -51,23 +51,37 @@ export function StudentsEvaluationTableView(props: {
           </TableRow>
         </TableHeader>
         <TableBody>
+          {/* 
+            Loop through the students and evaluations to display the grades.
+            For each student, display the overall grade of the evaluation.
+            If the student has a grade, display a dialog with the detailed criteria.
+          */}
           {props.tableData.students.map((student, index) => (
             <TableRow key={student.id}>
               <TableCell className="w-[200px]">{student.name}</TableCell>
+              {/* 
+                Loop through the evaluations and find the grade of the student.
+                If the student has a grade, display the overall grade.
+                If the student doesn't have a grade, display "N/A".
+              */}
               {props.tableData.evaluations.map((evaluation) => {
                 const studentGrade = evaluation.grade.grades.find(
                   (grade) => grade.studentId === student.id
                 );
                 console.log({ studentGrade });
                 const overallGrade = studentGrade
-                  ? calculateOverallGrade(studentGrade.grades)
+                  ? calculateOverallGrade({
+                      grades: studentGrade.grades,
+                      criteria: evaluation.base.criterias,
+                      gradeType: evaluation.base.gradeType,
+                    })
                   : "N/A";
                 return (
                   <TableCell key={evaluation.grade.id} className="w-[200px]">
                     {studentGrade ? (
                       <CustomDialog
                         title="Detailed Criteria"
-                        buttonText={overallGrade}
+                        buttonText={overallGrade.toString()}
                         buttonClassName="bg-transparent dark text-white px-4 py-2 rounded-md border border-white"
                       >
                         <UpdateStudentGradeForm
