@@ -37,8 +37,10 @@ export interface AssignEvaluationOptions {
 export interface UpdateGradeOptions {
   evaluationId: string;
   studentId: string;
-  criteriaId: string;
-  grade: number | string;
+  grades: {
+    criteriaId: string;
+    grade: number | string;
+  }[];
 }
 
 export interface GetEvaluationOptions {
