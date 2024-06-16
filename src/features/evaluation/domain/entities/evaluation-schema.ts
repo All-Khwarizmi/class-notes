@@ -290,6 +290,18 @@ export const SportPerformanceSchema = z.object({
   ]),
 });
 
+// Competence-Based Evaluation Schema
+export const CompetenceEvaluationSchema = z.object({
+  name: z.literal("Competence-Based Evaluation"),
+  type: z.literal("Competence"),
+  grade: z.union([
+    z.literal("Expertise"), // la compétence est maîtrisée dans l’ensemble des situations professionnelles qui la mobilisent.
+    z.literal("Maîtrise"), // la compétence est maîtrisée dans les situations professionnelles qui la mobilisent, avec une réelle autonomie.
+    z.literal("À développer"), // la compétence est repérable à l’œuvre dans certaines situations professionnelles, mais nécessite encore des efforts pour être maîtrisée.
+    z.literal("À acquérir"), // la compétence n’est pas mise en œuvre ou est mise en œuvre de manière incomplète.
+  ]),
+});
+
 // Union of all Grade Types
 export const GradeTypeUnionSchema = z.union([
   NumericGradeSchema,
@@ -311,6 +323,7 @@ export const GradeTypeUnionSchema = z.union([
   SportRankingSchema,
   SportResultSchema,
   SportPerformanceSchema,
+  CompetenceEvaluationSchema,
 ]);
 
 export const EvaluationCriteriaSchema = z.object({
@@ -341,6 +354,9 @@ export type PercentageGradeType = z.infer<typeof PercentageGradeSchema>;
 export type USLetterGradeType = z.infer<typeof USLetterGradeSchema>;
 export type USLetterGradePassFailType = z.infer<
   typeof USLetterGradePassFailSchema
+>;
+export type CompetenceEvaluationType = z.infer<
+  typeof CompetenceEvaluationSchema
 >;
 export type USLetterGradePassFailNoneType = z.infer<
   typeof USLetterGradePassFailNoneSchema
