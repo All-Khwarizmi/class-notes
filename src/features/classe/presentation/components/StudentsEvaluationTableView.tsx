@@ -11,7 +11,10 @@ import {
   TableHeader,
 } from "@/core/components/ui/table";
 
-import { ClasseTableType } from "../../domain/class-schema";
+import {
+  ClasseTableType,
+  CompoundEvaluationType,
+} from "../../domain/class-schema";
 import CustomDialog from "@/core/components/common/CustomDialog";
 import AssignEvaluation from "./AssignEvaluation";
 import UpdateStudentGradeForm from "./UpdateStudentGradeForm";
@@ -22,9 +25,9 @@ export function StudentsEvaluationTableView(props: {
   classeId: string;
   userId: string;
 }) {
-  const [localTableData, setLocalTableData] = useState<ClasseTableType>(
-    props.tableData
-  );
+  const [localTableData, setLocalTableData] = useState<
+    CompoundEvaluationType[]
+  >(props.tableData.evaluations);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   return (
     <div className="w-full h-full">
@@ -36,7 +39,7 @@ export function StudentsEvaluationTableView(props: {
         <TableHeader>
           <TableRow>
             <TableHead className="w-[200px]">Student</TableHead>
-            {localTableData.evaluations.map((evaluation) => (
+            {localTableData.map((evaluation) => (
               <TableHead key={evaluation.grade.id} className="w-[200px]">
                 {evaluation.base.name}
               </TableHead>
@@ -49,7 +52,7 @@ export function StudentsEvaluationTableView(props: {
             For each student, display the overall grade of the evaluation.
             If the student has a grade, display a dialog with the detailed criteria.
           */}
-          {localTableData.students.map((student, index) => (
+          {props.tableData.students.map((student, index) => (
             <TableRow key={student.id}>
               <TableCell className="w-[200px]">{student.name}</TableCell>
               {/* 
@@ -57,7 +60,7 @@ export function StudentsEvaluationTableView(props: {
                 If the student has a grade, display the overall grade.
                 If the student doesn't have a grade, display "N/A".
               */}
-              {localTableData.evaluations.map((evaluation) => {
+              {localTableData.map((evaluation) => {
                 const studentGrade = evaluation.grade.grades.find(
                   (grade) => grade.studentId === student.id
                 );
@@ -84,6 +87,8 @@ export function StudentsEvaluationTableView(props: {
                           evaluationBase={evaluation.base}
                           evaluationId={evaluation.grade.id}
                           classeId={props.classeId}
+                          setIsDialogOpen={setIsDialogOpen}
+                          setLocalTableData={setLocalTableData}
                         />
                       </CustomDialog>
                     ) : (
@@ -105,7 +110,7 @@ export function StudentsEvaluationTableView(props: {
           <AssignEvaluation
             classeId={props.classeId}
             userId={props.userId}
-            alreadyAssignedEvaluationIds={localTableData.evaluations.map(
+            alreadyAssignedEvaluationIds={localTableData.map(
               (evaluation) => evaluation.base.id
             )}
           />
