@@ -4,7 +4,7 @@ import {
   StudentGradeTenPointsSchemaExtension,
 } from "../../application/adapters/utils/ten-points-scale-case";
 import { EvaluationBaseType } from "../../domain/entities/evaluation-schema";
-import { useForm, Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/core/components/ui/button";
 import { Input } from "@/core/components/ui/input";
@@ -17,18 +17,17 @@ import {
   FormMessage,
   FormDescription,
 } from "@/core/components/ui/form";
-import {
-  StudentGradeType,
-  StudentGradeSchema,
-} from "../../domain/entities/evaluation-with-grades-schema";
+
 import useUpdateGrade from "../../application/adapters/services/useUpdateGrade";
 import { UpdateGradeOptions } from "../../domain/entities/evaluation-types";
 import { Loader } from "lucide-react";
+import { toast } from "sonner";
 
 function TenPointsCriteriaForm(props: {
   studentGrade: StudentGradeTenPointsExtension;
   evaluationBase: EvaluationBaseType;
   evaluationId: string;
+  classeId: string;
 }) {
   const {
     isSuccess,
@@ -41,10 +40,6 @@ function TenPointsCriteriaForm(props: {
     resolver: zodResolver(StudentGradeTenPointsSchemaExtension),
     defaultValues: props.studentGrade,
   });
-  const values = form.watch();
-  useEffect(() => {
-    console.log({ values });
-  }, [values]);
 
   function onSubmit(data: StudentGradeTenPointsExtension) {
     const grade: UpdateGradeOptions = {
@@ -53,8 +48,17 @@ function TenPointsCriteriaForm(props: {
       evaluationId: props.evaluationId,
       grades: data.grades,
     };
-    updateGrade(grade);
+    updateGrade({ options: grade, classeId: props.classeId });
   }
+
+  useEffect(() => {
+    if (isSuccess === true) {
+      toast.success("Grade updated successfully");
+    }
+    if (isError === true) {
+      toast.error("An error occurred while updating the grade", {});
+    }
+  }, [isSuccess, isError, error]);
 
   return (
     <div className="space-y-8 py-8 px-4 md:px-0 rounded-lg shadow-md">

@@ -100,7 +100,7 @@ export const updateGrade = mutation({
 
       return grade;
     });
-
+    studentGrade.feedback = args.feedback;
     evaluation.grades = evaluation.grades.map((grade) => {
       if (grade.studentId === args.studentId) {
         return studentGrade;

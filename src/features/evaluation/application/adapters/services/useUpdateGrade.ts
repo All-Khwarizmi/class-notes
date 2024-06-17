@@ -6,12 +6,20 @@ import { revalidatePath } from "next/cache";
 export default function useUpdateGrade() {
   return useMutation({
     mutationKey: ["update-grade"],
-    mutationFn: async (options: UpdateGradeOptions) => {
-      return updateGrade(options);
+    mutationFn: async (options: {
+      options: UpdateGradeOptions;
+      classeId: string;
+    }) => {
+      return updateGrade(options.options);
     },
-    onSuccess: () => {
+    onSuccess: (
+      _,
+      variables: { classeId: string; options: UpdateGradeOptions }
+    ) => {
       //! Revalidate the cache for the classes page
-      revalidatePath("/classes");
+      const path = `/classes/class/${variables.classeId}`;
+      console.log("Revalidating path", path);
+      // revalidatePath(path, "page");
     },
   });
 }
