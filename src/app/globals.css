@@ -155,10 +155,12 @@ body {
  .youtube-embed {
    position: relative;
    padding-top: 10px;
-   width: 90%;  
    margin: 0 auto;
    height: 300px;
+   max-width: 100%;
    margin-bottom: 1rem;}
+
+
 .tiptap h1 {
   @apply text-4xl font-bold;
 }
