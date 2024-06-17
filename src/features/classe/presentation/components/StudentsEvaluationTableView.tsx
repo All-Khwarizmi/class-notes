@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import {
   Table,
   TableRow,
@@ -10,14 +10,8 @@ import {
   TableCaption,
   TableHeader,
 } from "@/core/components/ui/table";
-import {
-  Grade,
-  StudentGradeType,
-} from "@/features/evaluation/domain/entities/evaluation-with-grades-schema";
-import {
-  ClasseTableType,
-  CompoundEvaluationType,
-} from "../../domain/class-schema";
+
+import { ClasseTableType } from "../../domain/class-schema";
 import CustomDialog from "@/core/components/common/CustomDialog";
 import AssignEvaluation from "./AssignEvaluation";
 import UpdateStudentGradeForm from "./UpdateStudentGradeForm";
@@ -28,11 +22,6 @@ export function StudentsEvaluationTableView(props: {
   classeId: string;
   userId: string;
 }) {
-  const [selectedEvaluation, setSelectedEvaluation] =
-    useState<CompoundEvaluationType | null>(null);
-  const [selectedStudentGrade, setSelectedStudentGrade] =
-    useState<StudentGradeType | null>(null);
-
   return (
     <div className="w-full h-full">
       <Table className="w-full">
