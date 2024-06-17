@@ -5,6 +5,7 @@ import getStudents from "@/features/classe/application/adapters/actions/get-stud
 import { ClasseTableType } from "@/features/classe/domain/class-schema";
 import { StudentsEvaluationTableView } from "@/features/classe/presentation/components/StudentsEvaluationTableView";
 import { coursUsecases } from "@/features/cours-sequence/application/usecases/cours-usecases";
+import getEvaluationCompoundList from "@/features/evaluation/application/adapters/actions/get-evaluation-compound-list";
 import getClassNavItems from "@/features/evaluation/application/adapters/utils/get-classe-nav-items";
 import { evaluationUsecases } from "@/features/evaluation/application/usecases/evaluation-usecases";
 import { isLeft } from "fp-ts/lib/Either";
@@ -29,11 +30,9 @@ async function ClasseServerLayer(props: { slug: string }) {
     );
   }
 
-  const eitherCompoundEvaluations = await evaluationUsecases.getEvaluationsList(
-    {
-      classeId: props.slug,
-    }
-  );
+  const eitherCompoundEvaluations = await getEvaluationCompoundList({
+    classeId: props.slug,
+  });
 
   if (isLeft(eitherCompoundEvaluations)) {
     return (
