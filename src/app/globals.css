@@ -140,7 +140,7 @@ body {
   }
 }
 
- a {
+ .link-class {
    color: lightblue;
     text-decoration: underline;
     /* Add an icon link at the end */
