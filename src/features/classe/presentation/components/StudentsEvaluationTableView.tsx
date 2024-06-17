@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import {
   Table,
   TableRow,
@@ -22,6 +22,10 @@ export function StudentsEvaluationTableView(props: {
   classeId: string;
   userId: string;
 }) {
+  const [localTableData, setLocalTableData] = useState<ClasseTableType>(
+    props.tableData
+  );
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
   return (
     <div className="w-full h-full">
       <Table className="w-full">
@@ -32,7 +36,7 @@ export function StudentsEvaluationTableView(props: {
         <TableHeader>
           <TableRow>
             <TableHead className="w-[200px]">Student</TableHead>
-            {props.tableData.evaluations.map((evaluation) => (
+            {localTableData.evaluations.map((evaluation) => (
               <TableHead key={evaluation.grade.id} className="w-[200px]">
                 {evaluation.base.name}
               </TableHead>
@@ -45,7 +49,7 @@ export function StudentsEvaluationTableView(props: {
             For each student, display the overall grade of the evaluation.
             If the student has a grade, display a dialog with the detailed criteria.
           */}
-          {props.tableData.students.map((student, index) => (
+          {localTableData.students.map((student, index) => (
             <TableRow key={student.id}>
               <TableCell className="w-[200px]">{student.name}</TableCell>
               {/* 
@@ -53,7 +57,7 @@ export function StudentsEvaluationTableView(props: {
                 If the student has a grade, display the overall grade.
                 If the student doesn't have a grade, display "N/A".
               */}
-              {props.tableData.evaluations.map((evaluation) => {
+              {localTableData.evaluations.map((evaluation) => {
                 const studentGrade = evaluation.grade.grades.find(
                   (grade) => grade.studentId === student.id
                 );
@@ -72,6 +76,8 @@ export function StudentsEvaluationTableView(props: {
                         title="Detailed Criteria"
                         buttonText={overallGrade.toString().slice(0, 4)}
                         buttonClassName="bg-transparent dark text-white px-4 py-2 rounded-md border border-white"
+                        open={isDialogOpen}
+                        setOpen={setIsDialogOpen}
                       >
                         <UpdateStudentGradeForm
                           studentGrade={studentGrade}
@@ -99,7 +105,7 @@ export function StudentsEvaluationTableView(props: {
           <AssignEvaluation
             classeId={props.classeId}
             userId={props.userId}
-            alreadyAssignedEvaluationIds={props.tableData.evaluations.map(
+            alreadyAssignedEvaluationIds={localTableData.evaluations.map(
               (evaluation) => evaluation.base.id
             )}
           />
