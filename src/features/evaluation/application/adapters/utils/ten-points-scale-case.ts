@@ -6,9 +6,7 @@ import {
 import {
   EvaluationCriteriaType,
   SpanishGradingSchema,
-  SpanishGradingType,
-  TenPointScaleSchema,
-  TenPointScaleType,
+
 } from "@/features/evaluation/domain/entities/evaluation-schema";
 import checkSpecialGradeType, {
   SpecialGradeType,
