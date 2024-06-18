@@ -1,8 +1,5 @@
 import NotFound from "@/app/not-found";
-import NothingToShow from "@/core/components/common/editor/NothingToShow";
 import LayoutWithProps from "@/core/components/layout/LayoutWithProps";
-import Sidebar from "@/core/components/layout/Sidebar";
-import SpacesHeader from "@/core/components/layout/SpacesHeader";
 import getVisibility from "@/features/classe/application/adapters/actions/get-visibility";
 import { coursUsecases } from "@/features/cours-sequence/application/usecases/cours-usecases";
 import ShowSequence from "@/features/cours-sequence/presentation/views/ShowSequence";
@@ -44,11 +41,7 @@ async function SpacesSequenceServerLayer(props: {
     sequenceVisibility?.publish === true && sequenceVisibility.classe; // Check if the sequence is visible
 
   if (!isSequenceVisible) {
-    return (
-      <LayoutWithProps isEmpty>
-        <NothingToShow />
-      </LayoutWithProps>
-    );
+    return <LayoutWithProps isEmpty nothingToShow />;
   }
   // Get all cours from the sequence
   const eitherCours = await coursUsecases.getAllCoursFromSequence({
@@ -88,15 +81,9 @@ async function SpacesSequenceServerLayer(props: {
     },
   ];
   return (
-    <>
-      <SpacesHeader navItems={sequenceNavItems} />
-      <section className="flex h-full w-full border-collapse overflow-hidden">
-        <Sidebar navItems={sequenceNavItems} />
-        <div className="h-full w-full py-8 px-6">
-          <ShowSequence content={eitherSequence.right.body} />
-        </div>
-      </section>
-    </>
+    <LayoutWithProps navItems={sequenceNavItems}>
+      <ShowSequence content={eitherSequence.right.body} />
+    </LayoutWithProps>
   );
 }
 
