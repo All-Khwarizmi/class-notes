@@ -1,4 +1,5 @@
 import ErrorDialog from "@/core/components/common/ErrorDialog";
+import LayoutWithProps from "@/core/components/layout/LayoutWithProps";
 import Sidebar from "@/core/components/layout/Sidebar";
 import { authUseCases } from "@/features/auth/application/usecases/auth-usecases";
 import getStudents from "@/features/classe/application/adapters/actions/get-students";
@@ -65,18 +66,13 @@ async function ClasseServerLayer(props: { slug: string }) {
     evaluations: eitherCompoundEvaluations.right,
   };
   return (
-    <>
-      <Sidebar navItems={classeNavItems} />
-      <section className="h-full flex-1  overflow-x-hidden">
-        <div className="h-full pt-4 px-4">
-          <StudentsEvaluationTableView
-            tableData={tableData}
-            classeId={props.slug}
-            userId={authUser.right.userId}
-          />
-        </div>
-      </section>
-    </>
+    <LayoutWithProps navItems={classeNavItems}>
+      <StudentsEvaluationTableView
+        tableData={tableData}
+        classeId={props.slug}
+        userId={authUser.right.userId}
+      />
+    </LayoutWithProps>
   );
 }
 
