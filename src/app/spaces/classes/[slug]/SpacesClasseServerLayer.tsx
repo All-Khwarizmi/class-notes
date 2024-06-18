@@ -1,6 +1,4 @@
-import NothingToShow from "@/core/components/common/editor/NothingToShow";
-import Sidebar from "@/core/components/layout/Sidebar";
-import SpacesHeader from "@/core/components/layout/SpacesHeader";
+import LayoutWithProps from "@/core/components/layout/LayoutWithProps";
 import getVisibility from "@/features/classe/application/adapters/actions/get-visibility";
 import { coursUsecases } from "@/features/cours-sequence/application/usecases/cours-usecases";
 import { Sequence } from "@/features/cours-sequence/domain/entities/cours-schemas";
@@ -19,14 +17,14 @@ async function SpacesClasseServerLayer(props: {
   });
 
   if (isLeft(eitherSequences) || !props.searchParams.user) {
-    return <NothingToShow />;
+    return <LayoutWithProps nothingToShow />;
   }
   const eitherVisibility = await getVisibility({
     userId: props.searchParams.user,
   });
 
   if (isLeft(eitherVisibility)) {
-    return <NothingToShow />;
+    return <LayoutWithProps nothingToShow />;
   }
   const sequences: Sequence[] = [];
   for (const sequence of eitherSequences.right) {
@@ -45,21 +43,17 @@ async function SpacesClasseServerLayer(props: {
   }));
   return (
     <>
-      <SpacesHeader navItems={sequenceNavItems} />
-      <section className="flex h-full w-full border-collapse overflow-hidden">
-        <Sidebar navItems={sequenceNavItems} />
-        <div className="h-full w-full py-8 px-6">
-          {sequences.length > 0 ? (
-            <SequencesListView
-              sequences={sequences}
-              spacesMode={true}
-              userId={props.searchParams.user}
-            />
-          ) : (
-            <NothingToShow />
-          )}
-        </div>
-      </section>
+      {sequences.length > 0 ? (
+        <LayoutWithProps navItems={sequenceNavItems}>
+          <SequencesListView
+            sequences={sequences}
+            spacesMode={true}
+            userId={props.searchParams.user}
+          />
+        </LayoutWithProps>
+      ) : (
+        <LayoutWithProps nothingToShow />
+      )}
     </>
   );
 }
