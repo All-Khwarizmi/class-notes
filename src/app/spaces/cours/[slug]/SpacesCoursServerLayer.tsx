@@ -1,12 +1,13 @@
 import ErrorDialog from "@/core/components/common/ErrorDialog";
 import NothingToShow from "@/core/components/common/editor/NothingToShow";
+import LayoutWithProps from "@/core/components/layout/LayoutWithProps";
 import Sidebar from "@/core/components/layout/Sidebar";
 import SpacesHeader from "@/core/components/layout/SpacesHeader";
 import getVisibility from "@/features/classe/application/adapters/actions/get-visibility";
 import { complementUsecases } from "@/features/complement/application/usecases/complement-usecases";
 import { Complement } from "@/features/complement/domain/complement-schemas";
 import { coursUsecases } from "@/features/cours-sequence/application/usecases/cours-usecases";
-import ShowSequence from "@/features/cours-sequence/presentation/views/ShowSequence";
+import ContentViewer from "@/features/cours-sequence/presentation/views/ShowSequence";
 import { isLeft } from "fp-ts/lib/Either";
 import { ClipboardType, ScrollText } from "lucide-react";
 import React from "react";
@@ -17,11 +18,13 @@ async function SpacesCoursServerLayer(props: {
 }) {
   if (!props.slug || !props.searchParams.user) {
     return (
-      <ErrorDialog
-        message={`
+      <LayoutWithProps isEmpty>
+        <ErrorDialog
+          message={`
         The user id or the course id is missing
         `}
-      />
+        />
+      </LayoutWithProps>
     );
   }
   const userId = props.searchParams.user;
@@ -31,27 +34,33 @@ async function SpacesCoursServerLayer(props: {
   });
   if (isLeft(eitherCours)) {
     return (
-      <ErrorDialog
-        message="An error occured while fetching the course"
-        code={eitherCours.left.code}
-        description={
-          process.env.NODE_ENV === "development" ? eitherCours.left.message : ""
-        }
-      />
+      <LayoutWithProps isEmpty>
+        <ErrorDialog
+          message="An error occured while fetching the course"
+          code={eitherCours.left.code}
+          description={
+            process.env.NODE_ENV === "development"
+              ? eitherCours.left.message
+              : ""
+          }
+        />
+      </LayoutWithProps>
     );
   }
   const eitherVibility = await getVisibility({ userId });
   if (isLeft(eitherVibility)) {
     return (
-      <ErrorDialog
-        message="An error occured while fetching the course visibility"
-        code={eitherVibility.left.code}
-        description={
-          process.env.NODE_ENV === "development"
-            ? eitherVibility.left.message
-            : ""
-        }
-      />
+      <LayoutWithProps isEmpty>
+        <ErrorDialog
+          message="An error occured while fetching the visibility"
+          code={eitherVibility.left.code}
+          description={
+            process.env.NODE_ENV === "development"
+              ? eitherVibility.left.message
+              : ""
+          }
+        />
+      </LayoutWithProps>
     );
   }
   const coursVisibility = eitherVibility.right.cours.find(
@@ -62,16 +71,7 @@ async function SpacesCoursServerLayer(props: {
     coursVisibility.classe &&
     coursVisibility.sequence;
   if (!isCoursVisible) {
-    return (
-      <>
-        <SpacesHeader />
-        <section className="flex h-full w-full border-collapse overflow-hidden">
-          <div className="h-full w-full py-8 px-6">
-            <NothingToShow />
-          </div>
-        </section>
-      </>
-    );
+    return <LayoutWithProps isEmpty nothingToShow></LayoutWithProps>;
   }
   const eitherComplements = await complementUsecases.getAllCoursComplement({
     coursId: props.slug,
@@ -79,15 +79,17 @@ async function SpacesCoursServerLayer(props: {
 
   if (isLeft(eitherComplements)) {
     return (
-      <ErrorDialog
-        message="An error occured while fetching the course complement"
-        code={eitherComplements.left.code}
-        description={
-          process.env.NODE_ENV === "development"
-            ? eitherComplements.left.message
-            : ""
-        }
-      />
+      <LayoutWithProps
+        isEmpty
+        isError={{
+          message: "An error occured while fetching the complements",
+          code: eitherComplements.left.code,
+          description:
+            process.env.NODE_ENV === "development"
+              ? eitherComplements.left.message
+              : "",
+        }}
+      ></LayoutWithProps>
     );
   }
   const complements: Complement[] = [];
@@ -116,15 +118,9 @@ async function SpacesCoursServerLayer(props: {
   }));
 
   return (
-    <>
-      <SpacesHeader navItems={complementNavItems} />
-      <section className="flex h-full w-full border-collapse overflow-hidden">
-        <Sidebar navItems={complementNavItems} />
-        <div className="h-full w-full py-8 px-6">
-          <ShowSequence content={eitherCours.right.body} />
-        </div>
-      </section>
-    </>
+    <LayoutWithProps navItems={complementNavItems}>
+      <ContentViewer content={eitherCours.right.body} />
+    </LayoutWithProps>
   );
 }
 

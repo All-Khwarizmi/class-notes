@@ -28,6 +28,7 @@ function TenPointsCriteriaForm(props: {
   evaluationBase: EvaluationBaseType;
   evaluationId: string;
   classeId: string;
+  setShouldFetchCompoundList: () => void;
 }) {
   const {
     isSuccess,
@@ -48,12 +49,16 @@ function TenPointsCriteriaForm(props: {
       evaluationId: props.evaluationId,
       grades: data.grades,
     };
-    updateGrade({ options: grade, classeId: props.classeId });
+    updateGrade({
+      options: grade,
+      classeId: props.classeId,
+    });
   }
 
   useEffect(() => {
     if (isSuccess === true) {
       toast.success("Grade updated successfully");
+      props.setShouldFetchCompoundList();
     }
     if (isError === true) {
       toast.error("An error occurred while updating the grade", {});

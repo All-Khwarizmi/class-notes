@@ -42,7 +42,7 @@
     --background: 222.2 84% 7.9%;
     --foreground: 210 40% 98%;
  
-    --card: 222.2 84% 4.9%;
+    --card: 222.2 84% 2.9%;
     --card-foreground: 210 40% 98%;
  
     --popover: 222.2 84% 4.9%;
@@ -140,7 +140,7 @@ body {
   }
 }
 
- a {
+ .link-class {
    color: lightblue;
     text-decoration: underline;
     /* Add an icon link at the end */
@@ -151,6 +151,15 @@ body {
      color: var(--purple-contrast);
    }
  }
+
+ .youtube-embed {
+   position: relative;
+   padding-top: 10px;
+   margin: 0 auto;
+   height: 300px;
+   max-width: 100%;
+   margin-bottom: 1rem;}
+
 
 .tiptap h1 {
   @apply text-4xl font-bold;

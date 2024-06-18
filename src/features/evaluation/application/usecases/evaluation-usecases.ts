@@ -130,7 +130,8 @@ export default class EvaluationUsecases {
     return right(validateEval.data);
   }
 
-  async getEvaluationsList(options: GetEvaluationsListOptions) {
+  async getEvaluationsList(options: GetEvaluationsListOptions): Promise<
+    Either<Failure<string>, CompoundEvaluationType[]>> {
     const eitherEvals = await this._evaluationRepository.getEvaluationsList(
       options
     );

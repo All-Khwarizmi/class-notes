@@ -1,5 +1,4 @@
-import Header from "@/core/components/layout/Header";
-import Sidebar from "@/core/components/layout/Sidebar";
+
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -13,13 +12,5 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return (
-    <>
-      <Header />
-      <section className="flex h-full w-full border-collapse overflow-hidden">
-        <Sidebar />
-        <section className="flex-1  overflow-x-hidden">{children}</section>
-      </section>
-    </>
-  );
+  return children;
 }

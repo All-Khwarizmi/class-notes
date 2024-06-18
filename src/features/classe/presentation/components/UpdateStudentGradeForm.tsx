@@ -21,19 +21,39 @@ import {
 import { EvaluationBaseType } from "@/features/evaluation/domain/entities/evaluation-schema";
 import TenPointsCriteriaForm from "@/features/evaluation/presentation/components/TenPointsCriteriaForm";
 import { StudentGradeTenPointsSchemaExtension } from "@/features/evaluation/application/adapters/utils/ten-points-scale-case";
+import useGetEvaluationCompoundList from "@/features/evaluation/application/adapters/services/useGetEvaluationCompoundList";
+import { CompoundEvaluationType } from "../../domain/class-schema";
+import { isLeft } from "fp-ts/lib/Either";
 
 export default function UpdateStudentGradeForm(props: {
   studentGrade: StudentGradeType;
   evaluationBase: EvaluationBaseType;
   evaluationId: string;
   classeId: string;
+  setIsDialogOpen: (open: boolean) => void;
+  setLocalTableData: (data: CompoundEvaluationType[]) => void;
 }) {
   const form = useForm<StudentGradeType>({
     resolver: zodResolver(StudentGradeSchema),
     defaultValues: props.studentGrade,
   });
+  const [shouldFetchCompoundList, setShouldFetchCompoundList] = useState(false);
+  const { data: compoundList, isSuccess } = useGetEvaluationCompoundList({
+    classeId: props.classeId,
+    enabled: shouldFetchCompoundList,
+  });
 
-  // Reset form when the props.studentGrade changes
+  useEffect(() => {
+    if (compoundList) {
+      if (isLeft(compoundList)) {
+        console.error("Error fetching compound list", compoundList.left);
+        return;
+      }
+      props.setLocalTableData(compoundList.right);
+      props.setIsDialogOpen(!shouldFetchCompoundList);
+    }
+  }, [compoundList, isSuccess]);
+
   useEffect(() => {
     form.reset(props.studentGrade);
   }, [props.studentGrade]);
@@ -68,6 +88,7 @@ export default function UpdateStudentGradeForm(props: {
         evaluationBase={props.evaluationBase}
         evaluationId={props.evaluationId}
         classeId={props.classeId}
+        setShouldFetchCompoundList={() => setShouldFetchCompoundList(true)}
       />
     );
   }

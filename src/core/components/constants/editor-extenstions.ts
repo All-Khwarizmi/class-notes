@@ -15,8 +15,19 @@ import Link from "@tiptap/extension-link";
 const lowlight = createLowlight(common);
 
 export const EXTENSIONS = [
-  Link,
-  YouTube,
+  Link.configure({
+    HTMLAttributes: {
+      target: "_blank",
+      rel: "noopener noreferrer",
+      class: "link-class",
+    },
+  }),
+  YouTube.configure({
+    inline: true,
+    HTMLAttributes: {
+      class: "youtube-embed",
+    },
+  }),
   IndentExtension,
   CodeBlockLowlight.configure({
     lowlight,
