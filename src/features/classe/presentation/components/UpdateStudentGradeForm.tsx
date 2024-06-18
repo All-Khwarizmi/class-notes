@@ -24,6 +24,7 @@ import { StudentGradeTenPointsSchemaExtension } from "@/features/evaluation/appl
 import useGetEvaluationCompoundList from "@/features/evaluation/application/adapters/services/useGetEvaluationCompoundList";
 import { CompoundEvaluationType } from "../../domain/class-schema";
 import { isLeft } from "fp-ts/lib/Either";
+import { toast } from "sonner";
 
 export default function UpdateStudentGradeForm(props: {
   studentGrade: StudentGradeType;
@@ -42,6 +43,46 @@ export default function UpdateStudentGradeForm(props: {
     classeId: props.classeId,
     enabled: shouldFetchCompoundList,
   });
+
+  useEffect(() => {
+    // Check that the evaluation base criterias are the same as the student grade criterias
+    let toastId: string | number;
+    const criterias = props.evaluationBase.criterias.map(
+      (criteria) => criteria.id
+    );
+    const studentCriterias = props.studentGrade.grades.map(
+      (grade) => grade.criteriaId
+    );
+    const missingCriterias = studentCriterias.filter(
+      (criteria) => !criterias.includes(criteria)
+    );
+    const missingCriteriasBase = criterias.filter(
+      (criteria) => !studentCriterias.includes(criteria)
+    );
+    if (missingCriterias.length > 0 || missingCriteriasBase.length > 0) {
+      toastId = toast.error("Criterias do not match the evaluation", {
+        description: `
+        If you have added new criterias to the evaluation, those criterias will not be added to the student grade.
+        To update the student grade, please remove the evaluation and assign it again.
+
+       ${
+         missingCriterias.length > 0
+           ? `Missing student criterias: ${missingCriterias.length}`
+           : ""
+       }
+        ${
+          missingCriteriasBase.length > 0
+            ? `Missing evaluation criterias: ${missingCriteriasBase.length}`
+            : ""
+        }
+        `,
+      });
+    }
+
+    return () => {
+      if (toastId) toast.dismiss(toastId);
+    };
+  }, []);
 
   useEffect(() => {
     if (compoundList) {
