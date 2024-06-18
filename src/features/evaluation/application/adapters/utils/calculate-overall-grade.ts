@@ -1,16 +1,8 @@
 import { Grade } from "@/features/evaluation/domain/entities/evaluation-with-grades-schema";
 import {
-  NumericGradeType,
-  NumericGradeSchema,
   EvaluationCriteriaType,
   GradeTypeUnionType,
-  TenPointScaleSchema,
-  TenPointScaleType,
 } from "@/features/evaluation/domain/entities/evaluation-schema";
-import checkSpecialGradeType, {
-  SpecialGradeType,
-} from "./checkSpecialGradeType";
-import { z } from "zod";
 import { tenPointsScaleCase } from "./ten-points-scale-case";
 import { competenceCase } from "./competence-case";
 
