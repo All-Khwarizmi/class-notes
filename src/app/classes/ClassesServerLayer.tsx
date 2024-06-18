@@ -6,11 +6,15 @@ import NotFound from "../not-found";
 import ErrorDialog from "@/core/components/common/ErrorDialog";
 import ClassesTable from "@/features/classe/presentation/components/ClassesTable";
 import { classeUsecases } from "@/features/classe/application/usecases/classe-usecases";
-import Sidebar from "@/core/components/layout/Sidebar";
+import LayoutWithProps from "@/core/components/layout/LayoutWithProps";
 
 async function ClassesServerLayer(props: { slug: string }) {
   if (!props.slug) {
-    return <NotFound />;
+    return (
+      <LayoutWithProps isEmpty>
+        <NotFound />
+      </LayoutWithProps>
+    );
   }
   const authUser = await authUseCases.getUserAuth();
   if (isLeft(authUser)) {
@@ -22,8 +26,9 @@ async function ClassesServerLayer(props: { slug: string }) {
   });
   if (isLeft(eitherClasses)) {
     return (
-      <ErrorDialog
-        message={`
+      <LayoutWithProps isEmpty>
+        <ErrorDialog
+          message={`
         Une erreur s'est produite lors du chargement des classes
         ${
           process.env.NODE_ENV === "development"
@@ -31,24 +36,20 @@ async function ClassesServerLayer(props: { slug: string }) {
             : ""
         }
     `}
-        code={eitherClasses.left.code}
-        description={eitherClasses.left.message}
-      />
+          code={eitherClasses.left.code}
+          description={eitherClasses.left.message}
+        />
+      </LayoutWithProps>
     );
   }
 
   return (
-    <>
-      <Sidebar />
-      <section className="h-full flex-1  overflow-x-hidden">
-        <div className="h-full pt-4 px-4">
-          <ClassesTable
-            classes={eitherClasses.right}
-            userId={authUser.right.userId}
-          />
-        </div>
-      </section>
-    </>
+    <LayoutWithProps>
+      <ClassesTable
+        classes={eitherClasses.right}
+        userId={authUser.right.userId}
+      />
+    </LayoutWithProps>
   );
 }
 
