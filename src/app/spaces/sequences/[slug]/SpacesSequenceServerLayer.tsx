@@ -2,7 +2,7 @@ import NotFound from "@/app/not-found";
 import LayoutWithProps from "@/core/components/layout/LayoutWithProps";
 import getVisibility from "@/features/classe/application/adapters/actions/get-visibility";
 import { coursUsecases } from "@/features/cours-sequence/application/usecases/cours-usecases";
-import ShowSequence from "@/features/cours-sequence/presentation/views/ShowSequence";
+import ContentViewer from "@/features/cours-sequence/presentation/views/ShowSequence";
 import { NavItem } from "@/lib/types";
 import { isLeft } from "fp-ts/lib/Either";
 import { BookA, BookCheck } from "lucide-react";
@@ -82,7 +82,7 @@ async function SpacesSequenceServerLayer(props: {
   ];
   return (
     <LayoutWithProps navItems={sequenceNavItems}>
-      <ShowSequence content={eitherSequence.right.body} />
+      <ContentViewer content={eitherSequence.right.body} />
     </LayoutWithProps>
   );
 }
