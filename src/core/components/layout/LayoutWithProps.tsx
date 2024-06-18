@@ -5,19 +5,32 @@ import Sidebar from "./Sidebar";
 import { not } from "fp-ts/lib/Predicate";
 import NotFound from "@/app/not-found";
 import NothingToShow from "../common/editor/NothingToShow";
+import ErrorDialog from "../common/ErrorDialog";
+
+export interface ErrorDialogProps {
+  message: string;
+  path?: string;
+  code?: string;
+  description?: string;
+}
+
+export interface LayoutWithPropsProps {
+  readonly children?: React.ReactNode;
+  readonly navItems?: NavItem[];
+  readonly isEmpty?: boolean;
+  readonly notFound?: boolean;
+  readonly nothingToShow?: boolean;
+  readonly isError?: ErrorDialogProps;
+}
+
 function LayoutWithProps({
   children,
   navItems,
   isEmpty = false,
   notFound = false,
   nothingToShow = false,
-}: Readonly<{
-  children?: React.ReactNode;
-  navItems?: NavItem[];
-  isEmpty?: boolean;
-  notFound?: boolean;
-  nothingToShow?: boolean;
-}>) {
+  isError,
+}: LayoutWithPropsProps) {
   return (
     <>
       <Header navItems={isEmpty === true ? [] : navItems} />
@@ -28,6 +41,8 @@ function LayoutWithProps({
             <NotFound />
           ) : nothingToShow === true ? (
             <NothingToShow />
+          ) : isError ? (
+            <ErrorDialog {...isError} />
           ) : (
             children
           )}
