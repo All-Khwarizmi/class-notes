@@ -5,17 +5,19 @@ import Sidebar from "./Sidebar";
 function LayoutWithProps({
   children,
   navItems,
+  isEmpty = false,
 }: Readonly<{
   children: React.ReactNode;
-  navItems: NavItem[];
+  navItems?: NavItem[];
+  isEmpty?: boolean;
 }>) {
   return (
     <>
-      <Header navItems={navItems} />
+      <Header navItems={isEmpty === true ? [] : navItems} />
       <section className="flex h-full w-full border-collapse overflow-hidden">
-        <Sidebar navItems={navItems} />
+        <Sidebar navItems={isEmpty === true ? [] : navItems} />
         <section className="h-full flex-1  pt-4 px-4 overflow-x-hidden">
-            {children}
+          {children}
         </section>
       </section>
     </>
