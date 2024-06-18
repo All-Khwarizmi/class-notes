@@ -3,10 +3,8 @@ import { authUseCases } from "@/features/auth/application/usecases/auth-usecases
 import { coursUsecases } from "@/features/cours-sequence/application/usecases/cours-usecases";
 import { isLeft } from "fp-ts/lib/Either";
 import { redirect } from "next/navigation";
-import Sidebar from "@/core/components/layout/Sidebar";
 import ErrorDialog from "@/core/components/common/ErrorDialog";
 import ClasseSequencesTableView from "@/features/cours-sequence/presentation/views/ClasseSequencesTableView";
-import { Layout } from "lucide-react";
 import LayoutWithProps from "@/core/components/layout/LayoutWithProps";
 
 async function ClasseSequencesServerLayer(props: { slug: string }) {
