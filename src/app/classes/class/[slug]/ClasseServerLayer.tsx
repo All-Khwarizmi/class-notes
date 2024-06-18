@@ -1,6 +1,5 @@
 import ErrorDialog from "@/core/components/common/ErrorDialog";
 import LayoutWithProps from "@/core/components/layout/LayoutWithProps";
-import Sidebar from "@/core/components/layout/Sidebar";
 import { authUseCases } from "@/features/auth/application/usecases/auth-usecases";
 import getStudents from "@/features/classe/application/adapters/actions/get-students";
 import { ClasseTableType } from "@/features/classe/domain/class-schema";
@@ -8,7 +7,6 @@ import { StudentsEvaluationTableView } from "@/features/classe/presentation/comp
 import { coursUsecases } from "@/features/cours-sequence/application/usecases/cours-usecases";
 import getEvaluationCompoundList from "@/features/evaluation/application/adapters/actions/get-evaluation-compound-list";
 import getClassNavItems from "@/features/evaluation/application/adapters/utils/get-classe-nav-items";
-import { evaluationUsecases } from "@/features/evaluation/application/usecases/evaluation-usecases";
 import { isLeft } from "fp-ts/lib/Either";
 import { redirect } from "next/navigation";
 import React from "react";
@@ -23,11 +21,13 @@ async function ClasseServerLayer(props: { slug: string }) {
   });
   if (isLeft(eitherSequences)) {
     return (
-      <ErrorDialog
-        message="An error occurred"
-        description="An error occurred while fetching sequences"
-        code={eitherSequences.left.code}
-      />
+      <LayoutWithProps isEmpty>
+        <ErrorDialog
+          message="An error occurred"
+          description="An error occurred while fetching sequences"
+          code={eitherSequences.left.code}
+        />
+      </LayoutWithProps>
     );
   }
 
@@ -37,22 +37,26 @@ async function ClasseServerLayer(props: { slug: string }) {
 
   if (isLeft(eitherCompoundEvaluations)) {
     return (
-      <ErrorDialog
-        message="An error occurred"
-        description="An error occurred while fetching evaluations"
-        code={eitherCompoundEvaluations.left.code}
-      />
+      <LayoutWithProps isEmpty>
+        <ErrorDialog
+          message="An error occurred"
+          description="An error occurred while fetching evaluations"
+          code={eitherCompoundEvaluations.left.code}
+        />
+      </LayoutWithProps>
     );
   }
 
   const eitherStudents = await getStudents({ classeId: props.slug });
   if (isLeft(eitherStudents)) {
     return (
-      <ErrorDialog
-        message="An error occurred"
-        description="An error occurred while fetching students"
-        code={eitherStudents.left.code}
-      />
+      <LayoutWithProps isEmpty>
+        <ErrorDialog
+          message="An error occurred"
+          description="An error occurred while fetching students"
+          code={eitherStudents.left.code}
+        />
+      </LayoutWithProps>
     );
   }
 
