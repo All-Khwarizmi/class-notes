@@ -79,17 +79,17 @@ async function SpacesCoursServerLayer(props: {
 
   if (isLeft(eitherComplements)) {
     return (
-      <LayoutWithProps isEmpty>
-        <ErrorDialog
-          message="An error occured while fetching the complement"
-          code={eitherComplements.left.code}
-          description={
+      <LayoutWithProps
+        isEmpty
+        isError={{
+          message: "An error occured while fetching the complements",
+          code: eitherComplements.left.code,
+          description:
             process.env.NODE_ENV === "development"
               ? eitherComplements.left.message
-              : ""
-          }
-        />
-      </LayoutWithProps>
+              : "",
+        }}
+      ></LayoutWithProps>
     );
   }
   const complements: Complement[] = [];

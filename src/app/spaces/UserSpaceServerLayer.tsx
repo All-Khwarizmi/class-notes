@@ -15,11 +15,7 @@ async function UserSpaceServerLayer(props: {
   searchParams: { [key: string]: string | undefined };
 }) {
   if (!props.searchParams.user) {
-    return (
-      <LayoutWithProps isEmpty>
-        <NotFound />
-      </LayoutWithProps>
-    );
+    return <LayoutWithProps notFound isEmpty></LayoutWithProps>;
   }
   const userId = props.searchParams.user;
 
@@ -28,20 +24,16 @@ async function UserSpaceServerLayer(props: {
   });
   if (isLeft(eitherVisibility)) {
     return (
-      <LayoutWithProps isEmpty>
-        <ErrorDialog
-          message={`
-         Une erreur s'est produite lors du chargement des classes
-         ${
-           process.env.NODE_ENV === "development"
-             ? eitherVisibility.left.message
-             : ""
-         }
-        `}
-          code={eitherVisibility.left.code}
-          description={eitherVisibility.left.message}
-        />
-      </LayoutWithProps>
+      <LayoutWithProps
+        isError={{
+          message: "An error occured while fetching the visibility",
+          code: eitherVisibility.left.code,
+          description:
+            process.env.NODE_ENV === "development"
+              ? eitherVisibility.left.message
+              : "",
+        }}
+      />
     );
   }
   const eitherClasses = await classeUsecases.getClasses({
@@ -49,20 +41,16 @@ async function UserSpaceServerLayer(props: {
   });
   if (isLeft(eitherClasses)) {
     return (
-      <LayoutWithProps isEmpty>
-        <ErrorDialog
-          message={`
-         Une erreur s'est produite lors du chargement des classes
-         ${
-           process.env.NODE_ENV === "development"
-             ? eitherClasses.left.message
-             : ""
-         }
-        `}
-          code={eitherClasses.left.code}
-          description={eitherClasses.left.message}
-        />
-      </LayoutWithProps>
+      <LayoutWithProps
+        isError={{
+          message: "An error occured while fetching the classes",
+          code: eitherClasses.left.code,
+          description:
+            process.env.NODE_ENV === "development"
+              ? eitherClasses.left.message
+              : "",
+        }}
+      />
     );
   }
   const classes: ClassType[] = [];
