@@ -14,8 +14,8 @@ function LayoutWithProps({
       <Header navItems={navItems} />
       <section className="flex h-full w-full border-collapse overflow-hidden">
         <Sidebar navItems={navItems} />
-        <section className="h-full flex-1  overflow-x-hidden">
-          <div className="h-full pt-4 px-4">{children}</div>
+        <section className="h-full flex-1  pt-4 px-4 overflow-x-hidden">
+            {children}
         </section>
       </section>
     </>
