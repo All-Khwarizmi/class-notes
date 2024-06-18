@@ -16,7 +16,7 @@ export default function ErrorDialog(props: {
   return (
     <div
       aria-label={`Displaying message: ${props.message}`}
-      className="flex flex-col items-center justify-center h-screen"
+      className="flex flex-col items-center justify-center h-full"
     >
       <div className="bg-white dark:bg-gray-900 p-8 rounded-lg shadow-lg max-w-md w-full">
         <div className="space-y-4">
