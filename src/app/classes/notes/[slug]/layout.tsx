@@ -12,12 +12,5 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return (
-    <>
-      <Sidebar />
-      <section className="h-full flex-1  overflow-x-hidden">
-        <div className="h-full py-8 px-6">{children}</div>
-      </section>
-    </>
-  );
+  return <>{children}</>;
 }
