@@ -10,7 +10,6 @@ import {
   TableCaption,
   TableHeader,
 } from "@/core/components/ui/table";
-
 import {
   ClasseTableType,
   CompoundEvaluationType,
