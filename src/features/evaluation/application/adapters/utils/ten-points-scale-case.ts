@@ -6,7 +6,6 @@ import {
 import {
   EvaluationCriteriaType,
   SpanishGradingSchema,
-
 } from "@/features/evaluation/domain/entities/evaluation-schema";
 import checkSpecialGradeType, {
   SpecialGradeType,
@@ -33,7 +32,11 @@ export function tenPointsScaleCase(
   grades: Grade[],
   criterias: EvaluationCriteriaType[]
 ): number | SpecialGradeType {
-  const totalWeight = criterias.reduce(
+  // In order to be able to keep adding criterias to the evaluation base without breaking the code we need to calculate the total weight of the criterias that have been added to the student. And not the total weight of the criterias that are in the evaluation base.
+  const studentCriterias = criterias.filter((criteria) =>
+    grades.some((grade) => grade.criteriaId === criteria.id)
+  );
+  const totalWeight = studentCriterias.reduce(
     (acc, criteria) => acc + criteria.weight,
     0
   );
@@ -41,7 +44,6 @@ export function tenPointsScaleCase(
   for (const grade of grades) {
     const validatedGrade = SpanishGradingSchema.safeParse(grade.gradeType);
     if (validatedGrade.success) {
-      
       const result = spanishGradingCalc({
         grade,
       });
