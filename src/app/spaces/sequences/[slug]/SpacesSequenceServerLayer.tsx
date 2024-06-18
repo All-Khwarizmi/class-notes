@@ -1,5 +1,6 @@
 import NotFound from "@/app/not-found";
 import NothingToShow from "@/core/components/common/editor/NothingToShow";
+import LayoutWithProps from "@/core/components/layout/LayoutWithProps";
 import Sidebar from "@/core/components/layout/Sidebar";
 import SpacesHeader from "@/core/components/layout/SpacesHeader";
 import getVisibility from "@/features/classe/application/adapters/actions/get-visibility";
@@ -27,14 +28,14 @@ async function SpacesSequenceServerLayer(props: {
     type: sequenceType,
   });
   if (isLeft(eitherSequence) || !props.searchParams.user) {
-    return <NotFound />;
+    return <LayoutWithProps isEmpty notFound />;
   }
   const userId = props.searchParams.user;
   const eitherVisibility = await getVisibility({
     userId,
   });
   if (isLeft(eitherVisibility)) {
-    return <NotFound />;
+    return <LayoutWithProps isEmpty notFound />;
   }
   const sequenceVisibility = eitherVisibility.right.sequences.find(
     (visibility) => visibility.id === props.slug
@@ -44,14 +45,9 @@ async function SpacesSequenceServerLayer(props: {
 
   if (!isSequenceVisible) {
     return (
-      <>
-        <SpacesHeader />
-        <section className="flex h-full w-full border-collapse overflow-hidden">
-          <div className="h-full w-full py-8 px-6">
-            <NothingToShow />
-          </div>
-        </section>
-      </>
+      <LayoutWithProps isEmpty>
+        <NothingToShow />
+      </LayoutWithProps>
     );
   }
   // Get all cours from the sequence
