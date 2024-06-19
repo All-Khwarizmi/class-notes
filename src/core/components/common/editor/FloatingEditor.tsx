@@ -8,6 +8,7 @@ import FloatingMenuBar from "@/core/components/common/editor/FloatingMenuBar";
 function FloatingEditor(props: {
   content: string;
   debounceUpdateFn: DebouncedFunc<(content: string) => void>;
+  afterMenuBar?: React.ReactNode;
 }) {
   const editor = useEditor({
     extensions: EXTENSIONS,
@@ -26,6 +27,7 @@ function FloatingEditor(props: {
             <FloatingMenuBar editor={editor} />
           </FloatingMenu>
           <EditorContent editor={editor} />
+          {props.afterMenuBar}
         </>
       )}
     </>
