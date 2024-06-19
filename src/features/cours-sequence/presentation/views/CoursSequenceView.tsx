@@ -34,20 +34,8 @@ export default function CoursSequenceView({
 }) {
   const { debounceUpdateSequenceBody } = useUpdateSequenceBody();
 
-  const { mutate: setUpdateCoursBodyOptions } = useUpdateCoursBody();
-  const debounceUpdateCoursBody = useCallback(
-    () =>
-      debounce(
-        (content: string) =>
-          setUpdateCoursBodyOptions({
-            userId,
-            coursId: cours!._id,
-            body: content,
-          }),
-        5000
-      ),
-    [cours, setUpdateCoursBodyOptions, userId]
-  );
+  const { debounceUpdateCoursBody } = useUpdateCoursBody();
+ 
   if (type === "cours" && cours && complements) {
     return (
       <>
@@ -57,7 +45,12 @@ export default function CoursSequenceView({
 
         <FloatingEditor
           content={cours.body}
-          debounceUpdateFn={debounceUpdateCoursBody()}
+          debounceUpdateFn={
+            debounceUpdateCoursBody({
+              userId,
+              coursId: cours._id,
+            })
+          }
           afterMenuBar
         >
           {" "}
