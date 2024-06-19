@@ -6,7 +6,7 @@ import useUpdateNote from "../../application/adapters/services/useUpdateNote";
 import { Note } from "../../domain/notes-schemas";
 
 function UpdateNoteButton(props: { note: Note }) {
-  const { setNote } = useUpdateNote();
+  const { mutate: setNote } = useUpdateNote();
 
   const { editor } = useCurrentEditor();
   if (!editor) {
