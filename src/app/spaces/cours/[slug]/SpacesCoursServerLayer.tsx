@@ -7,7 +7,7 @@ import getVisibility from "@/features/classe/application/adapters/actions/get-vi
 import { complementUsecases } from "@/features/complement/application/usecases/complement-usecases";
 import { Complement } from "@/features/complement/domain/complement-schemas";
 import { coursUsecases } from "@/features/cours-sequence/application/usecases/cours-usecases";
-import ContentViewer from "@/features/cours-sequence/presentation/views/ShowSequence";
+import ContentViewer from "@/features/cours-sequence/presentation/views/ContentViewer";
 import { isLeft } from "fp-ts/lib/Either";
 import { ClipboardType, ScrollText } from "lucide-react";
 import React from "react";
