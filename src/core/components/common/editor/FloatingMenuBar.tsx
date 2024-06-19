@@ -45,7 +45,7 @@ function FloatingMenuBar({ editor }: { editor: Editor }) {
 
       <MenuImage editor={editor} />
 
-      <MenuTextAlign />
+      <MenuTextAlign editor={editor} />
 
       <MenuButton
         editor={editor}
