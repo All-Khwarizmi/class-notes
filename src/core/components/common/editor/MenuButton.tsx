@@ -1,4 +1,5 @@
 import { cn } from "@/lib/utils";
+import { Editor } from "@tiptap/react";
 import { useCurrentEditor } from "@tiptap/react";
 import React from "react";
 
@@ -10,17 +11,15 @@ function MenuButton({
   disabled,
   nodeName,
   children,
+  editor,
 }: {
   onClick: () => void;
   disabled?: boolean;
   nodeName: string;
   children: React.ReactNode;
+  editor: Editor;
 }) {
-  const { editor } = useCurrentEditor();
 
-  if (!editor) {
-    return null;
-  }
   return (
     <button
       onClick={onClick}
