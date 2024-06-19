@@ -1,5 +1,5 @@
 import React from "react";
-import useUpdateCoursBody from "../../../../features/cours-sequence/application/usecases/services/useUpdateCoursBody";
+import useUpdateCoursBody from "../../../../features/cours-sequence/application/adapters/services/useUpdateCoursBody";
 import { Cours } from "../../../../features/cours-sequence/domain/entities/cours-schemas";
 import { useCurrentEditor } from "@tiptap/react";
 import AfterMenuButton from "./AfterMenuButton";

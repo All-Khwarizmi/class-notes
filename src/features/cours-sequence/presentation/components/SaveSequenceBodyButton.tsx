@@ -1,7 +1,7 @@
 import React from "react";
 import { useCurrentEditor } from "@tiptap/react";
 import { Sequence } from "../../domain/entities/cours-schemas";
-import useUpdateSequenceBody from "../../application/usecases/services/useUpdateSequenceBody";
+import useUpdateSequenceBody from "../../application/adapters/services/useUpdateSequenceBody";
 import AfterMenuButton from "@/core/components/common/editor/AfterMenuButton";
 import { Save } from "lucide-react";
 

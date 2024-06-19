@@ -1,7 +1,7 @@
 import { toast } from "sonner";
 import { isLeft } from "fp-ts/lib/Either";
 import { useMutation } from "@tanstack/react-query";
-import updateCourseBody from "../../adapters/actions/update-course-body";
+import updateCourseBody from "../actions/update-course-body";
 
 export default function useUpdateCoursBody() {
   return useMutation({

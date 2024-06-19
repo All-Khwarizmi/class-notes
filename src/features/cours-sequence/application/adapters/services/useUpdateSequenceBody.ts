@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { coursUsecases } from "../cours-usecases";
+import { coursUsecases } from "../../usecases/cours-usecases";
 import { isLeft } from "fp-ts/lib/Either";
 
 export default function useUpdateSequenceBody() {

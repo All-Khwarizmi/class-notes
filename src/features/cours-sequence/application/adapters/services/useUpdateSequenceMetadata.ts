@@ -1,7 +1,7 @@
 import { Sequence } from "@/features/cours-sequence/domain/entities/cours-schemas";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { coursUsecases } from "../cours-usecases";
+import { coursUsecases } from "../../usecases/cours-usecases";
 import { isLeft } from "fp-ts/lib/Either";
 import { useRouter } from "next/navigation";
 export interface UpdateSequenceMetadataOptions {
