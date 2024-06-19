@@ -162,27 +162,27 @@ body {
 
 
 .tiptap h1 {
-  @apply text-4xl font-bold;
+  @apply text-5xl font-bold;
 }
 
 .tiptap h2 {
-  @apply text-3xl font-bold;
+  @apply text-4xl font-bold;
 }
 
 .tiptap h3 {
-  @apply text-2xl font-bold;
+  @apply text-3xl font-bold;
 }
 
 .tiptap h4 {
-  @apply text-xl font-bold;
+  @apply text-2xl font-bold;
 }
 
 .tiptap h5 {
-  @apply text-base font-bold;
+  @apply text-xl font-bold;
 }
 
 .tiptap h6 {
-  @apply text-sm font-bold;
+  @apply text-lg font-bold;
 }
 
 
@@ -196,7 +196,7 @@ body {
 
 
 .tiptap  {
-  @apply  p-2.5 w-full text-sm text-gray-900  border border-gray-300  dark:border-slate-700  dark:text-white ;
+  @apply  p-2.5 w-full text-lg text-gray-900  border border-gray-300  dark:border-slate-700  dark:text-white ;
 }
 
 .is-active {
@@ -241,7 +241,7 @@ pre {
   code {
     background: none;
     color: inherit;
-    font-size: 0.8rem;
+    font-size: 1rem;
     padding: 0;
   }
 
