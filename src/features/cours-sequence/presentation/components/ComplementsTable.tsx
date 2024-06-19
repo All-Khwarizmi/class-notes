@@ -11,7 +11,6 @@ import {
   TableBody,
   TableCell,
 } from "@/core/components/ui/table";
-import { Switch } from "@/core/components/ui/switch";
 import VisibilitySwitch from "./VisibilitySwitch";
 
 function ComplementsTable(props: {
@@ -37,7 +36,6 @@ function ComplementsTable(props: {
         </TableHeader>
         <TableBody>
           {props.complements.map((complement) => {
-            console.log({ complement });
             return (
               <TableRow key={complement.id}>
                 <TableCell className="w-[200px]">{complement.name}</TableCell>
