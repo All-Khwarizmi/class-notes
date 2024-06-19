@@ -15,7 +15,7 @@ function SaveSequenceBodyButton({
   type?: "template" | "sequence";
 }) {
   const { editor } = useCurrentEditor();
-  const { setUpdateSequenceBodyOptions } = useUpdateSequenceBody();
+  const { debounceUpdateSequenceBody } = useUpdateSequenceBody();
   if (!editor) {
     return null;
   }
@@ -28,12 +28,11 @@ function SaveSequenceBodyButton({
           if (prevContent === currentContent) {
             return alert("No changes to save");
           }
-          setUpdateSequenceBodyOptions({
+          debounceUpdateSequenceBody({
             userId,
             sequenceId: sequence._id,
-            body: editor.getHTML(),
             type,
-          });
+          })(currentContent);
         },
       }}
     >
@@ -43,10 +42,4 @@ function SaveSequenceBodyButton({
 }
 
 export default SaveSequenceBodyButton;
-//   onClick={() => {
-//   setUpdateSequenceBodyOptions({
-//     userId,
-//     sequenceId: sequence._id,
-//     body: editor.getHTML(),
-//   });
-// }}
+
