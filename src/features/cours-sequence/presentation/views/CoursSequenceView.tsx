@@ -1,19 +1,15 @@
 "use client";
 import { Cours, Sequence } from "../../domain/entities/cours-schemas";
-import EditorProviderWrapper from "../../../../core/components/common/editor/EditorProvider";
 import CoursSaveButton from "../../../../core/components/common/editor/CoursSaveButton";
 import SaveSequenceBodyButton from "../components/SaveSequenceBodyButton";
 import Link from "next/link";
 import { Eye, Settings } from "lucide-react";
 import AfterMenuButton from "@/core/components/common/editor/AfterMenuButton";
-import AfterMenuBar from "@/core/components/common/editor/AfterMunuBar";
 import { Complement } from "@/features/complement/domain/complement-schemas";
 import VisibilitySwitch from "../components/VisibilitySwitch";
 import useUpdateSequenceBody from "../../application/adapters/services/useUpdateSequenceBody";
 import useUpdateCoursBody from "../../application/adapters/services/useUpdateCoursBody";
 import FloatingEditor from "@/core/components/common/editor/FloatingEditor";
-import { useCallback } from "react";
-import { debounce } from "lodash";
 
 export default function CoursSequenceView({
   cours,
