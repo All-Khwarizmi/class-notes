@@ -2,11 +2,9 @@
 import React, { useCallback, useEffect } from "react";
 import { Note } from "../../domain/notes-schemas";
 import useUpdateNote from "../../application/adapters/services/useUpdateNote";
-import { EditorContent, FloatingMenu, useEditor } from "@tiptap/react";
-import { EXTENSIONS } from "@/core/components/constants/editor-extenstions";
 import { debounce } from "lodash";
-import FloatingMenuBar from "@/core/components/common/editor/FloatingMenuBar";
 import { toast } from "sonner";
+import FloatingEditor from "@/core/components/common/editor/FloatingEditor";
 
 function NoteEditorView(props: { note: Note }) {
   const { mutate: setNote, isSuccess } = useUpdateNote();
@@ -24,15 +22,7 @@ function NoteEditorView(props: { note: Note }) {
       ),
     [props.note, setNote]
   );
-  const editor = useEditor({
-    extensions: EXTENSIONS,
-    content: props.note.content,
-    onUpdate: (editor) => {
-      const content = editor.editor.getHTML();
-      debounceSaveNote()(content);
-    },
-    
-  });
+
 
   useEffect(() => {
     if (isSuccess) {
@@ -41,16 +31,10 @@ function NoteEditorView(props: { note: Note }) {
     }
   }, [isSuccess]);
   return (
-    <>
-      {editor && (
-        <>
-          <FloatingMenu editor={editor}>
-            <FloatingMenuBar editor={editor} />
-          </FloatingMenu>
-          <EditorContent editor={editor} />
-        </>
-      )}
-    </>
+    <FloatingEditor
+      content={props.note.content}
+      debounceUpdateFn={debounceSaveNote()}
+    />
   );
 }
 
