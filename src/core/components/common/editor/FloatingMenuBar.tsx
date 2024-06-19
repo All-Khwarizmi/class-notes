@@ -39,7 +39,7 @@ function FloatingMenuBar({ editor }: { editor: Editor }) {
         <Bold size={12} />
       </MenuButton>
 
-      <HeadingMenuBar />
+      <HeadingMenuBar editor={editor} />
 
       <MenuTextColor />
 

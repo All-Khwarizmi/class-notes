@@ -7,18 +7,13 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/core/components/ui/dropdown-menu";
-import { useCurrentEditor } from "@tiptap/react";
+import { Editor, useCurrentEditor } from "@tiptap/react";
 import { Level } from "@tiptap/extension-heading";
 import { cn } from "@/lib/utils";
 import { Heading } from "lucide-react";
 
-export function HeadingMenuBar() {
-  const { editor } = useCurrentEditor();
-
-  if (!editor) {
-    return null;
-  }
-
+export function HeadingMenuBar(props: { editor: Editor }) {
+  const editor = props.editor;
   function setHeading(level: Level, position?: number) {
     editor!
       .chain()
