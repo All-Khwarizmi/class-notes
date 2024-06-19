@@ -29,14 +29,14 @@ export function HeadingMenuBar(props: { editor: Editor }) {
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button className="bg-slate-400 rounded-md p-1 px-2">
+        <button className="bg-slate-400 rounded-md p-1 px-2">
           <Heading size={12} />
-        </Button>
+        </button>
       </PopoverTrigger>
       <PopoverContent className="w-full">
         <div>
           <div className="flex gap-2">
-            <Button
+            <button
               onClick={() => setHeading(1)}
               className={cn(
                 "text-3xl",
@@ -44,8 +44,8 @@ export function HeadingMenuBar(props: { editor: Editor }) {
               )}
             >
               H1
-            </Button>
-            <Button
+            </button>
+            <button
               onClick={() => setHeading(2)}
               className={cn(
                 "text-2xl",
@@ -53,8 +53,8 @@ export function HeadingMenuBar(props: { editor: Editor }) {
               )}
             >
               H2
-            </Button>
-            <Button
+            </button>
+            <button
               onClick={() => setHeading(3)}
               className={cn(
                 "text-xl",
@@ -62,8 +62,8 @@ export function HeadingMenuBar(props: { editor: Editor }) {
               )}
             >
               H3
-            </Button>
-            <Button
+            </button>
+            <button
               onClick={() => setHeading(4)}
               className={cn(
                 "text-lg",
@@ -71,7 +71,7 @@ export function HeadingMenuBar(props: { editor: Editor }) {
               )}
             >
               H4
-            </Button>
+            </button>
             <Button
               onClick={() => setHeading(5)}
               className={cn(
