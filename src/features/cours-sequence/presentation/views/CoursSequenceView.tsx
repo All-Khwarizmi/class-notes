@@ -50,12 +50,14 @@ export default function CoursSequenceView({
   const { mutate: setUpdateCoursBodyOptions } = useUpdateCoursBody();
   const debounceUpdateCoursBody = useCallback(
     () =>
-      debounce((content: string) =>
-        setUpdateCoursBodyOptions({
-          userId,
-          coursId: cours!._id,
-          body: content,
-        })
+      debounce(
+        (content: string) =>
+          setUpdateCoursBodyOptions({
+            userId,
+            coursId: cours!._id,
+            body: content,
+          }),
+        5000
       ),
     [cours, setUpdateCoursBodyOptions, userId]
   );
