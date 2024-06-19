@@ -1,5 +1,6 @@
 import { useCurrentEditor } from "@tiptap/react";
 import {
+  Bold,
   Code,
   Indent,
   IndentDecrease,
@@ -14,7 +15,6 @@ import {
   Video,
 } from "lucide-react";
 
-import MenuBold from "./MenuBold";
 import { HeadingMenuBar } from "./HeadingMenuBar";
 import MenuTextColor from "./MenuTextColor";
 import MenuImage from "./MenuImage";
@@ -36,7 +36,13 @@ export const MenuBar = () => {
         `${editor.isFocused ? "border-blue-300 border-2" : "border-gray-600"}`
       )}
     >
-      <MenuBold />
+      <MenuButton
+        editor={editor}
+        onClick={() => editor.chain().focus().toggleBold().run()}
+        nodeName="bold"
+      >
+        <Bold size={12} />
+      </MenuButton>
 
       <HeadingMenuBar />
 
@@ -47,6 +53,7 @@ export const MenuBar = () => {
       <MenuTextAlign />
 
       <MenuButton
+        editor={editor}
         onClick={() => editor.chain().focus().toggleItalic().run()}
         disabled={!editor.can().chain().focus().toggleItalic().run()}
         nodeName="italic"
@@ -54,6 +61,7 @@ export const MenuBar = () => {
         <Italic size={14} />
       </MenuButton>
       <MenuButton
+        editor={editor}
         onClick={() => editor.chain().focus().toggleBulletList().run()}
         nodeName="bulletList"
       >
@@ -61,6 +69,7 @@ export const MenuBar = () => {
       </MenuButton>
 
       <MenuButton
+        editor={editor}
         onClick={() => editor.chain().focus().toggleOrderedList().run()}
         nodeName="orderedList"
       >
@@ -68,6 +77,7 @@ export const MenuBar = () => {
       </MenuButton>
 
       <MenuButton
+        editor={editor}
         onClick={() => editor.chain().focus().toggleBlockquote().run()}
         nodeName="blockquote"
       >
@@ -75,6 +85,7 @@ export const MenuBar = () => {
       </MenuButton>
 
       <MenuButton
+        editor={editor}
         onClick={() => editor.chain().focus().toggleStrike().run()}
         disabled={!editor.can().chain().focus().toggleStrike().run()}
         nodeName="strike"
@@ -83,6 +94,7 @@ export const MenuBar = () => {
       </MenuButton>
 
       <MenuButton
+        editor={editor}
         onClick={() => editor.chain().focus().toggleCodeBlock().run()}
         disabled={!editor.can().chain().focus().toggleCode().run()}
         nodeName="code"
@@ -91,6 +103,7 @@ export const MenuBar = () => {
       </MenuButton>
 
       <MenuButton
+        editor={editor}
         onClick={() => editor.chain().focus().undo().run()}
         disabled={!editor.can().chain().focus().undo().run()}
         nodeName="undo"
@@ -99,6 +112,7 @@ export const MenuBar = () => {
       </MenuButton>
 
       <MenuButton
+        editor={editor}
         onClick={() => editor.chain().focus().redo().run()}
         disabled={!editor.can().chain().focus().redo().run()}
         nodeName="redo"
@@ -107,6 +121,7 @@ export const MenuBar = () => {
       </MenuButton>
       {/* A butto to handle the identation */}
       <MenuButton
+        editor={editor}
         onClick={() => editor.chain().focus().increaseIndent().run()}
         disabled={!editor.can().chain().focus().increaseIndent().run()}
         nodeName="indent"
@@ -114,6 +129,7 @@ export const MenuBar = () => {
         <Indent size={14} />
       </MenuButton>
       <MenuButton
+        editor={editor}
         onClick={() => editor.chain().focus().decreaseIndent().run()}
         disabled={!editor.can().chain().focus().decreaseIndent().run()}
         nodeName="indent"
@@ -121,6 +137,7 @@ export const MenuBar = () => {
         <IndentDecrease size={14} />
       </MenuButton>
       <MenuButton
+        editor={editor}
         onClick={() => {
           const videoUrl = prompt("Enter the video URL");
           if (!videoUrl) {
@@ -136,6 +153,7 @@ export const MenuBar = () => {
         <Video size={14} />
       </MenuButton>
       <MenuButton
+        editor={editor}
         onClick={() => {
           const url = prompt("Enter the URL");
           if (!url) {
