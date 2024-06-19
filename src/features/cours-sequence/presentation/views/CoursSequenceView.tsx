@@ -11,6 +11,9 @@ import { Complement } from "@/features/complement/domain/complement-schemas";
 import VisibilitySwitch from "../components/VisibilitySwitch";
 import useUpdateSequenceBody from "../../application/usecases/services/useUpdateSequenceBody";
 import useUpdateCoursBody from "../../application/usecases/services/useUpdateCoursBody";
+import FloatingEditor from "@/core/components/common/editor/FloatingEditor";
+import { useCallback } from "react";
+import { debounce } from "lodash";
 
 export default function CoursSequenceView({
   cours,
@@ -30,7 +33,18 @@ export default function CoursSequenceView({
   sequenceType?: "template" | "sequence";
 }) {
   const { setUpdateSequenceBodyOptions } = useUpdateSequenceBody();
-  const { setUpdateCoursBodyOptions } = useUpdateCoursBody();
+  const { mutate: setUpdateCoursBodyOptions } = useUpdateCoursBody();
+  const debounceUpdateCoursBody = useCallback(
+    () =>
+      debounce((content: string) =>
+        setUpdateCoursBodyOptions({
+          userId,
+          coursId: cours!._id,
+          body: content,
+        })
+      ),
+    [cours, setUpdateCoursBodyOptions, userId]
+  );
   if (type === "cours" && cours && complements) {
     return (
       <>
@@ -47,7 +61,35 @@ export default function CoursSequenceView({
             });
           }}
         >
-          <div className=" flex flex-col gap-4 ">
+          <FloatingEditor
+            content={cours.body}
+            debounceUpdateFn={debounceUpdateCoursBody()}
+            afterMenuBar={
+              <AfterMenuBar>
+                <div className="flex items-center justify-between w-full gap-4 ">
+                  <div className="flex items-center gap-1">
+                    <CoursSaveButton userId={userId} cours={cours} />
+                    <AfterMenuButton>
+                      <Link href={`/spaces/cours/${cours._id}?user=${userId}`}>
+                        <Eye size={12} />
+                      </Link>
+                    </AfterMenuButton>
+                    <AfterMenuButton>
+                      <Link href={`/cours/edit/${cours._id}`}>
+                        <Settings size={12} />
+                      </Link>
+                    </AfterMenuButton>
+                  </div>
+                  <VisibilitySwitch
+                    userId={userId}
+                    type="cours"
+                    typeId={cours._id}
+                  />
+                </div>
+              </AfterMenuBar>
+            }
+          />
+          {/* <div className=" flex flex-col gap-4 ">
             <AfterMenuBar>
               <div className="flex items-center justify-between w-full gap-4 ">
                 <div className="flex items-center gap-1">
@@ -70,7 +112,7 @@ export default function CoursSequenceView({
                 />
               </div>
             </AfterMenuBar>
-          </div>
+          </div> */}
         </EditorProviderWrapper>
       </>
     );
