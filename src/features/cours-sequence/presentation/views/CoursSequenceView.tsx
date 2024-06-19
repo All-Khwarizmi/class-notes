@@ -67,69 +67,30 @@ export default function CoursSequenceView({
         <h1 className="text-2xl font-bold pb-4 dark:text-slate-300 text-slate-500 ">
           {cours.name}
         </h1>
-        <EditorProviderWrapper
+
+        <FloatingEditor
           content={cours.body}
-          onUpdate={(content) => {
-            setUpdateCoursBodyOptions({
-              userId,
-              coursId: cours._id,
-              body: content,
-            });
-          }}
+          debounceUpdateFn={debounceUpdateCoursBody()}
+          afterMenuBar
         >
-          <FloatingEditor
-            content={cours.body}
-            debounceUpdateFn={debounceUpdateCoursBody()}
-            afterMenuBar={
-              <AfterMenuBar>
-                <div className="flex items-center justify-between w-full gap-4 ">
-                  <div className="flex items-center gap-1">
-                    <CoursSaveButton userId={userId} cours={cours} />
-                    <AfterMenuButton>
-                      <Link href={`/spaces/cours/${cours._id}?user=${userId}`}>
-                        <Eye size={12} />
-                      </Link>
-                    </AfterMenuButton>
-                    <AfterMenuButton>
-                      <Link href={`/cours/edit/${cours._id}`}>
-                        <Settings size={12} />
-                      </Link>
-                    </AfterMenuButton>
-                  </div>
-                  <VisibilitySwitch
-                    userId={userId}
-                    type="cours"
-                    typeId={cours._id}
-                  />
-                </div>
-              </AfterMenuBar>
-            }
-          />
-          {/* <div className=" flex flex-col gap-4 ">
-            <AfterMenuBar>
-              <div className="flex items-center justify-between w-full gap-4 ">
-                <div className="flex items-center gap-1">
-                  <CoursSaveButton userId={userId} cours={cours} />
-                  <AfterMenuButton>
-                    <Link href={`/spaces/cours/${cours._id}?user=${userId}`}>
-                      <Eye size={12} />
-                    </Link>
-                  </AfterMenuButton>
-                  <AfterMenuButton>
-                    <Link href={`/cours/edit/${cours._id}`}>
-                      <Settings size={12} />
-                    </Link>
-                  </AfterMenuButton>
-                </div>
-                <VisibilitySwitch
-                  userId={userId}
-                  type="cours"
-                  typeId={cours._id}
-                />
-              </div>
-            </AfterMenuBar>
-          </div> */}
-        </EditorProviderWrapper>
+          {" "}
+          <div className="flex items-center justify-between w-full gap-4 ">
+            <div className="flex items-center gap-1">
+              <CoursSaveButton userId={userId} cours={cours} />
+              <AfterMenuButton>
+                <Link href={`/spaces/cours/${cours._id}?user=${userId}`}>
+                  <Eye size={12} />
+                </Link>
+              </AfterMenuButton>
+              <AfterMenuButton>
+                <Link href={`/cours/edit/${cours._id}`}>
+                  <Settings size={12} />
+                </Link>
+              </AfterMenuButton>
+            </div>
+            <VisibilitySwitch userId={userId} type="cours" typeId={cours._id} />
+          </div>
+        </FloatingEditor>
       </>
     );
   }
@@ -146,75 +107,39 @@ export default function CoursSequenceView({
         <FloatingEditor
           content={sequence.body}
           debounceUpdateFn={debounceUpdateSequenceBody()}
-          afterMenuBar={
-            <AfterMenuBar>
-              <div className="flex items-center justify-between w-full gap-4 ">
-                <div className="flex items-center gap-1">
-                  <SaveSequenceBodyButton
-                    userId={userId}
-                    sequence={sequence}
-                    type={sequenceType}
-                  />
-                  <AfterMenuButton>
-                    <Link href={viewPath}>
-                      <Eye size={12} />
-                    </Link>
-                  </AfterMenuButton>
-                  <AfterMenuButton>
-                    <Link
-                      href={
-                        sequenceType === "sequence"
-                          ? `/sequences/edit/${sequence._id}?type=sequence`
-                          : `/sequences/edit/${sequence._id}`
-                      }
-                    >
-                      <Settings size={12} />
-                    </Link>
-                  </AfterMenuButton>
-                </div>
-                <VisibilitySwitch
-                  userId={userId}
-                  type="sequence"
-                  typeId={sequence._id}
-                />
-              </div>
-            </AfterMenuBar>
-          }
-        />
-        {/* <div className="flex flex-col gap-4 ">
-            <AfterMenuBar>
-              <div className="flex items-center justify-between w-full gap-4 ">
-                <div className="flex items-center gap-1">
-                  <SaveSequenceBodyButton
-                    userId={userId}
-                    sequence={sequence}
-                    type={sequenceType}
-                  />
-                  <AfterMenuButton>
-                    <Link href={viewPath}>
-                      <Eye size={12} />
-                    </Link>
-                  </AfterMenuButton>
-                  <AfterMenuButton>
-                    <Link
-                      href={
-                        sequenceType === "sequence"
-                          ? `/sequences/edit/${sequence._id}?type=sequence`
-                          : `/sequences/edit/${sequence._id}`
-                      }
-                    >
-                      <Settings size={12} />
-                    </Link>
-                  </AfterMenuButton>
-                </div>
-                <VisibilitySwitch
-                  userId={userId}
-                  type="sequence"
-                  typeId={sequence._id}
-                />
-              </div>
-            </AfterMenuBar>
-          </div> */}
+          afterMenuBar
+        >
+          <div className="flex items-center justify-between w-full gap-4 ">
+            <div className="flex items-center gap-1">
+              <SaveSequenceBodyButton
+                userId={userId}
+                sequence={sequence}
+                type={sequenceType}
+              />
+              <AfterMenuButton>
+                <Link href={viewPath}>
+                  <Eye size={12} />
+                </Link>
+              </AfterMenuButton>
+              <AfterMenuButton>
+                <Link
+                  href={
+                    sequenceType === "sequence"
+                      ? `/sequences/edit/${sequence._id}?type=sequence`
+                      : `/sequences/edit/${sequence._id}`
+                  }
+                >
+                  <Settings size={12} />
+                </Link>
+              </AfterMenuButton>
+            </div>
+            <VisibilitySwitch
+              userId={userId}
+              type="sequence"
+              typeId={sequence._id}
+            />
+          </div>
+        </FloatingEditor>
       </>
     );
   }
