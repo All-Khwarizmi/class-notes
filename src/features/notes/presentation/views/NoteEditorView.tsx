@@ -1,32 +1,45 @@
 "use client";
-import React from "react";
+import React, { useCallback, useEffect } from "react";
 import { Note } from "../../domain/notes-schemas";
-import Editor from "@/core/components/common/editor/Editor";
-import UpdateNoteButton from "../components/UpdateNote";
 import useUpdateNote from "../../application/adapters/services/useUpdateNote";
-import { cn } from "@/lib/utils";
-import AfterMenuBar from "@/core/components/common/editor/AfterMunuBar";
 import { EditorContent, FloatingMenu, useEditor } from "@tiptap/react";
 import { EXTENSIONS } from "@/core/components/constants/editor-extenstions";
 import { debounce } from "lodash";
 import FloatingMenuBar from "@/core/components/common/editor/FloatingMenuBar";
+import { toast } from "sonner";
 
 function NoteEditorView(props: { note: Note }) {
-  const { setNote } = useUpdateNote();
-  const debouncedUpdate = debounce((content: string) => {
-    setNote({
-      ...props.note,
-      content: content,
-    });
-  }, 10000);
+  const { mutate: setNote, isSuccess } = useUpdateNote();
+  const debounceSaveNote = useCallback(
+    () =>
+      debounce(
+        (content: string) => {
+          setNote({
+            ...props.note,
+            content,
+          });
+        },
+        5000,
+        { leading: false, trailing: true }
+      ),
+    [props.note, setNote]
+  );
   const editor = useEditor({
     extensions: EXTENSIONS,
     content: props.note.content,
     onUpdate: (editor) => {
       const content = editor.editor.getHTML();
-      debouncedUpdate(content);
+      debounceSaveNote()(content);
     },
+    
   });
+
+  useEffect(() => {
+    if (isSuccess) {
+      toast.success("Note updated");
+      console.log("Note updated");
+    }
+  }, [isSuccess]);
   return (
     <>
       {editor && (
