@@ -44,13 +44,13 @@ export const MenuBar = () => {
         <Bold size={12} />
       </MenuButton>
 
-      <HeadingMenuBar />
+      <HeadingMenuBar editor={editor} />
 
-      <MenuTextColor />
+      <MenuTextColor editor={editor} />
 
-      <MenuImage />
+      <MenuImage editor={editor} />
 
-      <MenuTextAlign />
+      <MenuTextAlign editor={editor} />
 
       <MenuButton
         editor={editor}
