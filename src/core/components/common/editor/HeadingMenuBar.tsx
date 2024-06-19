@@ -1,16 +1,14 @@
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuShortcut,
-  DropdownMenuTrigger,
-} from "@/core/components/ui/dropdown-menu";
-import { Editor, useCurrentEditor } from "@tiptap/react";
+import { Editor } from "@tiptap/react";
 import { Level } from "@tiptap/extension-heading";
 import { cn } from "@/lib/utils";
 import { Heading } from "lucide-react";
+import { Button } from "@/core/components/ui/button";
+
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/core/components/ui/popover";
 
 export function HeadingMenuBar(props: { editor: Editor }) {
   const editor = props.editor;
@@ -29,53 +27,72 @@ export function HeadingMenuBar(props: { editor: Editor }) {
   }
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <button
-          className={cn(
-            editor.isActive("heading") ? "is-active" : "",
-            "bg-slate-400 rounded-md p-1 px-2"
-          )}
-        >
+    <Popover>
+      <PopoverTrigger asChild>
+        <Button className="bg-slate-400 rounded-md p-1 px-2">
           <Heading size={12} />
-        </button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56">
-        <DropdownMenuLabel>Paragraph</DropdownMenuLabel>
-        <DropdownMenuSeparator />
-
-        <DropdownMenuItem
-          onClick={() => {
-            // Get the current position of the cursor
-            const position = editor.state.selection.$head.pos;
-            setHeading(1, position);
-          }}
-          className="text-4xl"
-        >
-          Heading 1
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setHeading(2)} className="text-3xl">
-          Heading 2
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setHeading(3)} className="text-2xl">
-          Heading 3
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setHeading(4)} className="text-xl">
-          Heading 4
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setHeading(5)}>
-          Heading 5
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setHeading(6)}>
-          Heading 6
-        </DropdownMenuItem>
-
-        <DropdownMenuSeparator />
-        <DropdownMenuItem>
-          Log out
-          <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent className="w-full">
+        <div>
+          <div className="flex gap-2">
+            <Button
+              onClick={() => setHeading(1)}
+              className={cn(
+                "text-3xl",
+                editor.isActive("heading", { level: 1 }) && "text-blue-500"
+              )}
+            >
+              H1
+            </Button>
+            <Button
+              onClick={() => setHeading(2)}
+              className={cn(
+                "text-2xl",
+                editor.isActive("heading", { level: 2 }) && "text-blue-500"
+              )}
+            >
+              H2
+            </Button>
+            <Button
+              onClick={() => setHeading(3)}
+              className={cn(
+                "text-xl",
+                editor.isActive("heading", { level: 3 }) && "text-blue-500"
+              )}
+            >
+              H3
+            </Button>
+            <Button
+              onClick={() => setHeading(4)}
+              className={cn(
+                "text-lg",
+                editor.isActive("heading", { level: 4 }) && "text-blue-500"
+              )}
+            >
+              H4
+            </Button>
+            <Button
+              onClick={() => setHeading(5)}
+              className={cn(
+                "text-md",
+                editor.isActive("heading", { level: 5 }) && "text-blue-500"
+              )}
+            >
+              H5
+            </Button>
+            <Button
+              onClick={() => setHeading(6)}
+              className={cn(
+                "text-sm",
+                editor.isActive("heading", { level: 6 }) && "text-blue-500"
+              )}
+            >
+              H6
+            </Button>
+          </div>
+        </div>
+      </PopoverContent>
+    </Popover>
   );
 }
