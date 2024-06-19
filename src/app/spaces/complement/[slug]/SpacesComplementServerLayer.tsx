@@ -5,7 +5,7 @@ import Sidebar from "@/core/components/layout/Sidebar";
 import SpacesHeader from "@/core/components/layout/SpacesHeader";
 import getVisibility from "@/features/classe/application/adapters/actions/get-visibility";
 import { complementUsecases } from "@/features/complement/application/usecases/complement-usecases";
-import ContentViewer from "@/features/cours-sequence/presentation/views/ShowSequence";
+import ContentViewer from "@/features/cours-sequence/presentation/views/ContentViewer";
 import { isLeft } from "fp-ts/lib/Either";
 import { Layout } from "lucide-react";
 import React from "react";

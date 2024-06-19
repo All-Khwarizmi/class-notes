@@ -2,9 +2,9 @@ import React from "react";
 import NotFound from "@/app/not-found";
 import { authUseCases } from "@/features/auth/application/usecases/auth-usecases";
 import { coursUsecases } from "@/features/cours-sequence/application/usecases/cours-usecases";
-import ContentViewer from "@/features/cours-sequence/presentation/views/ShowSequence";
 import { isLeft } from "fp-ts/lib/Either";
 import { redirect } from "next/navigation";
+import ContentViewer from "@/features/cours-sequence/presentation/views/ContentViewer";
 
 async function SequenceShowServerLayer(props: { slug: string }) {
   const authUser = await authUseCases.getUserAuth();

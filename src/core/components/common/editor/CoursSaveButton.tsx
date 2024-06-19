@@ -1,12 +1,12 @@
 import React from "react";
-import useUpdateCoursBody from "../../../../features/cours-sequence/application/usecases/services/useUpdateCoursBody";
+import useUpdateCoursBody from "../../../../features/cours-sequence/application/adapters/services/useUpdateCoursBody";
 import { Cours } from "../../../../features/cours-sequence/domain/entities/cours-schemas";
 import { useCurrentEditor } from "@tiptap/react";
 import AfterMenuButton from "./AfterMenuButton";
 import { Save } from "lucide-react";
 
 function CoursSaveButton({ cours, userId }: { cours: Cours; userId: string }) {
-  const { setUpdateCoursBodyOptions } = useUpdateCoursBody();
+  const { debounceUpdateCoursBody } = useUpdateCoursBody();
   const { editor } = useCurrentEditor();
   if (!editor) {
     return null;
@@ -20,11 +20,10 @@ function CoursSaveButton({ cours, userId }: { cours: Cours; userId: string }) {
           if (prevContent === currentContent) {
             return alert("No changes to save");
           }
-          setUpdateCoursBodyOptions({
+          debounceUpdateCoursBody({
             userId,
             coursId: cours._id,
-            body: editor.getHTML(),
-          });
+          })(currentContent);
         },
       }}
     >

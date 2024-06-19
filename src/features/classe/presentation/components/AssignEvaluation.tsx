@@ -47,6 +47,7 @@ function AssignEvaluation(props: {
       });
     } else {
       toast.error("Please select an evaluation");
+      return
     }
   }
   function handleChange(value: string) {

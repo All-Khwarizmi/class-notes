@@ -6,7 +6,7 @@ import useUpdateComplement from "../../application/adapters/services/useUpdateCo
 import { Complement } from "../../domain/complement-schemas";
 
 function UpdateComplement(props: { complement: Complement }) {
-  const { setComplementOptions } = useUpdateComplement();
+  const { debounceUpdateComplement } = useUpdateComplement();
 
   const { editor } = useCurrentEditor();
   if (!editor) {
@@ -21,10 +21,7 @@ function UpdateComplement(props: { complement: Complement }) {
           if (prevContent === currentContent) {
             return alert("No changes to save");
           }
-          setComplementOptions({
-            ...props.complement,
-            body: editor.getHTML(),
-          });
+          debounceUpdateComplement(props.complement)(currentContent);
         },
       }}
     >

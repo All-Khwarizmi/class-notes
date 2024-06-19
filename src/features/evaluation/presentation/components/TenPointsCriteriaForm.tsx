@@ -90,6 +90,7 @@ function TenPointsCriteriaForm(props: {
           />
           {/* Criteria Grades */}
           {props.studentGrade.grades.map((grade, index) => {
+            // Find the criteria for the grade. There's a possibility that the criteria might have been deleted. So we default the weight to 1.
             const criteria = props.evaluationBase.criterias.find(
               (c) => c.id === grade.criteriaId
             );

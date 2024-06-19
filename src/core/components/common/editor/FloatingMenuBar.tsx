@@ -1,4 +1,5 @@
-import { useCurrentEditor } from "@tiptap/react";
+import { Editor } from "@tiptap/react";
+import React from "react";
 import {
   Bold,
   Code,
@@ -22,13 +23,7 @@ import MenuButton from "@/core/components/common/editor/MenuButton";
 import MenuTextAlign from "@/core/components/common/editor/MenuTextAlign";
 import { cn } from "@/lib/utils";
 
-export const MenuBar = () => {
-  const { editor } = useCurrentEditor();
-
-  if (!editor) {
-    return null;
-  }
-
+function FloatingMenuBar({ editor }: { editor: Editor }) {
   return (
     <div
       className={cn(
@@ -167,4 +162,6 @@ export const MenuBar = () => {
       </MenuButton>
     </div>
   );
-};
+}
+
+export default FloatingMenuBar;

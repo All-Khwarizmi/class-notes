@@ -11,6 +11,7 @@ const EvaluationBase = defineTable({
   createdAt: v.float64(),
   criterias,
   gradeType,
-}).index("by_createdBy", ["createdBy"]);
+})
+  .index("by_createdBy", ["createdBy"])
 
 export { EvaluationBase };
