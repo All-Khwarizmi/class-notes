@@ -18,6 +18,8 @@ import CustomDialog from "@/core/components/common/CustomDialog";
 import AssignEvaluation from "./AssignEvaluation";
 import UpdateStudentGradeForm from "./UpdateStudentGradeForm";
 import calculateOverallGrade from "@/features/evaluation/application/adapters/utils/calculate-overall-grade";
+import AddStudentForm from "./AddStudentForm";
+import { Id } from "../../../../../convex/_generated/dataModel";
 
 export function StudentsEvaluationTableView(props: {
   tableData: ClasseTableType;
@@ -100,7 +102,7 @@ export function StudentsEvaluationTableView(props: {
           ))}
         </TableBody>
       </Table>
-      <div className="flex justify-center mt-4">
+      <div className="flex justify-center mt-4 gap-2">
         <CustomDialog
           title="Assign Evaluation"
           buttonText="Assign Evaluation"
@@ -113,6 +115,13 @@ export function StudentsEvaluationTableView(props: {
               (evaluation) => evaluation.base.id
             )}
           />
+        </CustomDialog>
+        <CustomDialog
+          title="Add Student"
+          buttonText="Add Student"
+          buttonClassName="bg-transparent dark text-white px-4 py-2 rounded-md border border-white"
+        >
+          <AddStudentForm classId={props.classeId as Id<"Classes">} />
         </CustomDialog>
       </div>
     </div>
