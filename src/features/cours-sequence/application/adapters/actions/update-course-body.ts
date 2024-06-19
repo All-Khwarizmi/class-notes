@@ -2,7 +2,7 @@
 
 import { coursUsecases } from "../../usecases/cours-usecases";
 
-export default function updateCourseBody(options: {
+export default async function updateCourseBody(options: {
   userId: string;
   coursId: string;
   body: string;

@@ -32,7 +32,21 @@ export default function CoursSequenceView({
   complements?: Complement[];
   sequenceType?: "template" | "sequence";
 }) {
-  const { setUpdateSequenceBodyOptions } = useUpdateSequenceBody();
+  const { mutate: updateSequenceBody } = useUpdateSequenceBody();
+  const debounceUpdateSequenceBody = useCallback(
+    () =>
+      debounce(
+        (content: string) =>
+          updateSequenceBody({
+            userId,
+            sequenceId: sequence!._id,
+            body: content,
+            type: sequenceType,
+          }),
+        5000
+      ),
+    [sequence, sequenceType, updateSequenceBody, userId]
+  );
   const { mutate: setUpdateCoursBodyOptions } = useUpdateCoursBody();
   const debounceUpdateCoursBody = useCallback(
     () =>
@@ -127,18 +141,10 @@ export default function CoursSequenceView({
         <h1 className="text-2xl font-bold pb-4 dark:text-slate-300 text-slate-500 ">
           {sequence.name}
         </h1>
-        <EditorProviderWrapper
+        <FloatingEditor
           content={sequence.body}
-          onUpdate={(content) => {
-            setUpdateSequenceBodyOptions({
-              userId,
-              sequenceId: sequence._id,
-              body: content,
-              type: sequenceType,
-            });
-          }}
-        >
-          <div className="flex flex-col gap-4 ">
+          debounceUpdateFn={debounceUpdateSequenceBody()}
+          afterMenuBar={
             <AfterMenuBar>
               <div className="flex items-center justify-between w-full gap-4 ">
                 <div className="flex items-center gap-1">
@@ -171,8 +177,42 @@ export default function CoursSequenceView({
                 />
               </div>
             </AfterMenuBar>
-          </div>
-        </EditorProviderWrapper>
+          }
+        />
+        {/* <div className="flex flex-col gap-4 ">
+            <AfterMenuBar>
+              <div className="flex items-center justify-between w-full gap-4 ">
+                <div className="flex items-center gap-1">
+                  <SaveSequenceBodyButton
+                    userId={userId}
+                    sequence={sequence}
+                    type={sequenceType}
+                  />
+                  <AfterMenuButton>
+                    <Link href={viewPath}>
+                      <Eye size={12} />
+                    </Link>
+                  </AfterMenuButton>
+                  <AfterMenuButton>
+                    <Link
+                      href={
+                        sequenceType === "sequence"
+                          ? `/sequences/edit/${sequence._id}?type=sequence`
+                          : `/sequences/edit/${sequence._id}`
+                      }
+                    >
+                      <Settings size={12} />
+                    </Link>
+                  </AfterMenuButton>
+                </div>
+                <VisibilitySwitch
+                  userId={userId}
+                  type="sequence"
+                  typeId={sequence._id}
+                />
+              </div>
+            </AfterMenuBar>
+          </div> */}
       </>
     );
   }

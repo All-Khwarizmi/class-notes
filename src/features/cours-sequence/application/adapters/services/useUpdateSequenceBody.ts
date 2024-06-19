@@ -1,42 +1,23 @@
-import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { coursUsecases } from "../../usecases/cours-usecases";
 import { isLeft } from "fp-ts/lib/Either";
+import { useMutation } from "@tanstack/react-query";
+import updateSequenceBody from "../actions/update-sequence-body";
 
 export default function useUpdateSequenceBody() {
-  const [updateSequenceBodyOptions, setUpdateSequenceBodyOptions] = useState<{
-    userId: string;
-    sequenceId: string;
-    body: string;
-    type?: "template" | "sequence";
-  } | null>(null);
-
-  useEffect(() => {
-    if (!updateSequenceBodyOptions) return;
-    const loadingToast = toast.loading("", {
-      position: "bottom-right",
-    });
-    coursUsecases
-      .addBodyToSequence(updateSequenceBodyOptions)
-      .then((eitherCours) => {
-        if (isLeft(eitherCours)) {
-          toast.error("Failed to update sequence body", {
-            position: "top-center",
-            description: eitherCours.left.message,
-          });
-          return;
-        }
-        toast.success("", {
-          id: loadingToast,
-          position: "bottom-right",
-          duration: 500,
-        });
-      })
-      .finally(() => {
-        setUpdateSequenceBodyOptions(null);
-        toast.dismiss(loadingToast);
-      });
-  }, [updateSequenceBodyOptions]);
-
-  return { setUpdateSequenceBodyOptions };
+  return useMutation({
+    mutationKey: ["update-sequence-body"],
+    mutationFn: async (options: {
+      userId: string;
+      sequenceId: string;
+      body: string;
+      type?: "template" | "sequence";
+    }) => {
+      const result = await updateSequenceBody(options);
+      if (isLeft(result)) {
+        toast.error("Failed to update the sequence body");
+      } else {
+        toast.success("Sequence body updated successfully");
+      }
+    },
+  });
 }
