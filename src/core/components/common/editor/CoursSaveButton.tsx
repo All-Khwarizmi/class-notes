@@ -6,7 +6,7 @@ import AfterMenuButton from "./AfterMenuButton";
 import { Save } from "lucide-react";
 
 function CoursSaveButton({ cours, userId }: { cours: Cours; userId: string }) {
-  const { setUpdateCoursBodyOptions } = useUpdateCoursBody();
+  const { mutate: setUpdateCoursBodyOptions } = useUpdateCoursBody();
   const { editor } = useCurrentEditor();
   if (!editor) {
     return null;
