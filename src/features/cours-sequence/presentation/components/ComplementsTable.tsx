@@ -54,7 +54,7 @@ function ComplementsTable(props: {
                 </TableCell>
                 <TableCell className="w-[200px]">
                   {complement.publishDate
-                    ? new Date(complement.publishDate).toLocaleDateString()
+                    ? new Date(complement.publishDate).toDateString()
                     : "Not published"}
                 </TableCell>
                 <TableCell className="w-[200px]">
