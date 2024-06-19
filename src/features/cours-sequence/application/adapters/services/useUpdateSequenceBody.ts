@@ -2,9 +2,11 @@ import { toast } from "sonner";
 import { isLeft } from "fp-ts/lib/Either";
 import { useMutation } from "@tanstack/react-query";
 import updateSequenceBody from "../actions/update-sequence-body";
+import { useCallback } from "react";
+import { debounce } from "lodash";
 
 export default function useUpdateSequenceBody() {
-  return useMutation({
+  const { mutate } = useMutation({
     mutationKey: ["update-sequence-body"],
     mutationFn: async (options: {
       userId: string;
@@ -20,4 +22,26 @@ export default function useUpdateSequenceBody() {
       }
     },
   });
+
+  const debounceUpdateSequenceBody = useCallback(
+    (options: {
+      userId: string;
+      sequenceId: string;
+      type?: "template" | "sequence";
+    }) => {
+      return debounce(
+        (content: string) =>
+          mutate({
+            userId: options.userId,
+            sequenceId: options.sequenceId,
+            body: content,
+            type: options.type,
+          }),
+        5000
+      );
+    },
+    [mutate]
+  );
+
+  return { debounceUpdateSequenceBody };
 }

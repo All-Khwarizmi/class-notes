@@ -32,21 +32,8 @@ export default function CoursSequenceView({
   complements?: Complement[];
   sequenceType?: "template" | "sequence";
 }) {
-  const { mutate: updateSequenceBody } = useUpdateSequenceBody();
-  const debounceUpdateSequenceBody = useCallback(
-    () =>
-      debounce(
-        (content: string) =>
-          updateSequenceBody({
-            userId,
-            sequenceId: sequence!._id,
-            body: content,
-            type: sequenceType,
-          }),
-        5000
-      ),
-    [sequence, sequenceType, updateSequenceBody, userId]
-  );
+  const { debounceUpdateSequenceBody } = useUpdateSequenceBody();
+
   const { mutate: setUpdateCoursBodyOptions } = useUpdateCoursBody();
   const debounceUpdateCoursBody = useCallback(
     () =>
@@ -106,7 +93,11 @@ export default function CoursSequenceView({
         </h1>
         <FloatingEditor
           content={sequence.body}
-          debounceUpdateFn={debounceUpdateSequenceBody()}
+          debounceUpdateFn={debounceUpdateSequenceBody({
+            userId,
+            sequenceId: sequence._id,
+            type: sequenceType,
+          })}
           afterMenuBar
         >
           <div className="flex items-center justify-between w-full gap-4 ">
