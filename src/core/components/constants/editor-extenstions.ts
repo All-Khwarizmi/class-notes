@@ -11,10 +11,11 @@ import YouTube from "@tiptap/extension-youtube";
 import DoubleCurlyBracesExtension from "../common/editor/DoubleCurlyBracesExtension";
 import { DoubleBrakets } from "../common/editor/DoubleBrakets";
 import Link from "@tiptap/extension-link";
-
+import FloatingMenu from "@tiptap/extension-floating-menu";
 const lowlight = createLowlight(common);
 
 export const EXTENSIONS = [
+  FloatingMenu,
   Link.configure({
     HTMLAttributes: {
       target: "_blank",
