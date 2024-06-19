@@ -15,7 +15,7 @@ import FloatingMenu from "@tiptap/extension-floating-menu";
 const lowlight = createLowlight(common);
 
 export const EXTENSIONS = [
-  FloatingMenu,
+  
   Link.configure({
     HTMLAttributes: {
       target: "_blank",
