@@ -19,9 +19,18 @@ export function HeadingMenuBar() {
     return null;
   }
 
-  function setHeading(level: Level) {
-    editor!.chain().focus().setHeading({ level }).scrollIntoView().run();
+  function setHeading(level: Level, position?: number) {
+    editor!
+      .chain()
+      .setHeading({ level })
+      .focus(
+        position !== undefined ? position : editor!.state.selection.$head.pos,
+        {
+          scrollIntoView: true,
+        }
+      )
 
+      .run();
   }
 
   return (
@@ -40,7 +49,14 @@ export function HeadingMenuBar() {
         <DropdownMenuLabel>Paragraph</DropdownMenuLabel>
         <DropdownMenuSeparator />
 
-        <DropdownMenuItem onClick={() => setHeading(1)} className="text-4xl">
+        <DropdownMenuItem
+          onClick={() => {
+            // Get the current position of the cursor
+            const position = editor.state.selection.$head.pos;
+            setHeading(1, position);
+          }}
+          className="text-4xl"
+        >
           Heading 1
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => setHeading(2)} className="text-3xl">
