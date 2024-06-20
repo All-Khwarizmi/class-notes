@@ -64,11 +64,6 @@ export function StudentsEvaluationTableView(props: {
                 If the student doesn't have a grade, display "N/A".
               */}
               {localTableData.map((evaluation, index) => {
-                console.log("Evualuation loop ", {
-                  index,
-                  student,
-                  evaluation,
-                });
                 const studentGrade = evaluation.grade.grades.find(
                   (grade) => grade.studentId === student.id
                 );
@@ -82,7 +77,6 @@ export function StudentsEvaluationTableView(props: {
                   : "N/A";
 
                 if (studentGrade) {
-                  console.log("Student grade found", studentGrade);
                   const dialogKey = `${student.id}-${evaluation.grade.id}`;
                   if (!isDialogOpen[dialogKey]) {
                     isDialogOpen[dialogKey] = false;
