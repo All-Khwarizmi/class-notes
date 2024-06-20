@@ -29,7 +29,30 @@ function FloatingEditor(props: {
     <>
       {editor && (
         <>
-          <FloatingMenu editor={editor}>
+          <FloatingMenu
+            editor={editor}
+            tippyOptions={{
+              duration: 100,
+            }}
+            shouldShow={({ state }) => {
+              const { selection } = state;
+              const { from, to, empty } = selection;
+              const { doc } = state;
+
+              // Check if there is content selected
+              const hasContentSelected = from !== to;
+
+              // Check if the cursor is on an empty line
+              const isEmptyLine =
+                empty && doc.textBetween(from - 1, to + 1).trim().length === 0;
+
+              // Check if the last character is a /
+              const isSlash = doc.textBetween(from - 1, to).trim() === "/";
+
+              // Show the menu if content is selected or if on an empty line
+              return hasContentSelected || isSlash || isEmptyLine;
+            }}
+          >
             <FloatingMenuBar editor={editor} />
           </FloatingMenu>
           <EditorContent editor={editor} />

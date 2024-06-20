@@ -12,16 +12,16 @@ function useUpdateComplement() {
     mutationFn: async (options: Complement) => {
       const result = await updateComplement(options);
       if (isLeft(result)) {
-        toast.error("Failed to update the complement");
+        toast.error("Failed to update the complement", { duration: 2000 });
       } else {
-        toast.success("Complement updated successfully");
+        toast.success("Complement updated successfully", { duration: 2000 });
       }
     },
   });
   const debounceUpdateComplement = useCallback(
     (options: Complement) => {
       return debounce((content: string) => {
-       return mutate({ ...options, body: content });
+        return mutate({ ...options, body: content });
       }, 5000);
     },
     [mutate]

@@ -60,7 +60,18 @@ export default function AddStudentForm({
           />
           <div className="py-2 flex justify-end">
             {" "}
-            <Button type="submit" className="btn">
+            <Button
+              onClick={async () => {
+                const values = form.getValues();
+                const { name } = values;
+                const id = await addStudent({ name, classId });
+                if (id) {
+                  form.reset();
+                  toast.success("Élève ajouté avec succès");
+                } else toast.error("Erreur lors de l'ajout de l'élève");
+              }}
+              className="btn"
+            >
               Ajouter l&apos;élève
             </Button>
           </div>

@@ -31,6 +31,7 @@ export default function UpdateStudentGradeForm(props: {
   evaluationBase: EvaluationBaseType;
   evaluationId: string;
   classeId: string;
+  studentName: string;
   setIsDialogOpen: (open: boolean) => void;
   setLocalTableData: (data: CompoundEvaluationType[]) => void;
 }) {
@@ -130,6 +131,7 @@ export default function UpdateStudentGradeForm(props: {
         evaluationId={props.evaluationId}
         classeId={props.classeId}
         setShouldFetchCompoundList={() => setShouldFetchCompoundList(true)}
+        studentName={props.studentName}
       />
     );
   }

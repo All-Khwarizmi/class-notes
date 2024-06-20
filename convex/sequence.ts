@@ -236,7 +236,6 @@ export const addBodyToSequence = mutation({
     type: v.optional(v.literal("sequence")),
   },
   handler: async (ctx, args) => {
-    console.log("type in convex add sequence body", args.type);
 
     if (args.type === "sequence") {
       const classeSequence = await ctx.db

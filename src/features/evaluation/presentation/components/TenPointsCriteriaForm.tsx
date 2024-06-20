@@ -28,6 +28,7 @@ function TenPointsCriteriaForm(props: {
   evaluationBase: EvaluationBaseType;
   evaluationId: string;
   classeId: string;
+  studentName: string;
   setShouldFetchCompoundList: () => void;
 }) {
   const {
@@ -67,6 +68,9 @@ function TenPointsCriteriaForm(props: {
 
   return (
     <div className="space-y-8 py-8 px-4 md:px-0 rounded-lg shadow-md">
+      <h2 className="text-2xl text-center font-bold">
+        {props.studentName}&apos;s Grade
+      </h2>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit((data) => {
