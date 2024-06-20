@@ -8,6 +8,7 @@ import Dashboard from "@/core/components/icons/Dashboard";
 import { NavItem } from "@/lib/types";
 import { NotebookPen } from "lucide-react";
 import Sidebar from "@/core/components/layout/Sidebar";
+import LayoutWithProps from "@/core/components/layout/LayoutWithProps";
 async function ProfileServerLayer() {
   const authUser = await authUseCases.getUserAuth();
   if (isLeft(authUser)) {
@@ -33,14 +34,9 @@ async function ProfileServerLayer() {
     },
   ];
   return (
-    <>
-      <Sidebar navItems={notesNavItems} />
-      <section className="h-full flex-1  overflow-x-hidden">
-        <div className="h-full py-4 ">
-          <UserProfile user={user.right} />
-        </div>
-      </section>
-    </>
+    <LayoutWithProps navItems={notesNavItems}>
+      <UserProfile user={user.right} />
+    </LayoutWithProps>
   );
 }
 
