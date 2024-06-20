@@ -14,6 +14,7 @@ import CustomDialog from "@/core/components/common/CustomDialog";
 import AddStudentForm from "./AddStudentForm";
 import AddIcon from "@/core/components/icons/AddIcon";
 import { useMemo } from "react";
+import { Id } from "../../../../../convex/_generated/dataModel";
 
 export default function StudentsTable({ classId }: { classId: string }) {
   //! TODO: refactor this to use the new api hook
