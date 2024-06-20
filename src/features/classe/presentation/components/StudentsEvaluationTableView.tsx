@@ -29,7 +29,9 @@ export function StudentsEvaluationTableView(props: {
   const [localTableData, setLocalTableData] = useState<
     CompoundEvaluationType[]
   >(props.tableData.evaluations);
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isDialogOpen, setIsDialogOpen] = useState<{
+    [key in string]: boolean;
+  }>({});
   return (
     <div className="w-full h-full">
       <Table className="w-full">
@@ -61,7 +63,12 @@ export function StudentsEvaluationTableView(props: {
                 If the student has a grade, display the overall grade.
                 If the student doesn't have a grade, display "N/A".
               */}
-              {localTableData.map((evaluation) => {
+              {localTableData.map((evaluation, index) => {
+                console.log("Evualuation loop ", {
+                  index,
+                  student,
+                  evaluation,
+                });
                 const studentGrade = evaluation.grade.grades.find(
                   (grade) => grade.studentId === student.id
                 );
@@ -73,30 +80,55 @@ export function StudentsEvaluationTableView(props: {
                       gradeType: evaluation.base.gradeType,
                     })
                   : "N/A";
-                return (
-                  <TableCell key={evaluation.grade.id} className="w-[200px]">
-                    {studentGrade ? (
-                      <CustomDialog
-                        title="Detailed Criteria"
-                        buttonText={overallGrade.toString().slice(0, 4)}
-                        buttonClassName="bg-transparent dark text-white px-4 py-2 rounded-md border border-white"
-                        open={isDialogOpen}
-                        setOpen={setIsDialogOpen}
-                      >
-                        <UpdateStudentGradeForm
-                          studentGrade={studentGrade}
-                          evaluationBase={evaluation.base}
-                          evaluationId={evaluation.grade.id}
-                          classeId={props.classeId}
-                          setIsDialogOpen={setIsDialogOpen}
-                          setLocalTableData={setLocalTableData}
-                        />
-                      </CustomDialog>
-                    ) : (
-                      "N/A"
-                    )}
-                  </TableCell>
-                );
+
+                if (studentGrade) {
+                  console.log("Student grade found", studentGrade);
+                  const dialogKey = `${student.id}-${evaluation.grade.id}`;
+                  if (!isDialogOpen[dialogKey]) {
+                    isDialogOpen[dialogKey] = false;
+                  }
+                  return (
+                    <TableCell key={evaluation.grade.id} className="w-[200px]">
+                      {studentGrade ? (
+                        <CustomDialog
+                          title="Detailed Criteria"
+                          buttonText={overallGrade.toString().slice(0, 4)}
+                          buttonClassName="bg-transparent dark text-white px-4 py-2 rounded-md border border-white"
+                          open={isDialogOpen[dialogKey]}
+                          setOpen={(value) =>
+                            setIsDialogOpen({
+                              ...isDialogOpen,
+                              [dialogKey]: value,
+                            })
+                          }
+                        >
+                          <UpdateStudentGradeForm
+                            studentGrade={studentGrade}
+                            evaluationBase={evaluation.base}
+                            evaluationId={evaluation.grade.id}
+                            classeId={props.classeId}
+                            setIsDialogOpen={(value) =>
+                              setIsDialogOpen({
+                                ...isDialogOpen,
+                                [dialogKey]: value,
+                              })
+                            }
+                            setLocalTableData={setLocalTableData}
+                            studentName={student.name}
+                          />
+                        </CustomDialog>
+                      ) : (
+                        "N/A"
+                      )}
+                    </TableCell>
+                  );
+                } else {
+                  return (
+                    <TableCell key={evaluation.grade.id} className="w-[200px]">
+                      N/A
+                    </TableCell>
+                  );
+                }
               })}
             </TableRow>
           ))}
