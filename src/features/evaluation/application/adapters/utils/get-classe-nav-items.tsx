@@ -38,7 +38,7 @@ export default function getClassNavItems(options: {
     },
     {
       title: "Evaluations",
-      href: `/evaluations/assign/${options.classeId}`,
+      href: `/evaluations`,
       icon: <CandlestickChart size={16} />,
     },
     {
