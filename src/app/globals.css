@@ -196,7 +196,7 @@ body {
 
 
 .tiptap  {
-  @apply  p-2.5 w-full text-lg text-gray-900  border border-gray-300  dark:border-slate-700  dark:text-white ;
+  @apply  p-2.5 w-full text-sm text-gray-900  border border-gray-300  dark:border-slate-700  dark:text-white ;
 }
 
 .is-active {
@@ -241,7 +241,7 @@ pre {
   code {
     background: none;
     color: inherit;
-    font-size: 1rem;
+    font-size: 0.8rem;
     padding: 0;
   }
 
