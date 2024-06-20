@@ -5,7 +5,7 @@ import {
 } from "@/features/evaluation/domain/entities/evaluation-with-grades-schema";
 import {
   EvaluationCriteriaType,
-  SpanishGradingSchema,
+  TenPointScaleSchema,
 } from "@/features/evaluation/domain/entities/evaluation-schema";
 import checkSpecialGradeType, {
   SpecialGradeType,
@@ -20,6 +20,7 @@ export function spanishGradingCalc({
 }): number | SpecialGradeType {
   const check = checkSpecialGradeType(grade.grade);
   if (check.shouldReturn === true) {
+    // console.log("Special grade found", check.returnValue, grade.criteriaId);
     return check.returnValue;
   }
   const isNumber = z.number().safeParse(check.returnValue);
@@ -32,7 +33,6 @@ export function tenPointsScaleCase(
   grades: Grade[],
   criterias: EvaluationCriteriaType[]
 ): number | SpecialGradeType {
-  // In order to be able to keep adding criterias to the evaluation base without breaking the code we need to calculate the total weight of the criterias that have been added to the student. And not the total weight of the criterias that are in the evaluation base.
   const studentCriterias = criterias.filter((criteria) =>
     grades.some((grade) => grade.criteriaId === criteria.id)
   );
@@ -42,7 +42,7 @@ export function tenPointsScaleCase(
   );
   let totalPoints: number = 0;
   for (const grade of grades) {
-    const validatedGrade = SpanishGradingSchema.safeParse(grade.gradeType);
+    const validatedGrade = TenPointScaleSchema.safeParse(grade.gradeType);
     if (validatedGrade.success) {
       const result = spanishGradingCalc({
         grade,
@@ -58,7 +58,7 @@ export function tenPointsScaleCase(
 }
 
 export const TenPointsGradeSchemaExtension = GradeSchema.extend({
-  gradeType: SpanishGradingSchema,
+  gradeType: TenPointScaleSchema,
   grade: z.union([SpecialGradeTypes, z.number()]),
 });
 
