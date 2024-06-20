@@ -20,7 +20,6 @@ export function spanishGradingCalc({
 }): number | SpecialGradeType {
   const check = checkSpecialGradeType(grade.grade);
   if (check.shouldReturn === true) {
-    // console.log("Special grade found", check.returnValue, grade.criteriaId);
     return check.returnValue;
   }
   const isNumber = z.number().safeParse(check.returnValue);
