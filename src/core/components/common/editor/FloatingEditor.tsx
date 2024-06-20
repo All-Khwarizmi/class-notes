@@ -33,6 +33,7 @@ function FloatingEditor(props: {
             editor={editor}
             tippyOptions={{
               duration: 100,
+              delay: 1,
             }}
             shouldShow={({ state }) => {
               const { selection } = state;
