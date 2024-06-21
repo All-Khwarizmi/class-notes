@@ -168,22 +168,36 @@ export const updateSequence = mutation({
             .first();
 
           if (visibilityTable) {
-            const classeExist = visibilityTable.classe.find(
-              (classe) => classe.id === classeSequence._id
+            const classeSequenceExist = visibilityTable.sequences.find(
+              (sequence) => sequence.id === classeSequence._id
             );
-            if (!classeExist) {
-              visibilityTable.classe.push({
+            if (!classeSequenceExist) {
+              visibilityTable.sequences.push({
                 id: classeSequence._id,
                 publish: args.publish,
+                classe: true,
+                classeId: classeSequence.classeId,
               });
+              // Update the classe sequence
             } else {
-              const classeIndex = visibilityTable.classe.findIndex(
-                (classe) => classe.id === classeSequence._id
+              const sequenceIdx = visibilityTable.sequences.findIndex(
+                (sequence) => sequence.id === classeSequence._id
               );
-              visibilityTable.classe[classeIndex].publish = args.publish;
+              visibilityTable.sequences[sequenceIdx].publish = args.publish;
             }
+            await ctx.db.patch(classeSequence._id, {
+              name: args.name,
+              body: args.body,
+              competencesIds: userComptences
+                .filter((c) => args.competencesIds.includes(c._id))
+                .map((c) => c._id),
+              description: args.description,
+              category: args.category,
+              imageUrl: args.imageUrl,
+              publish: args.publish,
+            });
             await ctx.db.patch(visibilityTable._id, {
-              classe: visibilityTable.classe,
+              sequences: visibilityTable.sequences,
             });
           }
         }
@@ -208,7 +222,6 @@ export const updateSequence = mutation({
         .first();
 
       if (existingSequence) {
-        console.log("existing sequence", existingSequence);
         const userComptences = await ctx.db
           .query("Competences")
           .filter((q) => q.eq(q.field("createdBy"), existingSequence.createdBy))
