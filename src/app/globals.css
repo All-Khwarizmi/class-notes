@@ -97,7 +97,7 @@
   /* Define how mask layers combine */
   mask-composite: intersect;
   /* This combines the two gradients where they intersect */
-animation: noiseAnimation 5s ease-in-out infinite;
+/* animation: noiseAnimation 5s ease-in-out infinite; */
 }
 
 

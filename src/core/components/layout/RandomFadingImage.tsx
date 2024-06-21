@@ -1,15 +1,20 @@
 import React, { useState, useEffect } from "react";
 
 const RandomFadingImage = ({ src, alt }: { src: string; alt: string }) => {
-  const [opacity, setOpacity] = useState(1);
-  const [filter, setFilter] = useState("none");
+  const [opacity, setOpacity] = useState(() => Math.random() * 0.7);
+  const [filter, setFilter] = useState(
+    () =>
+      `brightness(${Math.random() * 0.5 + 0.75}) contrast(${
+        Math.random() * 50 + 100
+      }%)`
+  );
+  const [glow, setGlow] = useState(() => Math.random() * 10);
 
-  const [glow, setGlow] = useState(0);
   useEffect(() => {
     const interval = setInterval(() => {
       const randomGlow = Math.random() * 10;
       setGlow(randomGlow);
-    }, 2000); // changes glow every second
+    }, 30000); // changes glow every second
 
     return () => clearInterval(interval);
   }, []);
@@ -19,7 +24,7 @@ const RandomFadingImage = ({ src, alt }: { src: string; alt: string }) => {
       const randomBrightness = Math.random() * 0.5 + 0.75; // Brightness between 0.75 and 1.25
       const randomContrast = Math.random() * 50 + 100; // Contrast between 100% and 150%
       setFilter(`brightness(${randomBrightness}) contrast(${randomContrast}%)`);
-    }, 3000);
+    }, 30000);
 
     return () => clearInterval(interval);
   }, []);
@@ -28,7 +33,7 @@ const RandomFadingImage = ({ src, alt }: { src: string; alt: string }) => {
       // Generate a random opacity between 0.5 and 1
       const randomOpacity = Math.random() * 0.7;
       setOpacity(randomOpacity);
-    }, 2000); // changes opacity every second
+    }, 20000); // changes opacity every second
 
     return () => clearInterval(interval);
   }, []);
