@@ -13,12 +13,5 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return (
-    <>
-      <Header />
-      <section className="flex h-full w-full border-collapse overflow-hidden">
-        {children}
-      </section>
-    </>
-  );
+  return children;
 }

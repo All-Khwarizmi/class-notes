@@ -1,12 +1,13 @@
 import NotFound from "@/app/not-found";
 import Dashboard from "@/core/components/icons/Dashboard";
+import LayoutWithProps from "@/core/components/layout/LayoutWithProps";
 import Sidebar from "@/core/components/layout/Sidebar";
 import { authUseCases } from "@/features/auth/application/usecases/auth-usecases";
 import { coursUsecases } from "@/features/cours-sequence/application/usecases/cours-usecases";
 import CoursSequenceView from "@/features/cours-sequence/presentation/views/CoursSequenceView";
 import { NavItem } from "@/lib/types";
 import { isLeft } from "fp-ts/lib/Either";
-import { BookA, BookCheck, NotebookPen, Plus } from "lucide-react";
+import { BookA, BookCheck, Layout, NotebookPen, Plus } from "lucide-react";
 import { redirect } from "next/navigation";
 import React from "react";
 
@@ -70,19 +71,14 @@ export default async function SequenceServerLayer(props: {
     },
   ];
   return (
-    <>
-      <Sidebar navItems={sequenceNavItems} />
-      <section className="h-full flex-1  overflow-x-hidden">
-        <div className="h-full py-8 px-6">
-          <CoursSequenceView
-            sequence={eitherSequence.right}
-            userId={authUser.right.userId}
-            type="sequence"
-            coursFromSequence={eitherCours.right}
-            sequenceType={props.type}
-          />
-        </div>
-      </section>
-    </>
+    <LayoutWithProps navItems={sequenceNavItems}>
+      <CoursSequenceView
+        sequence={eitherSequence.right}
+        userId={authUser.right.userId}
+        type="sequence"
+        coursFromSequence={eitherCours.right}
+        sequenceType={props.type}
+      />
+    </LayoutWithProps>
   );
 }
