@@ -76,6 +76,16 @@ export default class NotesUsecases {
       note,
     });
   }
+
+  async deleteNote({
+    id,
+  }: {
+    id: string;
+  }): Promise<Either<Failure<string>, void>> {
+    return this._repository.deleteNote({
+      id,
+    });
+  }
 }
 
 export const notesUsecases = new NotesUsecases(noteRepository);

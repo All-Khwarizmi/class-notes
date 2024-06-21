@@ -6,6 +6,7 @@ import { not } from "fp-ts/lib/Predicate";
 import NotFound from "@/app/not-found";
 import NothingToShow from "../common/editor/NothingToShow";
 import ErrorDialog from "../common/ErrorDialog";
+import { Home } from "lucide-react";
 
 export interface ErrorDialogProps {
   message: string;
@@ -31,11 +32,16 @@ function LayoutWithProps({
   nothingToShow = false,
   isError,
 }: LayoutWithPropsProps) {
+  const defaultNavItem: NavItem = {
+    title: "Home",
+    href: "/",
+    icon: <Home size={16} />,
+  };
   return (
     <>
-      <Header navItems={isEmpty === true ? [] : navItems} />
+      <Header navItems={isEmpty === true ? [defaultNavItem] : navItems} />
       <section className="flex h-full w-full border-collapse overflow-hidden">
-        <Sidebar navItems={isEmpty === true ? [] : navItems} />
+        <Sidebar navItems={isEmpty === true ? [defaultNavItem] : navItems} />
         <section className="h-full flex-1  pt-4 px-4 overflow-x-hidden">
           {notFound === true ? (
             <NotFound />

@@ -15,7 +15,6 @@ import {
 } from "@/features/cours-sequence/domain/entities/cours-schemas";
 import { Complement } from "@/features/complement/domain/complement-schemas";
 import { Note } from "@/features/notes/domain/notes-schemas";
-import { GradeTypeUnionType } from "@/features/evaluation/domain/entities/evaluation-schema";
 import {
   AssignEvaluationOptions,
   CreateEvaluationOptions,
@@ -257,7 +256,7 @@ export default class ConvexDatabase extends IDatabase {
         lessons: cours.lessons,
         description: cours.description,
         competences: cours.competences,
-
+        publish: cours.publish ?? false,
         category: cours.category,
       });
       if (!result) {
@@ -294,6 +293,7 @@ export default class ConvexDatabase extends IDatabase {
         description: cours.description,
         category: cours.category,
         imageUrl: cours.imageUrl,
+        publish: cours.publish ?? false,
       });
 
       return right(undefined);
@@ -935,6 +935,36 @@ export default class ConvexDatabase extends IDatabase {
         Failure.invalidValue({
           invalidValue: note,
           message: "Error updating note",
+          code: "INF101",
+        })
+      );
+    }
+  }
+
+  async deleteNote({
+    id,
+  }: {
+    id: string;
+  }): Promise<Either<Failure<string>, void>> {
+    try {
+      const result = await fetchMutation(this._db.notes.deleteNote, {
+        id,
+      });
+      if (!result) {
+        return left(
+          Failure.invalidValue({
+            invalidValue: id,
+            message: "Error deleting note",
+            code: "INF103",
+          })
+        );
+      }
+      return right(undefined);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: id,
+          message: "Error deleting note",
           code: "INF101",
         })
       );

@@ -49,7 +49,7 @@ export default defineSchema({
         classeId: v.string(),
       })
     ),
-  }),
+  }).index("by_userId", ["userId"]),
   Category: defineTable({
     name: v.string(),
     description: v.string(),

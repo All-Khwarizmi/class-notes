@@ -78,6 +78,16 @@
     @apply bg-background text-foreground;
   }
 
+.hero-image {
+  /* Define multiple mask layers */
+  mask-image:
+    linear-gradient(to bottom, transparent, hsl(222.2, 84%, 7.9%) 20%, hsl(222.2, 84%, 7.9%) 80%, transparent),
+    linear-gradient(to right, transparent, hsl(222.2, 84%, 7.9%) 20%, hsl(222.2, 84%, 7.9%) 80%, transparent);
+
+  /* Define how mask layers combine */
+  mask-composite: intersect;
+  /* This combines the two gradients where they intersect */
+}
 
 
      .CollapsibleContent[data-state="open"] {
@@ -185,6 +195,10 @@ body {
   @apply text-lg font-bold;
 }
 
+.tiptap {
+  @apply border-none border-0 text-red-500;
+
+}
 
 .proseMirror {
   @apply bg-gray-100 text-gray-800 p-2 rounded;
@@ -196,7 +210,7 @@ body {
 
 
 .tiptap  {
-  @apply  p-2.5 w-full text-sm text-gray-900  border border-gray-300  dark:border-slate-700  dark:text-white ;
+  @apply  p-2.5 w-full text-sm text-gray-900   dark:text-white ;
 }
 
 .is-active {

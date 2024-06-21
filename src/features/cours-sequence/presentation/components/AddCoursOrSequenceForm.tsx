@@ -139,7 +139,6 @@ export default function AddCoursOrSequenceForm({
           <Button
             onClick={(event) => {
               event.preventDefault();
-              console.log("form.getValues()", form.getValues());
               onSubmit({
                 ...form.getValues(),
                 competences: selectedCompetences.map((c) => c._id),
