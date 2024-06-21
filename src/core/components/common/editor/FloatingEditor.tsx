@@ -32,13 +32,15 @@ function FloatingEditor(props: {
           <FloatingMenu
             editor={editor}
             tippyOptions={{
-              duration: 100,
-              delay: 1,
+              duration: 300,
+              offset: [0, 50],
+              placement: "top",
             }}
             shouldShow={({ state, view }) => {
               const { selection } = state;
-              const { from, to, empty, $anchor, $head } = selection;
-              const { doc } = state;
+              const { empty } = selection;
+              // Keep a distance from the cursor
+              // to prevent the menu from blocking the cursor itself
 
               //Any of this checks if moving to the given direction, the cursor will be at the end of the textblock
               const right = view.endOfTextblock("right");
@@ -47,7 +49,9 @@ function FloatingEditor(props: {
               // Show the menu if content is selected or if on an empty line
               // empty is true when content is not selected
               // right and left are true when cursor is at the beginning of a new line
-              return !empty || (right && left);
+              const shouldShow = !empty || (right && left);
+
+              return shouldShow;
             }}
           >
             <FloatingMenuBar editor={editor} />
