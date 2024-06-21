@@ -2,7 +2,8 @@ import NotFound from "@/app/not-found";
 import ErrorDialog from "@/core/components/common/ErrorDialog";
 import LayoutWithProps from "@/core/components/layout/LayoutWithProps";
 import { authUseCases } from "@/features/auth/application/usecases/auth-usecases";
-import getNotes from "@/features/notes/application/adapters/actions/ge-notes";
+import getNotes from "@/features/notes/application/adapters/actions/get-notes";
+
 import { notesUsecases } from "@/features/notes/application/usecases/note-usecases";
 import NotesTableView from "@/features/notes/presentation/views/NotesTableView";
 
