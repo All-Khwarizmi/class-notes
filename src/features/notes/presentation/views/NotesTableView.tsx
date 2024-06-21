@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { ExternalLink, Folder, Plus, File, X } from "lucide-react";
+import { ExternalLink, Folder, Plus, File, X, Delete } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { TableCaption, TableHeader } from "@/core/components/ui/table";
 import {
@@ -11,7 +11,7 @@ import {
   TableCell,
 } from "@/core/components/ui/table";
 import { Note } from "../../domain/notes-schemas";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Input } from "@/core/components/ui/input";
 import {
   Select,
@@ -22,11 +22,21 @@ import {
   SelectValue,
 } from "@/core/components/ui/select";
 import useAddNote from "../../application/adapters/services/useAddProfileNote";
+import useDeleteNote from "../../application/adapters/services/useDeleteNote";
+import { isError } from "lodash";
+import { toast } from "sonner";
 function NotesTableView(props: { notes: Note[]; parentId: string }) {
   const [localNotes, setLocalNotes] = useState<Note[]>(props.notes);
   const [isFileFormVisible, setIsFileFormVisible] = useState(false);
   const [isFolderFormVisible, setIsFolderFormVisible] = useState(false);
   const { setNoteOptions } = useAddNote();
+  const {
+    mutate: deleteNote,
+    isPending: isDeletingNote,
+    isSuccess: isNoteDeleted,
+    isError: isNoteDeleteError,
+    error: noteDeleteError,
+  } = useDeleteNote();
   function handleSubmit(note: Omit<Note, "id" | "createdBy">) {
     const newNote = {
       ...note,
@@ -36,6 +46,13 @@ function NotesTableView(props: { notes: Note[]; parentId: string }) {
     setNoteOptions(newNote);
   }
 
+  useEffect(() => {
+    if (isNoteDeleteError === true) {
+      toast.error("Error while deleting note", {
+        description: noteDeleteError.message,
+      });
+    }
+  }, [isNoteDeleteError, noteDeleteError]);
   return (
     <>
       {/* Add a table to display notes */}
@@ -74,10 +91,28 @@ function NotesTableView(props: { notes: Note[]; parentId: string }) {
                   <TableCell className="w-[200px]">
                     {new Date(note.createdAt).toDateString()}
                   </TableCell>
-                  <TableCell className="w-[200px]">
-                    <Link href={`/notes/${note.id}`}>
-                      <ExternalLink size={12} />
+                  <TableCell className="w-[200px] flex ">
+                    <Link
+                      href={`/notes/${note.id}`}
+                      className={cn(
+                        "bg-transparent rounded-md p-1 px-2 flex items-center ml-2 hover:text-blue-400  "
+                      )}
+                    >
+                      <ExternalLink size={14} />
                     </Link>
+                    <button
+                      className={cn(
+                        "bg-transparent rounded-md p-1 px-2 flex items-center ml-2 hover:text-red-400  "
+                      )}
+                      onClick={() => {
+                        deleteNote({
+                          noteId: note.id,
+                          pathToRevalidate: `/profile/notes/${note.id}`,
+                        });
+                      }}
+                    >
+                      <Delete size={14} />
+                    </button>
                   </TableCell>
                 </TableRow>
               );
