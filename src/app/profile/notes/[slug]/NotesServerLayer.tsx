@@ -2,6 +2,7 @@ import NotFound from "@/app/not-found";
 import ErrorDialog from "@/core/components/common/ErrorDialog";
 import LayoutWithProps from "@/core/components/layout/LayoutWithProps";
 import { authUseCases } from "@/features/auth/application/usecases/auth-usecases";
+import getNotes from "@/features/notes/application/adapters/actions/ge-notes";
 import { notesUsecases } from "@/features/notes/application/usecases/note-usecases";
 import NotesTableView from "@/features/notes/presentation/views/NotesTableView";
 
@@ -22,8 +23,10 @@ async function NotesServerLayer(props: {
   if (isLeft(authUser)) {
     redirect("/login");
   }
-  const eitherNotes = await notesUsecases.getNotes({
-    parentId: props.type === "profile" ? authUser.right.userId : props.slug,
+  const eitherNotes = await getNotes({
+    slug: props.slug,
+    userId: authUser.right.userId,
+    type: props.type,
   });
   if (isLeft(eitherNotes)) {
     return (
