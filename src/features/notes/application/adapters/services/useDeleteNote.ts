@@ -2,7 +2,6 @@ import { useMutation } from "@tanstack/react-query";
 import deleteNote from "../actions/delete-note";
 import { isLeft } from "fp-ts/lib/Either";
 import { toast } from "sonner";
-import { revalidatePath } from "next/cache";
 
 export default function useDeleteNote() {
   return useMutation({

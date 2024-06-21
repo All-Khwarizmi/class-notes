@@ -4,7 +4,6 @@ import LayoutWithProps from "@/core/components/layout/LayoutWithProps";
 import { authUseCases } from "@/features/auth/application/usecases/auth-usecases";
 import getNotes from "@/features/notes/application/adapters/actions/get-notes";
 
-import { notesUsecases } from "@/features/notes/application/usecases/note-usecases";
 import NotesTableView from "@/features/notes/presentation/views/NotesTableView";
 
 import { isLeft } from "fp-ts/lib/Either";
