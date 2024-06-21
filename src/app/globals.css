@@ -77,7 +77,17 @@
   body {
     @apply bg-background text-foreground;
   }
+@keyframes noiseAnimation {
 
+  0%,
+  100% {
+    filter: contrast(100%) brightness(100%);
+  }
+
+  50% {
+    filter: contrast(200%) brightness(150%);
+  }
+}
 .hero-image {
   /* Define multiple mask layers */
   mask-image:
@@ -87,6 +97,7 @@
   /* Define how mask layers combine */
   mask-composite: intersect;
   /* This combines the two gradients where they intersect */
+animation: noiseAnimation 5s ease-in-out infinite;
 }
 
 
