@@ -58,27 +58,33 @@ function ComplementsTable(props: {
                     ? new Date(complement.publishDate).toDateString()
                     : "Not published"}
                 </TableCell>
-                <TableCell className="w-[200px] flex">
-                  <Link href={`/complements/${complement.id}`}>
-                    <ExternalLink size={12} />
-                  </Link>
-                  <button
-                    className={cn(
-                      "bg-transparent rounded-md p-1 px-2 flex items-center ml-2 hover:text-red-400  "
-                    )}
-                    onClick={() => {
-                      const currentUrl = window.location.href;
-                      confirm(
-                        "Are you sure you want to delete this complement?"
-                      ) &&
-                        deleteComplement({
-                          id: complement.id,
-                          redirectPath: currentUrl,
-                        });
-                    }}
-                  >
-                    <Delete size={14} />
-                  </button>
+                <TableCell className="w-[200px] ">
+                  <div className="flex items-center justify-center w-full h-full">
+                    {" "}
+                    <Link
+                      className={cn(
+                        "bg-transparent rounded-md p-1 px-2 flex items-center ml-2 hover:text-blue-400  "
+                      )}
+                      href={`/complements/${complement.id}`}
+                    >
+                      <ExternalLink size={12} />
+                    </Link>
+                    <button
+                      className={cn(
+                        "bg-transparent rounded-md p-1 px-2 flex items-center ml-2 hover:text-red-400  "
+                      )}
+                      onClick={() => {
+                        confirm(
+                          "Are you sure you want to delete this complement?"
+                        ) &&
+                          deleteComplement({
+                            id: complement.id,
+                          });
+                      }}
+                    >
+                      <Delete size={14} />
+                    </button>
+                  </div>
                 </TableCell>
               </TableRow>
             );

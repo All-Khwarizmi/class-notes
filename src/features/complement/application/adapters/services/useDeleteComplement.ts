@@ -6,7 +6,7 @@ import { toast } from "sonner";
 export default function useDeleteComplement() {
   return useMutation({
     mutationKey: ["delete-complement"],
-    mutationFn: async (options: { id: string; redirectPath: string }) => {
+    mutationFn: async (options: { id: string; }) => {
       const operationResult = await deleteComplement({ id: options.id });
       if (isLeft(operationResult)) {
         toast.error(
@@ -19,9 +19,7 @@ export default function useDeleteComplement() {
           duration: 3000,
           position: "top-center",
         });
-        window.location.href
-          ? window.location
-          : (window.location.href = options.redirectPath);
+        window.location.reload();
       }
     },
   });
