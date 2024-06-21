@@ -1,10 +1,6 @@
-
-
 import Link from "next/link";
-import { Input } from "@/core/components/ui/input";
-import { Button } from "@/core/components/ui/button";
-import Title from "@/core/components/common/Title";
 import Hero from "./HeroSection";
+import ContactCTO from "@/core/components/layout/ContactCTO";
 
 export default function Component() {
   return (
@@ -58,38 +54,7 @@ export default function Component() {
             </div>
           </div>
         </section>
-        <section className="w-full py-12 md:py-24 lg:py-32 border-t">
-          <div className="container grid items-center justify-center gap-4 px-4 text-center md:px-6">
-            <div className="space-y-3">
-              <h2 className="text-3xl font-bold tracking-tighter md:text-4xl">
-                Ready to Transform Your Teaching?
-              </h2>
-              <p className="mx-auto max-w-[600px] text-muted-foreground md:text-xl lg:text-base xl:text-xl">
-                Sign up for La Classe and experience the future of education.
-              </p>
-            </div>
-            <div className="mx-auto w-full max-w-sm space-y-2">
-              <form className="flex gap-2">
-                <Input
-                  type="email"
-                  placeholder="Enter your email"
-                  className="max-w-lg flex-1"
-                />
-                <Button type="submit">Get Started</Button>
-              </form>
-              <p className="text-xs text-muted-foreground">
-                Sign up to experience the power of La Classe.{" "}
-                <Link
-                  href="#"
-                  className="underline underline-offset-2"
-                  prefetch={false}
-                >
-                  Terms &amp; Conditions
-                </Link>
-              </p>
-            </div>
-          </div>
-        </section>
+        <ContactCTO />
       </main>
       <footer className="flex flex-col gap-2 sm:flex-row py-6 w-full shrink-0 items-center px-4 md:px-6 border-t">
         <p className="text-xs text-muted-foreground">
@@ -113,25 +78,5 @@ export default function Component() {
         </nav>
       </footer>
     </div>
-  );
-}
-
-function PencilIcon(props: React.SVGProps<SVGSVGElement>) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z" />
-      <path d="m15 5 4 4" />
-    </svg>
   );
 }
