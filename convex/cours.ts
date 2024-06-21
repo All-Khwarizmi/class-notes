@@ -195,6 +195,7 @@ export const updateCours = mutation({
     description: v.string(),
     category: v.string(),
     imageUrl: v.string(),
+    publish: v.boolean(),
   },
   handler: async (ctx, args) => {
     const existingCours = await ctx.db
@@ -202,24 +203,58 @@ export const updateCours = mutation({
       .filter((q) => q.eq(q.field("_id"), args.coursId))
       .first();
 
-    if (existingCours) {
-      const userComptences = await ctx.db
-        .query("Competences")
-        .filter((q) => q.eq(q.field("createdBy"), existingCours.createdBy))
-        .collect();
-
-      await ctx.db.patch(existingCours._id, {
-        name: args.name,
-        body: args.body,
-        lessons: args.lessons,
-        competences: userComptences
-          .filter((c) => args.competences.includes(c._id))
-          .map((c) => c._id),
-        description: args.description,
-        category: args.category,
-        imageUrl: args.imageUrl,
-      });
+    if (!existingCours) {
+      throw new Error("Cours not found");
     }
+
+    const userComptences = await ctx.db
+      .query("Competences")
+      .filter((q) => q.eq(q.field("createdBy"), existingCours.createdBy))
+      .collect();
+
+    const visibilityTable = await ctx.db
+      .query("VisibilityTable")
+      .withIndex("by_userId")
+      .filter((q) => q.eq(q.field("userId"), existingCours.createdBy))
+      .first();
+
+    if (!visibilityTable) {
+      throw new Error("Visibility table not found");
+    }
+
+    const vivibilityCours = visibilityTable.cours.find(
+      (c) => c.id === existingCours._id
+    );
+    if (!vivibilityCours) {
+      throw new Error("Cours not found in visibility table");
+    }
+
+    // update the cours in the visibility table
+    const newTable = {
+      ...visibilityTable,
+      cours: visibilityTable.cours.map((c) =>
+        c.id === existingCours._id
+          ? {
+              ...c,
+              publish: args.publish,
+            }
+          : c
+      ),
+    };
+    await ctx.db.patch(visibilityTable._id, newTable);
+
+    await ctx.db.patch(existingCours._id, {
+      name: args.name,
+      body: args.body,
+      lessons: args.lessons,
+      competences: userComptences
+        .filter((c) => args.competences.includes(c._id))
+        .map((c) => c._id),
+      description: args.description,
+      category: args.category,
+      imageUrl: args.imageUrl,
+      publish: args.publish,
+    });
   },
 });
 
