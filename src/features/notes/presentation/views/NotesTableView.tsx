@@ -105,10 +105,11 @@ function NotesTableView(props: { notes: Note[]; parentId: string }) {
                         "bg-transparent rounded-md p-1 px-2 flex items-center ml-2 hover:text-red-400  "
                       )}
                       onClick={() => {
-                        deleteNote({
-                          noteId: note.id,
-                          pathToRevalidate: `/profile/notes/${note.id}`,
-                        });
+                        confirm("Are you sure you want to delete this note?") &&
+                          deleteNote({
+                            noteId: note.id,
+                            pathToRevalidate: `/profile/notes/${note.id}`,
+                          });
                       }}
                     >
                       <Delete size={14} />
