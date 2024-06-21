@@ -35,23 +35,19 @@ function FloatingEditor(props: {
               duration: 100,
               delay: 1,
             }}
-            shouldShow={({ state }) => {
+            shouldShow={({ state, view }) => {
               const { selection } = state;
-              const { from, to, empty } = selection;
+              const { from, to, empty, $anchor, $head } = selection;
               const { doc } = state;
 
-              // Check if there is content selected
-              const hasContentSelected = from !== to;
-
-              // Check if the cursor is on an empty line
-              const isEmptyLine =
-                empty && doc.textBetween(from - 1, to + 1).trim().length === 0;
-
-              // Check if the last character is a /
-              const isSlash = doc.textBetween(from - 1, to).trim() === "/";
+              //Any of this checks if moving to the given direction, the cursor will be at the end of the textblock
+              const right = view.endOfTextblock("right");
+              const left = view.endOfTextblock("left");
 
               // Show the menu if content is selected or if on an empty line
-              return hasContentSelected || isSlash || isEmptyLine;
+              // empty is true when content is not selected
+              // right and left are true when cursor is at the beginning of a new line
+              return !empty || (right && left);
             }}
           >
             <FloatingMenuBar editor={editor} />
