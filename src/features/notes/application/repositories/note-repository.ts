@@ -60,6 +60,12 @@ export default class NoteRepository {
       note,
     });
   }
+
+  async deleteNote({ id }: { id: string }) {
+    return this._db.deleteNote({
+      id,
+    });
+  }
 }
 
 export const noteRepository = new NoteRepository(convexDatabase);

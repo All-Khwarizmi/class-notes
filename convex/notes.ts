@@ -14,7 +14,7 @@ export const createNote = mutation({
       })
     ),
     folders: v.array(
-      v.object({
+      v.object({ 
         id: v.string(),
         name: v.string(),
         contentType: v.union(
@@ -125,6 +125,24 @@ export const updateNote = mutation({
         folders: args.folders,
         keywords: args.keywords,
       });
+      return true;
+    } else {
+      return false;
+    }
+  },
+});
+
+export const deleteNote = mutation({
+  args: {
+    id: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const note = await ctx.db
+      .query("Notes")
+      .filter((q) => q.eq(q.field("_id"), args.id))
+      .first();
+    if (note) {
+      await ctx.db.delete(note?._id);
       return true;
     } else {
       return false;

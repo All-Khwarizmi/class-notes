@@ -257,6 +257,11 @@ export default abstract class IDatabase {
     >;
   }): Promise<Either<Failure<string>, void>>;
 
+  abstract deleteNote({
+    id,
+  }: {
+    id: string;
+  }): Promise<Either<Failure<string>, void>>;
   abstract createClass({
     userId,
     name,
