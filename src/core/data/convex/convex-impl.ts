@@ -15,7 +15,6 @@ import {
 } from "@/features/cours-sequence/domain/entities/cours-schemas";
 import { Complement } from "@/features/complement/domain/complement-schemas";
 import { Note } from "@/features/notes/domain/notes-schemas";
-import { GradeTypeUnionType } from "@/features/evaluation/domain/entities/evaluation-schema";
 import {
   AssignEvaluationOptions,
   CreateEvaluationOptions,
@@ -294,6 +293,7 @@ export default class ConvexDatabase extends IDatabase {
         description: cours.description,
         category: cours.category,
         imageUrl: cours.imageUrl,
+        publish: cours.publish ?? false,
       });
 
       return right(undefined);
