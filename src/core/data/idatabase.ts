@@ -211,6 +211,11 @@ export default abstract class IDatabase {
     coursComplement: Complement;
   }): Promise<Either<Failure<string>, void>>;
 
+  abstract deleteComplement({
+    id,
+  }: {
+    id: string;
+  }): Promise<Either<Failure<string>, void>>;
   abstract createNote({
     note,
   }: {

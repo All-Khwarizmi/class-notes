@@ -39,6 +39,10 @@ export default class ComplementRepository {
   async updateComplement({ coursComplement }: { coursComplement: Complement }) {
     return this._db.updateComplement({ coursComplement });
   }
+
+  async deleteComplement({ id }: { id: string }) {
+    return this._db.deleteComplement({ id });
+  }
 }
 
 export const complementRepository = new ComplementRepository(convexDatabase);

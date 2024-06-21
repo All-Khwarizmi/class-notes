@@ -137,3 +137,20 @@ export const updateComplement = mutation({
     return false;
   },
 });
+
+export const deleteComplement = mutation({
+  args: {
+    id: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const coursComplement = await ctx.db
+      .query("Complement")
+      .filter((q) => q.eq(q.field("_id"), args.id))
+      .first();
+    if (coursComplement) {
+      await ctx.db.delete(coursComplement._id);
+      return true;
+    }
+    return false;
+  },
+});

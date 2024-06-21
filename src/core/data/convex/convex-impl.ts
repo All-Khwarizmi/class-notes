@@ -780,6 +780,36 @@ export default class ConvexDatabase extends IDatabase {
     }
   }
 
+  async deleteComplement({
+    id,
+  }: {
+    id: string;
+  }): Promise<Either<Failure<string>, void>> {
+    try {
+      const result = await fetchMutation(this._db.complement.deleteComplement, {
+        id,
+      });
+      if (!result) {
+        return left(
+          Failure.invalidValue({
+            invalidValue: id,
+            message: "Error deleting cours complement",
+            code: "INF103",
+          })
+        );
+      }
+      return right(undefined);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: id,
+          message: "Error deleting cours complement",
+          code: "INF101",
+        })
+      );
+    }
+  }
+
   async createNote({
     note,
   }: {
