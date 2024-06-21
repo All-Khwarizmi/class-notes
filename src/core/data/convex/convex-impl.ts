@@ -256,7 +256,7 @@ export default class ConvexDatabase extends IDatabase {
         lessons: cours.lessons,
         description: cours.description,
         competences: cours.competences,
-
+        publish: cours.publish ?? false,
         category: cours.category,
       });
       if (!result) {

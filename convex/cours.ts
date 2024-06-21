@@ -12,6 +12,7 @@ export const createCours = mutation({
     description: v.string(),
     userId: v.string(),
     category: v.string(),
+    publish: v.boolean(),
   },
   handler: async (ctx, args) => {
     const existingUser = await ctx.db
