@@ -105,6 +105,7 @@
     "eslint-config-next": "14.1.4",
     "jsdom": "^24.0.0",
     "postcss": "8",
+    "postcss-import": "16.1.0",
     "pre-commit": "^1.2.2",
     "start-server-and-test": "^2.0.3",
     "tailwindcss": "3.3.0",
