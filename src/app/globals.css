@@ -78,6 +78,16 @@
     @apply bg-background text-foreground;
   }
 
+.hero-image {
+  /* Define multiple mask layers */
+  mask-image:
+    linear-gradient(to bottom, transparent, hsl(222.2, 84%, 7.9%) 20%, hsl(222.2, 84%, 7.9%) 80%, transparent),
+    linear-gradient(to right, transparent, hsl(222.2, 84%, 7.9%) 20%, hsl(222.2, 84%, 7.9%) 80%, transparent);
+
+  /* Define how mask layers combine */
+  mask-composite: intersect;
+  /* This combines the two gradients where they intersect */
+}
 
 
      .CollapsibleContent[data-state="open"] {
