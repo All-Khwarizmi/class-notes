@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { ExternalLink, Plus } from "lucide-react";
+import { Delete, ExternalLink, Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Complement } from "@/features/complement/domain/complement-schemas";
 import { TableCaption, TableHeader } from "@/core/components/ui/table";
@@ -12,12 +12,15 @@ import {
   TableCell,
 } from "@/core/components/ui/table";
 import VisibilitySwitch from "./VisibilitySwitch";
+import useDeleteComplement from "@/features/complement/application/adapters/services/useDeleteComplement";
 
 function ComplementsTable(props: {
   complements: Complement[];
   coursId: string;
   userId: string;
 }) {
+  const { mutate: deleteComplement, isPending: isDeleting } =
+    useDeleteComplement();
   return (
     <div className="w-full h-full py-4">
       <Table className="w-full">
@@ -55,10 +58,27 @@ function ComplementsTable(props: {
                     ? new Date(complement.publishDate).toDateString()
                     : "Not published"}
                 </TableCell>
-                <TableCell className="w-[200px]">
+                <TableCell className="w-[200px] flex">
                   <Link href={`/complements/${complement.id}`}>
                     <ExternalLink size={12} />
                   </Link>
+                  <button
+                    className={cn(
+                      "bg-transparent rounded-md p-1 px-2 flex items-center ml-2 hover:text-red-400  "
+                    )}
+                    onClick={() => {
+                      const currentUrl = window.location.href;
+                      confirm(
+                        "Are you sure you want to delete this complement?"
+                      ) &&
+                        deleteComplement({
+                          id: complement.id,
+                          redirectPath: currentUrl,
+                        });
+                    }}
+                  >
+                    <Delete size={14} />
+                  </button>
                 </TableCell>
               </TableRow>
             );
