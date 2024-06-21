@@ -148,7 +148,6 @@ export const updateSequence = mutation({
     publish: v.optional(v.boolean()),
   },
   handler: async (ctx, args) => {
-    console.log("hi from convex update sequence", { args });
     if (args.type === "sequence") {
       const classeSequence = await ctx.db
         .query("ClasseSequence")
@@ -201,6 +200,7 @@ export const updateSequence = mutation({
           publish: args.publish,
         });
       }
+      return;
     } else {
       const existingSequence = await ctx.db
         .query("Sequences")
@@ -208,12 +208,12 @@ export const updateSequence = mutation({
         .first();
 
       if (existingSequence) {
+        console.log("existing sequence", existingSequence);
         const userComptences = await ctx.db
           .query("Competences")
           .filter((q) => q.eq(q.field("createdBy"), existingSequence.createdBy))
           .collect();
-
-        await ctx.db.patch(existingSequence._id, {
+        const updateSequence = {
           name: args.name,
           body: args.body,
           competencesIds: userComptences
@@ -222,7 +222,11 @@ export const updateSequence = mutation({
           description: args.description,
           category: args.category,
           imageUrl: args.imageUrl,
-        });
+          publish: args.publish,
+        };
+
+        await ctx.db.patch(existingSequence._id, updateSequence);
+        return;
       }
     }
   },
@@ -236,7 +240,6 @@ export const addBodyToSequence = mutation({
     type: v.optional(v.literal("sequence")),
   },
   handler: async (ctx, args) => {
-
     if (args.type === "sequence") {
       const classeSequence = await ctx.db
         .query("ClasseSequence")
