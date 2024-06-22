@@ -23,6 +23,7 @@ import {
   GetEvaluationBasesOptions,
   GetEvaluationOptions,
   GetEvaluationsListOptions,
+  GetEvaluationsWithGradesByEvalauationBaseIdOptions,
   IsEvaluationAssigned,
   UpdateEvaluationBaseOptions,
   UpdateGradeOptions,
@@ -1479,6 +1480,27 @@ export default class ConvexDatabase extends IDatabase {
     }
   }
 
+  async getEvaluationsWithGradesByEvaluationBaseId(
+    options: GetEvaluationsWithGradesByEvalauationBaseIdOptions
+  ): Promise<Either<Failure<string>, DocumentData[]>> {
+    try {
+      const operationResult = await fetchQuery(
+        this._db.evaluation_with_grades
+          .getEvaluationsWithGradesByEvaluationBaseId,
+        options
+      );
+      return right(operationResult);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: options,
+          message:
+            "Failed to get evaluations with grades by evaluation base id",
+          code: "INF101",
+        })
+      );
+    }
+  }
   async updateGrade(
     options: UpdateGradeOptions
   ): Promise<Either<Failure<string>, void>> {

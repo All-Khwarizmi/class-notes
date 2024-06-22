@@ -19,6 +19,7 @@ import {
   GetEvaluationBaseOptions,
   GetEvaluationBasesOptions,
   GetEvaluationOptions,
+   GetEvaluationsWithGradesByEvalauationBaseIdOptions,
   GetEvaluationsListOptions,
   IsEvaluationAssigned,
   UpdateEvaluationBaseOptions,
@@ -367,6 +368,11 @@ export default abstract class IDatabase {
   abstract isEvaluationAssigned(
     options: IsEvaluationAssigned
   ): Promise<Either<Failure<string>, boolean>>;
+
+  abstract getEvaluationsWithGradesByEvaluationBaseId(
+    options: GetEvaluationsWithGradesByEvalauationBaseIdOptions
+  ): Promise<Either<Failure<string>, DocumentData[]>>;
+
   abstract updateGrade(
     options: UpdateGradeOptions
   ): Promise<Either<Failure<string>, void>>;

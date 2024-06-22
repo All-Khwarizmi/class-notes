@@ -8,6 +8,7 @@ import {
   GetEvaluationBasesOptions,
   GetEvaluationOptions,
   GetEvaluationsListOptions,
+  GetEvaluationsWithGradesByEvalauationBaseIdOptions,
   UpdateEvaluationBaseOptions,
   UpdateGradeOptions,
 } from "../../domain/entities/evaluation-types";
@@ -45,6 +46,12 @@ export default class EvaluatioRepository {
 
   async isEvaluationAssigned(options: { evaluationId: string }) {
     return await this._db.isEvaluationAssigned(options);
+  }
+
+  async getEvaluationsWithGradesByEvaluationBaseId(
+    options: GetEvaluationsWithGradesByEvalauationBaseIdOptions
+  ) {
+    return await this._db.getEvaluationsWithGradesByEvaluationBaseId(options);
   }
   async updateGrade(options: UpdateGradeOptions) {
     return await this._db.updateGrade(options);
