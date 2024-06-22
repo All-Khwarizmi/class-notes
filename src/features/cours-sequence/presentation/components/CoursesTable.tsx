@@ -89,11 +89,13 @@ function CoursesTable(props: {
         </TableBody>
       </Table>
 
-      <Link href={`/cours/add/${props.sequenceId}`}>
-        <Button variant={"outline"}>
-          <Plus size={16} />
-        </Button>
-      </Link>
+      <div className="flex  justify-center w-full mt-4">
+        <Link href={`/cours/add/${props.sequenceId}`}>
+          <Button variant={"outline"}>
+            <Plus size={16} />
+          </Button>
+        </Link>
+      </div>
     </div>
   );
 }
