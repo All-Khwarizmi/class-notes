@@ -1,4 +1,4 @@
-import { Either, isLeft, left, right } from "fp-ts/lib/Either";
+import { Either, isLeft, isRight, left, right } from "fp-ts/lib/Either";
 import {
   AssignEvaluationOptions,
   CreateEvaluationOptions,
@@ -7,6 +7,7 @@ import {
   GetEvaluationBasesOptions,
   GetEvaluationOptions,
   GetEvaluationsListOptions,
+  GetEvaluationsWithGradesByEvalauationBaseIdOptions,
   UpdateEvaluationBaseOptions,
   UpdateGradeOptions,
 } from "../../domain/entities/evaluation-types";
@@ -101,8 +102,51 @@ export default class EvaluationUsecases {
     return await this._evaluationRepository.assignEvaluation(options);
   }
 
-  async deleteEvaluationBase(options: DeleteEvaluationBase) {
+  async deleteEvaluationBase(
+    options: DeleteEvaluationBase
+  ): Promise<Either<Failure<string>, void>> {
+    const isEvalAssgined = await this.isEvaluationAssigned({
+      evaluationId: options.evaluationId,
+    });
+    if (isLeft(isEvalAssgined)) {
+      return isEvalAssgined;
+    }
+    if (isEvalAssgined.right === true) {
+      const assignedEvals =
+        await this.getEvaluationsWithGradesByEvaluationBaseId({
+          evaluationBaseId: options.evaluationId,
+        });
+      if (isLeft(assignedEvals)) {
+        return assignedEvals;
+      }
+      const assignedEvalsToDelete = assignedEvals.right.map((evaluation) =>
+        this.deleteEvaluationBase({ evaluationId: evaluation._id })
+      );
+      const assignedEvalDeletions = await Promise.allSettled(
+        assignedEvalsToDelete
+      );
+      const isAlldeleted = assignedEvalDeletions.every(
+        (deletion) => deletion.status === "fulfilled" && isRight(deletion.value)
+      );
+      if (!isAlldeleted) {
+        return left(
+          Failure.invalidValue({
+            message: "Failed to delete assigned evaluations",
+            invalidValue: assignedEvalDeletions,
+            code: "APP203",
+          })
+        );
+      }
+    }
     return await this._evaluationRepository.deleteEvaluationBase(options);
+  }
+
+  async getEvaluationsWithGradesByEvaluationBaseId(
+    options: GetEvaluationsWithGradesByEvalauationBaseIdOptions
+  ) {
+    return await this._evaluationRepository.getEvaluationsWithGradesByEvaluationBaseId(
+      options
+    );
   }
 
   async isEvaluationAssigned(options: { evaluationId: string }) {
