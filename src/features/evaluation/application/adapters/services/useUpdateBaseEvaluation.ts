@@ -14,7 +14,6 @@ export default function useUpdateBaseEvaluation() {
         console.error(eitherEval.left);
         throw new Error(eitherEval.left.message);
       }
-      revalidatePath("/evaluations");
     },
   });
 
