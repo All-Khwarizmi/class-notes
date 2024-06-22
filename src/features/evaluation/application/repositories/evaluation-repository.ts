@@ -4,6 +4,7 @@ import {
   AssignEvaluationOptions,
   CreateEvaluationOptions,
   DeleteEvaluationBase,
+  DeleteEvaluationWithGradesOptions,
   GetEvaluationBaseOptions,
   GetEvaluationBasesOptions,
   GetEvaluationOptions,
@@ -53,6 +54,10 @@ export default class EvaluatioRepository {
   ) {
     return await this._db.getEvaluationsWithGradesByEvaluationBaseId(options);
   }
+  async deleteEvaluationWithGrades(options: DeleteEvaluationWithGradesOptions) {
+    return await this._db.deleteEvaluationWithGrades(options);
+  }
+
   async updateGrade(options: UpdateGradeOptions) {
     return await this._db.updateGrade(options);
   }

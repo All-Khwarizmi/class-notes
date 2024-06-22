@@ -19,6 +19,7 @@ import {
   AssignEvaluationOptions,
   CreateEvaluationOptions,
   DeleteEvaluationBase,
+  DeleteEvaluationWithGradesOptions,
   GetEvaluationBaseOptions,
   GetEvaluationBasesOptions,
   GetEvaluationOptions,
@@ -1501,6 +1502,28 @@ export default class ConvexDatabase extends IDatabase {
       );
     }
   }
+  async deleteEvaluationWithGrades(
+    options: DeleteEvaluationWithGradesOptions
+  ): Promise<Either<Failure<string>, void>> {
+    try {
+      fetchMutation(
+        this._db.evaluation_with_grades.deleteEvaluationWithGrades,
+        {
+          evaluationId: options.evaluationId,
+        }
+      );
+      return right(undefined);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: options,
+          message: "Failed to delete evaluation with grades",
+          code: "INF101",
+        })
+      );
+    }
+  }
+
   async updateGrade(
     options: UpdateGradeOptions
   ): Promise<Either<Failure<string>, void>> {

@@ -120,7 +120,7 @@ export default class EvaluationUsecases {
         return assignedEvals;
       }
       const assignedEvalsToDelete = assignedEvals.right.map((evaluation) =>
-        this.deleteEvaluationBase({ evaluationId: evaluation._id })
+        this.deleteEvaluationWithGrades({ evaluationId: evaluation._id })
       );
       const assignedEvalDeletions = await Promise.allSettled(
         assignedEvalsToDelete
@@ -139,6 +139,10 @@ export default class EvaluationUsecases {
       }
     }
     return await this._evaluationRepository.deleteEvaluationBase(options);
+  }
+
+  async deleteEvaluationWithGrades(options: DeleteEvaluationBase) {
+    return await this._evaluationRepository.deleteEvaluationWithGrades(options);
   }
 
   async getEvaluationsWithGradesByEvaluationBaseId(

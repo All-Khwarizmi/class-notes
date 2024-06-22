@@ -161,3 +161,21 @@ export const getEvaluationsWithGradesByEvaluationBaseId = query({
     return evaluations;
   },
 });
+
+export const deleteEvaluationWithGrades = mutation({
+  args: {
+    evaluationId: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const evaluation = await ctx.db
+      .query("EvaluationsWithGrades")
+      .filter((q) => q.eq(q.field("_id"), args.evaluationId))
+      .first();
+
+    if (!evaluation) {
+      throw new Error("Evaluation not found");
+    }
+
+    await ctx.db.delete(evaluation._id);
+  },
+});

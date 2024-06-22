@@ -24,9 +24,9 @@ import {
   IsEvaluationAssigned,
   UpdateEvaluationBaseOptions,
   UpdateGradeOptions,
+  DeleteEvaluationWithGradesOptions,
 } from "@/features/evaluation/domain/entities/evaluation-types";
-import { deleteCours } from "../../../convex/cours";
-import { isEvaluationAssigned } from "../../../convex/evaluation_base";
+
 
 export default abstract class IDatabase {
   abstract getUser({
@@ -177,6 +177,7 @@ export default abstract class IDatabase {
     sequenceId: string;
     type: "template" | "sequence";
   }): Promise<Either<Failure<string>, void>>;
+
 
   abstract getAllCoursFromSequence({
     userId,
@@ -372,6 +373,8 @@ export default abstract class IDatabase {
   abstract getEvaluationsWithGradesByEvaluationBaseId(
     options: GetEvaluationsWithGradesByEvalauationBaseIdOptions
   ): Promise<Either<Failure<string>, DocumentData[]>>;
+
+  abstract deleteEvaluationWithGrades(options: DeleteEvaluationWithGradesOptions): Promise<Either<Failure<string>, void>>;
 
   abstract updateGrade(
     options: UpdateGradeOptions
