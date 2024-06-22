@@ -17,13 +17,15 @@ async function CoursesServerLayer({
   const { slug } = params;
   const { type } = searchParams;
   if (!slug || !type) {
-    <LayoutWithProps
-      isError={{
-        message: "Invalid params",
-        code: "PRE301",
-        description: "Invalid params",
-      }}
-    ></LayoutWithProps>;
+    return (
+      <LayoutWithProps
+        isError={{
+          message: "Invalid params",
+          code: "PRE301",
+          description: "Invalid params",
+        }}
+      ></LayoutWithProps>
+    );
   }
   const authUser = await authUseCases.getUserAuth();
   if (isLeft(authUser)) {
