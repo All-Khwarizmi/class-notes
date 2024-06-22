@@ -14,10 +14,11 @@ import { Button } from "@/core/components/ui/button";
 import useAssignEvaluation from "@/features/evaluation/application/adapters/services/useAssignEvaluation";
 import { Loader } from "lucide-react";
 import { toast } from "sonner";
+import { EvaluationWithGradeType } from "@/features/evaluation/domain/entities/evaluation-with-grades-schema";
 function AssignEvaluation(props: {
   userId: string;
   classeId: string;
-  alreadyAssignedEvaluationIds: string[];
+  alreadyAssignedEvaluations: EvaluationWithGradeType[];
 }) {
   const { data: eitherEvaluations, isPending } = useGetEvaluationsBaseList({
     userId: props.userId,
@@ -47,7 +48,7 @@ function AssignEvaluation(props: {
       });
     } else {
       toast.error("Please select an evaluation");
-      return
+      return;
     }
   }
   function handleChange(value: string) {
@@ -67,7 +68,11 @@ function AssignEvaluation(props: {
         <SelectContent>
           <SelectGroup>
             {evaluations.map((evaluation) => {
-              if (!props.alreadyAssignedEvaluationIds.includes(evaluation.id)) {
+              if (
+                props.alreadyAssignedEvaluations.some(
+                  (e) => e.id === evaluation.id
+                )
+              ) {
                 return (
                   <SelectItem key={evaluation.id} value={evaluation.id}>
                     {evaluation.name}

@@ -137,8 +137,8 @@ export function StudentsEvaluationTableView(props: {
           <AssignEvaluation
             classeId={props.classeId}
             userId={props.userId}
-            alreadyAssignedEvaluationIds={localTableData.map(
-              (evaluation) => evaluation.base.id
+            alreadyAssignedEvaluations={localTableData.map(
+              (compound) => compound.grade
             )}
           />
         </CustomDialog>
