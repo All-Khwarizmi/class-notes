@@ -8,10 +8,12 @@ function SequencesListView({
   sequences,
   spacesMode = false,
   userId,
+  sequenceType,
 }: {
   sequences: Sequence[];
   spacesMode?: boolean;
   userId: string;
+  sequenceType: "template" | "sequence";
 }) {
   return (
     <>
@@ -26,7 +28,7 @@ function SequencesListView({
               tags={sequence.category}
               showViewButton={true}
               pathToView={`/spaces/sequences/${sequence._id}?user=${userId}`}
-              path={`/sequences/${sequence._id}`}
+              path={`/sequences/${sequence._id}?type=${sequenceType}`}
               spacesMode={spacesMode}
             />
           ))}

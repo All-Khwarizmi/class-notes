@@ -15,7 +15,7 @@ async function SequencesServerLayer({
   searchParams: { [key in string]: string };
 }) {
   const { type } = searchParams;
-  if (!type) {
+  if (!type || (type !== "template" && type !== "sequence")) {
     return (
       <LayoutWithProps
         isError={{
@@ -51,6 +51,7 @@ async function SequencesServerLayer({
       <SequencesListView
         sequences={eitherSequences.right}
         userId={authUser.right.userId}
+        sequenceType={type as "template" | "sequence"}
       />
     </LayoutWithProps>
   );
