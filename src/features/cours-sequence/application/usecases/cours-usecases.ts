@@ -75,6 +75,10 @@ export default class CoursUsecases {
     return this._repository.updateCoursBody({ userId, coursId, body });
   }
 
+  async deleteCourse({ coursId }: { coursId: string }) {
+    return this._repository.deleteCourse({ coursId });
+  }
+
   async addSequence({
     userId,
     sequence,

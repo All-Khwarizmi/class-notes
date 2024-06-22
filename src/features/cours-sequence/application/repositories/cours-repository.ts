@@ -1,7 +1,6 @@
 import { convexDatabase } from "@/core/data/convex/convex-impl";
 import IDatabase from "@/core/data/idatabase";
 import { Cours, Sequence } from "../../domain/entities/cours-schemas";
-import { get } from "lodash";
 
 export default class CoursRepository {
   private readonly _db: IDatabase;
@@ -56,6 +55,10 @@ export default class CoursRepository {
     body: string;
   }) {
     return this._db.updateCoursBody({ userId, coursId, body });
+  }
+
+  async deleteCourse({ coursId }: { coursId: string }) {
+    return this._db.deleteCourse({ coursId });
   }
 
   async addSequence({

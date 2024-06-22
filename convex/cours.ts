@@ -290,3 +290,25 @@ export const updateCoursBody = mutation({
     }
   },
 });
+
+export const deleteCours = mutation({
+  args: {
+    coursId: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const auth = await ctx.auth.getUserIdentity();
+    if (!auth) {
+      throw new Error("Unauthorized");
+    }
+    const cours = await ctx.db
+      .query("Cours")
+      .filter((q) => q.eq(q.field("_id"), args.coursId))
+      .first();
+
+    if (!cours) {
+      throw new Error("Cours not found");
+    }
+
+    await ctx.db.delete(cours._id);
+  },
+});

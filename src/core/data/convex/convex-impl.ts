@@ -336,6 +336,27 @@ export default class ConvexDatabase extends IDatabase {
     }
   }
 
+  async deleteCourse({
+    coursId,
+  }: {
+    coursId: string;
+  }): Promise<Either<Failure<string>, void>> {
+    try {
+      await fetchMutation(this._db.cours.deleteCours, {
+        coursId,
+      });
+      return right(undefined);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: coursId,
+          message: "Error deleting cours",
+          code: "INF101",
+        })
+      );
+    }
+  }
+
   async addSequence({
     userId,
     sequence,
