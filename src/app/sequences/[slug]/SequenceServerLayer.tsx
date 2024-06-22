@@ -59,10 +59,15 @@ export default async function SequenceServerLayer(props: {
     },
     {
       title: "Courses",
-      href: `#`,
+      href: `/cours/all/${props.slug}`,
       icon: <BookCheck size={16} />,
       isChidren: true,
       children: coursesNavItems,
+    },
+    {
+      title: "All Courses",
+      href: `/cours/all/${props.slug}`,
+      icon: <Layout size={16} />,
     },
     {
       title: "Notes",
