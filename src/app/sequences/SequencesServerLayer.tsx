@@ -4,8 +4,8 @@ import { coursUsecases } from "@/features/cours-sequence/application/usecases/co
 import { isLeft } from "fp-ts/lib/Either";
 import { redirect } from "next/navigation";
 import SequencesListView from "@/features/cours-sequence/presentation/views/SequencesListView";
-import Sidebar from "@/core/components/layout/Sidebar";
 import ErrorDialog from "@/core/components/common/ErrorDialog";
+import LayoutWithProps from "@/core/components/layout/LayoutWithProps";
 
 async function SequencesServerLayer() {
   const authUser = await authUseCases.getUserAuth();
@@ -17,27 +17,24 @@ async function SequencesServerLayer() {
   });
   if (isLeft(eitherSequences)) {
     return (
-      <ErrorDialog
-        message={`
+      <LayoutWithProps isEmpty>
+        <ErrorDialog
+          message={`
       An error occurred while fetching sequences. 
     `}
-        code={eitherSequences.left.code}
-        description={eitherSequences.left.message}
-      />
+          code={eitherSequences.left.code}
+          description={eitherSequences.left.message}
+        />
+      </LayoutWithProps>
     );
   }
   return (
-    <>
-      <Sidebar />
-      <section className="h-full flex-1  overflow-x-hidden">
-        <div className="h-full py-8 px-6">
-          <SequencesListView
-            sequences={eitherSequences.right}
-            userId={authUser.right.userId}
-          />
-        </div>
-      </section>
-    </>
+    <LayoutWithProps>
+      <SequencesListView
+        sequences={eitherSequences.right}
+        userId={authUser.right.userId}
+      />
+    </LayoutWithProps>
   );
 }
 
