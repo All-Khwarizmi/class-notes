@@ -20,6 +20,7 @@ export default function useDeleteCourse() {
         position: "top-center",
         duration: 3000,
       });
+      window.location.reload();
     },
   });
 }
