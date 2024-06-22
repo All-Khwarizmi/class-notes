@@ -14,7 +14,11 @@ export default async function SequenceServerLayer(props: {
   slug: string;
   type?: "template" | "sequence";
 }) {
-  if (!props.slug || !props.type) {
+  if (
+    !props.slug ||
+    !props.type ||
+    (props.type !== "template" && props.type !== "sequence")
+  ) {
     return (
       <LayoutWithProps
         isError={{
@@ -85,14 +89,14 @@ export default async function SequenceServerLayer(props: {
     },
     {
       title: "Courses",
-      href: `/cours/all/${props.slug}`,
+      href: `/cours/all/${props.slug}?type=${props.type}`,
       icon: <BookCheck size={16} />,
       isChidren: true,
       children: coursesNavItems,
     },
     {
       title: "All Courses",
-      href: `/cours/all/${props.slug}`,
+      href: `/cours/all/${props.slug}?type=${props.type}`,
       icon: <Layout size={16} />,
     },
     {

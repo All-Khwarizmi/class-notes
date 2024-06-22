@@ -16,7 +16,7 @@ async function CoursesServerLayer({
 }) {
   const { slug } = params;
   const { type } = searchParams;
-  if (!slug || !type) {
+  if (!slug || !type || (type !== "template" && type !== "sequence")) {
     return (
       <LayoutWithProps
         isError={{
@@ -34,6 +34,7 @@ async function CoursesServerLayer({
   const eitherCourses = await coursUsecases.getAllCoursFromSequence({
     sequenceId: slug,
     userId: authUser.right.userId,
+    type ,
   });
   if (isLeft(eitherCourses)) {
     return (
