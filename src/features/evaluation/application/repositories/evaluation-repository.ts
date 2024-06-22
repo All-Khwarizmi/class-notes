@@ -42,6 +42,10 @@ export default class EvaluatioRepository {
   async deleteEvaluationBase(options: DeleteEvaluationBase) {
     return await this._db.deleteEvaluationBase(options);
   }
+
+  async isEvaluationAssigned(options: { evaluationId: string }) {
+    return await this._db.isEvaluationAssigned(options);
+  }
   async updateGrade(options: UpdateGradeOptions) {
     return await this._db.updateGrade(options);
   }

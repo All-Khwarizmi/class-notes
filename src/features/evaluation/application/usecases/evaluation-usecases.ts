@@ -105,6 +105,10 @@ export default class EvaluationUsecases {
     return await this._evaluationRepository.deleteEvaluationBase(options);
   }
 
+  async isEvaluationAssigned(options: { evaluationId: string }) {
+    return await this._evaluationRepository.isEvaluationAssigned(options);
+  }
+
   async updateGrade(options: UpdateGradeOptions) {
     return await this._evaluationRepository.updateGrade(options);
   }

@@ -23,6 +23,7 @@ import {
   GetEvaluationBasesOptions,
   GetEvaluationOptions,
   GetEvaluationsListOptions,
+  IsEvaluationAssigned,
   UpdateEvaluationBaseOptions,
   UpdateGradeOptions,
 } from "@/features/evaluation/domain/entities/evaluation-types";
@@ -1429,6 +1430,36 @@ export default class ConvexDatabase extends IDatabase {
       );
     }
   }
+
+  async isEvaluationAssigned(options: IsEvaluationAssigned) {
+    try {
+      const result = await fetchQuery(
+        this._db.evaluation_base.isEvaluationAssigned,
+        {
+          evaluationId: options.evaluationId,
+        }
+      );
+      if (!result) {
+        return left(
+          Failure.invalidValue({
+            invalidValue: options,
+            message: "Failed to check if evaluation is assigned to class",
+            code: "INF103",
+          })
+        );
+      }
+      return right(result);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: options,
+          message: "Failed to check if evaluation is assigned to class",
+          code: "INF101",
+        })
+      );
+    }
+  }
+
   async deleteEvaluationBase(
     options: DeleteEvaluationBase
   ): Promise<Either<Failure<string>, void>> {

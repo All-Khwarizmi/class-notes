@@ -20,10 +20,12 @@ import {
   GetEvaluationBasesOptions,
   GetEvaluationOptions,
   GetEvaluationsListOptions,
+  IsEvaluationAssigned,
   UpdateEvaluationBaseOptions,
   UpdateGradeOptions,
 } from "@/features/evaluation/domain/entities/evaluation-types";
 import { deleteCours } from "../../../convex/cours";
+import { isEvaluationAssigned } from "../../../convex/evaluation_base";
 
 export default abstract class IDatabase {
   abstract getUser({
@@ -361,6 +363,10 @@ export default abstract class IDatabase {
   abstract deleteEvaluationBase(
     options: DeleteEvaluationBase
   ): Promise<Either<Failure<string>, void>>;
+
+  abstract isEvaluationAssigned(
+    options: IsEvaluationAssigned
+  ): Promise<Either<Failure<string>, boolean>>;
   abstract updateGrade(
     options: UpdateGradeOptions
   ): Promise<Either<Failure<string>, void>>;
