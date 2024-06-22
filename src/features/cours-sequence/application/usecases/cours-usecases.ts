@@ -1,5 +1,7 @@
 import { Either, isLeft, left } from "fp-ts/lib/Either";
 import {
+  ClasseSequence,
+  ClasseSequenceSchema,
   Cours,
   CoursSchema,
   Sequence,
@@ -322,16 +324,16 @@ export default class CoursUsecases {
     classeId,
   }: {
     classeId: string;
-  }): Promise<Either<Failure<string>, Sequence[]>> {
+  }): Promise<Either<Failure<string>, ClasseSequence[]>> {
     const eitherClasseSequences = await this._repository.getClasseSequences({
       classeId,
     });
     if (isLeft(eitherClasseSequences)) {
       return eitherClasseSequences;
     }
-    const validateSequences: Sequence[] = [];
+    const validateSequences: ClasseSequence[] = [];
     for (const sequence of eitherClasseSequences.right) {
-      const validateSequence = SequenceSchema.safeParse(sequence);
+      const validateSequence = ClasseSequenceSchema.safeParse(sequence);
       if (!validateSequence.success) {
         return left(
           Failure.invalidValue({
