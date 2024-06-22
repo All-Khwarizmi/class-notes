@@ -2,6 +2,7 @@ import LayoutWithProps from "@/core/components/layout/LayoutWithProps";
 import getVisibility from "@/features/classe/application/adapters/actions/get-visibility";
 import { coursUsecases } from "@/features/cours-sequence/application/usecases/cours-usecases";
 import { Sequence } from "@/features/cours-sequence/domain/entities/cours-schemas";
+import SequencesListViewSpaces from "@/features/cours-sequence/presentation/views/SeqquenceListViewSpaces";
 import SequencesListView from "@/features/cours-sequence/presentation/views/SequencesListView";
 import { NavItem } from "@/lib/types";
 import { isLeft } from "fp-ts/lib/Either";
@@ -45,7 +46,7 @@ async function SpacesClasseServerLayer(props: {
     <>
       {sequences.length > 0 ? (
         <LayoutWithProps navItems={sequenceNavItems}>
-          <SequencesListView
+          <SequencesListViewSpaces
             sequences={sequences}
             spacesMode={true}
             userId={props.searchParams.user}

@@ -21,11 +21,13 @@ import {
   Activity,
   AlignVerticalDistributeCenter,
   BookOpenCheck,
+  Layout,
   NotebookPen,
   Plus,
   Rows3,
 } from "lucide-react";
 import Dashboard from "@/core/components/icons/Dashboard";
+import LayoutWithProps from "@/core/components/layout/LayoutWithProps";
 
 async function CoursServerLayer(props: { slug: string }) {
   const authUser = await authUseCases.getUserAuth();
@@ -111,22 +113,28 @@ async function CoursServerLayer(props: { slug: string }) {
   });
   if (isFailure) {
     return (
-      <ErrorDialog
-        message={`
-      Unable to fetch cours with id: ${props.slug}
+      <LayoutWithProps isEmpty>
+        <ErrorDialog
+          message={`
+      Failed to fetch data for the cours page.
       ${failures.map((failure) => failure.message).join("\n")}
       Code: PRE303
     `}
-      />
+        />
+      </LayoutWithProps>
     );
   }
   if (!cours._id) {
     return (
-      <ErrorDialog
-        message={`
+      <LayoutWithProps isEmpty>
+        <ErrorDialog
+          message={`
+      Failed to fetch data for the cours page.
       Unable to find cours with id: ${props.slug}
+      Code: PRE303
     `}
-      />
+        />
+      </LayoutWithProps>
     );
   }
   const coursNavItems: NavItem[] = complements.map((complement) => ({
@@ -171,20 +179,14 @@ async function CoursServerLayer(props: { slug: string }) {
   );
 
   return (
-    <>
-      <Sidebar navItems={coursNavItems} />
-      <section className="h-full flex-1  overflow-x-hidden">
-        <div className="h-full py-8 px-6">
-          {" "}
-          <CoursSequenceView
-            cours={cours}
-            userId={authUser.right.userId}
-            complements={complements}
-            type="cours"
-          />
-        </div>
-      </section>
-    </>
+    <LayoutWithProps navItems={coursNavItems}>
+      <CoursSequenceView
+        cours={cours}
+        userId={authUser.right.userId}
+        complements={complements}
+        type="cours"
+      />
+    </LayoutWithProps>
   );
 }
 

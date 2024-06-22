@@ -12,6 +12,7 @@ import {
   CoursSchema,
 } from "@/features/cours-sequence/domain/entities/cours-schemas";
 import Failure from "@/core/failures/failures";
+import LayoutWithProps from "@/core/components/layout/LayoutWithProps";
 
 async function CoursEditServerLayer(props: { slug: string }) {
   const authUser = await authUseCases.getUserAuth();
@@ -70,36 +71,42 @@ async function CoursEditServerLayer(props: { slug: string }) {
   });
   if (isFailure) {
     return (
-      <ErrorDialog
-        message={`
+      <LayoutWithProps isEmpty>
+        <ErrorDialog
+          message={`
         Failed to fetch data for the cours edit page.
         ${failures.map((failure) => failure.message).join("\n")}
         Code: PRE303
     `}
-      />
+        />
+      </LayoutWithProps>
     );
   }
   if (!cours) {
     return (
-      <ErrorDialog
-        message={`
+      <LayoutWithProps isEmpty>
+        <ErrorDialog
+          message={`
         Failed to fetch data for the cours edit page.
         Unable to find cours with id: ${props.slug}
         Code: PRE303
     `}
-      />
+        />
+      </LayoutWithProps>
     );
   }
 
   return (
-    <AddUpdateCoursSequenceView
-      authUser={authUser.right}
-      type="cours"
-      edit={true}
-      cours={cours}
-      title="Edit Cours"
-      competences={competences}
-    />
+    <LayoutWithProps>
+      <AddUpdateCoursSequenceView
+        authUser={authUser.right}
+        type="cours"
+        edit={true}
+        cours={cours}
+        title="Edit Cours"
+        competences={competences}
+      />
+    </LayoutWithProps>
   );
 }
 

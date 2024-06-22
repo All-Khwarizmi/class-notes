@@ -15,6 +15,9 @@ async function ClasseSequencesServerLayer(props: { slug: string }) {
   const eitherSequences = await coursUsecases.getAllSequences({
     userId: authUser.right.userId,
   });
+  const eitherClasseSequences = await coursUsecases.getClasseSequences({
+    classeId: props.slug,
+  });
   if (isLeft(eitherSequences)) {
     return (
       <LayoutWithProps isEmpty>
@@ -27,11 +30,24 @@ async function ClasseSequencesServerLayer(props: { slug: string }) {
     );
   }
 
+  if (isLeft(eitherClasseSequences)) {
+    return (
+      <LayoutWithProps isEmpty>
+        <ErrorDialog
+          message="An error occurred"
+          description="An error occurred while fetching classe sequences"
+          code={eitherClasseSequences.left.code}
+        />
+      </LayoutWithProps>
+    );
+  }
+
   return (
     <LayoutWithProps>
       <ClasseSequencesTableView
         sequences={eitherSequences.right}
         classeId={props.slug}
+        classeSequences={eitherClasseSequences.right}
       />
     </LayoutWithProps>
   );

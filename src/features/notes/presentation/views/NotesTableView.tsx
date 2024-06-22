@@ -23,12 +23,10 @@ import {
 } from "@/core/components/ui/select";
 import useAddNote from "../../application/adapters/services/useAddProfileNote";
 import useDeleteNote from "../../application/adapters/services/useDeleteNote";
-import { isError } from "lodash";
 import { toast } from "sonner";
 function NotesTableView(props: { notes: Note[]; parentId: string }) {
   const [localNotes, setLocalNotes] = useState<Note[]>(props.notes);
   const [isFileFormVisible, setIsFileFormVisible] = useState(false);
-  const [isFolderFormVisible, setIsFolderFormVisible] = useState(false);
   const { setNoteOptions } = useAddNote();
   const {
     mutate: deleteNote,
@@ -91,28 +89,33 @@ function NotesTableView(props: { notes: Note[]; parentId: string }) {
                   <TableCell className="w-[200px]">
                     {new Date(note.createdAt).toDateString()}
                   </TableCell>
-                  <TableCell className="w-[200px] flex ">
-                    <Link
-                      href={`/notes/${note.id}`}
-                      className={cn(
-                        "bg-transparent rounded-md p-1 px-2 flex items-center ml-2 hover:text-blue-400  "
-                      )}
-                    >
-                      <ExternalLink size={14} />
-                    </Link>
-                    <button
-                      className={cn(
-                        "bg-transparent rounded-md p-1 px-2 flex items-center ml-2 hover:text-red-400  "
-                      )}
-                      onClick={() => {
-                        deleteNote({
-                          noteId: note.id,
-                          pathToRevalidate: `/profile/notes/${note.id}`,
-                        });
-                      }}
-                    >
-                      <Delete size={14} />
-                    </button>
+                  <TableCell className="w-[200px] ">
+                    <div className="flex items-center justify-center w-full h-full">
+                      <Link
+                        href={`/notes/${note.id}`}
+                        className={cn(
+                          "bg-transparent rounded-md p-1 px-2 flex items-center ml-2 hover:text-blue-400  "
+                        )}
+                      >
+                        <ExternalLink size={14} />
+                      </Link>
+                      <button
+                        className={cn(
+                          "bg-transparent rounded-md p-1 px-2 flex items-center ml-2 hover:text-red-400  "
+                        )}
+                        onClick={() => {
+                          confirm(
+                            "Are you sure you want to delete this note?"
+                          ) &&
+                            deleteNote({
+                              noteId: note.id,
+                              pathToRevalidate: `/profile/notes/${note.id}`,
+                            });
+                        }}
+                      >
+                        <Delete size={14} />
+                      </button>
+                    </div>
                   </TableCell>
                 </TableRow>
               );

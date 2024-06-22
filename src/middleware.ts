@@ -1,5 +1,4 @@
 import { authMiddleware } from "@clerk/nextjs";
-import { auth } from "@clerk/nextjs";
 
 /* 
 https://nextjs.org/docs/app/building-your-application/authentication

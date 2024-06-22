@@ -19,7 +19,7 @@ export const NavItems: NavItem[] = [
   {
     title: "Sequences",
     icon: <Presentation size={16} />,
-    href: "/sequences",
+    href: "/sequences?type=template",
     color: "text-orange-500",
   },
 

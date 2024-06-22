@@ -10,7 +10,7 @@ import {
 import ErrorDialog from "@/core/components/common/ErrorDialog";
 
 import ComplementsView from "@/features/complement/presentation/views/ComplementsView";
-import Sidebar from "@/core/components/layout/Sidebar";
+import LayoutWithProps from "@/core/components/layout/LayoutWithProps";
 
 async function ComplementsServerLayer(props: { slug: string }) {
   const authUser = await authUseCases.getUserAuth();
@@ -24,42 +24,43 @@ async function ComplementsServerLayer(props: { slug: string }) {
   });
   if (isLeft(eitherComplements)) {
     return (
-      <ErrorDialog
-        message={`
+      <LayoutWithProps isEmpty>
+        <ErrorDialog
+          message={`
             Unable to fetch cours with id: ${props.slug}
             
                 ${eitherComplements.left}
             `}
-      />
+        />
+      </LayoutWithProps>
     );
   }
   for (const complement of eitherComplements.right) {
     const validateComplement = ComplementSchema.safeParse(complement);
     if (!validateComplement.success) {
       return (
-        <ErrorDialog
-          message={`
+        <LayoutWithProps isEmpty>
+          <ErrorDialog
+            message={`
             Unable to validate complement with id: ${complement.id}
             
             ${JSON.stringify(validateComplement.error)}
             `}
-        />
+          />
+        </LayoutWithProps>
       );
     }
     complements.push(validateComplement.data);
   }
 
   return (
-    <>
-      <Sidebar />
-      <section className="h-full flex-1 px-4 overflow-x-hidden">
-        <ComplementsView
-          complements={complements}
-          coursId={props.slug}
-          userId={authUser.right.userId}
-        />
-      </section>
-    </>
+    <LayoutWithProps>
+      <ComplementsView
+        complements={complements}
+        coursId={props.slug}
+        userId={authUser.right.userId}
+      />
+    </LayoutWithProps>
   );
 }
 

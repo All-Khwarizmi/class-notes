@@ -1,7 +1,7 @@
 import { convexDatabase } from "@/core/data/convex/convex-impl";
 import IDatabase from "@/core/data/idatabase";
 import { Cours, Sequence } from "../../domain/entities/cours-schemas";
-import { get } from "lodash";
+import { deleteSequence } from "../../../../../convex/sequence";
 
 export default class CoursRepository {
   private readonly _db: IDatabase;
@@ -58,6 +58,10 @@ export default class CoursRepository {
     return this._db.updateCoursBody({ userId, coursId, body });
   }
 
+  async deleteCourse({ coursId }: { coursId: string }) {
+    return this._db.deleteCourse({ coursId });
+  }
+
   async addSequence({
     userId,
     sequence,
@@ -96,6 +100,16 @@ export default class CoursRepository {
 
   async getAllSequences({ userId }: { userId: string }) {
     return this._db.getSequences({ userId });
+  }
+
+  async deleteSequence({
+    sequenceId,
+    type,
+  }: {
+    sequenceId: string;
+    type: "template" | "sequence";
+  }) {
+    return this._db.deleteSequence({ sequenceId, type });
   }
 
   async getAllCoursFromSequence({

@@ -1,6 +1,6 @@
-import { Suspense } from "react";
 import LoadingSkeleton from "@/core/components/common/LoadingSkeleton";
-import SequencesServerLayer from "./SequencesServerLayer";
+import { Suspense } from "react";
+import CoursesServerLayer from "./CoursesServerLayer";
 
 export default async function Page({
   params,
@@ -11,7 +11,7 @@ export default async function Page({
 }) {
   return (
     <Suspense fallback={<LoadingSkeleton />}>
-      <SequencesServerLayer params={params} searchParams={searchParams} />
+      <CoursesServerLayer params={params} searchParams={searchParams} />
     </Suspense>
   );
 }

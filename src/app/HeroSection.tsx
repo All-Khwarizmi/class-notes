@@ -4,6 +4,7 @@ import Link from "next/link";
 import Title from "../core/components/common/Title";
 import { SignInButton, SignedIn, SignedOut } from "@clerk/nextjs";
 import { Button } from "@/core/components/ui/button";
+import RandomFadingImage from "@/core/components/layout/RandomFadingImage";
 
 export default function Hero() {
   return (
@@ -26,10 +27,10 @@ export default function Hero() {
               </div>
             </div>
           </div>
-          <img
+         
+          <RandomFadingImage
             src="https://cdn.prod.website-files.com/645a9acecda2e0594fac6126/658054b9bde4219f7c818b9b_gradient-noise-purple-azure.png"
             alt="Hero"
-            className="mx-auto hero-image absolute opacity-70 aspect-video overflow-hidden rounded-xl object-cover w-full lg:w-[70%]  "
           />
           <div className="flex flex-col  z-10 mt-4 gap-2 min-[400px]:flex-row text-primary  ">
             <SignedOut>

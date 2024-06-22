@@ -1,12 +1,12 @@
 import NotFound from "@/app/not-found";
 import Dashboard from "@/core/components/icons/Dashboard";
-import Sidebar from "@/core/components/layout/Sidebar";
+import LayoutWithProps from "@/core/components/layout/LayoutWithProps";
 import { authUseCases } from "@/features/auth/application/usecases/auth-usecases";
 import { coursUsecases } from "@/features/cours-sequence/application/usecases/cours-usecases";
 import CoursSequenceView from "@/features/cours-sequence/presentation/views/CoursSequenceView";
 import { NavItem } from "@/lib/types";
 import { isLeft } from "fp-ts/lib/Either";
-import { BookA, BookCheck, NotebookPen, Plus } from "lucide-react";
+import { BookA, BookCheck, Layout, NotebookPen, Plus } from "lucide-react";
 import { redirect } from "next/navigation";
 import React from "react";
 
@@ -14,8 +14,20 @@ export default async function SequenceServerLayer(props: {
   slug: string;
   type?: "template" | "sequence";
 }) {
-  if (!props.slug) {
-    return <NotFound />;
+  if (
+    !props.slug ||
+    !props.type ||
+    (props.type !== "template" && props.type !== "sequence")
+  ) {
+    return (
+      <LayoutWithProps
+        isError={{
+          message: "Invalid params",
+          code: "PRE301",
+          description: "Invalid params",
+        }}
+      />
+    );
   }
   const authUser = await authUseCases.getUserAuth();
   if (isLeft(authUser)) {
@@ -28,7 +40,15 @@ export default async function SequenceServerLayer(props: {
     type: props.type,
   });
   if (isLeft(eitherSequence)) {
-    return <NotFound />;
+    return (
+      <LayoutWithProps
+        isError={{
+          message: "Sequence not found",
+          code: "PRE404",
+          description: "Sequence not found",
+        }}
+      />
+    );
   }
   // Get all cours from the sequence
   const eitherCours = await coursUsecases.getAllCoursFromSequence({
@@ -37,7 +57,18 @@ export default async function SequenceServerLayer(props: {
   });
   if (isLeft(eitherCours)) {
     console.log(eitherCours.left);
-    return <NotFound />;
+    return (
+      <LayoutWithProps
+        isError={{
+          message: "An error occurred while fetching courses.",
+          code: eitherCours.left.code,
+          description:
+            process.env.NODE_ENV === "development"
+              ? eitherCours.left.message
+              : "An error occurred while fetching courses.",
+        }}
+      />
+    );
   }
 
   const coursesNavItems: NavItem[] = eitherCours.right.map((cours) => ({
@@ -58,10 +89,15 @@ export default async function SequenceServerLayer(props: {
     },
     {
       title: "Courses",
-      href: `#`,
+      href: `/cours/all/${props.slug}?type=${props.type}`,
       icon: <BookCheck size={16} />,
       isChidren: true,
       children: coursesNavItems,
+    },
+    {
+      title: "All Courses",
+      href: `/cours/all/${props.slug}?type=${props.type}`,
+      icon: <Layout size={16} />,
     },
     {
       title: "Notes",
@@ -70,19 +106,14 @@ export default async function SequenceServerLayer(props: {
     },
   ];
   return (
-    <>
-      <Sidebar navItems={sequenceNavItems} />
-      <section className="h-full flex-1  overflow-x-hidden">
-        <div className="h-full py-8 px-6">
-          <CoursSequenceView
-            sequence={eitherSequence.right}
-            userId={authUser.right.userId}
-            type="sequence"
-            coursFromSequence={eitherCours.right}
-            sequenceType={props.type}
-          />
-        </div>
-      </section>
-    </>
+    <LayoutWithProps navItems={sequenceNavItems}>
+      <CoursSequenceView
+        sequence={eitherSequence.right}
+        userId={authUser.right.userId}
+        type="sequence"
+        coursFromSequence={eitherCours.right}
+        sequenceType={props.type}
+      />
+    </LayoutWithProps>
   );
 }

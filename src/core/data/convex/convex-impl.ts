@@ -336,6 +336,27 @@ export default class ConvexDatabase extends IDatabase {
     }
   }
 
+  async deleteCourse({
+    coursId,
+  }: {
+    coursId: string;
+  }): Promise<Either<Failure<string>, void>> {
+    try {
+      await fetchMutation(this._db.cours.deleteCours, {
+        coursId,
+      });
+      return right(undefined);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: coursId,
+          message: "Error deleting cours",
+          code: "INF101",
+        })
+      );
+    }
+  }
+
   async addSequence({
     userId,
     sequence,
@@ -609,6 +630,31 @@ export default class ConvexDatabase extends IDatabase {
     }
   }
 
+  async deleteSequence({
+    sequenceId,
+    type,
+  }: {
+    sequenceId: string;
+    type: "template" | "sequence";
+  }): Promise<Either<Failure<string>, void>> {
+    try {
+      const result = await fetchMutation(this._db.sequence.deleteSequence, {
+        sequenceId,
+        type,
+      });
+
+      return right(undefined);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: sequenceId,
+          message: "Error deleting sequence",
+          code: "INF101",
+        })
+      );
+    }
+  }
+
   async getAllCoursFromSequence({
     userId,
     sequenceId,
@@ -774,6 +820,36 @@ export default class ConvexDatabase extends IDatabase {
         Failure.invalidValue({
           invalidValue: coursComplement,
           message: "Error updating cours complement",
+          code: "INF101",
+        })
+      );
+    }
+  }
+
+  async deleteComplement({
+    id,
+  }: {
+    id: string;
+  }): Promise<Either<Failure<string>, void>> {
+    try {
+      const result = await fetchMutation(this._db.complement.deleteComplement, {
+        id,
+      });
+      if (!result) {
+        return left(
+          Failure.invalidValue({
+            invalidValue: id,
+            message: "Error deleting cours complement",
+            code: "INF103",
+          })
+        );
+      }
+      return right(undefined);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: id,
+          message: "Error deleting cours complement",
           code: "INF101",
         })
       );

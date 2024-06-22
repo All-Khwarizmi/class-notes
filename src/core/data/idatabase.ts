@@ -22,6 +22,7 @@ import {
   UpdateEvaluationBaseOptions,
   UpdateGradeOptions,
 } from "@/features/evaluation/domain/entities/evaluation-types";
+import { deleteCours } from "../../../convex/cours";
 
 export default abstract class IDatabase {
   abstract getUser({
@@ -106,6 +107,11 @@ export default abstract class IDatabase {
     body: string;
   }): Promise<Either<Failure<string>, void>>;
 
+  abstract deleteCourse({
+    coursId,
+  }: {
+    coursId: string;
+  }): Promise<Either<Failure<string>, void>>;
   abstract addSequence({
     userId,
     sequence,
@@ -160,6 +166,14 @@ export default abstract class IDatabase {
     type?: "template" | "sequence";
   }): Promise<Either<Failure<string>, void>>;
 
+  abstract deleteSequence({
+    sequenceId,
+    type,
+  }: {
+    sequenceId: string;
+    type: "template" | "sequence";
+  }): Promise<Either<Failure<string>, void>>;
+
   abstract getAllCoursFromSequence({
     userId,
     sequenceId,
@@ -211,6 +225,11 @@ export default abstract class IDatabase {
     coursComplement: Complement;
   }): Promise<Either<Failure<string>, void>>;
 
+  abstract deleteComplement({
+    id,
+  }: {
+    id: string;
+  }): Promise<Either<Failure<string>, void>>;
   abstract createNote({
     note,
   }: {
