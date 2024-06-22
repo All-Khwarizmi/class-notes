@@ -296,19 +296,21 @@ export const deleteCours = mutation({
     coursId: v.string(),
   },
   handler: async (ctx, args) => {
-    const auth = await ctx.auth.getUserIdentity();
-    if (!auth) {
-      throw new Error("Unauthorized");
-    }
-    const cours = await ctx.db
-      .query("Cours")
-      .filter((q) => q.eq(q.field("_id"), args.coursId))
-      .first();
+    try {
+     
+      const cours = await ctx.db
+        .query("Cours")
+        .filter((q) => q.eq(q.field("_id"), args.coursId))
+        .first();
 
-    if (!cours) {
-      throw new Error("Cours not found");
-    }
+      if (!cours) {
+        throw new Error("Cours not found");
+      }
 
-    await ctx.db.delete(cours._id);
+      await ctx.db.delete(cours._id);
+    } catch (error) {
+      console.log(error);
+      return error;
+    }
   },
 });
