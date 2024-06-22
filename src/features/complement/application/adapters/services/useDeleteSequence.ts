@@ -21,6 +21,7 @@ export default function useDeleteSequence() {
         duration: 3000,
       });
       window.location.reload();
+      return;
     },
   });
 }
