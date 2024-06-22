@@ -69,7 +69,7 @@ function AssignEvaluation(props: {
           <SelectGroup>
             {evaluations.map((evaluation) => {
               if (
-                props.alreadyAssignedEvaluations.some(
+                !props.alreadyAssignedEvaluations.some(
                   (e) => e.id === evaluation.id
                 )
               ) {
