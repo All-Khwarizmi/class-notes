@@ -226,6 +226,48 @@ export default class CoursUsecases {
     return right(validateSequences);
   }
 
+  async deleteSequence({
+    sequenceId,
+    type,
+  }: {
+    sequenceId: string;
+    type: "template" | "sequence";
+  }) {
+    const coursFromSequence = await this.getAllCoursFromSequence({
+      userId: "",
+      sequenceId,
+      type,
+    });
+    if (isLeft(coursFromSequence)) {
+      return coursFromSequence;
+    }
+
+    const coursToDelete = coursFromSequence.right.map((cours) =>
+      this.deleteCourse({ coursId: cours._id })
+    );
+    const coursDeletionResult = await Promise.allSettled(coursToDelete);
+
+    const coursDeleted = coursDeletionResult.every(
+      (cours) => cours.status === "fulfilled"
+    );
+    if (!coursDeleted) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: coursDeletionResult,
+          message: "Unable to delete all cours",
+          code: "APP203",
+        })
+      );
+    }
+
+    const sequenceDeletionResult = await this._repository.deleteSequence({
+      sequenceId,
+      type,
+    });
+
+    return sequenceDeletionResult;
+  }
+
   async getAllCoursFromSequence({
     userId,
     sequenceId,
