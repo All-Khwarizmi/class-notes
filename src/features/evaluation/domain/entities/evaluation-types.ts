@@ -41,6 +41,9 @@ export interface DeleteEvaluationBase {
 export interface IsEvaluationAssigned {
   evaluationId: string;
 }
+export interface GetEvaluationsWithGradesByEvalauationBaseIdOptions {
+  evaluationBaseId: string;
+}
 export interface UpdateGradeOptions {
   evaluationId: string;
   studentId: string;
