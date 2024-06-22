@@ -166,6 +166,14 @@ export default abstract class IDatabase {
     type?: "template" | "sequence";
   }): Promise<Either<Failure<string>, void>>;
 
+  abstract deleteSequence({
+    sequenceId,
+    type,
+  }: {
+    sequenceId: string;
+    type: "template" | "sequence";
+  }): Promise<Either<Failure<string>, void>>;
+
   abstract getAllCoursFromSequence({
     userId,
     sequenceId,

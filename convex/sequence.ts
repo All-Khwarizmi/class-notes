@@ -310,3 +310,35 @@ export const getAllCoursInSequence = query({
     return cours;
   },
 });
+
+export const deleteSequence = mutation({
+  args: {
+    sequenceId: v.string(),
+    type: v.union(v.literal("sequence"), v.literal("template")),
+  },
+  handler: async (ctx, args) => {
+    const isAuthenticated = await ctx.auth.getUserIdentity();
+    if (!isAuthenticated) {
+      throw new Error("Unauthorized");
+    }
+    if (args.type === "sequence") {
+      const classeSequence = await ctx.db
+        .query("ClasseSequence")
+        .filter((q) => q.eq(q.field("_id"), args.sequenceId))
+        .first();
+
+      if (classeSequence) {
+        await ctx.db.delete(classeSequence._id);
+      }
+    } else {
+      const existingSequence = await ctx.db
+        .query("Sequences")
+        .filter((q) => q.eq(q.field("_id"), args.sequenceId))
+        .first();
+
+      if (existingSequence) {
+        await ctx.db.delete(existingSequence._id);
+      }
+    }
+  },
+});

@@ -630,6 +630,39 @@ export default class ConvexDatabase extends IDatabase {
     }
   }
 
+  async deleteSequence({
+    sequenceId,
+    type,
+  }: {
+    sequenceId: string;
+    type: "template" | "sequence";
+  }): Promise<Either<Failure<string>, void>> {
+    try {
+      const result = await fetchMutation(this._db.sequence.deleteSequence, {
+        sequenceId,
+        type,
+      });
+      if (!result) {
+        return left(
+          Failure.invalidValue({
+            invalidValue: sequenceId,
+            message: "Error deleting sequence",
+            code: "INF103",
+          })
+        );
+      }
+      return right(undefined);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: sequenceId,
+          message: "Error deleting sequence",
+          code: "INF101",
+        })
+      );
+    }
+  }
+
   async getAllCoursFromSequence({
     userId,
     sequenceId,
