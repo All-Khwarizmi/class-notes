@@ -23,9 +23,22 @@ async function SequencesServerLayer({
           code: "PRE301",
           description: "Invalid params",
         }}
-      ></LayoutWithProps>
+      />
     );
   }
+
+  if (type === "sequence" && !params.slug) {
+    return (
+      <LayoutWithProps
+        isError={{
+          message: "Invalid params",
+          code: "PRE301",
+          description: "Type sequence requires slug param",
+        }}
+      />
+    );
+  }
+
   const authUser = await authUseCases.getUserAuth();
   if (isLeft(authUser)) {
     redirect("/login");
@@ -52,6 +65,7 @@ async function SequencesServerLayer({
         sequences={eitherSequences.right}
         userId={authUser.right.userId}
         sequenceType={type as "template" | "sequence"}
+        sequenceId={params.slug}
       />
     </LayoutWithProps>
   );
