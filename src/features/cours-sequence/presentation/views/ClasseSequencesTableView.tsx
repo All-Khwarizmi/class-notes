@@ -16,7 +16,6 @@ import { useState } from "react";
 import { toast } from "sonner";
 import useDeleteSequence from "@/features/complement/application/adapters/services/useDeleteSequence";
 
-
 function ClasseSequencesTableView(props: {
   sequences: Sequence[];
   classeSequences: ClasseSequence[];
@@ -51,7 +50,6 @@ function ClasseSequencesTableView(props: {
         <TableHeader>
           <TableRow>
             <TableHead className="w-[200px]">Name</TableHead>
-            <TableHead className="w-[200px]">Description</TableHead>
             <TableHead className="w-[200px]">Nbr of Cours</TableHead>
             <TableHead className="w-[200px]"> Last Modified </TableHead>
 
@@ -60,29 +58,28 @@ function ClasseSequencesTableView(props: {
         </TableHeader>
         <TableBody>
           {props.sequences.map((sequence) => {
+            const classeSequence = props.classeSequences.find(
+              (classeSequence) =>
+                classeSequence.originalSequenceId === sequence._id
+            );
             return (
               <TableRow key={sequence._id}>
                 <TableCell className="w-[200px]">{sequence.name}</TableCell>
-                <TableCell className="w-[200px]">
-                  {sequence.description}
-                </TableCell>
+
                 <TableCell className="w-[200px]">
                   {sequence.coursIds.length}
                 </TableCell>
                 <TableCell className="w-[200px]">
-                  {sequence.createdAt}
+                  {new Date(sequence.createdAt).toDateString()}
                 </TableCell>
                 <TableCell className="w-[200px]">
                   <div className={cn("flex items-center gap-4")}>
                     {/* <Link href={`/sequences/${sequence._id}?type=sequence`}>
                       <ExternalLink size={16} />
                     </Link> */}
-                    {props.classeSequences.find(
-                      (classeSequence) =>
-                        classeSequence.originalSequenceId === sequence._id
-                    ) ? (
+                    {classeSequence ? (
                       <button
-                        onClick={() => handleDelete(sequence._id)}
+                        onClick={() => handleDelete(classeSequence._id)}
                         className={cn(
                           "bg-red-500 rounded-md p-1 px-2 flex items-center ml-2 hover:bg-red-600"
                         )}
