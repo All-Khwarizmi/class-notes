@@ -10,8 +10,6 @@ import {
 import ErrorDialog from "@/core/components/common/ErrorDialog";
 
 import ComplementsView from "@/features/complement/presentation/views/ComplementsView";
-import Sidebar from "@/core/components/layout/Sidebar";
-import { Layout } from "lucide-react";
 import LayoutWithProps from "@/core/components/layout/LayoutWithProps";
 
 async function ComplementsServerLayer(props: { slug: string }) {
