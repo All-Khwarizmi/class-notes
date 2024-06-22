@@ -642,15 +642,7 @@ export default class ConvexDatabase extends IDatabase {
         sequenceId,
         type,
       });
-      if (!result) {
-        return left(
-          Failure.invalidValue({
-            invalidValue: sequenceId,
-            message: "Error deleting sequence",
-            code: "INF103",
-          })
-        );
-      }
+
       return right(undefined);
     } catch (error) {
       return left(
