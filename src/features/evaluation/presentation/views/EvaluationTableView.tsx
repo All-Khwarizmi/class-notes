@@ -2,7 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
-import { ExternalLink, Plus } from "lucide-react";
+import { Delete, ExternalLink, Plus } from "lucide-react";
 import {
   Table,
   TableRow,
@@ -14,12 +14,14 @@ import {
 } from "@/core/components/ui/table";
 import { Button } from "@/core/components/ui/button";
 import { EvaluationBaseType } from "../../domain/entities/evaluation-schema";
+import useDeleteEvaluationBase from "../../application/adapters/services/useDeleteEvaluationBase";
 
 function EvaluationTableView({
   evaluations,
 }: {
   evaluations: EvaluationBaseType[];
 }) {
+  const { mutate: deleteEvaluationBase } = useDeleteEvaluationBase();
   return (
     <div className="w-full h-full p-4">
       <Table className="w-full">
@@ -50,11 +52,26 @@ function EvaluationTableView({
                 {new Date(evaluation.createdAt).toDateString()}
               </TableCell>
               <TableCell className="w-[150px]">
-                <Link href={`/evaluations/${evaluation.id}`}>
-                  <Button variant="link">
-                    <ExternalLink size={16} className="mr-2" />
-                  </Button>
-                </Link>
+                <div>
+                  <Link href={`/evaluations/${evaluation.id}`}>
+                    <Button variant="link">
+                      <ExternalLink
+                        className="text-blue-500"
+                        size={16}
+                      />
+                    </Button>
+                  </Link>
+                  <button
+                    onClick={() =>
+                      confirm(`
+                      Are you sure you want to delete the evaluation?
+                      `) &&
+                      deleteEvaluationBase({ evaluationId: evaluation.id })
+                    }
+                  >
+                    <Delete size={16} className="text-red-500" />
+                  </button>
+                </div>
               </TableCell>
             </TableRow>
           ))}
