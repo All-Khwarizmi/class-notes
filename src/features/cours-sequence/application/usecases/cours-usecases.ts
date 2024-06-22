@@ -10,12 +10,23 @@ import CoursRepository, {
 } from "../repositories/cours-repository";
 import { right } from "fp-ts/lib/Either";
 import Failure from "@/core/failures/failures";
+import ComplementUsecases, {
+  complementUsecases,
+} from "@/features/complement/application/usecases/complement-usecases";
 
 export default class CoursUsecases {
   private readonly _repository: CoursRepository;
+  private readonly _complementUsecases: ComplementUsecases;
 
-  constructor({ repository }: { repository: CoursRepository }) {
+  constructor({
+    repository,
+    complementUsecases,
+  }: {
+    repository: CoursRepository;
+    complementUsecases: ComplementUsecases;
+  }) {
     this._repository = repository;
+    this._complementUsecases = complementUsecases;
   }
 
   async getAllCours({ userId }: { userId: string }) {
@@ -76,7 +87,37 @@ export default class CoursUsecases {
   }
 
   async deleteCourse({ coursId }: { coursId: string }) {
-    return this._repository.deleteCourse({ coursId });
+    const courseComplements =
+      await this._complementUsecases.getAllCoursComplement({
+        coursId,
+      });
+    if (isLeft(courseComplements)) {
+      return courseComplements;
+    }
+    const complementsToDelete = courseComplements.right.map((complement) =>
+      this._complementUsecases.deleteCoursComplement({ id: complement.id })
+    );
+    const complementsDeletionResult = await Promise.allSettled(
+      complementsToDelete
+    );
+    // Check if all complements are deleted
+    const complementsDeleted = complementsDeletionResult.every(
+      (complement) => complement.status === "fulfilled"
+    );
+    if (!complementsDeleted) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: complementsDeletionResult,
+          message: "Unable to delete all complements",
+          code: "APP203",
+        })
+      );
+    }
+    // Thinking about consistency, we should delete the cours only if all complements are deleted. Also, we can think about the deleted complements as a log of the deleted cours.
+    const coursDeletionResult = await this._repository.deleteCourse({
+      coursId,
+    });
+    return coursDeletionResult;
   }
 
   async addSequence({
@@ -268,4 +309,7 @@ export default class CoursUsecases {
   }
 }
 
-export const coursUsecases = new CoursUsecases({ repository: coursRepository });
+export const coursUsecases = new CoursUsecases({
+  repository: coursRepository,
+  complementUsecases: complementUsecases,
+});
