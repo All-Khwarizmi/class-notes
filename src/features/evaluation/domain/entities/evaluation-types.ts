@@ -34,6 +34,10 @@ export interface AssignEvaluationOptions {
   classeId: string;
 }
 
+export interface DeleteEvaluationBase {
+  evaluationId: string;
+}
+
 export interface UpdateGradeOptions {
   evaluationId: string;
   studentId: string;
