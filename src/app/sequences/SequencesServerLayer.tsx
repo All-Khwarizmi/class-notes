@@ -7,7 +7,25 @@ import SequencesListView from "@/features/cours-sequence/presentation/views/Sequ
 import ErrorDialog from "@/core/components/common/ErrorDialog";
 import LayoutWithProps from "@/core/components/layout/LayoutWithProps";
 
-async function SequencesServerLayer() {
+async function SequencesServerLayer({
+  params,
+  searchParams,
+}: {
+  params: { slug: string };
+  searchParams: { [key in string]: string };
+}) {
+  const { type } = searchParams;
+  if (!type) {
+    return (
+      <LayoutWithProps
+        isError={{
+          message: "Invalid params",
+          code: "PRE301",
+          description: "Invalid params",
+        }}
+      ></LayoutWithProps>
+    );
+  }
   const authUser = await authUseCases.getUserAuth();
   if (isLeft(authUser)) {
     redirect("/login");
