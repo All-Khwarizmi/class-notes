@@ -15,6 +15,7 @@ import { Note } from "@/features/notes/domain/notes-schemas";
 import {
   AssignEvaluationOptions,
   CreateEvaluationOptions,
+  DeleteEvaluationBase,
   GetEvaluationBaseOptions,
   GetEvaluationBasesOptions,
   GetEvaluationOptions,
@@ -357,6 +358,9 @@ export default abstract class IDatabase {
     options: AssignEvaluationOptions
   ): Promise<Either<Failure<string>, string>>;
 
+  abstract deleteEvaluationBase(
+    options: DeleteEvaluationBase
+  ): Promise<Either<Failure<string>, void>>;
   abstract updateGrade(
     options: UpdateGradeOptions
   ): Promise<Either<Failure<string>, void>>;

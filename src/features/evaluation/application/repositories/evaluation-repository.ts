@@ -3,6 +3,7 @@ import IDatabase from "@/core/data/idatabase";
 import {
   AssignEvaluationOptions,
   CreateEvaluationOptions,
+  DeleteEvaluationBase,
   GetEvaluationBaseOptions,
   GetEvaluationBasesOptions,
   GetEvaluationOptions,
@@ -38,6 +39,9 @@ export default class EvaluatioRepository {
     return await this._db.assignEvaluationBaseToClasse(options);
   }
 
+  async deleteEvaluationBase(options: DeleteEvaluationBase) {
+    return await this._db.deleteEvaluationBase(options);
+  }
   async updateGrade(options: UpdateGradeOptions) {
     return await this._db.updateGrade(options);
   }

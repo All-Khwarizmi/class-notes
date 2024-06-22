@@ -2,6 +2,7 @@ import { Either, isLeft, left, right } from "fp-ts/lib/Either";
 import {
   AssignEvaluationOptions,
   CreateEvaluationOptions,
+  DeleteEvaluationBase,
   GetEvaluationBaseOptions,
   GetEvaluationBasesOptions,
   GetEvaluationOptions,
@@ -17,10 +18,7 @@ import {
   EvaluationBaseType,
 } from "../../domain/entities/evaluation-schema";
 import Failure from "@/core/failures/failures";
-import {
-  EvaluationWithGradeSchema,
-  EvaluationWithGradeType,
-} from "../../domain/entities/evaluation-with-grades-schema";
+import { EvaluationWithGradeSchema } from "../../domain/entities/evaluation-with-grades-schema";
 import { CompoundEvaluationType } from "@/features/classe/domain/class-schema";
 
 export default class EvaluationUsecases {
@@ -103,6 +101,10 @@ export default class EvaluationUsecases {
     return await this._evaluationRepository.assignEvaluation(options);
   }
 
+  async deleteEvaluationBase(options: DeleteEvaluationBase) {
+    return await this._evaluationRepository.deleteEvaluationBase(options);
+  }
+
   async updateGrade(options: UpdateGradeOptions) {
     return await this._evaluationRepository.updateGrade(options);
   }
@@ -130,8 +132,9 @@ export default class EvaluationUsecases {
     return right(validateEval.data);
   }
 
-  async getEvaluationsList(options: GetEvaluationsListOptions): Promise<
-    Either<Failure<string>, CompoundEvaluationType[]>> {
+  async getEvaluationsList(
+    options: GetEvaluationsListOptions
+  ): Promise<Either<Failure<string>, CompoundEvaluationType[]>> {
     const eitherEvals = await this._evaluationRepository.getEvaluationsList(
       options
     );

@@ -18,6 +18,7 @@ import { Note } from "@/features/notes/domain/notes-schemas";
 import {
   AssignEvaluationOptions,
   CreateEvaluationOptions,
+  DeleteEvaluationBase,
   GetEvaluationBaseOptions,
   GetEvaluationBasesOptions,
   GetEvaluationOptions,
@@ -1423,6 +1424,24 @@ export default class ConvexDatabase extends IDatabase {
         Failure.invalidValue({
           invalidValue: options,
           message: "Failed to create evaluation with grades",
+          code: "INF101",
+        })
+      );
+    }
+  }
+  async deleteEvaluationBase(
+    options: DeleteEvaluationBase
+  ): Promise<Either<Failure<string>, void>> {
+    try {
+      await fetchMutation(this._db.evaluation_base.deleteEvaluationBase, {
+        evaluationId: options.evaluationId,
+      });
+      return right(undefined);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: options,
+          message: "Failed to delete evaluation base",
           code: "INF101",
         })
       );
