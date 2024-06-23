@@ -20,6 +20,7 @@ import UpdateStudentGradeForm from "./UpdateStudentGradeForm";
 import calculateOverallGrade from "@/features/evaluation/application/adapters/utils/calculate-overall-grade";
 import AddStudentForm from "./AddStudentForm";
 import { Id } from "../../../../../convex/_generated/dataModel";
+import { Settings } from "lucide-react";
 
 export function StudentsEvaluationTableView(props: {
   tableData: ClasseTableType;
@@ -130,7 +131,8 @@ export function StudentsEvaluationTableView(props: {
       </Table>
       <div className="flex justify-center mt-4 gap-2">
         <CustomDialog
-          title="Assign Evaluation"
+          title="Evaluations Settings"
+          icon={<Settings />}
           buttonText="Assign Evaluation"
           buttonClassName="bg-transparent dark text-white px-4 py-2 rounded-md border border-white"
         >
