@@ -1,82 +1,58 @@
-import ErrorDialog from "@/core/components/common/ErrorDialog";
-import LayoutWithProps from "@/core/components/layout/LayoutWithProps";
 import { authUseCases } from "@/features/auth/application/usecases/auth-usecases";
 import getStudents from "@/features/classe/application/adapters/actions/get-students";
-import { ClasseTableType } from "@/features/classe/domain/class-schema";
 import { StudentsEvaluationTableView } from "@/features/classe/presentation/components/StudentsEvaluationTableView";
 import { coursUsecases } from "@/features/cours-sequence/application/usecases/cours-usecases";
 import getEvaluationCompoundList from "@/features/evaluation/application/adapters/actions/get-evaluation-compound-list";
-import getClassNavItems from "@/features/evaluation/application/adapters/utils/get-classe-nav-items";
 import { isLeft } from "fp-ts/lib/Either";
 import { redirect } from "next/navigation";
 import React from "react";
-
+import {
+  dehydrate,
+  HydrationBoundary,
+  QueryClient,
+} from "@tanstack/react-query";
 async function ClasseServerLayer(props: { slug: string }) {
   const authUser = await authUseCases.getUserAuth();
   if (isLeft(authUser)) {
     redirect("/login");
   }
-  const eitherSequences = await coursUsecases.getClasseSequences({
-    classeId: props.slug,
-  });
-  if (isLeft(eitherSequences)) {
-    return (
-      <LayoutWithProps isEmpty>
-        <ErrorDialog
-          message="An error occurred"
-          description="An error occurred while fetching sequences"
-          code={eitherSequences.left.code}
-        />
-      </LayoutWithProps>
-    );
-  }
 
-  const eitherCompoundEvaluations = await getEvaluationCompoundList({
-    classeId: props.slug,
-  });
+  const queryClient = new QueryClient();
 
-  if (isLeft(eitherCompoundEvaluations)) {
-    return (
-      <LayoutWithProps isEmpty>
-        <ErrorDialog
-          message="An error occurred"
-          description="An error occurred while fetching evaluations"
-          code={eitherCompoundEvaluations.left.code}
-        />
-      </LayoutWithProps>
-    );
-  }
+  const queriesBulk = [
+    queryClient.prefetchQuery({
+      queryKey: ["classe-sequences", props.slug],
+      queryFn: () =>
+        coursUsecases.getClasseSequences({
+          classeId: props.slug,
+        }),
+    }),
 
-  const eitherStudents = await getStudents({ classeId: props.slug });
-  if (isLeft(eitherStudents)) {
-    return (
-      <LayoutWithProps isEmpty>
-        <ErrorDialog
-          message="An error occurred"
-          description="An error occurred while fetching students"
-          code={eitherStudents.left.code}
-        />
-      </LayoutWithProps>
-    );
-  }
+    queryClient.prefetchQuery({
+      queryKey: ["compound-evaluations",],
+      queryFn: () =>
+        getEvaluationCompoundList({
+          classeId: props.slug,
+        }),
+    }),
+    queryClient.prefetchQuery({
+      queryKey: ["students", props.slug],
+      queryFn: () =>
+        getStudents({
+          classeId: props.slug,
+        }),
+    }),
+  ];
 
-  const classeNavItems = getClassNavItems({
-    sequences: eitherSequences.right,
-    classeId: props.slug,
-  });
+  await Promise.allSettled(queriesBulk);
 
-  const tableData: ClasseTableType = {
-    students: eitherStudents.right,
-    evaluations: eitherCompoundEvaluations.right,
-  };
   return (
-    <LayoutWithProps navItems={classeNavItems}>
+    <HydrationBoundary state={dehydrate(queryClient)}>
       <StudentsEvaluationTableView
-        tableData={tableData}
         classeId={props.slug}
         userId={authUser.right.userId}
       />
-    </LayoutWithProps>
+    </HydrationBoundary>
   );
 }
 
