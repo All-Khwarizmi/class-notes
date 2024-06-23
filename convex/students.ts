@@ -7,17 +7,12 @@ export const createStudent = mutation({
     classId: v.id("Classes"),
   },
   handler: async (ctx, args) => {
-    const isAuthenticated = await ctx.auth.getUserIdentity();
-    if (!isAuthenticated) {
-      throw new Error("Not authenticated");
-    }
     const id = await ctx.db.insert("Students", {
       name: args.name,
       classId: args.classId,
       observations: [],
       evaluationsResults: [],
     });
-    console.log("Student created with id", id);
 
     // get all the evaluations for the class
     const evaluations = await ctx.db
@@ -25,7 +20,6 @@ export const createStudent = mutation({
       .filter((q) => q.eq(q.field("classeId"), args.classId))
       .collect();
 
-    console.log("Evaluations", evaluations);
     // For any given evaluation, get the evaluation base
     const evaluationsBase = [];
     for (const evaluation of evaluations) {
@@ -39,7 +33,6 @@ export const createStudent = mutation({
       throw new Error("Evaluation base not found");
     }
 
-    console.log("Evaluations base", evaluationsBase);
     // Map over each evaluation with grades and check if we have the corresponding evaluation base and the student to the grades array
     for (const evaluation of evaluations) {
       const evaluationBase = evaluationsBase.find(
@@ -57,7 +50,6 @@ export const createStudent = mutation({
           grade: "N/G",
         })),
       };
-      console.log("Student grade", studentGrade);
       await ctx.db.patch(evaluation._id, {
         grades: [...evaluation.grades, studentGrade],
       });

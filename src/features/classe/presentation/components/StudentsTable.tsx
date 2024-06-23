@@ -51,7 +51,10 @@ export default function StudentsTable({ classId }: { classId: string }) {
           }
           title="Ajouter un étudiant"
         >
-          <AddStudentForm classId={classId as Id<"Classes">} />
+          <AddStudentForm
+            classId={classId as Id<"Classes">}
+            refetch={() => {}}
+          />
         </CustomDialog>
       </div>
     </section>

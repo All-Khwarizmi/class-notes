@@ -3,10 +3,13 @@ import IDatabase from "@/core/data/idatabase";
 import {
   AssignEvaluationOptions,
   CreateEvaluationOptions,
+  DeleteEvaluationBase,
+  DeleteEvaluationWithGradesOptions,
   GetEvaluationBaseOptions,
   GetEvaluationBasesOptions,
   GetEvaluationOptions,
   GetEvaluationsListOptions,
+  GetEvaluationsWithGradesByEvalauationBaseIdOptions,
   UpdateEvaluationBaseOptions,
   UpdateGradeOptions,
 } from "../../domain/entities/evaluation-types";
@@ -36,6 +39,23 @@ export default class EvaluatioRepository {
 
   async assignEvaluation(options: AssignEvaluationOptions) {
     return await this._db.assignEvaluationBaseToClasse(options);
+  }
+
+  async deleteEvaluationBase(options: DeleteEvaluationBase) {
+    return await this._db.deleteEvaluationBase(options);
+  }
+
+  async isEvaluationAssigned(options: { evaluationId: string }) {
+    return await this._db.isEvaluationAssigned(options);
+  }
+
+  async getEvaluationsWithGradesByEvaluationBaseId(
+    options: GetEvaluationsWithGradesByEvalauationBaseIdOptions
+  ) {
+    return await this._db.getEvaluationsWithGradesByEvaluationBaseId(options);
+  }
+  async deleteEvaluationWithGrades(options: DeleteEvaluationWithGradesOptions) {
+    return await this._db.deleteEvaluationWithGrades(options);
   }
 
   async updateGrade(options: UpdateGradeOptions) {

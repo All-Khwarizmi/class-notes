@@ -16,13 +16,16 @@ import {
 import { Input } from "@/core/components/ui/input";
 import { Button } from "@/core/components/ui/button";
 import { toast } from "sonner";
-
+import useAddStudent from "../../application/adapters/services/useAddStudent";
 export default function AddStudentForm({
   classId,
+  refetch,
 }: {
   classId: Id<"Classes">;
+  refetch: () => void;
 }) {
-  const addStudent = useMutation(api.students.createStudent);
+  const { mutate: addStudent } = useAddStudent();
+
   const form = useForm<Student>({
     resolver: zodResolver(StudentSchema),
     defaultValues: {
@@ -33,11 +36,18 @@ export default function AddStudentForm({
   async function onSubmit(values: Student) {
     console.log(values);
     const { name } = values;
-    const id = await addStudent({ name, classId });
-    if (id) {
-      form.reset();
-      toast.success("Élève ajouté avec succès");
-    } else toast.error("Erreur lors de l'ajout de l'élève");
+    addStudent(
+      { name, classId },
+      {
+        onSuccess: () => {
+          refetch();
+          toast.success("Élève ajouté avec succès");
+        },
+        onError: () => {
+          toast.error("Erreur lors de l'ajout de l'élève");
+        },
+      }
+    );
   }
 
   return (
@@ -64,11 +74,18 @@ export default function AddStudentForm({
               onClick={async () => {
                 const values = form.getValues();
                 const { name } = values;
-                const id = await addStudent({ name, classId });
-                if (id) {
-                  form.reset();
-                  toast.success("Élève ajouté avec succès");
-                } else toast.error("Erreur lors de l'ajout de l'élève");
+                addStudent(
+                  { name, classId },
+                  {
+                    onSuccess: () => {
+                      refetch();
+                      toast.success("Élève ajouté avec succès");
+                    },
+                    onError: () => {
+                      toast.error("Erreur lors de l'ajout de l'élève");
+                    },
+                  }
+                );
               }}
               className="btn"
             >

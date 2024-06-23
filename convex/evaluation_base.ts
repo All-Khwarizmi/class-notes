@@ -123,3 +123,16 @@ export const deleteEvaluationBase = mutation({
     await ctx.db.delete(evaluation._id);
   },
 });
+
+export const isEvaluationAssigned = query({
+  args: {
+    evaluationId: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const evaluationExist = await ctx.db
+      .query("EvaluationsWithGrades")
+      .filter((q) => q.eq(q.field("evaluationBaseId"), args.evaluationId))
+      .first();
+    return !!evaluationExist;
+  },
+});

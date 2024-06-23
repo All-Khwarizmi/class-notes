@@ -148,3 +148,34 @@ export const getEvaluationsWithGrades = query({
     return evaluations;
   },
 });
+
+export const getEvaluationsWithGradesByEvaluationBaseId = query({
+  args: { evaluationBaseId: v.string() },
+
+  handler: async (ctx, args) => {
+    const evaluations = await ctx.db
+      .query("EvaluationsWithGrades")
+      .filter((q) => q.eq(q.field("evaluationBaseId"), args.evaluationBaseId))
+      .collect();
+
+    return evaluations;
+  },
+});
+
+export const deleteEvaluationWithGrades = mutation({
+  args: {
+    evaluationId: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const evaluation = await ctx.db
+      .query("EvaluationsWithGrades")
+      .filter((q) => q.eq(q.field("_id"), args.evaluationId))
+      .first();
+
+    if (!evaluation) {
+      throw new Error("Evaluation not found");
+    }
+
+    await ctx.db.delete(evaluation._id);
+  },
+});

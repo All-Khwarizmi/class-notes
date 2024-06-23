@@ -1,11 +1,13 @@
-import { Either, isLeft, left, right } from "fp-ts/lib/Either";
+import { Either, isLeft, isRight, left, right } from "fp-ts/lib/Either";
 import {
   AssignEvaluationOptions,
   CreateEvaluationOptions,
+  DeleteEvaluationBase,
   GetEvaluationBaseOptions,
   GetEvaluationBasesOptions,
   GetEvaluationOptions,
   GetEvaluationsListOptions,
+  GetEvaluationsWithGradesByEvalauationBaseIdOptions,
   UpdateEvaluationBaseOptions,
   UpdateGradeOptions,
 } from "../../domain/entities/evaluation-types";
@@ -17,10 +19,7 @@ import {
   EvaluationBaseType,
 } from "../../domain/entities/evaluation-schema";
 import Failure from "@/core/failures/failures";
-import {
-  EvaluationWithGradeSchema,
-  EvaluationWithGradeType,
-} from "../../domain/entities/evaluation-with-grades-schema";
+import { EvaluationWithGradeSchema } from "../../domain/entities/evaluation-with-grades-schema";
 import { CompoundEvaluationType } from "@/features/classe/domain/class-schema";
 
 export default class EvaluationUsecases {
@@ -103,6 +102,61 @@ export default class EvaluationUsecases {
     return await this._evaluationRepository.assignEvaluation(options);
   }
 
+  async deleteEvaluationBase(
+    options: DeleteEvaluationBase
+  ): Promise<Either<Failure<string>, void>> {
+    const isEvalAssgined = await this.isEvaluationAssigned({
+      evaluationId: options.evaluationId,
+    });
+    if (isLeft(isEvalAssgined)) {
+      return isEvalAssgined;
+    }
+    if (isEvalAssgined.right === true) {
+      const assignedEvals =
+        await this.getEvaluationsWithGradesByEvaluationBaseId({
+          evaluationBaseId: options.evaluationId,
+        });
+      if (isLeft(assignedEvals)) {
+        return assignedEvals;
+      }
+      const assignedEvalsToDelete = assignedEvals.right.map((evaluation) =>
+        this.deleteEvaluationWithGrades({ evaluationId: evaluation._id })
+      );
+      const assignedEvalDeletions = await Promise.allSettled(
+        assignedEvalsToDelete
+      );
+      const isAlldeleted = assignedEvalDeletions.every(
+        (deletion) => deletion.status === "fulfilled" && isRight(deletion.value)
+      );
+      if (!isAlldeleted) {
+        return left(
+          Failure.invalidValue({
+            message: "Failed to delete assigned evaluations",
+            invalidValue: assignedEvalDeletions,
+            code: "APP203",
+          })
+        );
+      }
+    }
+    return await this._evaluationRepository.deleteEvaluationBase(options);
+  }
+
+  async deleteEvaluationWithGrades(options: DeleteEvaluationBase) {
+    return await this._evaluationRepository.deleteEvaluationWithGrades(options);
+  }
+
+  async getEvaluationsWithGradesByEvaluationBaseId(
+    options: GetEvaluationsWithGradesByEvalauationBaseIdOptions
+  ) {
+    return await this._evaluationRepository.getEvaluationsWithGradesByEvaluationBaseId(
+      options
+    );
+  }
+
+  async isEvaluationAssigned(options: { evaluationId: string }) {
+    return await this._evaluationRepository.isEvaluationAssigned(options);
+  }
+
   async updateGrade(options: UpdateGradeOptions) {
     return await this._evaluationRepository.updateGrade(options);
   }
@@ -130,8 +184,9 @@ export default class EvaluationUsecases {
     return right(validateEval.data);
   }
 
-  async getEvaluationsList(options: GetEvaluationsListOptions): Promise<
-    Either<Failure<string>, CompoundEvaluationType[]>> {
+  async getEvaluationsList(
+    options: GetEvaluationsListOptions
+  ): Promise<Either<Failure<string>, CompoundEvaluationType[]>> {
     const eitherEvals = await this._evaluationRepository.getEvaluationsList(
       options
     );

@@ -15,14 +15,18 @@ import { Note } from "@/features/notes/domain/notes-schemas";
 import {
   AssignEvaluationOptions,
   CreateEvaluationOptions,
+  DeleteEvaluationBase,
   GetEvaluationBaseOptions,
   GetEvaluationBasesOptions,
   GetEvaluationOptions,
+   GetEvaluationsWithGradesByEvalauationBaseIdOptions,
   GetEvaluationsListOptions,
+  IsEvaluationAssigned,
   UpdateEvaluationBaseOptions,
   UpdateGradeOptions,
+  DeleteEvaluationWithGradesOptions,
 } from "@/features/evaluation/domain/entities/evaluation-types";
-import { deleteCours } from "../../../convex/cours";
+
 
 export default abstract class IDatabase {
   abstract getUser({
@@ -173,6 +177,7 @@ export default abstract class IDatabase {
     sequenceId: string;
     type: "template" | "sequence";
   }): Promise<Either<Failure<string>, void>>;
+
 
   abstract getAllCoursFromSequence({
     userId,
@@ -356,6 +361,20 @@ export default abstract class IDatabase {
   abstract assignEvaluationBaseToClasse(
     options: AssignEvaluationOptions
   ): Promise<Either<Failure<string>, string>>;
+
+  abstract deleteEvaluationBase(
+    options: DeleteEvaluationBase
+  ): Promise<Either<Failure<string>, void>>;
+
+  abstract isEvaluationAssigned(
+    options: IsEvaluationAssigned
+  ): Promise<Either<Failure<string>, boolean>>;
+
+  abstract getEvaluationsWithGradesByEvaluationBaseId(
+    options: GetEvaluationsWithGradesByEvalauationBaseIdOptions
+  ): Promise<Either<Failure<string>, DocumentData[]>>;
+
+  abstract deleteEvaluationWithGrades(options: DeleteEvaluationWithGradesOptions): Promise<Either<Failure<string>, void>>;
 
   abstract updateGrade(
     options: UpdateGradeOptions

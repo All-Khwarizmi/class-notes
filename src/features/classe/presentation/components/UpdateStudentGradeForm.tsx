@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/core/components/ui/button";
@@ -21,9 +21,6 @@ import {
 import { EvaluationBaseType } from "@/features/evaluation/domain/entities/evaluation-schema";
 import TenPointsCriteriaForm from "@/features/evaluation/presentation/components/TenPointsCriteriaForm";
 import { StudentGradeTenPointsSchemaExtension } from "@/features/evaluation/application/adapters/utils/ten-points-scale-case";
-import useGetEvaluationCompoundList from "@/features/evaluation/application/adapters/services/useGetEvaluationCompoundList";
-import { CompoundEvaluationType } from "../../domain/class-schema";
-import { isLeft } from "fp-ts/lib/Either";
 import { toast } from "sonner";
 
 export default function UpdateStudentGradeForm(props: {
@@ -33,16 +30,11 @@ export default function UpdateStudentGradeForm(props: {
   classeId: string;
   studentName: string;
   setIsDialogOpen: (open: boolean) => void;
-  setLocalTableData: (data: CompoundEvaluationType[]) => void;
+  refetch: () => void;
 }) {
   const form = useForm<StudentGradeType>({
     resolver: zodResolver(StudentGradeSchema),
     defaultValues: props.studentGrade,
-  });
-  const [shouldFetchCompoundList, setShouldFetchCompoundList] = useState(false);
-  const { data: compoundList, isSuccess } = useGetEvaluationCompoundList({
-    classeId: props.classeId,
-    enabled: shouldFetchCompoundList,
   });
 
   useEffect(() => {
@@ -86,17 +78,6 @@ export default function UpdateStudentGradeForm(props: {
   }, []);
 
   useEffect(() => {
-    if (compoundList) {
-      if (isLeft(compoundList)) {
-        console.error("Error fetching compound list", compoundList.left);
-        return;
-      }
-      props.setLocalTableData(compoundList.right);
-      props.setIsDialogOpen(!shouldFetchCompoundList);
-    }
-  }, [compoundList, isSuccess]);
-
-  useEffect(() => {
     form.reset(props.studentGrade);
   }, [props.studentGrade]);
 
@@ -130,8 +111,9 @@ export default function UpdateStudentGradeForm(props: {
         evaluationBase={props.evaluationBase}
         evaluationId={props.evaluationId}
         classeId={props.classeId}
-        setShouldFetchCompoundList={() => setShouldFetchCompoundList(true)}
         studentName={props.studentName}
+        refetch={props.refetch}
+        setIsDialogOpen={props.setIsDialogOpen}
       />
     );
   }

@@ -18,10 +18,14 @@ import { Note } from "@/features/notes/domain/notes-schemas";
 import {
   AssignEvaluationOptions,
   CreateEvaluationOptions,
+  DeleteEvaluationBase,
+  DeleteEvaluationWithGradesOptions,
   GetEvaluationBaseOptions,
   GetEvaluationBasesOptions,
   GetEvaluationOptions,
   GetEvaluationsListOptions,
+  GetEvaluationsWithGradesByEvalauationBaseIdOptions,
+  IsEvaluationAssigned,
   UpdateEvaluationBaseOptions,
   UpdateGradeOptions,
 } from "@/features/evaluation/domain/entities/evaluation-types";
@@ -1423,6 +1427,97 @@ export default class ConvexDatabase extends IDatabase {
         Failure.invalidValue({
           invalidValue: options,
           message: "Failed to create evaluation with grades",
+          code: "INF101",
+        })
+      );
+    }
+  }
+
+  async isEvaluationAssigned(options: IsEvaluationAssigned) {
+    try {
+      const result = await fetchQuery(
+        this._db.evaluation_base.isEvaluationAssigned,
+        {
+          evaluationId: options.evaluationId,
+        }
+      );
+      if (!result) {
+        return left(
+          Failure.invalidValue({
+            invalidValue: options,
+            message: "Failed to check if evaluation is assigned to class",
+            code: "INF103",
+          })
+        );
+      }
+      return right(result);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: options,
+          message: "Failed to check if evaluation is assigned to class",
+          code: "INF101",
+        })
+      );
+    }
+  }
+
+  async deleteEvaluationBase(
+    options: DeleteEvaluationBase
+  ): Promise<Either<Failure<string>, void>> {
+    try {
+      await fetchMutation(this._db.evaluation_base.deleteEvaluationBase, {
+        evaluationId: options.evaluationId,
+      });
+      return right(undefined);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: options,
+          message: "Failed to delete evaluation base",
+          code: "INF101",
+        })
+      );
+    }
+  }
+
+  async getEvaluationsWithGradesByEvaluationBaseId(
+    options: GetEvaluationsWithGradesByEvalauationBaseIdOptions
+  ): Promise<Either<Failure<string>, DocumentData[]>> {
+    try {
+      const operationResult = await fetchQuery(
+        this._db.evaluation_with_grades
+          .getEvaluationsWithGradesByEvaluationBaseId,
+        options
+      );
+      return right(operationResult);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: options,
+          message:
+            "Failed to get evaluations with grades by evaluation base id",
+          code: "INF101",
+        })
+      );
+    }
+  }
+  async deleteEvaluationWithGrades(
+    options: DeleteEvaluationWithGradesOptions
+  ): Promise<Either<Failure<string>, void>> {
+    try {
+      fetchMutation(
+        this._db.evaluation_with_grades.deleteEvaluationWithGrades,
+        {
+          evaluationId: options.evaluationId,
+        }
+      );
+      return right(undefined);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: options,
+          message: "Failed to delete evaluation with grades",
           code: "INF101",
         })
       );

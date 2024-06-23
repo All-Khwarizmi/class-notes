@@ -2,7 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
-import { ExternalLink, Plus } from "lucide-react";
+import { Delete, ExternalLink, Plus } from "lucide-react";
 import {
   Table,
   TableRow,
@@ -14,12 +14,21 @@ import {
 } from "@/core/components/ui/table";
 import { Button } from "@/core/components/ui/button";
 import { EvaluationBaseType } from "../../domain/entities/evaluation-schema";
+import useDeleteEvaluationBase from "../../application/adapters/services/useDeleteEvaluationBase";
+import useIsEvaluationAssigned from "../../application/adapters/services/useIsEvaluationAssigned";
+import { isLeft } from "fp-ts/lib/Either";
 
 function EvaluationTableView({
   evaluations,
 }: {
   evaluations: EvaluationBaseType[];
 }) {
+  const { mutate: deleteEvaluationBase } = useDeleteEvaluationBase();
+  const {
+    mutate: checkIfEvalIsAssgined,
+    data: isEvaluationAssigned,
+    isPending,
+  } = useIsEvaluationAssigned();
   return (
     <div className="w-full h-full p-4">
       <Table className="w-full">
@@ -50,11 +59,57 @@ function EvaluationTableView({
                 {new Date(evaluation.createdAt).toDateString()}
               </TableCell>
               <TableCell className="w-[150px]">
-                <Link href={`/evaluations/${evaluation.id}`}>
-                  <Button variant="link">
-                    <ExternalLink size={16} className="mr-2" />
-                  </Button>
-                </Link>
+                <div>
+                  <Link href={`/evaluations/${evaluation.id}`}>
+                    <Button variant="link">
+                      <ExternalLink className="text-blue-500" size={16} />
+                    </Button>
+                  </Link>
+                  <button
+                    onClick={async () => {
+                      // Check if the evaluation is assigned to a class
+                      checkIfEvalIsAssgined(
+                        {
+                          evaluationId: evaluation.id,
+                        },
+
+                        {
+                          onSuccess: (data) => {
+                            if (isLeft(data)) {
+                              alert(
+                                "Could not make the relevant checks to be able to safely delete the evaluation. Please try again later."
+                              );
+                              return;
+                            }
+                            if (data.right === true) {
+                              confirm(
+                                `The evaluation is assigned to at least a class. Deleting the evaluation will remove all together with the grades. Are you sure you want to proceed?`
+                              ) &&
+                                deleteEvaluationBase({
+                                  evaluationId: evaluation.id,
+                                });
+                              return;
+                            } else {
+                              confirm(
+                                `Are you sure you want to delete the evaluation? This action is irreversible.`
+                              ) &&
+                                deleteEvaluationBase({
+                                  evaluationId: evaluation.id,
+                                });
+                            }
+                          },
+                          onError: () => {
+                            alert(
+                              "Could not make the relevant checks to be able to safely delete the evaluation. Please try again later."
+                            );
+                          },
+                        }
+                      );
+                    }}
+                  >
+                    <Delete size={16} className="text-red-500" />
+                  </button>
+                </div>
               </TableCell>
             </TableRow>
           ))}
