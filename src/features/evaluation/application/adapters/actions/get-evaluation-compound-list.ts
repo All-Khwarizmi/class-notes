@@ -5,7 +5,7 @@ import { evaluationUsecases } from "../../usecases/evaluation-usecases";
 export default async function getEvaluationCompoundList(options: {
   classeId: string;
 }) {
-  return evaluationUsecases.getEvaluationsList({
+  return evaluationUsecases.getEvaluationWithGradeList({
     classeId: options.classeId,
   });
 }

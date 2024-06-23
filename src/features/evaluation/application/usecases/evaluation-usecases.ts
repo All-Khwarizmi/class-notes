@@ -60,7 +60,7 @@ export default class EvaluationUsecases {
     return right(validatedEval.data);
   }
 
-  async getEvaluationBases(
+  async getEvaluationBaseList(
     options: GetEvaluationBasesOptions
   ): Promise<Either<Failure<string>, EvaluationBaseType[]>> {
     const eitherEvals = await this._evaluationRepository.getEvaluationBases(
@@ -184,7 +184,7 @@ export default class EvaluationUsecases {
     return right(validateEval.data);
   }
 
-  async getEvaluationsList(
+  async getEvaluationWithGradeList(
     options: GetEvaluationsListOptions
   ): Promise<Either<Failure<string>, CompoundEvaluationType[]>> {
     const eitherEvals = await this._evaluationRepository.getEvaluationsList(
