@@ -19,6 +19,7 @@ import { Id } from "../../../../../convex/_generated/dataModel";
 import { Settings } from "lucide-react";
 import useGetStudentTableData from "@/features/evaluation/application/adapters/services/useGetStudentTableData";
 import LayoutWithProps from "@/core/components/layout/LayoutWithProps";
+import CSVReader from "./StudentCsvLoader";
 
 export function StudentsEvaluationTableView(props: {
   classeId: string;
@@ -116,7 +117,6 @@ export function StudentsEvaluationTableView(props: {
                                     [dialogKey]: value,
                                   })
                                 }
-                               
                                 studentName={student.name}
                                 refetch={refetchCompoundEvaluations}
                               />
@@ -158,7 +158,10 @@ export function StudentsEvaluationTableView(props: {
               buttonText="Add Student"
               buttonClassName="bg-transparent dark text-white px-4 py-2 rounded-md border border-white"
             >
-              <AddStudentForm classId={props.classeId as Id<"Classes">} />
+              <div>
+                <AddStudentForm classId={props.classeId as Id<"Classes">} />
+                <CSVReader />
+              </div>
             </CustomDialog>
           </div>
         </div>
