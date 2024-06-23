@@ -31,7 +31,6 @@ export default function UpdateStudentGradeForm(props: {
   classeId: string;
   studentName: string;
   setIsDialogOpen: (open: boolean) => void;
-  setLocalTableData: (data: CompoundEvaluationType[]) => void;
   refetch: () => void;
 }) {
   const form = useForm<StudentGradeType>({

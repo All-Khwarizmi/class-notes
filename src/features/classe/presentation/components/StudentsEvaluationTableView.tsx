@@ -116,10 +116,7 @@ export function StudentsEvaluationTableView(props: {
                                     [dialogKey]: value,
                                   })
                                 }
-                                //! Fix this
-                                setLocalTableData={(
-                                  data: CompoundEvaluationType[]
-                                ) => {}}
+                               
                                 studentName={student.name}
                                 refetch={refetchCompoundEvaluations}
                               />
