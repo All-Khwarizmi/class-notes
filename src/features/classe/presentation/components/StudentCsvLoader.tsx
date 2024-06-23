@@ -1,10 +1,14 @@
 import { Button } from "@/core/components/ui/button";
+import { useMutation } from "convex/react";
 import React, { useState } from "react";
 import {
   useCSVReader,
   lightenDarkenColor,
   formatFileSize,
 } from "react-papaparse";
+import { api } from "../../../../../convex/_generated/api";
+import { Id } from "../../../../../convex/_generated/dataModel";
+import useAddStudent from "../../application/adapters/services/useAddStudent";
 
 const GREY = "#CCC";
 const GREY_DIM = "#686868";
@@ -14,7 +18,12 @@ const REMOVE_HOVER_COLOR_LIGHT = lightenDarkenColor(
   40
 );
 
-function CSVReader() {
+function CSVReader(props: {
+  classeId: string;
+
+  refetchCompoundEvaluations: () => void;
+}) {
+  const { mutate: addStudent } = useAddStudent();
   const { CSVReader } = useCSVReader();
   const [zoneHover, setZoneHover] = useState(false);
   const [removeHoverColor, setRemoveHoverColor] = useState(
@@ -110,6 +119,14 @@ function CSVReader() {
                 <Button
                   onClick={() => {
                     console.log("Saving students", students);
+                    students.forEach(async (name) => {
+                      await addStudent({
+                        name,
+                        classId: props.classeId as Id<"Classes">,
+                      });
+                    });
+                    props.refetchCompoundEvaluations();
+
                     setStudents([]);
                   }}
                   className="mt-4"
