@@ -1,7 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import updateGrade from "../actions/update-grade";
 import { UpdateGradeOptions } from "@/features/evaluation/domain/entities/evaluation-types";
-import { revalidatePath } from "next/cache";
 
 export default function useUpdateGrade() {
   return useMutation({
