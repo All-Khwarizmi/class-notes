@@ -44,13 +44,11 @@ function AssignEvaluation(props: { userId: string; classeId: string }) {
 
   useEffect(() => {
     if (tableData?.evaluations) {
-      console.log("Evaluations list updated: ", tableData.evaluations);
       setEvaluationsList(tableData.evaluations);
     }
   }, [tableData?.evaluations]);
 
   useEffect(() => {
-    console.log("Refetch triggered");
     refetchCompoundEvaluations();
     refetchAlreadyAssignedEvaluations();
   }, [refetchCompoundEvaluations, refetchAlreadyAssignedEvaluations]);
@@ -113,7 +111,6 @@ function AssignEvaluation(props: { userId: string; classeId: string }) {
                         gradedEval.evaluationBaseId === evaluation.id
                     )
                   ) {
-                    console.log("Evaluation: ", evaluation.id, evaluation.name);
                     return (
                       <SelectItem key={evaluation.id} value={evaluation.id}>
                         {evaluation.name}
@@ -139,11 +136,6 @@ function AssignEvaluation(props: { userId: string; classeId: string }) {
                   compoundEvals.grade.evaluationBaseId
               );
               if (evalBase) {
-                console.log(
-                  "Eval base: ",
-                  evalBase.base.name,
-                  compoundEvals.grade.id
-                );
                 return (
                   <li
                     className="flex justify-between items-center w-full px-4 py-2 "
