@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import {
   StudentGradeTenPointsExtension,
   StudentGradeTenPointsSchemaExtension,
@@ -29,15 +29,10 @@ function TenPointsCriteriaForm(props: {
   evaluationId: string;
   classeId: string;
   studentName: string;
-  setShouldFetchCompoundList: () => void;
+  refetch: () => void;
+  setIsDialogOpen: (open: boolean) => void;
 }) {
-  const {
-    isSuccess,
-    isError,
-    error,
-    isPending,
-    mutate: updateGrade,
-  } = useUpdateGrade();
+  const { isPending, mutate: updateGrade } = useUpdateGrade();
   const form = useForm<StudentGradeTenPointsExtension>({
     resolver: zodResolver(StudentGradeTenPointsSchemaExtension),
     defaultValues: props.studentGrade,
@@ -50,21 +45,20 @@ function TenPointsCriteriaForm(props: {
       evaluationId: props.evaluationId,
       grades: data.grades,
     };
-    updateGrade({
-      options: grade,
-      classeId: props.classeId,
-    });
+    updateGrade(
+      {
+        options: grade,
+        classeId: props.classeId,
+      },
+      {
+        onSuccess: () => {
+          props.refetch();
+          props.setIsDialogOpen(false);
+          toast.success("Grade updated successfully");
+        },
+      }
+    );
   }
-
-  useEffect(() => {
-    if (isSuccess === true) {
-      toast.success("Grade updated successfully");
-      props.setShouldFetchCompoundList();
-    }
-    if (isError === true) {
-      toast.error("An error occurred while updating the grade", {});
-    }
-  }, [isSuccess, isError, error]);
 
   return (
     <div className="space-y-8 py-8 px-4 md:px-0 rounded-lg shadow-md">
