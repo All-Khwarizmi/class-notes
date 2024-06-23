@@ -21,7 +21,6 @@ import {
 import { EvaluationBaseType } from "@/features/evaluation/domain/entities/evaluation-schema";
 import TenPointsCriteriaForm from "@/features/evaluation/presentation/components/TenPointsCriteriaForm";
 import { StudentGradeTenPointsSchemaExtension } from "@/features/evaluation/application/adapters/utils/ten-points-scale-case";
-import { CompoundEvaluationType } from "../../domain/class-schema";
 import { toast } from "sonner";
 
 export default function UpdateStudentGradeForm(props: {
