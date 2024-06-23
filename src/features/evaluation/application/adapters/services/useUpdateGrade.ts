@@ -11,14 +11,5 @@ export default function useUpdateGrade() {
     }) => {
       return updateGrade(options.options);
     },
-    onSuccess: (
-      _,
-      variables: { classeId: string; options: UpdateGradeOptions }
-    ) => {
-      //! Revalidate the cache for the classes page
-      const path = `/classes/class/${variables.classeId}`;
-      console.log("Revalidating path", path);
-      // revalidatePath(path, "page");
-    },
   });
 }
