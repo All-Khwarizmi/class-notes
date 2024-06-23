@@ -36,7 +36,7 @@ async function ClasseServerLayer(props: { slug: string }) {
         }),
     }),
     queryClient.prefetchQuery({
-      queryKey: ["students", props.slug],
+      queryKey: ["students"],
       queryFn: () =>
         getStudents({
           classeId: props.slug,
