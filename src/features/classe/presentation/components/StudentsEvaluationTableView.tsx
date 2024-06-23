@@ -33,6 +33,7 @@ export function StudentsEvaluationTableView(props: {
     isLoading,
     classeNavItems,
     refetchCompoundEvaluations,
+    refetchStudents,
   } = useGetStudentTableData({ classeId: props.classeId });
   if (isLoading) {
     return <div>Loading...</div>;
@@ -159,8 +160,20 @@ export function StudentsEvaluationTableView(props: {
               buttonClassName="bg-transparent dark text-white px-4 py-2 rounded-md border border-white"
             >
               <div>
-                <AddStudentForm classId={props.classeId as Id<"Classes">} />
-                <CSVReader />
+                <AddStudentForm
+                  classId={props.classeId as Id<"Classes">}
+                  refetch={() => {
+                    refetchStudents();
+                    refetchCompoundEvaluations();
+                  }}
+                />
+                <CSVReader
+                  classeId={props.classeId}
+                  refetchCompoundEvaluations={() => {
+                    refetchCompoundEvaluations();
+                    refetchStudents();
+                  }}
+                />
               </div>
             </CustomDialog>
           </div>
