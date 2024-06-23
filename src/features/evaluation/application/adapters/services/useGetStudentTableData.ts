@@ -14,11 +14,10 @@ export default function useGetStudentTableData(options: { classeId: string }) {
     isPending: isStudentsPending,
     refetch: refetchStudents,
   } = useQuery({
-    queryKey: ["students", options.classeId],
+    queryKey: ["students"],
     queryFn: async () => {
       return getStudents(options);
     },
-    refetchOnWindowFocus: false,
   });
   const {
     data: sequences,
@@ -67,6 +66,7 @@ export default function useGetStudentTableData(options: { classeId: string }) {
 
   return {
     tableData,
+    refetchStudents,
     refetchSequences,
     refetchCompoundEvaluations,
     classeNavItems,
