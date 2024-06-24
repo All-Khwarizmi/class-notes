@@ -1,4 +1,3 @@
-import { id } from "fp-ts/lib/Refinement";
 import { z } from "zod";
 
 export const StudentSchema = z.object({
@@ -6,7 +5,7 @@ export const StudentSchema = z.object({
   name: z.string(),
   classId: z.string(),
   imageUrl: z.optional(z.string()),
-  
+
 });
 
 export type Student = z.infer<typeof StudentSchema>;
