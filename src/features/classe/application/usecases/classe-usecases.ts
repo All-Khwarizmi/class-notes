@@ -37,7 +37,28 @@ export default class ClasseUseCases {
   }
 
   async deleteClasse({ id }: { id: string }) {
-    return await this._repository.deleteClasse({ id });
+    const batchOperations = [
+      this._repository.deleteClasseSequencesFromClasseId({ classeId: id }),
+      this._repository.deleteEvualuationsWithGradesFromClasseId({
+        classeId: id,
+      }),
+      this._repository.deleteStudentsFromClasseId({ classeId: id }),
+      this._repository.deleteClasse({ id }),
+    ];
+    const operationsResults = await Promise.allSettled(batchOperations);
+    const failures = operationsResults.filter(
+      (result) => result.status === "rejected"
+    );
+    if (failures.length > 0) {
+      return left(
+        Failure.invalidValue({
+          message: "Could not delete classe",
+          code: "APP204",
+          invalidValue: failures,
+        })
+      );
+    }
+    return right(undefined);
   }
 
   async getClasse({ id }: { id: string }) {
