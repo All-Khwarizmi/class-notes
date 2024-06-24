@@ -4,6 +4,7 @@ import { useMutation } from "@tanstack/react-query";
 import updateSequenceBody from "../actions/update-sequence-body";
 import { useCallback } from "react";
 import { debounce } from "lodash";
+import { EDITOR_DEBOUNCE_TIME } from "@/core/components/constants/editor-constants";
 
 export default function useUpdateSequenceBody() {
   const { mutate } = useMutation({
@@ -37,7 +38,7 @@ export default function useUpdateSequenceBody() {
             body: content,
             type: options.type,
           }),
-        5000
+        EDITOR_DEBOUNCE_TIME
       );
     },
     [mutate]

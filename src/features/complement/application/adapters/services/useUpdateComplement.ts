@@ -5,6 +5,7 @@ import { useMutation } from "@tanstack/react-query";
 import updateComplement from "../actions/update-complement";
 import { useCallback } from "react";
 import { debounce } from "lodash";
+import { EDITOR_DEBOUNCE_TIME } from "@/core/components/constants/editor-constants";
 
 function useUpdateComplement() {
   const { mutate } = useMutation({
@@ -22,7 +23,7 @@ function useUpdateComplement() {
     (options: Complement) => {
       return debounce((content: string) => {
         return mutate({ ...options, body: content });
-      }, 5000);
+      }, EDITOR_DEBOUNCE_TIME);
     },
     [mutate]
   );
