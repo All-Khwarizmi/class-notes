@@ -13,12 +13,13 @@ import CustomDialog from "@/core/components/common/CustomDialog";
 import AssignEvaluation from "./AssignEvaluation";
 import UpdateStudentGradeForm from "./UpdateStudentGradeForm";
 import calculateOverallGrade from "@/features/evaluation/application/adapters/utils/calculate-overall-grade";
-import AddStudentForm from "./AddStudentForm";
+import AddStudentForm from "../../../student/presentation/components/AddStudentForm";
 import { Id } from "../../../../../convex/_generated/dataModel";
 import { Settings } from "lucide-react";
 import useGetStudentTableData from "@/features/evaluation/application/adapters/services/useGetStudentTableData";
 import LayoutWithProps from "@/core/components/layout/LayoutWithProps";
 import CSVReader from "./StudentCsvLoader";
+import StudentUpdateForm from "@/features/student/presentation/components/StudentUpdateForm";
 
 export function StudentsEvaluationTableView(props: {
   classeId: string;
@@ -71,9 +72,10 @@ export function StudentsEvaluationTableView(props: {
                       buttonText={student.name}
                       buttonClassName="bg-transparent dark text-white px-4 py-2 rounded-md "
                     >
-                      <div>
-                        <h1>{student.name}</h1>
-                      </div>
+                      <StudentUpdateForm
+                        student={student}
+                        classeId={props.classeId}
+                      />
                     </CustomDialog>
                   </TableCell>
                   {/* 
