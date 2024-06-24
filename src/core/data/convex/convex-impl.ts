@@ -29,6 +29,7 @@ import {
   UpdateEvaluationBaseOptions,
   UpdateGradeOptions,
 } from "@/features/evaluation/domain/entities/evaluation-types";
+import { DeleteStudentOptions } from "@/features/student/domain/entities/student-types";
 
 export interface ConvexDatabaseOptions {
   db: typeof api;
@@ -1593,6 +1594,23 @@ export default class ConvexDatabase extends IDatabase {
         Failure.invalidValue({
           invalidValue: options,
           message: "Error getting evaluations with grades",
+          code: "INF101",
+        })
+      );
+    }
+  }
+  
+  async deleteStudent(
+    options: DeleteStudentOptions
+  ): Promise<Either<Failure<string>, void>> {
+    try {
+      await fetchMutation(this._db.students.deleteStudent, options);
+      return right(undefined);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: options,
+          message: "Failed to delete student",
           code: "INF101",
         })
       );

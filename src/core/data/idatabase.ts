@@ -19,14 +19,14 @@ import {
   GetEvaluationBaseOptions,
   GetEvaluationBasesOptions,
   GetEvaluationOptions,
-   GetEvaluationsWithGradesByEvalauationBaseIdOptions,
+  GetEvaluationsWithGradesByEvalauationBaseIdOptions,
   GetEvaluationsListOptions,
   IsEvaluationAssigned,
   UpdateEvaluationBaseOptions,
   UpdateGradeOptions,
   DeleteEvaluationWithGradesOptions,
 } from "@/features/evaluation/domain/entities/evaluation-types";
-
+import { DeleteStudentOptions } from "@/features/student/domain/entities/student-types";
 
 export default abstract class IDatabase {
   abstract getUser({
@@ -177,7 +177,6 @@ export default abstract class IDatabase {
     sequenceId: string;
     type: "template" | "sequence";
   }): Promise<Either<Failure<string>, void>>;
-
 
   abstract getAllCoursFromSequence({
     userId,
@@ -374,7 +373,9 @@ export default abstract class IDatabase {
     options: GetEvaluationsWithGradesByEvalauationBaseIdOptions
   ): Promise<Either<Failure<string>, DocumentData[]>>;
 
-  abstract deleteEvaluationWithGrades(options: DeleteEvaluationWithGradesOptions): Promise<Either<Failure<string>, void>>;
+  abstract deleteEvaluationWithGrades(
+    options: DeleteEvaluationWithGradesOptions
+  ): Promise<Either<Failure<string>, void>>;
 
   abstract updateGrade(
     options: UpdateGradeOptions
@@ -387,4 +388,16 @@ export default abstract class IDatabase {
   abstract getEvaluationsListWithGrade(
     options: GetEvaluationsListOptions
   ): Promise<Either<Failure<string>, DocumentData[]>>;
+  /**
+   * Deletes a student from the database.
+   *
+   * @param options - The options for deleting the student.
+   * @returns A promise that resolves to either a failure or void.
+   *
+   * @remarks
+   * ⚠️ WARNING: This method violates our architecture principles. According to our architecture, the deletion of resources where the student appears should be handled in the application layer, not in the backend implementation. Please refactor this code accordingly.
+   */
+  abstract deleteStudent(
+    options: DeleteStudentOptions
+  ): Promise<Either<Failure<string>, void>>;
 }
