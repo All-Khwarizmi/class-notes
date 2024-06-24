@@ -30,6 +30,8 @@ import {
   DeleteStudentOptions,
   UpdateStudentOptions,
 } from "@/features/student/domain/entities/student-types";
+import { DeleteClasseOptions } from "@/features/classe/domain/classe-types";
+import { deleteStudentsFromClasseId } from "../../../convex/classes";
 
 export default abstract class IDatabase {
   abstract getUser({
@@ -406,5 +408,17 @@ export default abstract class IDatabase {
 
   abstract updateStudent(
     options: UpdateStudentOptions
+  ): Promise<Either<Failure<string>, void>>;
+
+  abstract deleteClassesSequenceFromClasse(
+    options: DeleteClasseOptions
+  ): Promise<Either<Failure<string>, void>>;
+
+  abstract deleteEvaluationsWithGradesFromClasse(
+    options: DeleteClasseOptions
+  ): Promise<Either<Failure<string>, void>>;
+
+  abstract deleteStudentsFromClasseId(
+    options: DeleteClasseOptions
   ): Promise<Either<Failure<string>, void>>;
 }

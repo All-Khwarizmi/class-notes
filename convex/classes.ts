@@ -306,3 +306,60 @@ export const updateClassVisibility = mutation({
     return { error: true, success: false };
   },
 });
+
+export const deleteClasseSequencesFromClasseId = mutation({
+  args: {
+    classeId: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const sequences = await ctx.db
+      .query("ClasseSequence")
+      .filter((q) => q.eq(q.field("classeId"), args.classeId))
+      .collect();
+    if (sequences) {
+      for (const sequence of sequences) {
+        ctx.db.delete(sequence._id);
+      }
+      return { error: false, success: true };
+    }
+    return { error: true, success: false };
+  },
+});
+
+export const deleteEvualuationsWithGradesFromClasseId = mutation({
+  args: {
+    classeId: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const evaluations = await ctx.db
+      .query("EvaluationsWithGrades")
+      .filter((q) => q.eq(q.field("classeId"), args.classeId))
+      .collect();
+    if (evaluations) {
+      for (const evaluation of evaluations) {
+        ctx.db.delete(evaluation._id);
+      }
+      return { error: false, success: true };
+    }
+    return { error: true, success: false };
+  },
+});
+
+export const deleteStudentsFromClasseId = mutation({
+  args: {
+    classeId: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const students = await ctx.db
+      .query("Students")
+      .filter((q) => q.eq(q.field("classId"), args.classeId))
+      .collect();
+    if (students) {
+      for (const student of students) {
+        ctx.db.delete(student._id);
+      }
+      return { error: false, success: true };
+    }
+    return { error: true, success: false };
+  },
+});
