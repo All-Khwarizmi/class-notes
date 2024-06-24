@@ -1,5 +1,5 @@
 import IDatabase from "@/core/data/idatabase";
-import { DeleteStudentOptions } from "../../domain/entities/student-types";
+import { DeleteStudentOptions, UpdateStudentOptions } from "../../domain/entities/student-types";
 import { getAppDataBase } from "@/core/data/get-app-db";
 
 export default class StudentRepository {
@@ -11,6 +11,10 @@ export default class StudentRepository {
 
   async deleteStudent(options: DeleteStudentOptions) {
     return this._db.deleteStudent(options);
+  }
+
+  async updateStudent(options: UpdateStudentOptions) {
+    return this._db.updateStudent(options);
   }
 }
 

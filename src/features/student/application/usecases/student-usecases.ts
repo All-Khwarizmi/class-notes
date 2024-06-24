@@ -1,7 +1,12 @@
 import Failure from "@/core/failures/failures";
 import { Either } from "fp-ts/lib/Either";
-import { DeleteStudentOptions } from "../../domain/entities/student-types";
-import StudentRepository, { studentRepository } from "../repositories/student-repository";
+import {
+  DeleteStudentOptions,
+  UpdateStudentOptions,
+} from "../../domain/entities/student-types";
+import StudentRepository, {
+  studentRepository,
+} from "../repositories/student-repository";
 
 export default class StudentUsecases {
   private readonly _studentRepository: StudentRepository;
@@ -28,6 +33,19 @@ export default class StudentUsecases {
     options: DeleteStudentOptions
   ): Promise<Either<Failure<string>, void>> {
     return this._studentRepository.deleteStudent(options);
+  }
+
+  /**
+   * Updates a student in the repository.
+   *
+   *
+   * @param {UpdateStudentOptions} options - The options for updating the student.
+   * @returns {Promise<Either<Failure<string>, void>>} - A promise that resolves to either a failure with an error message or void.
+   */
+  async updateStudent(
+    options: UpdateStudentOptions
+  ): Promise<Either<Failure<string>, void>> {
+    return this._studentRepository.updateStudent(options);
   }
 }
 
