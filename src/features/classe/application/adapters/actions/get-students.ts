@@ -2,12 +2,9 @@
 
 import { fetchQuery } from "convex/nextjs";
 import { api } from "../../../../../../convex/_generated/api";
-import {
-  Student,
-  StudentSchema,
-} from "@/features/classe/presentation/components/student-schema";
 import { Either, left, right } from "fp-ts/lib/Either";
 import Failure from "@/core/failures/failures";
+import { Student, StudentSchema } from "@/features/student/domain/entities/student-schema";
 
 export default async function getStudents(options: {
   classeId: string;

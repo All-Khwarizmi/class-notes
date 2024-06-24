@@ -1,7 +1,10 @@
 import { useMutation } from "convex/react";
 import { api } from "../../../../../convex/_generated/api";
 import { Id } from "../../../../../convex/_generated/dataModel";
-import { Student, StudentSchema } from "./student-schema";
+import {
+  Student,
+  StudentSchema,
+} from "../../../student/domain/entities/student-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import {
