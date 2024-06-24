@@ -5,6 +5,7 @@ import { ClassType } from "../../domain/class-schema";
 import ClassEntity from "../../domain/class-entity";
 import Failure from "@/core/failures/failures";
 import { right } from "fp-ts/lib/Either";
+import { getAppDataBase } from "@/core/data/get-app-db";
 
 export default class ClasseRepository {
   private readonly _db: IDatabase;
@@ -68,4 +69,4 @@ export default class ClasseRepository {
   }
 }
 
-export const classeRepository = new ClasseRepository(convexDatabase);
+export const classeRepository = new ClasseRepository(getAppDataBase());

@@ -1,6 +1,7 @@
 import IDatabase from "@/core/data/idatabase";
 import { Note } from "../../domain/notes-schemas";
 import { convexDatabase } from "@/core/data/convex/convex-impl";
+import { getAppDataBase } from "@/core/data/get-app-db";
 
 export default class NoteRepository {
   private readonly _db: IDatabase;
@@ -68,4 +69,4 @@ export default class NoteRepository {
   }
 }
 
-export const noteRepository = new NoteRepository(convexDatabase);
+export const noteRepository = new NoteRepository(getAppDataBase());

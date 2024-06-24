@@ -1,6 +1,7 @@
 import IDatabase from "@/core/data/idatabase";
 import { Complement } from "../../domain/complement-schemas";
 import { convexDatabase } from "@/core/data/convex/convex-impl";
+import { getAppDataBase } from "@/core/data/get-app-db";
 
 export default class ComplementRepository {
   private readonly _db: IDatabase;
@@ -45,4 +46,4 @@ export default class ComplementRepository {
   }
 }
 
-export const complementRepository = new ComplementRepository(convexDatabase);
+export const complementRepository = new ComplementRepository(getAppDataBase());
