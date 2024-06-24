@@ -9,7 +9,6 @@ import {
   TableCaption,
   TableHeader,
 } from "@/core/components/ui/table";
-import { CompoundEvaluationType } from "../../domain/class-schema";
 import CustomDialog from "@/core/components/common/CustomDialog";
 import AssignEvaluation from "./AssignEvaluation";
 import UpdateStudentGradeForm from "./UpdateStudentGradeForm";
@@ -65,7 +64,18 @@ export function StudentsEvaluationTableView(props: {
           */}
               {data?.students.map((student, index) => (
                 <TableRow key={student.id}>
-                  <TableCell className="w-[200px]">{student.name}</TableCell>
+                  <TableCell className="w-[200px]">
+                    {" "}
+                    <CustomDialog
+                      title={student.name}
+                      buttonText={student.name}
+                      buttonClassName="bg-transparent dark text-white px-4 py-2 rounded-md "
+                    >
+                      <div>
+                        <h1>{student.name}</h1>
+                      </div>
+                    </CustomDialog>
+                  </TableCell>
                   {/* 
                 Loop through the evaluations and find the grade of the student.
                 If the student has a grade, display the overall grade.
