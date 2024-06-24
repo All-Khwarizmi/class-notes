@@ -16,6 +16,7 @@ import { useState } from "react";
 import SelectImageUrl from "@/features/cours-sequence/presentation/components/SelectImageUrl";
 import useDeleteStudent from "../../application/adapters/services/useDeleteStudent";
 import { toastWrapper } from "@/core/utils/toast-wrapper";
+import useUpdateStudent from "../../application/adapters/services/useUpdateStudent";
 
 function StudentUpdateForm(props: {
   student: Student;
@@ -27,30 +28,31 @@ function StudentUpdateForm(props: {
   const [localImageUrl, setLocalImageUrl] = useState<string>(
     student.imageUrl ?? "/images/mos-design-jzFbbG2WXv0-unsplash.jpg"
   );
-  // const { mutate: updateStudent } = useUpdateStudent();
+  const { mutate: updateStudent } = useUpdateStudent();
+  const { mutate: deleteStudent } = useDeleteStudent();
+
   const form = useForm<Pick<Student, "name" | "classId" | "imageUrl">>({
     resolver: zodResolver(StudentSchema),
     defaultValues: student,
   });
-  const { mutate: deleteStudent } = useDeleteStudent();
 
   async function onSubmit(
     values: Pick<Student, "name" | "classId" | "imageUrl">
   ) {
     console.log(values);
     const { name } = values;
-    // updateStudent(
-    //   { name, classId },
-    //   {
-    //     onSuccess: () => {
-    //       refetch();
-    //       toast.success("Élève ajouté avec succès");
-    //     },
-    //     onError: () => {
-    //       toast.error("Erreur lors de l'ajout de l'élève");
-    //     },
-    //   }
-    // );
+    updateStudent(
+      { name, id: student.id, imageUrl: localImageUrl },
+      {
+        onSuccess: () => {
+          props.refetch();
+          toastWrapper.success("Élève ajouté avec succès");
+        },
+        onError: () => {
+          toastWrapper.error("Erreur lors de l'ajout de l'élève");
+        },
+      }
+    );
   }
 
   return (
