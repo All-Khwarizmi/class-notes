@@ -14,7 +14,7 @@ import Link from "next/link";
 import { ClassType } from "../../domain/class-schema";
 import { Delete, Pen } from "lucide-react";
 import VisibilitySwitch from "@/features/cours-sequence/presentation/components/VisibilitySwitch";
-import useDeleteClasse from "../../infra/services/useDeleteClasse";
+import useDeleteClasse from "../../application/adapters/services/useDeleteClasse";
 
 export default function ClassesTable(props: {
   classes: ClassType[];
@@ -22,12 +22,17 @@ export default function ClassesTable(props: {
 }) {
   const { mutate: deleteClasse } = useDeleteClasse();
   const handleDelete = async (id: string) => {
-    deleteClasse(id, {
-      onSuccess: () => {
-        //! This is a hack to refresh the page after deleting a class untill we move fully to react-query
-        window.location.reload();
+    deleteClasse(
+      {
+        classeId: id,
       },
-    });
+      {
+        onSuccess: () => {
+          //! This is a hack to refresh the page after deleting a class untill we move fully to react-query
+          // window.location.reload();
+        },
+      }
+    );
   };
 
   return (
