@@ -70,3 +70,35 @@ export const getStudents = query({
       .collect();
   },
 });
+
+export const deleteStudent = mutation({
+  args: {
+    id: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const student = await ctx.db
+      .query("Students")
+      .filter((q) => q.eq(q.field("_id"), args.id))
+      .first();
+    if (!student) {
+      throw new Error("Student not found");
+    }
+
+    // get all the evaluations for the class
+    const evaluations = await ctx.db
+      .query("EvaluationsWithGrades")
+      .filter((q) => q.eq(q.field("classeId"), student.classId))
+      .collect();
+
+    // Map over each evaluation with grades and check if we have the corresponding evaluation base and the student to the grades array
+    for (const evaluation of evaluations) {
+      await ctx.db.patch(evaluation._id, {
+        grades: evaluation.grades.filter(
+          (grade) => grade.studentId !== args.id
+        ),
+      });
+    }
+
+    await ctx.db.delete(student._id);
+  },
+});
