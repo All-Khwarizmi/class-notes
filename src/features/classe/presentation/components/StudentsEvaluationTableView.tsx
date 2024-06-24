@@ -75,6 +75,7 @@ export function StudentsEvaluationTableView(props: {
                       <StudentUpdateForm
                         student={student}
                         classeId={props.classeId}
+                        refetch={refetchStudents}
                       />
                     </CustomDialog>
                   </TableCell>
