@@ -1,4 +1,3 @@
-import { Id } from "../../../../../convex/_generated/dataModel";
 import { Student, StudentSchema } from "../../domain/entities/student-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -51,7 +50,10 @@ function StudentUpdateForm(props: { student: Student; classeId: string }) {
   return (
     <>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)}>
+        <form
+          className="flex flex-col space-y-4 w-full p-4"
+          onSubmit={form.handleSubmit(onSubmit)}
+        >
           <FormField
             control={form.control}
             name="name"
@@ -73,10 +75,23 @@ function StudentUpdateForm(props: { student: Student; classeId: string }) {
             imageUrl={localImageUrl}
             setImageUrl={setLocalImageUrl}
           />
-          <FormDescription>
+          <FormDescription className="flex justify-between items-center">
             <FormMessage>
               <Button type="submit">Mettre à jour</Button>
             </FormMessage>
+            {/* Add button to delete the student */}
+            <Button
+              type="button"
+              variant={"destructive"}
+              onClick={() => {
+                // deleteStudent(student.id);
+                // refetch();
+                confirm("Voulez-vous vraiment supprimer cet élève ?") &&
+                  toast.success("Élève supprimé avec succès");
+              }}
+            >
+              Delete
+            </Button>
           </FormDescription>
         </form>
       </Form>
