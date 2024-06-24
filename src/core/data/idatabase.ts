@@ -26,7 +26,10 @@ import {
   UpdateGradeOptions,
   DeleteEvaluationWithGradesOptions,
 } from "@/features/evaluation/domain/entities/evaluation-types";
-import { DeleteStudentOptions } from "@/features/student/domain/entities/student-types";
+import {
+  DeleteStudentOptions,
+  UpdateStudentOptions,
+} from "@/features/student/domain/entities/student-types";
 
 export default abstract class IDatabase {
   abstract getUser({
@@ -399,5 +402,9 @@ export default abstract class IDatabase {
    */
   abstract deleteStudent(
     options: DeleteStudentOptions
+  ): Promise<Either<Failure<string>, void>>;
+
+  abstract updateStudent(
+    options: UpdateStudentOptions
   ): Promise<Either<Failure<string>, void>>;
 }

@@ -102,3 +102,27 @@ export const deleteStudent = mutation({
     await ctx.db.delete(student._id);
   },
 });
+
+export const updateStudent = mutation({
+  args: {
+    id: v.string(),
+    name: v.optional(v.string()),
+    imageUrl: v.optional(v.string()),
+  },
+  handler: async (ctx, args) => {
+    const student = await ctx.db
+      .query("Students")
+      .filter((q) => q.eq(q.field("_id"), args.id))
+      .first();
+    if (!student) {
+      throw new Error("Student not found");
+    }
+
+    if (args.name) {
+      await ctx.db.patch(student._id, {
+        name: args.name,
+        imageUrl: args.imageUrl,
+      });
+    }
+  },
+});
