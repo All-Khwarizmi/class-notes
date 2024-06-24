@@ -1,6 +1,6 @@
 import { convexDatabase } from "./convex/convex-impl";
 import IDatabase from "./idatabase";
 
-export function getAppDataBase(db: IDatabase): IDatabase {
+export function getAppDataBase(): IDatabase {
   return convexDatabase;
 }
