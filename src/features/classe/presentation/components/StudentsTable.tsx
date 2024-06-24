@@ -11,7 +11,7 @@ import {
 import { useQuery } from "convex/react";
 import { api } from "../../../../../convex/_generated/api";
 import CustomDialog from "@/core/components/common/CustomDialog";
-import AddStudentForm from "./AddStudentForm";
+import AddStudentForm from "../../../student/presentation/components/AddStudentForm";
 import { useMemo } from "react";
 import { Id } from "../../../../../convex/_generated/dataModel";
 

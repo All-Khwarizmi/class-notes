@@ -2,7 +2,7 @@ import { EvaluationWithGradeSchema } from "@/features/evaluation/domain/entities
 import { z } from "zod";
 import { EvaluationBase } from "../../../../convex/tables/evaluation_base_convex_schema";
 import { EvaluationBaseSchema } from "@/features/evaluation/domain/entities/evaluation-schema";
-import { StudentSchema } from "../presentation/components/student-schema";
+import { StudentSchema } from "../../student/domain/entities/student-schema";
 
 const classSchema = z.object({
   id: z.string(),

@@ -29,6 +29,11 @@ import {
   UpdateEvaluationBaseOptions,
   UpdateGradeOptions,
 } from "@/features/evaluation/domain/entities/evaluation-types";
+import {
+  DeleteStudentOptions,
+  UpdateStudentOptions,
+} from "@/features/student/domain/entities/student-types";
+import { DeleteClasseOptions } from "@/features/classe/domain/classe-types";
 
 export interface ConvexDatabaseOptions {
   db: typeof api;
@@ -1593,6 +1598,94 @@ export default class ConvexDatabase extends IDatabase {
         Failure.invalidValue({
           invalidValue: options,
           message: "Error getting evaluations with grades",
+          code: "INF101",
+        })
+      );
+    }
+  }
+
+  async deleteStudent(
+    options: DeleteStudentOptions
+  ): Promise<Either<Failure<string>, void>> {
+    try {
+      await fetchMutation(this._db.students.deleteStudent, options);
+      return right(undefined);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: options,
+          message: "Failed to delete student",
+          code: "INF101",
+        })
+      );
+    }
+  }
+  async updateStudent(
+    options: UpdateStudentOptions
+  ): Promise<Either<Failure<string>, void>> {
+    try {
+      await fetchMutation(this._db.students.updateStudent, options);
+      return right(undefined);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: options,
+          message: "Failed to update student",
+          code: "INF101",
+        })
+      );
+    }
+  }
+  async deleteClassesSequenceFromClasse(
+    options: DeleteClasseOptions
+  ): Promise<Either<Failure<string>, void>> {
+    try {
+      await fetchMutation(
+        this._db.classes.deleteClasseSequencesFromClasseId,
+        options
+      );
+      return right(undefined);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: options,
+          message: "Failed to delete classes sequence from class",
+          code: "INF101",
+        })
+      );
+    }
+  }
+  async deleteEvaluationsWithGradesFromClasse(
+    options: DeleteClasseOptions
+  ): Promise<Either<Failure<string>, void>> {
+    try {
+      await fetchMutation(
+        this._db.classes.deleteEvualuationsWithGradesFromClasseId,
+        options
+      );
+      return right(undefined);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: options,
+          message: "Failed to delete evaluations with grades from class",
+          code: "INF101",
+        })
+      );
+    }
+  }
+
+  async deleteStudentsFromClasseId(
+    options: DeleteClasseOptions
+  ): Promise<Either<Failure<string>, void>> {
+    try {
+      await fetchMutation(this._db.classes.deleteStudentsFromClasseId, options);
+      return right(undefined);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: options,
+          message: "Failed to delete students from class",
           code: "INF101",
         })
       );

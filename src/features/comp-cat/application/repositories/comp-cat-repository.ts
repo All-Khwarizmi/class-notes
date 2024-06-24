@@ -1,6 +1,7 @@
 import IDatabase from "@/core/data/idatabase";
 import { Category } from "../../domain/entities/schemas";
 import { convexDatabase } from "@/core/data/convex/convex-impl";
+import { getAppDataBase } from "@/core/data/get-app-db";
 
 export default class CompCatRepository {
   private readonly _db: IDatabase;
@@ -39,4 +40,4 @@ export default class CompCatRepository {
   }
 }
 
-export const compCatRepository = new CompCatRepository({ db: convexDatabase });
+export const compCatRepository = new CompCatRepository({ db: getAppDataBase() });

@@ -1,7 +1,5 @@
-import { useMutation } from "convex/react";
-import { api } from "../../../../../convex/_generated/api";
 import { Id } from "../../../../../convex/_generated/dataModel";
-import { Student, StudentSchema } from "./student-schema";
+import { Student, StudentSchema } from "../../domain/entities/student-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import {
@@ -16,7 +14,7 @@ import {
 import { Input } from "@/core/components/ui/input";
 import { Button } from "@/core/components/ui/button";
 import { toast } from "sonner";
-import useAddStudent from "../../application/adapters/services/useAddStudent";
+import useAddStudent from "../../../classe/application/adapters/services/useAddStudent";
 export default function AddStudentForm({
   classId,
   refetch,

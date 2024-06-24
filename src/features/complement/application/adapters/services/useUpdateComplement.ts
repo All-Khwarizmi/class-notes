@@ -5,6 +5,11 @@ import { useMutation } from "@tanstack/react-query";
 import updateComplement from "../actions/update-complement";
 import { useCallback } from "react";
 import { debounce } from "lodash";
+import {
+  EDITOR_DEBOUNCE_TIME,
+  EDITOR_ERROR_TOAST_DURATION,
+  EDITOR_TOAST_UPDATE_DURATION,
+} from "@/core/components/constants/editor-constants";
 
 function useUpdateComplement() {
   const { mutate } = useMutation({
@@ -12,9 +17,13 @@ function useUpdateComplement() {
     mutationFn: async (options: Complement) => {
       const result = await updateComplement(options);
       if (isLeft(result)) {
-        toast.error("Failed to update the complement", { duration: 2000 });
+        toast.error("Failed to update the complement", {
+          duration: EDITOR_ERROR_TOAST_DURATION,
+        });
       } else {
-        toast.success("Complement updated successfully", { duration: 2000 });
+        toast.success("Complement updated successfully", {
+          duration: EDITOR_TOAST_UPDATE_DURATION,
+        });
       }
     },
   });
@@ -22,7 +31,7 @@ function useUpdateComplement() {
     (options: Complement) => {
       return debounce((content: string) => {
         return mutate({ ...options, body: content });
-      }, 5000);
+      }, EDITOR_DEBOUNCE_TIME);
     },
     [mutate]
   );

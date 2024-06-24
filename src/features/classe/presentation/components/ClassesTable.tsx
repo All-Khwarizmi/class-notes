@@ -11,18 +11,28 @@ import CustomDialog from "../../../../core/components/common/CustomDialog";
 import AddClassForm from "./AddClassForm";
 import AddIcon from "../../../../core/components/icons/AddIcon";
 import Link from "next/link";
-import { classeRepository } from "@/features/classe/application/repository/classe-repository";
 import { ClassType } from "../../domain/class-schema";
 import { Delete, Pen } from "lucide-react";
 import VisibilitySwitch from "@/features/cours-sequence/presentation/components/VisibilitySwitch";
+import useDeleteClasse from "../../application/adapters/services/useDeleteClasse";
 
 export default function ClassesTable(props: {
   classes: ClassType[];
   userId: string;
 }) {
-  const { setClasseId } = classeRepository.useDeleteClasse();
+  const { mutate: deleteClasse } = useDeleteClasse();
   const handleDelete = async (id: string) => {
-    setClasseId(id);
+    deleteClasse(
+      {
+        classeId: id,
+      },
+      {
+        onSuccess: () => {
+          //! This is a hack to refresh the page after deleting a class untill we move fully to react-query
+          // window.location.reload();
+        },
+      }
+    );
   };
 
   return (

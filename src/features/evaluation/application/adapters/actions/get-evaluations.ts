@@ -8,7 +8,7 @@ import { evaluationUsecases } from "../../usecases/evaluation-usecases";
 async function getEvaluations(options: {
   userId: string;
 }): Promise<Either<Failure<string>, EvaluationBaseType[]>> {
-  return evaluationUsecases.getEvaluationBases({
+  return evaluationUsecases.getEvaluationBaseList({
     createdBy: options.userId,
   });
 }

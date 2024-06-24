@@ -1,10 +1,11 @@
-import { convexDatabase } from "@/core/data/convex/convex-impl";
 import IDatabase from "@/core/data/idatabase";
 import { isLeft, left } from "fp-ts/lib/Either";
 import { ClassType } from "../../domain/class-schema";
 import ClassEntity from "../../domain/class-entity";
 import Failure from "@/core/failures/failures";
 import { right } from "fp-ts/lib/Either";
+import { getAppDataBase } from "@/core/data/get-app-db";
+import { DeleteClasseOptions } from "../../domain/classe-types";
 
 export default class ClasseRepository {
   private readonly _db: IDatabase;
@@ -66,6 +67,18 @@ export default class ClasseRepository {
   }) {
     return this._db.updateVisibility({ userId, publish, type, typeId });
   }
+
+  async deleteClasseSequencesFromClasseId(options: DeleteClasseOptions) {
+    return this._db.deleteClassesSequenceFromClasse(options);
+  }
+
+  async deleteEvualuationsWithGradesFromClasseId(options: DeleteClasseOptions) {
+    return this._db.deleteEvaluationsWithGradesFromClasse(options);
+  }
+
+  async deleteStudentsFromClasseId(options: DeleteClasseOptions) {
+    return this._db.deleteStudentsFromClasseId(options);
+  }
 }
 
-export const classeRepository = new ClasseRepository(convexDatabase);
+export const classeRepository = new ClasseRepository(getAppDataBase());

@@ -9,17 +9,17 @@ import {
   TableCaption,
   TableHeader,
 } from "@/core/components/ui/table";
-import { CompoundEvaluationType } from "../../domain/class-schema";
 import CustomDialog from "@/core/components/common/CustomDialog";
 import AssignEvaluation from "./AssignEvaluation";
 import UpdateStudentGradeForm from "./UpdateStudentGradeForm";
 import calculateOverallGrade from "@/features/evaluation/application/adapters/utils/calculate-overall-grade";
-import AddStudentForm from "./AddStudentForm";
+import AddStudentForm from "../../../student/presentation/components/AddStudentForm";
 import { Id } from "../../../../../convex/_generated/dataModel";
 import { Settings } from "lucide-react";
 import useGetStudentTableData from "@/features/evaluation/application/adapters/services/useGetStudentTableData";
 import LayoutWithProps from "@/core/components/layout/LayoutWithProps";
 import CSVReader from "./StudentCsvLoader";
+import StudentUpdateForm from "@/features/student/presentation/components/StudentUpdateForm";
 
 export function StudentsEvaluationTableView(props: {
   classeId: string;
@@ -65,7 +65,20 @@ export function StudentsEvaluationTableView(props: {
           */}
               {data?.students.map((student, index) => (
                 <TableRow key={student.id}>
-                  <TableCell className="w-[200px]">{student.name}</TableCell>
+                  <TableCell className="w-[200px]">
+                    {" "}
+                    <CustomDialog
+                      title={`Update ${student.name}'s Information`}
+                      buttonText={student.name}
+                      buttonClassName="bg-transparent dark text-white px-4 py-2 rounded-md "
+                    >
+                      <StudentUpdateForm
+                        student={student}
+                        classeId={props.classeId}
+                        refetch={refetchStudents}
+                      />
+                    </CustomDialog>
+                  </TableCell>
                   {/* 
                 Loop through the evaluations and find the grade of the student.
                 If the student has a grade, display the overall grade.

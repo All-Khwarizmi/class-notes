@@ -2,6 +2,7 @@ import { convexDatabase } from "@/core/data/convex/convex-impl";
 import IDatabase from "@/core/data/idatabase";
 import { Cours, Sequence } from "../../domain/entities/cours-schemas";
 import { deleteSequence } from "../../../../../convex/sequence";
+import { getAppDataBase } from "@/core/data/get-app-db";
 
 export default class CoursRepository {
   private readonly _db: IDatabase;
@@ -151,4 +152,4 @@ export default class CoursRepository {
   }
 }
 
-export const coursRepository = new CoursRepository({ db: convexDatabase });
+export const coursRepository = new CoursRepository({ db: getAppDataBase() });

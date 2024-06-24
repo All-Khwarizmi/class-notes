@@ -13,6 +13,7 @@ import {
   UpdateEvaluationBaseOptions,
   UpdateGradeOptions,
 } from "../../domain/entities/evaluation-types";
+import { getAppDataBase } from "@/core/data/get-app-db";
 
 export default class EvaluatioRepository {
   private readonly _db: IDatabase;
@@ -71,4 +72,4 @@ export default class EvaluatioRepository {
   }
 }
 
-export const evaluatioRepository = new EvaluatioRepository(convexDatabase);
+export const evaluatioRepository = new EvaluatioRepository(getAppDataBase());

@@ -207,6 +207,7 @@ export default defineSchema({
     classId: v.id("Classes"),
     observations: v.array(v.string()),
     evaluationsResults: v.array(v.id("StudentEvaluationGrades")),
+    imageUrl: v.optional(v.string()),
   }),
 
   StudentEvaluationGrades: defineTable({
