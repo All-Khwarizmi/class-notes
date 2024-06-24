@@ -68,7 +68,7 @@ export function StudentsEvaluationTableView(props: {
                   <TableCell className="w-[200px]">
                     {" "}
                     <CustomDialog
-                      title={student.name}
+                      title={`Update ${student.name}'s Information`}
                       buttonText={student.name}
                       buttonClassName="bg-transparent dark text-white px-4 py-2 rounded-md "
                     >
