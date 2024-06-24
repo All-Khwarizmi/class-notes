@@ -4,7 +4,11 @@ import { useMutation } from "@tanstack/react-query";
 import updateCourseBody from "../actions/update-course-body";
 import { debounce } from "lodash";
 import { useCallback } from "react";
-import { EDITOR_DEBOUNCE_TIME } from "@/core/components/constants/editor-constants";
+import {
+  EDITOR_DEBOUNCE_TIME,
+  EDITOR_ERROR_TOAST_DURATION,
+  EDITOR_TOAST_UPDATE_DURATION,
+} from "@/core/components/constants/editor-constants";
 
 export default function useUpdateCoursBody() {
   const { mutate } = useMutation({
@@ -16,9 +20,13 @@ export default function useUpdateCoursBody() {
     }) => {
       const result = await updateCourseBody(options);
       if (isLeft(result)) {
-        toast.error("Failed to update the course body");
+        toast.error("Failed to update the course body", {
+          duration: EDITOR_ERROR_TOAST_DURATION,
+        });
       } else {
-        toast.success("Course body updated successfully");
+        toast.success("Course body updated successfully", {
+          duration: EDITOR_TOAST_UPDATE_DURATION,
+        });
       }
     },
   });
