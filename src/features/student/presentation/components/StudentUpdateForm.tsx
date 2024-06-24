@@ -12,11 +12,16 @@ import {
 } from "@/core/components/ui/form";
 import { Input } from "@/core/components/ui/input";
 import { Button } from "@/core/components/ui/button";
-import { toast } from "sonner";
 import { useState } from "react";
 import SelectImageUrl from "@/features/cours-sequence/presentation/components/SelectImageUrl";
+import useDeleteStudent from "../../application/adapters/services/useDeleteStudent";
+import { toastWrapper } from "@/core/utils/toast-wrapper";
 
-function StudentUpdateForm(props: { student: Student; classeId: string }) {
+function StudentUpdateForm(props: {
+  student: Student;
+  classeId: string;
+  refetch: () => void;
+}) {
   const { student, classeId } = props;
 
   const [localImageUrl, setLocalImageUrl] = useState<string>(
@@ -27,6 +32,7 @@ function StudentUpdateForm(props: { student: Student; classeId: string }) {
     resolver: zodResolver(StudentSchema),
     defaultValues: student,
   });
+  const { mutate: deleteStudent } = useDeleteStudent();
 
   async function onSubmit(
     values: Pick<Student, "name" | "classId" | "imageUrl">
@@ -87,7 +93,22 @@ function StudentUpdateForm(props: { student: Student; classeId: string }) {
                 // deleteStudent(student.id);
                 // refetch();
                 confirm("Voulez-vous vraiment supprimer cet élève ?") &&
-                  toast.success("Élève supprimé avec succès");
+                  deleteStudent(
+                    {
+                      id: student.id,
+                    },
+                    {
+                      onSuccess: () => {
+                        props.refetch();
+                        toastWrapper.success("Élève supprimé avec succès");
+                      },
+                      onError: () => {
+                        toastWrapper.error(
+                          "Erreur lors de la suppression de l'élève"
+                        );
+                      },
+                    }
+                  );
               }}
             >
               Delete
