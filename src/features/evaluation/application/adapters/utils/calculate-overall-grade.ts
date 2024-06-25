@@ -4,7 +4,7 @@ import {
   GradeTypeUnionType,
 } from "@/features/evaluation/domain/entities/evaluation-schema";
 import { tenPointsScaleCase } from "./ten-points-scale-case";
-import { competenceCase } from "./competence-case";
+import { evaluateCompetence } from "./competence-case";
 
 export type SwitchReturnType =
   | string
@@ -31,7 +31,7 @@ export default function calculateOverallGrade({
     case "10-point Scale":
       return tenPointsScaleCase(grades, criteria);
     case "Competence":
-      return competenceCase(grades, criteria);
+      return evaluateCompetence(grades, criteria);
     case "20-point Scale":
       return "N/A";
     case "Grade Points":

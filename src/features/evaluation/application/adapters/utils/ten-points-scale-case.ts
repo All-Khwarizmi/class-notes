@@ -18,7 +18,7 @@ export function spanishGradingCalc({
 }: {
   grade: Grade;
 }): number | SpecialGradeType {
-  const check = checkSpecialGradeType(grade.grade);
+  const check = checkSpecialGradeType([grade]);
   if (check.shouldReturn === true) {
     return check.returnValue;
   }
