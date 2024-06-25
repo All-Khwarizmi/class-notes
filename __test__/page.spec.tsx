@@ -36,6 +36,6 @@ vi.mock("convex-react", async () => {
 describe("Page", () => {
   it("should render", () => {
     render(<Title />);
-    expect(screen.getAllByText("ClassAI")).toBeDefined();
+    expect(screen.getAllByText("La Classe")).toBeDefined();
   });
 });

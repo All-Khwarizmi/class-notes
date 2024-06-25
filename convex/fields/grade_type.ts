@@ -98,21 +98,6 @@ export const gradeType = v.union(
     ),
   }),
 
-  // Descriptive Grades Schema
-  v.object({
-    name: v.literal("Descriptive Grades"),
-    type: v.literal("Excellent/Good/Satisfactory/Needs Improvement"),
-    grade: v.union(
-      v.literal("Excellent"),
-      v.literal("Good"),
-      v.literal("Satisfactory"),
-      v.literal("Needs Improvement"),
-      v.literal("N/G"), // Not Graded
-      v.literal("M"), // Missing
-      v.literal("N/D") // Not Done
-    ),
-  }),
-
   // US 4.0 Scale Schema
   v.object({
     name: v.literal("US 4.0 Scale"),
@@ -281,10 +266,13 @@ export const gradeType = v.union(
     name: v.literal("Competence-Based Evaluation"),
     type: v.literal("Competence"),
     grade: v.union(
-      v.literal("Expertise"), // la compétence est maîtrisée dans l’ensemble des situations professionnelles qui la mobilisent.
-      v.literal("Maîtrise"), // la compétence est maîtrisée dans les situations professionnelles qui la mobilisent, avec une réelle autonomie.
-      v.literal("À développer"), // la compétence est repérable à l’œuvre dans certaines situations professionnelles, mais nécessite encore des efforts pour être maîtrisée.
-      v.literal("À acquérir") // la compétence n’est pas mise en œuvre ou est mise en œuvre de manière incomplète.
+      v.literal("Expertise"),
+      v.literal("Proficiency"),
+      v.literal("To be developed"),
+      v.literal("To be acquired"),
+      v.literal("N/G"), // Not Graded
+      v.literal("M"), // Missing
+      v.literal("N/D") // Not Done
     ),
   })
 );

@@ -289,16 +289,21 @@ export const SportPerformanceSchema = z.object({
   ]),
 });
 
+export const CompetenceLevelSchema = z.union([
+  z.literal("Expertise"), // the competence is mastered in all professional situations that require it.
+  z.literal("Proficiency"), // the competence is mastered in professional situations that require it, with significant autonomy.
+  z.literal("To be developed"), // the competence is observable in some professional situations, but still needs effort to be mastered.
+  z.literal("To be acquired"), // the competence is not implemented or is implemented incompletely.
+  z.literal("N/G"), // Not Graded
+  z.literal("M"), // Missing
+  z.literal("N/D"),
+]);
+
 // Competence-Based Evaluation Schema
 export const CompetenceEvaluationSchema = z.object({
   name: z.literal("Competence-Based Evaluation"),
   type: z.literal("Competence"),
-  grade: z.union([
-    z.literal("Expertise"), // la compétence est maîtrisée dans l’ensemble des situations professionnelles qui la mobilisent.
-    z.literal("Maîtrise"), // la compétence est maîtrisée dans les situations professionnelles qui la mobilisent, avec une réelle autonomie.
-    z.literal("À développer"), // la compétence est repérable à l’œuvre dans certaines situations professionnelles, mais nécessite encore des efforts pour être maîtrisée.
-    z.literal("À acquérir"), // la compétence n’est pas mise en œuvre ou est mise en œuvre de manière incomplète.
-  ]),
+  grade: CompetenceLevelSchema,
 });
 
 // Union of all Grade Types
@@ -309,7 +314,6 @@ export const GradeTypeUnionSchema = z.union([
   USLetterGradePassFailSchema,
   USLetterGradePassFailNoneSchema,
   PassFailSchema,
-  DescriptiveGradeSchema,
   USScale4Schema,
   TenPointScaleSchema,
   TwentyPointScaleSchema,

@@ -1,4 +1,5 @@
-import { z, ZodLiteral } from "zod";
+import { Grade } from "@/features/evaluation/domain/entities/evaluation-with-grades-schema";
+import { z } from "zod";
 
 // Define the specific new grade types
 export const SpecialGradeTypes = z.union([
@@ -18,30 +19,36 @@ type GradeTypeUnion =
   | { shouldReturn: false; returnValue: NormalTypes };
 // Define the type for the return object
 
-
 // Helper function to check if the grade is one of the special types
-function checkSpecialGradeType(grade: unknown): GradeTypeUnion {
-  const result = SpecialGradeTypes.safeParse(grade);
+function checkSpecialGradeType(grades: Grade[]): GradeTypeUnion {
+  for (const grade of grades) {
+    const result = SpecialGradeTypes.safeParse(grade.grade);
 
-  if (result.success) {
-    return {
-      shouldReturn: true,
-      returnValue: result.data,
-    };
-  } else {
-    const result = z.union([z.number(), z.string()]).safeParse(grade);
     if (result.success) {
       return {
-        shouldReturn: false,
+        shouldReturn: true,
         returnValue: result.data,
       };
     } else {
-      return {
-        shouldReturn: true,
-        returnValue: "N/A",
-      };
+      const result = z.union([z.number(), z.string()]).safeParse(grade.grade);
+
+      if (result.success) {
+        return {
+          shouldReturn: false,
+          returnValue: result.data,
+        };
+      } else {
+        return {
+          shouldReturn: true,
+          returnValue: "N/A",
+        };
+      }
     }
   }
+  return {
+    shouldReturn: true,
+    returnValue: "N/A",
+  };
 }
 
 export default checkSpecialGradeType;
