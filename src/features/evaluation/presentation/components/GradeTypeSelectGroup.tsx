@@ -8,8 +8,14 @@ import React from "react";
 function GradeTypeSelectGroup() {
   return (
     <SelectGroup>
+      <SelectLabel>Numeric</SelectLabel>
       <SelectItem value="10-point Scale">10-point Scale</SelectItem>
-      {/* <SelectLabel>Numeric</SelectLabel>
+      <SelectLabel>Descriptive Grades</SelectLabel>
+      <SelectItem value="Expertise/Proficiency/To be developed/To be acquired">
+        Competency-Based Grading
+      </SelectItem>
+
+      {/* 
       <SelectItem value="Numeric">Numeric</SelectItem>
       <SelectItem value="Percentage">Percentage</SelectItem>
       <SelectItem value="A/B/C/D/F">US Letter Grades</SelectItem>
@@ -20,9 +26,7 @@ function GradeTypeSelectGroup() {
         US Letter Grades with Pass/Fail/None
       </SelectItem>
       <SelectItem value="Pass/Fail">Pass/Fail</SelectItem>
-      <SelectItem value="Excellent/Good/Satisfactory/Needs Improvement">
-        Descriptive Grades
-      </SelectItem>
+    
       <SelectItem value="4.0 Scale">US 4.0 Scale</SelectItem>
       <SelectItem value="First/Upper Second/Lower Second/Third">
         UK Honors
