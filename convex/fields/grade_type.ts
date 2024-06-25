@@ -101,12 +101,12 @@ export const gradeType = v.union(
   // Descriptive Grades Schema
   v.object({
     name: v.literal("Descriptive Grades"),
-    type: v.literal("Excellent/Good/Satisfactory/Needs Improvement"),
+    type: v.literal("Expertise/Proficiency/To be developed/To be acquired"),
     grade: v.union(
-      v.literal("Excellent"),
-      v.literal("Good"),
-      v.literal("Satisfactory"),
-      v.literal("Needs Improvement"),
+      v.literal("Expertise"),
+      v.literal("Proficiency"),
+      v.literal("To be developed"),
+      v.literal("To be acquired"),
       v.literal("N/G"), // Not Graded
       v.literal("M"), // Missing
       v.literal("N/D") // Not Done
