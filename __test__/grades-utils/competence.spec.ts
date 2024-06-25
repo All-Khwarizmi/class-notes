@@ -12,6 +12,7 @@ import { Grade } from "@/features/evaluation/domain/entities/evaluation-with-gra
 import { describe, it, expect } from "vitest";
 import { gradeType } from "../../convex/fields/grade_type";
 
+
 describe("competenceToNumber", () => {
   it("converts competence levels to the correct numbers", () => {
     expect(competenceToNumber("Expertise")).toBe(3);
@@ -61,15 +62,6 @@ describe("evaluateCompetence", () => {
           type: "Competence",
         },
       },
-      {
-        criteriaId: "criteria1",
-        grade: "Proficiency",
-        gradeType: {
-          grade: "Proficiency",
-          name: "Competence-Based Evaluation",
-          type: "Competence",
-        },
-      },
     ];
 
     expect(evaluateCompetence(grades, criteria)).toBe("Expertise");
@@ -91,5 +83,22 @@ describe("evaluateCompetence", () => {
     console.log("result", result);
     // Mock `checkSpecialGradeType` to return a special type
     expect(result).toBe("N/D"); // Adjust based on actual logic
+  });
+
+  it("throws error for missing criteria", () => {
+    const grades: Grade[] = [
+      {
+        criteriaId: "criteria2",
+        grade: "Expertise",
+        gradeType: {
+          grade: "Expertise",
+          name: "Competence-Based Evaluation",
+          type: "Competence",
+        },
+      },
+    ];
+    expect(() => evaluateCompetence(grades, criteria)).toThrow(
+      "Criteria item not found"
+    );
   });
 });

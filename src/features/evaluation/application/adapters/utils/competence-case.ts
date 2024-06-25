@@ -48,7 +48,9 @@ export function evaluateCompetence(
 }
 
 // a helper function to transform a maitrise type to a number ranging from 0 to 3 for the purpose of calculating the overall grade
-export function competenceToNumber(competence: CompetenceLevel): 0 | 1 | 2 | 3 {
+export function competenceToNumber(
+  competence: Omit<CompetenceLevel, "N/A" | "Error" | "M" | "N/G" | "N/D">
+): 0 | 1 | 2 | 3 {
   switch (competence) {
     case "Expertise":
       return 3;
@@ -59,6 +61,7 @@ export function competenceToNumber(competence: CompetenceLevel): 0 | 1 | 2 | 3 {
     case "To be acquired":
       return 0;
   }
+  return 0;
 }
 
 // A helper function that maps over a list of numbers in a 0 to 3 range and returns the average in Matrise type

@@ -294,6 +294,9 @@ export const CompetenceLevelSchema = z.union([
   z.literal("Proficiency"), // the competence is mastered in professional situations that require it, with significant autonomy.
   z.literal("To be developed"), // the competence is observable in some professional situations, but still needs effort to be mastered.
   z.literal("To be acquired"), // the competence is not implemented or is implemented incompletely.
+  z.literal("N/G"), // Not Graded
+  z.literal("M"), // Missing
+  z.literal("N/D"),
 ]);
 
 // Competence-Based Evaluation Schema
@@ -311,7 +314,6 @@ export const GradeTypeUnionSchema = z.union([
   USLetterGradePassFailSchema,
   USLetterGradePassFailNoneSchema,
   PassFailSchema,
-  DescriptiveGradeSchema,
   USScale4Schema,
   TenPointScaleSchema,
   TwentyPointScaleSchema,
