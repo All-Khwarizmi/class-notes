@@ -17,12 +17,14 @@ import classSchema, { ClassType } from "@/features/classe/domain/class-schema";
 const BASE_IMAGE_URL = "https://source.unsplash.com/random/800x600";
 import { useEffect } from "react";
 import { classeRepository } from "@/features/classe/application/repository/classe-repository";
+import useAddClasse from "../../application/adapters/services/useAddClasse";
 
 export default function AddClassForm(props: {
   setOpen: (value: boolean) => void;
+  userId: string;
 }) {
-  const { setClasse, createdClassId } = classeRepository.useCreateClasse();
-  const form = useForm<ClassType>({
+  const { mutate: setClasse } = useAddClasse();
+  const form = useForm<Pick<ClassType, "description" | "name" | "imageUrl">>({
     resolver: zodResolver(classSchema),
     defaultValues: {
       name: "",
@@ -33,16 +35,15 @@ export default function AddClassForm(props: {
     },
   });
 
-  useEffect(() => {
-    if (createdClassId) {
-      form.reset();
-      props.setOpen(false);
-    }
-  }, [createdClassId]);
-
-  async function onSubmit(values: ClassType) {
+  async function onSubmit(
+    values: Pick<ClassType, "description" | "name" | "imageUrl">
+  ) {
     console.log("values", values);
-    setClasse(values);
+    const {} = values;
+    setClasse({
+      ...values,
+      userId: props.userId,
+    });
   }
   return (
     <>
