@@ -10,6 +10,6 @@ export interface UpdateStudentOptions {
 
 export interface CreateStudentOptions {
   name: string;
-  imageUrl: string;
+  imageUrl?: string;
   classId: string;
 }
