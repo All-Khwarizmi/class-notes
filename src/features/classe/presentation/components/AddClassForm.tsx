@@ -40,10 +40,17 @@ export default function AddClassForm(props: {
   ) {
     console.log("values", values);
     const {} = values;
-    setClasse({
-      ...values,
-      userId: props.userId,
-    });
+    setClasse(
+      {
+        ...values,
+        userId: props.userId,
+      },
+      {
+        onSuccess: () => {
+          props.setOpen(false);
+        },
+      }
+    );
   }
   return (
     <>
