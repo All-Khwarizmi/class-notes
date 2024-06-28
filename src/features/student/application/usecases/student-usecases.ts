@@ -1,6 +1,7 @@
 import Failure from "@/core/failures/failures";
 import { Either } from "fp-ts/lib/Either";
 import {
+  CreateStudentOptions,
   DeleteStudentOptions,
   UpdateStudentOptions,
 } from "../../domain/entities/student-types";
@@ -13,6 +14,10 @@ export default class StudentUsecases {
 
   constructor(studentRepository: StudentRepository) {
     this._studentRepository = studentRepository;
+  }
+
+  async addStudent(options: CreateStudentOptions) {
+    return this._studentRepository.addStudent(options);
   }
 
   /**
