@@ -30,7 +30,7 @@ import {
   DeleteStudentOptions,
   UpdateStudentOptions,
 } from "@/features/student/domain/entities/student-types";
-import { DeleteClasseOptions } from "@/features/classe/domain/classe-types";
+import { CreateClasseOptions, DeleteClasseOptions } from "@/features/classe/domain/classe-types";
 import { deleteStudentsFromClasseId } from "../../../convex/classes";
 
 export default abstract class IDatabase {
@@ -290,17 +290,9 @@ export default abstract class IDatabase {
   }: {
     id: string;
   }): Promise<Either<Failure<string>, void>>;
-  abstract createClass({
-    userId,
-    name,
-    description,
-    imageUrl,
-  }: {
-    userId: string;
-    name: string;
-    description: string;
-    imageUrl: string;
-  }): Promise<Either<Failure<string>, string>>;
+  abstract createClass(
+    options: CreateClasseOptions
+  ): Promise<Either<Failure<string>, string>>;
 
   abstract deleteClass({
     id,

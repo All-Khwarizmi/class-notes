@@ -9,6 +9,7 @@ import {
   VisibilitySchema,
   VisibilityType,
 } from "../../domain/visibility-schema";
+import { CreateClasseOptions } from "../../domain/classe-types";
 
 export default class ClasseUseCases {
   private readonly _repository: ClasseRepository;
@@ -17,23 +18,8 @@ export default class ClasseUseCases {
     this._repository = repository;
   }
 
-  async createClasse({
-    userId,
-    name,
-    description,
-    imageUrl,
-  }: {
-    userId: string;
-    name: string;
-    description: string;
-    imageUrl: string;
-  }) {
-    return await this._repository.createClasse({
-      userId,
-      name,
-      description,
-      imageUrl,
-    });
+  async createClasse(options: CreateClasseOptions) {
+    return await this._repository.createClasse(options);
   }
 
   async deleteClasse({ id }: { id: string }) {
