@@ -1,16 +1,20 @@
 import { useMutation } from "@tanstack/react-query";
-import { fetchMutation } from "convex/nextjs";
-import { api } from "../../../../../../convex/_generated/api";
-import { Id } from "../../../../../../convex/_generated/dataModel";
+import { studentUsecases } from "@/features/student/application/usecases/student-usecases";
+import { CreateStudentOptions } from "@/features/student/domain/entities/student-types";
+import { QUERY_KEYS } from "@/core/query/ query-keys";
+import { isLeft } from "fp-ts/lib/Either";
+import { toastWrapper } from "@/core/utils/toast-wrapper";
 
 export default function useAddStudent() {
   return useMutation({
-    mutationKey: ["add-student"],
-    mutationFn: async (student: { name: string; classId: string }) => {
-      return fetchMutation(api.students.createStudent, {
-        name: student.name,
-        classId: student.classId as Id<"Classes">,
-      });
+    mutationKey: QUERY_KEYS.STUDENT.ADD(),
+    mutationFn: async (options: CreateStudentOptions) => {
+      const operationResult = await studentUsecases.addStudent(options);
+      if (isLeft(operationResult)) {
+        toastWrapper.error("Error adding student");
+        return;
+      }
+      toastWrapper.success("Student added successfully");
     },
   });
 }
