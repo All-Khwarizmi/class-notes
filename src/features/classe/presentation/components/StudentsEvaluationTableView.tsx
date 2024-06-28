@@ -183,8 +183,8 @@ export function StudentsEvaluationTableView(props: {
                 <CSVReader
                   classeId={props.classeId}
                   refetchCompoundEvaluations={() => {
-                    refetchCompoundEvaluations();
                     refetchStudents();
+                    refetchCompoundEvaluations();
                   }}
                 />
               </div>
