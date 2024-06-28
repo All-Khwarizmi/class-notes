@@ -31,7 +31,6 @@ import {
   UpdateStudentOptions,
 } from "@/features/student/domain/entities/student-types";
 import { CreateClasseOptions, DeleteClasseOptions } from "@/features/classe/domain/classe-types";
-import { deleteStudentsFromClasseId } from "../../../convex/classes";
 
 export default abstract class IDatabase {
   abstract getUser({
