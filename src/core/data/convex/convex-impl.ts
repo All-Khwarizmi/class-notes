@@ -30,6 +30,7 @@ import {
   UpdateGradeOptions,
 } from "@/features/evaluation/domain/entities/evaluation-types";
 import {
+  CreateStudentOptions,
   DeleteStudentOptions,
   UpdateStudentOptions,
 } from "@/features/student/domain/entities/student-types";
@@ -1588,6 +1589,35 @@ export default class ConvexDatabase extends IDatabase {
         Failure.invalidValue({
           invalidValue: options,
           message: "Error getting evaluations with grades",
+          code: "INF101",
+        })
+      );
+    }
+  }
+  async createStudent(
+    options: CreateStudentOptions
+  ): Promise<Either<Failure<string>, string>> {
+    try {
+      const result = await fetchMutation(
+        this._db.students.createStudent,
+        options
+      );
+      if (!result) {
+        return left(
+          Failure.invalidValue({
+            invalidValue: options,
+            message: "Failed to create student",
+            code: "INF103",
+          })
+        );
+      }
+      const userId = result as unknown as string;
+      return right(userId);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: options,
+          message: "Failed to create student",
           code: "INF101",
         })
       );

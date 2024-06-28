@@ -27,10 +27,14 @@ import {
   DeleteEvaluationWithGradesOptions,
 } from "@/features/evaluation/domain/entities/evaluation-types";
 import {
+  CreateStudentOptions,
   DeleteStudentOptions,
   UpdateStudentOptions,
 } from "@/features/student/domain/entities/student-types";
-import { CreateClasseOptions, DeleteClasseOptions } from "@/features/classe/domain/classe-types";
+import {
+  CreateClasseOptions,
+  DeleteClasseOptions,
+} from "@/features/classe/domain/classe-types";
 
 export default abstract class IDatabase {
   abstract getUser({
@@ -384,6 +388,11 @@ export default abstract class IDatabase {
   abstract getEvaluationsListWithGrade(
     options: GetEvaluationsListOptions
   ): Promise<Either<Failure<string>, DocumentData[]>>;
+
+  abstract createStudent(
+    options: CreateStudentOptions
+  ): Promise<Either<Failure<string>, string>>;
+
   /**
    * Deletes a student from the database.
    *
