@@ -15,11 +15,13 @@ import { ClassType } from "../../domain/class-schema";
 import { Delete, Pen } from "lucide-react";
 import VisibilitySwitch from "@/features/cours-sequence/presentation/components/VisibilitySwitch";
 import useDeleteClasse from "../../application/adapters/services/useDeleteClasse";
+import { useState } from "react";
 
 export default function ClassesTable(props: {
   classes: ClassType[];
   userId: string;
 }) {
+  const [open, setOpen] = useState(false);
   const { mutate: deleteClasse } = useDeleteClasse();
   const handleDelete = async (id: string) => {
     deleteClasse(
@@ -102,12 +104,14 @@ export default function ClassesTable(props: {
         </footer>
         <article className="flex flex-col gap-y-2">
           <CustomDialog
+            open={open}
+            setOpen={setOpen}
             icon={<AddIcon />}
             title="Ajouter une classe"
             description="Ajouter une classe pour commencer à ajouter des étudiants"
             testId="add-class"
           >
-            <AddClassForm />
+            <AddClassForm setOpen={setOpen} userId={props.userId} />
           </CustomDialog>
         </article>
       </section>

@@ -5,7 +5,10 @@ import ClassEntity from "../../domain/class-entity";
 import Failure from "@/core/failures/failures";
 import { right } from "fp-ts/lib/Either";
 import { getAppDataBase } from "@/core/data/get-app-db";
-import { DeleteClasseOptions } from "../../domain/classe-types";
+import {
+  CreateClasseOptions,
+  DeleteClasseOptions,
+} from "../../domain/classe-types";
 
 export default class ClasseRepository {
   private readonly _db: IDatabase;
@@ -14,18 +17,8 @@ export default class ClasseRepository {
     this._db = db;
   }
 
-  async createClasse({
-    userId,
-    name,
-    description,
-    imageUrl,
-  }: {
-    userId: string;
-    name: string;
-    description: string;
-    imageUrl: string;
-  }) {
-    return await this._db.createClass({ userId, name, description, imageUrl });
+  async createClasse(options: CreateClasseOptions) {
+    return await this._db.createClass(options);
   }
 
   async deleteClasse({ id }: { id: string }) {

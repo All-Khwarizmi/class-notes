@@ -10,7 +10,6 @@ import {
 } from "@/features/evaluation/domain/entities/evaluation-schema";
 import { Grade } from "@/features/evaluation/domain/entities/evaluation-with-grades-schema";
 import { describe, it, expect } from "vitest";
-import { gradeType } from "../../convex/fields/grade_type";
 
 
 describe("competenceToNumber", () => {

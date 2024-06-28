@@ -30,10 +30,14 @@ import {
   UpdateGradeOptions,
 } from "@/features/evaluation/domain/entities/evaluation-types";
 import {
+  CreateStudentOptions,
   DeleteStudentOptions,
   UpdateStudentOptions,
 } from "@/features/student/domain/entities/student-types";
-import { DeleteClasseOptions } from "@/features/classe/domain/classe-types";
+import {
+  CreateClasseOptions,
+  DeleteClasseOptions,
+} from "@/features/classe/domain/classe-types";
 
 export interface ConvexDatabaseOptions {
   db: typeof api;
@@ -1056,24 +1060,11 @@ export default class ConvexDatabase extends IDatabase {
     }
   }
 
-  async createClass({
-    userId,
-    name,
-    description,
-    imageUrl,
-  }: {
-    userId: string;
-    name: string;
-    description: string;
-    imageUrl: string;
-  }): Promise<Either<Failure<string>, string>> {
+  async createClass(
+    options: CreateClasseOptions
+  ): Promise<Either<Failure<string>, string>> {
     try {
-      const result = await fetchMutation(this._db.classes.createClass, {
-        userId,
-        name,
-        description,
-        imageUrl,
-      });
+      const result = await fetchMutation(this._db.classes.createClass, options);
       if (!result) {
         return left(
           Failure.invalidValue({
@@ -1598,6 +1589,35 @@ export default class ConvexDatabase extends IDatabase {
         Failure.invalidValue({
           invalidValue: options,
           message: "Error getting evaluations with grades",
+          code: "INF101",
+        })
+      );
+    }
+  }
+  async createStudent(
+    options: CreateStudentOptions
+  ): Promise<Either<Failure<string>, string>> {
+    try {
+      const result = await fetchMutation(
+        this._db.students.createStudent,
+        options
+      );
+      if (!result) {
+        return left(
+          Failure.invalidValue({
+            invalidValue: options,
+            message: "Failed to create student",
+            code: "INF103",
+          })
+        );
+      }
+      const userId = result as unknown as string;
+      return right(userId);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: options,
+          message: "Failed to create student",
           code: "INF101",
         })
       );

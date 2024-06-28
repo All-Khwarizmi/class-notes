@@ -22,7 +22,7 @@ import {
 export default function CustomDialog({
   displayButton = true,
   open,
-  title,
+  title = "",
   description = "",
   icon = <PlusIcon />,
   children,
@@ -49,7 +49,7 @@ export default function CustomDialog({
   /**
    * The title of the dialog.
    */
-  title: string;
+  title?: string;
   /**
    * The description of the dialog. Default is an empty string.
    */

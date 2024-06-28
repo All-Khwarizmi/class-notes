@@ -1,14 +1,13 @@
 import { Button } from "@/core/components/ui/button";
-import { useMutation } from "convex/react";
 import React, { useState } from "react";
 import {
   useCSVReader,
   lightenDarkenColor,
   formatFileSize,
 } from "react-papaparse";
-import { api } from "../../../../../convex/_generated/api";
 import { Id } from "../../../../../convex/_generated/dataModel";
 import useAddStudent from "../../application/adapters/services/useAddStudent";
+import useAddManyStudents from "../../application/adapters/services/useAddManyStudents";
 
 const GREY = "#CCC";
 const GREY_DIM = "#686868";
@@ -23,7 +22,7 @@ function CSVReader(props: {
 
   refetchCompoundEvaluations: () => void;
 }) {
-  const { mutate: addStudent } = useAddStudent();
+  const { mutate: addManyStudents } = useAddManyStudents();
   const { CSVReader } = useCSVReader();
   const [zoneHover, setZoneHover] = useState(false);
   const [removeHoverColor, setRemoveHoverColor] = useState(
@@ -118,14 +117,20 @@ function CSVReader(props: {
               <div className="flex justify-between items-center mt-4">
                 <Button
                   onClick={() => {
-                    console.log("Saving students", students);
-                    students.forEach(async (name) => {
-                      await addStudent({
-                        name,
-                        classId: props.classeId as Id<"Classes">,
-                      });
-                    });
-                    props.refetchCompoundEvaluations();
+                    addManyStudents(
+                      {
+                        students: students.map((name) => ({
+                          name,
+                          classId: props.classeId,
+                        })),
+                      },
+                      {
+                        onSuccess: () => {
+                          props.refetchCompoundEvaluations();
+                          setStudents([]);
+                        },
+                      }
+                    );
 
                     setStudents([]);
                   }}

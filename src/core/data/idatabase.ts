@@ -27,11 +27,14 @@ import {
   DeleteEvaluationWithGradesOptions,
 } from "@/features/evaluation/domain/entities/evaluation-types";
 import {
+  CreateStudentOptions,
   DeleteStudentOptions,
   UpdateStudentOptions,
 } from "@/features/student/domain/entities/student-types";
-import { DeleteClasseOptions } from "@/features/classe/domain/classe-types";
-import { deleteStudentsFromClasseId } from "../../../convex/classes";
+import {
+  CreateClasseOptions,
+  DeleteClasseOptions,
+} from "@/features/classe/domain/classe-types";
 
 export default abstract class IDatabase {
   abstract getUser({
@@ -290,17 +293,9 @@ export default abstract class IDatabase {
   }: {
     id: string;
   }): Promise<Either<Failure<string>, void>>;
-  abstract createClass({
-    userId,
-    name,
-    description,
-    imageUrl,
-  }: {
-    userId: string;
-    name: string;
-    description: string;
-    imageUrl: string;
-  }): Promise<Either<Failure<string>, string>>;
+  abstract createClass(
+    options: CreateClasseOptions
+  ): Promise<Either<Failure<string>, string>>;
 
   abstract deleteClass({
     id,
@@ -393,6 +388,11 @@ export default abstract class IDatabase {
   abstract getEvaluationsListWithGrade(
     options: GetEvaluationsListOptions
   ): Promise<Either<Failure<string>, DocumentData[]>>;
+
+  abstract createStudent(
+    options: CreateStudentOptions
+  ): Promise<Either<Failure<string>, string>>;
+
   /**
    * Deletes a student from the database.
    *

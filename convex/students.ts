@@ -1,15 +1,17 @@
 import { mutation, query } from "./_generated/server";
 import { v } from "convex/values";
+import { Id } from "./_generated/dataModel";
 
 export const createStudent = mutation({
   args: {
     name: v.string(),
-    classId: v.id("Classes"),
+    classId: v.string(),
   },
   handler: async (ctx, args) => {
+    const classeId = args.classId as Id<"Classes">;
     const id = await ctx.db.insert("Students", {
       name: args.name,
-      classId: args.classId,
+      classId: classeId,
       observations: [],
       evaluationsResults: [],
     });

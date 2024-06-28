@@ -10,7 +10,7 @@ describe("Signed in", () => {
 
   context("Should be able to create a class", () => {
     it("should create a class", () => {
-      // open dashboard page
+      // open classes page
       cy.visit(`/classes`, {
         timeout: 10000,
         failOnStatusCode: false,
@@ -37,6 +37,10 @@ describe("Signed in", () => {
       const submitButton = cy.getByTestId("submit-class");
       submitButton.should("exist").click();
 
+      cy.visit(`/classes`, {
+        timeout: 10000,
+        failOnStatusCode: false,
+      });
       const table = cy.get("table");
       table.should("exist");
       table.find("tr").eq(-1).should("contain", className);

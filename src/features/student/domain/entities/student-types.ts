@@ -7,3 +7,12 @@ export interface UpdateStudentOptions {
   name?: string;
   imageUrl?: string;
 }
+
+export interface CreateStudentOptions {
+  name: string;
+  imageUrl?: string;
+  classId: string;
+}
+export interface CreateManyStudentsOptions {
+  students: CreateStudentOptions[];
+}

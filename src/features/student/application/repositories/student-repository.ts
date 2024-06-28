@@ -1,5 +1,9 @@
 import IDatabase from "@/core/data/idatabase";
-import { DeleteStudentOptions, UpdateStudentOptions } from "../../domain/entities/student-types";
+import {
+  CreateStudentOptions,
+  DeleteStudentOptions,
+  UpdateStudentOptions,
+} from "../../domain/entities/student-types";
 import { getAppDataBase } from "@/core/data/get-app-db";
 
 export default class StudentRepository {
@@ -7,6 +11,9 @@ export default class StudentRepository {
 
   constructor(db: IDatabase) {
     this._db = db;
+  }
+  async addStudent(options: CreateStudentOptions) {
+    return this._db.createStudent(options);
   }
 
   async deleteStudent(options: DeleteStudentOptions) {
