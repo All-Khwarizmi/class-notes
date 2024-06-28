@@ -18,7 +18,9 @@ const BASE_IMAGE_URL = "https://source.unsplash.com/random/800x600";
 import { useEffect } from "react";
 import { classeRepository } from "@/features/classe/application/repository/classe-repository";
 
-export default function AddClassForm() {
+export default function AddClassForm(props: {
+  setOpen: (value: boolean) => void;
+}) {
   const { setClasse, createdClassId } = classeRepository.useCreateClasse();
   const form = useForm<ClassType>({
     resolver: zodResolver(classSchema),
@@ -34,10 +36,12 @@ export default function AddClassForm() {
   useEffect(() => {
     if (createdClassId) {
       form.reset();
+      props.setOpen(false);
     }
   }, [createdClassId]);
 
   async function onSubmit(values: ClassType) {
+    console.log("values", values);
     setClasse(values);
   }
   return (
@@ -105,7 +109,16 @@ export default function AddClassForm() {
           />
 
           <div className="flex justify-end">
-            <Button data-testid="submit-class" className="mt-8" type="submit">
+            <Button
+              onClick={() => {
+                const values = form.getValues();
+                form.setValue("imageUrl", BASE_IMAGE_URL);
+                onSubmit(values);
+              }}
+              data-testid="submit-class"
+              className="mt-8"
+              type="submit"
+            >
               Submit
             </Button>
           </div>
