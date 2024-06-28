@@ -1,6 +1,7 @@
 import Failure from "@/core/failures/failures";
-import { Either } from "fp-ts/lib/Either";
+import { Either, left, right } from "fp-ts/lib/Either";
 import {
+  CreateManyStudentsOptions,
   CreateStudentOptions,
   DeleteStudentOptions,
   UpdateStudentOptions,
@@ -16,8 +17,34 @@ export default class StudentUsecases {
     this._studentRepository = studentRepository;
   }
 
+  /**
+   * Adds a student to the repository.
+   *
+   * @param {CreateStudentOptions} options - The options for creating the student.
+   * @returns {Promise<Either<Failure<string>, void>>} - A promise that resolves to either a failure with an error message or void.
+   */
   async addStudent(options: CreateStudentOptions) {
     return this._studentRepository.addStudent(options);
+  }
+
+  async addManyStudents(
+    options: CreateManyStudentsOptions
+  ): Promise<Either<Failure<string>, void>> {
+    const promises = options.students.map((student) =>
+      this._studentRepository.addStudent(student)
+    );
+    const results = await Promise.allSettled(promises);
+    const errors = results.filter((result) => result.status === "rejected");
+    if (errors.length > 0) {
+      return left(
+        Failure.invalidValue({
+          message: "One or more students could not be added",
+          invalidValue: errors,
+          code: "APP204",
+        })
+      );
+    }
+    return right(undefined);
   }
 
   /**
