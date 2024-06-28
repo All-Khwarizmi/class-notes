@@ -49,7 +49,7 @@ export function StudentsEvaluationTableView(props: {
             </TableCaption>
             <TableHeader>
               <TableRow>
-                <TableHead className="w-[200px]">Student</TableHead>
+                <TableHead className="">Student</TableHead>
                 {data?.evaluations.map((evaluation) => (
                   <TableHead key={evaluation.grade.id} className="w-[200px]">
                     {evaluation.base.name}
@@ -103,14 +103,11 @@ export function StudentsEvaluationTableView(props: {
                         isDialogOpen[dialogKey] = false;
                       }
                       return (
-                        <TableCell
-                          key={evaluation.grade.id}
-                          className="w-[200px]"
-                        >
+                        <TableCell key={evaluation.grade.id} className="">
                           {studentGrade ? (
                             <CustomDialog
-                              buttonText={overallGrade.toString().slice(0, 4)}
-                              buttonClassName="bg-transparent dark text-white px-4 py-2 rounded-md border border-white"
+                              buttonText={overallGrade.toString()}
+                              buttonClassName="bg-transparent dark:text-white px-4 py-2 rounded-md  w-fit"
                               open={isDialogOpen[dialogKey]}
                               setOpen={(value) =>
                                 setIsDialogOpen({
