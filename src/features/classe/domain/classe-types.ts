@@ -5,6 +5,6 @@ export interface DeleteClasseOptions {
 export interface CreateClasseOptions {
   userId: string;
   name: string;
-  description: string;
-  imageUrl: string;
+  description?: string;
+  imageUrl?: string;
 }
