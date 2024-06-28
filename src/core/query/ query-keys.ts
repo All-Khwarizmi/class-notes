@@ -3,6 +3,7 @@ export const QUERY_KEYS = {
     DELETE: (options: string[] = []) => ["DELETE_STUDENT", ...options],
     UPDATE: (options: string[] = []) => ["UPDATE_STUDENT", ...options],
     ADD: (options: string[] = []) => ["ADD_STUDENT", ...options],
+    ADD_MANY: (options: string[] = []) => ["ADD_MANY_STUDENTS", ...options],
   },
   CLASSE: {
     DELETE: (options: string[] = []) => ["DELETE_CLASSE", ...options],
