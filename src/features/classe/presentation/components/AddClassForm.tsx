@@ -38,7 +38,6 @@ export default function AddClassForm(props: {
   async function onSubmit(
     values: Pick<ClassType, "description" | "name" | "imageUrl">
   ) {
-    console.log("values", values);
     const {} = values;
     setClasse(
       {
@@ -48,6 +47,7 @@ export default function AddClassForm(props: {
       {
         onSuccess: () => {
           props.setOpen(false);
+          window.location.reload();
         },
       }
     );
