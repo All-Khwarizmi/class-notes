@@ -1,8 +1,10 @@
 import {
   Grade,
   GradeSchema,
+  StudentGradeSchema,
 } from "@/features/evaluation/domain/entities/evaluation-with-grades-schema";
 import {
+  CompetenceEvaluationSchema,
   CompetenceLevelSchema,
   EvaluationCriteriaType,
 } from "@/features/evaluation/domain/entities/evaluation-schema";
@@ -74,6 +76,7 @@ export function averageCompetence(grades: number[]): CompetenceLevel {
 }
 
 export const CompetenceGradeSchemaExtension = GradeSchema.extend({
+  gradeType: CompetenceEvaluationSchema,
   grade: z.union([SpecialGradeTypes, CompetenceLevelSchema]),
 });
 
@@ -81,7 +84,7 @@ export type CompetenceGradeExtension = z.infer<
   typeof CompetenceGradeSchemaExtension
 >;
 
-export const StudentGradeCompetenceSchemaExtension = GradeSchema.extend({
+export const StudentGradeCompetenceSchemaExtension = StudentGradeSchema.extend({
   grades: z.array(CompetenceGradeSchemaExtension),
 });
 
