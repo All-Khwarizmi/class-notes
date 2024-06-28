@@ -1,5 +1,4 @@
 import { Grade } from "@/features/evaluation/domain/entities/evaluation-with-grades-schema";
-import { cons } from "fp-ts/lib/ReadonlyNonEmptyArray";
 import { z } from "zod";
 
 // Define the specific new grade types
