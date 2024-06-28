@@ -11,7 +11,7 @@ function GradeTypeSelectGroup() {
       <SelectLabel>Numeric</SelectLabel>
       <SelectItem value="10-point Scale">10-point Scale</SelectItem>
       <SelectLabel>Descriptive Grades</SelectLabel>
-      <SelectItem value="Expertise/Proficiency/To be developed/To be acquired">
+      <SelectItem value="Competence-Based Evaluation">
         Competency-Based Grading
       </SelectItem>
 
