@@ -24,7 +24,6 @@ export function spanishGradingCalc({
   }
   const isNumber = z.number().safeParse(check.returnValue);
   if (!isNumber.success) return "Error";
-
   return isNumber.data;
 }
 
@@ -35,23 +34,36 @@ export function tenPointsScaleCase(
   const studentCriterias = criterias.filter((criteria) =>
     grades.some((grade) => grade.criteriaId === criteria.id)
   );
-  const totalWeight = studentCriterias.reduce(
-    (acc, criteria) => acc + criteria.weight,
-    0
-  );
+ 
   let totalPoints: number = 0;
+  let totalWeight: number = 0;
   for (const grade of grades) {
     const validatedGrade = TenPointScaleSchema.safeParse(grade.gradeType);
+    const gradeWeight = studentCriterias.find(
+      (criteria) => criteria.id === grade.criteriaId
+    )?.weight;
+    if (!gradeWeight) return "Error";
+    totalWeight += gradeWeight;
     if (validatedGrade.success) {
       const result = spanishGradingCalc({
         grade,
       });
       if (typeof result === "string") return result;
+      if (result < 0 || result > 10) return "Error";
+      // Check if grades do not exceed the wheight of the criterias
+      if (result > gradeWeight) return "Error";
 
       totalPoints += result;
     } else {
       return "Error";
     }
+  }
+  const isWeighted = totalWeight > grades.length;
+  let averageGrade = 0;
+  if (isWeighted) {
+    averageGrade = totalPoints / totalPoints;
+  } else {
+    averageGrade = totalPoints / grades.length;
   }
   return (totalPoints / totalWeight) * 10;
 }
