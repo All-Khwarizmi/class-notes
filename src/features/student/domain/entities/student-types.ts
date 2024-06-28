@@ -13,3 +13,6 @@ export interface CreateStudentOptions {
   imageUrl?: string;
   classId: string;
 }
+export interface CreateManyStudentsOptions {
+  students: CreateStudentOptions[];
+}
