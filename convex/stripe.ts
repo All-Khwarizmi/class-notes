@@ -75,16 +75,16 @@ export const fulfill = internalAction({
         });
       }
 
-      //   if (event.type === "invoice.payment_succeeded") {
-      //     const subscription = await stripe.subscriptions.retrieve(
-      //       completedEvent.subscription as string
-      //     );
+        if (event.type === "invoice.payment_succeeded") {
+          const subscription = await stripe.subscriptions.retrieve(
+            completedEvent.subscription as string
+          );
 
-      //     await ctx.runMutation(internal.users.updateSubscriptionBySubId, {
-      //       subscriptionId: subscription.items.data[0]?.price.id,
-      //       endsOn: subscription.current_period_end * 1000,
-      //     });
-      //   }
+          await ctx.runMutation(internal.users.updateSubscriptionBySubId, {
+            subscriptionId: subscription.items.data[0]?.price.id,
+            endsOn: subscription.current_period_end * 1000,
+          });
+        }
 
       return { success: true };
     } catch (err) {
