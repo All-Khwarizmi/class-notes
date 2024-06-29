@@ -23,6 +23,23 @@ export const createClass = mutation({
         observations: [],
         evaluationsTemplatesId: [],
       });
+
+      // Add the classe to the visibility table
+      const visibilityTable = await ctx.db
+        .query("VisibilityTable")
+        .filter((q) => q.eq(q.field("userId"), existingUser!._id))
+        .first();
+
+      if (visibilityTable) {
+        visibilityTable.classe.push({
+          id: id,
+          publish: false,
+        });
+        await ctx.db.patch(visibilityTable._id, {
+          classe: visibilityTable.classe,
+        });
+      }
+
       return { id, error: false };
     }
     return { id: false, error: true };

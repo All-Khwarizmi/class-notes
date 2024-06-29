@@ -1,14 +1,14 @@
 import LoadingSkeleton from "@/core/components/common/LoadingSkeleton";
-import LayoutWithProps from "@/core/components/layout/LayoutWithProps";
+import Layout from "@/core/components/layout/Layout";
 import ComplementAddBaseForm from "@/features/complement/presentation/views/ComplementAddBase";
 import React, { Suspense } from "react";
 
 function Page({ params }: { params: { slug: string } }) {
   return (
     <Suspense fallback={<LoadingSkeleton />}>
-      <LayoutWithProps>
+      <Layout>
         <ComplementAddBaseForm slug={params.slug} />
-      </LayoutWithProps>
+      </Layout>
     </Suspense>
   );
 }

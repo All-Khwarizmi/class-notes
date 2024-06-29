@@ -5,6 +5,7 @@ import useUpdateNote from "../../application/adapters/services/useUpdateNote";
 import { debounce } from "lodash";
 import { toast } from "sonner";
 import FloatingEditor from "@/core/components/common/editor/FloatingEditor";
+import { EDITOR_DEBOUNCE_TIME } from "@/core/components/constants/editor-constants";
 
 function NoteEditorView(props: { note: Note }) {
   const { mutate: setNote, isSuccess } = useUpdateNote();
@@ -17,12 +18,11 @@ function NoteEditorView(props: { note: Note }) {
             content,
           });
         },
-        5000,
+        EDITOR_DEBOUNCE_TIME,
         { leading: false, trailing: true }
       ),
     [props.note, setNote]
   );
-
 
   useEffect(() => {
     if (isSuccess) {

@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { ExternalLink, Folder, Plus, File, X, Delete } from "lucide-react";
+import { ExternalLink, Folder, Plus, File, X, Delete, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { TableCaption, TableHeader } from "@/core/components/ui/table";
 import {
@@ -201,17 +201,14 @@ function NoteItemFormRow(props: {
         />
       </TableCell>
       <TableCell>
-        <Select onValueChange={onChangeNoteType}>
+        <Select onValueChange={onChangeNoteType} value={localNotes.contentType}>
           <SelectTrigger className="w-[180px]">
-            <SelectValue
-              placeholder="Select a type"
-              defaultValue={localNotes.type}
-            />
+            <SelectValue placeholder="Select a type" />
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
-              <SelectItem value="Diagram">Diagram</SelectItem>
-              <SelectItem value="Flowchart">Flowchart</SelectItem>
+              {/* <SelectItem value="Diagram">Diagram</SelectItem>
+              <SelectItem value="Flowchart">Flowchart</SelectItem> */}
               <SelectItem value="Markup">Markup</SelectItem>
             </SelectGroup>
           </SelectContent>
@@ -224,17 +221,17 @@ function NoteItemFormRow(props: {
           <button
             onClick={() => props.handleSubmit(localNotes)}
             className={cn(
-              "bg-transparent rounded-md p-1 px-2 flex items-center ml-2 hover:bg-slate-400 border border-slate-400 hover:border-slate-400"
+              "bg-transparent text-green-500 rounded-md p-1 px-2 flex items-center ml-2 hover:bg-slate-400 border border-slate-400 hover:border-slate-400"
             )}
           >
-            <Plus size={12} />
+            <Check size={12} />
           </button>
           <button
             onClick={() => {
               props.setOpen(false);
             }}
             className={cn(
-              "bg-transparent rounded-md p-1 px-2 flex items-center ml-2 hover:bg-slate-400 border border-slate-400 hover:border-slate-400"
+              "bg-transparent text-red-600 rounded-md p-1 px-2 flex items-center ml-2 hover:bg-slate-400 border border-slate-400 hover:border-slate-400"
             )}
           >
             <X size={12} />

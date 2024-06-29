@@ -31,6 +31,7 @@ export default class ProfileUseCases {
       return eitherUser;
     }
     const user = userSchema.safeParse(eitherUser.right);
+
     if (!user.success) {
       return left(
         Failure.invalidValue({

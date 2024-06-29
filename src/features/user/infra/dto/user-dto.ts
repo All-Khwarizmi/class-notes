@@ -24,6 +24,13 @@ export default class UserDto {
         schoolSubject: userInfra.schoolSubject,
         name: userInfra.name,
         onboarding: userInfra.onboarding,
+        userId: userInfra.userId,
+        image: userInfra.image,
+        credits: userInfra.credits,
+        subscriptionId: userInfra.subscriptionId,
+        endsOn: userInfra.endsOn,
+        email: userInfra.email,
+        hostname: userInfra.hostname,
       });
     }
     return left(
