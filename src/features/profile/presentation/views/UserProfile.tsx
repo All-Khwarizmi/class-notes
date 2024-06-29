@@ -58,7 +58,7 @@ export default function UserProfile({ user }: { user: UserType }) {
         <div className="space-y-2">
           <h3 className="text-lg font-medium">Subscription Expiration</h3>
           <div className="text-muted-foreground">
-            <CalendarDaysIcon className="inline-block w-5 h-5 mr-1" />
+            <CalendarDaysIcon className="inline-block w-5 h-5 mr-1" />{" "}
             {user.endsOn
               ? new Date(user.endsOn).toLocaleDateString()
               : "No subscription"}
@@ -67,7 +67,7 @@ export default function UserProfile({ user }: { user: UserType }) {
         <div className="space-y-2">
           <h3 className="text-lg font-medium">Credits Remaining</h3>
           <div className="text-muted-foreground">
-            <CoinsIcon className="inline-block w-5 h-5 mr-1" />
+            <CoinsIcon className="inline-block w-5 h-5 mr-1" />{" "}
             {checkUserCredits(user.endsOn, user.credits)}
           </div>
         </div>
@@ -82,7 +82,7 @@ export default function UserProfile({ user }: { user: UserType }) {
             data-testid="pay-subcription-btn"
             type="button"
           >
-            Upgrade Now 
+            Upgrade Now
           </Button>
         )}
       </div>
@@ -128,7 +128,11 @@ export default function UserProfile({ user }: { user: UserType }) {
             }}
           />
           <div className="flex justify-end gap-4">
-            <Button variant="secondary" data-testid="submit-onboarding-form" type="submit">
+            <Button
+              variant="secondary"
+              data-testid="submit-onboarding-form"
+              type="submit"
+            >
               Update
             </Button>
           </div>
@@ -214,9 +218,7 @@ function checkUserCredits(endsOn?: number, credits?: number) {
     return String(credits);
   } else if (credits === 0) {
     return "No credits left";
-  } 
-
-  
+  }
 }
 
 export function checkUserSubscriptionStatus(endsOn?: number) {
