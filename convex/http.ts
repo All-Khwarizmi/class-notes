@@ -26,7 +26,7 @@ http.route({
       switch (result.type) {
         case "user.created":
           await ctx.runMutation(internal.users.createUser, {
-            tokenIdentifier: result.data.id,
+            userId: result.data.id,
             name: `${result.data.first_name ?? ""} ${
               result.data.last_name ?? ""
             }`,
@@ -48,6 +48,51 @@ http.route({
       return new Response(null, {
         status: 200,
       });
+    } catch (err) {
+      return new Response("Webhook Error", {
+        status: 400,
+      });
+    }
+  }),
+});
+
+http.route({
+  path: "/stripe",
+  method: "POST",
+  handler: httpAction(async (ctx, request) => {
+    const signature = request.headers.get("stripe-signature") as string;
+
+    try {
+      const result = await ctx.runAction(internal.stripe.fulfill, {
+        payload: await request.text(),
+        signature,
+      });
+
+      if (result.success) {
+        return new Response(null, {
+          status: 200,
+        });
+      } else {
+        return new Response("Webhook Error", {
+          status: 400,
+        });
+      }
+
+      // switch (result.type) {
+      //   case "payment.created":
+      //     await ctx.runMutation(internal.payments.createPayment, {
+      //       userId: result.data.id,
+      //       amount: result.data.amount,
+      //       currency: result.data.currency,
+      //       paymentMethod: result.data.payment_method,
+      //       paymentIntent: result.data.payment_intent,
+      //     });
+      //     break;
+      // }
+
+      //   return new Response(null, {
+      //     status: 200,
+      //   });
     } catch (err) {
       return new Response("Webhook Error", {
         status: 400,
