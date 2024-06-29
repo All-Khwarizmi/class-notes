@@ -7,6 +7,7 @@ import NotFound from "@/app/not-found";
 import NothingToShow from "../common/editor/NothingToShow";
 import ErrorDialog from "../common/ErrorDialog";
 import { Home } from "lucide-react";
+import LoadingSkeleton from "../common/LoadingSkeleton";
 
 export interface ErrorDialogProps {
   message: string;
@@ -22,6 +23,7 @@ export interface LayoutWithPropsProps {
   readonly notFound?: boolean;
   readonly nothingToShow?: boolean;
   readonly isError?: ErrorDialogProps;
+  readonly isLoading?: boolean;
 }
 
 function LayoutWithProps({
@@ -31,6 +33,7 @@ function LayoutWithProps({
   notFound = false,
   nothingToShow = false,
   isError,
+  isLoading,
 }: LayoutWithPropsProps) {
   const defaultNavItem: NavItem = {
     title: "Home",
@@ -49,6 +52,8 @@ function LayoutWithProps({
             <NothingToShow />
           ) : isError ? (
             <ErrorDialog {...isError} />
+          ) : isLoading ? (
+            <LoadingSkeleton />
           ) : (
             children
           )}
