@@ -1,6 +1,6 @@
 import { Id } from "./_generated/dataModel";
-import { mutation, query } from "./_generated/server";
-import { v } from "convex/values";
+import { internalMutation, mutation, query } from "./_generated/server";
+import { ConvexError, v } from "convex/values";
 
 export const onboarding = mutation({
   args: {
@@ -79,5 +79,35 @@ export const saveUserMutation = mutation({
     } else {
       return false;
     }
+  },
+});
+
+export const createUser = internalMutation({
+  args: { tokenIdentifier: v.string(), name: v.string(), image: v.string() },
+  async handler(ctx, args) {
+    await ctx.db.insert("Users", {
+      name: args.name,
+      image: args.image,
+      userId: args.tokenIdentifier,
+    });
+  },
+});
+
+export const updateUser = internalMutation({
+  args: { userId: v.string(), name: v.string(), image: v.string() },
+  async handler(ctx, args) {
+    const user = await ctx.db
+      .query("Users")
+      .withIndex("by_userId", (q) => q.eq("userId", args.userId))
+      .first();
+
+    if (!user) {
+      throw new ConvexError("no user with this token found");
+    }
+
+    await ctx.db.patch(user._id, {
+      name: args.name,
+      image: args.image,
+    });
   },
 });

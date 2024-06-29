@@ -6,11 +6,12 @@ import { EvaluationBase } from "./tables/evaluation_base_convex_schema";
 export default defineSchema({
   Users: defineTable({
     userId: v.string(),
-    schoolSubject: v.string(),
-    name: v.string(),
-    onboarding: v.boolean(),
+    image: v.optional(v.string()),
+    schoolSubject: v.optional(v.string()),
+    name: v.optional(v.string()),
+    onboarding: v.optional(v.boolean()),
     hostname: v.optional(v.string()),
-  }),
+  }).index("by_userId", ["userId"]),
   VisibilityTable: defineTable({
     userId: v.string(),
     classe: v.array(
@@ -240,6 +241,7 @@ export default defineSchema({
     .index("by_gradeType", ["gradeType"]), // Indexing by gradeType for quick filtering,
   CriteriaWithGrades: defineTable({
     name: v.string(),
+    // status: v.optional(v.union(v.literal("published"), v.literal("draft"))),
     classId: v.id("Classes"),
     studentId: v.id("Students"),
     wheight: v.optional(v.number()),
