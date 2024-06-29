@@ -28,6 +28,7 @@ import type * as fields_grade_type from "../fields/grade_type.js";
 import type * as http from "../http.js";
 import type * as notes from "../notes.js";
 import type * as sequence from "../sequence.js";
+import type * as stripe from "../stripe.js";
 import type * as students from "../students.js";
 import type * as tables_evaluation_base_convex_schema from "../tables/evaluation_base_convex_schema.js";
 import type * as tables_evaluations_with_grades_convex_schema from "../tables/evaluations_with_grades_convex_schema.js";
@@ -58,6 +59,7 @@ declare const fullApi: ApiFromModules<{
   http: typeof http;
   notes: typeof notes;
   sequence: typeof sequence;
+  stripe: typeof stripe;
   students: typeof students;
   "tables/evaluation_base_convex_schema": typeof tables_evaluation_base_convex_schema;
   "tables/evaluations_with_grades_convex_schema": typeof tables_evaluations_with_grades_convex_schema;
