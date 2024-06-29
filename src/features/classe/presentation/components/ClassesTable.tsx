@@ -15,6 +15,7 @@ import { Delete, Pen } from "lucide-react";
 import VisibilitySwitch from "@/features/cours-sequence/presentation/components/VisibilitySwitch";
 import LayoutWithProps from "@/core/components/layout/LayoutWithProps";
 import { useClassesTableLogic } from "../services/hooks/useClassesTableLogic";
+import Layout from "@/core/components/layout/Layout";
 
 export default function ClassesTable(props: { userId: string }) {
   const {
@@ -29,17 +30,23 @@ export default function ClassesTable(props: { userId: string }) {
   } = useClassesTableLogic({ userId: props.userId });
 
   if (isLoading) {
-    return <LayoutWithProps isLoading />;
+    return (
+      <Layout isLoading>
+        <Layout.LoadingSkeleton />
+      </Layout>
+    );
   }
 
   if (isError) {
     return (
-      <LayoutWithProps
+      <Layout
         isError={{
           message: "Une erreur s'est produite lors du chargement des classes",
           description: error?.message,
         }}
-      />
+      >
+        <Layout.ErrorDialog />
+      </Layout>
     );
   }
 
