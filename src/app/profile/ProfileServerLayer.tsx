@@ -16,7 +16,6 @@ async function ProfileServerLayer() {
   const user = await profileUseCases.getUser({
     userId: authUser.right.userId,
   });
-
   if (isLeft(user)) {
     redirect("/login");
   }
