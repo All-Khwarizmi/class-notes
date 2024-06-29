@@ -12,7 +12,7 @@ export const fulfill = internalAction({
   args: { headers: v.any(), payload: v.string() },
   handler: async (ctx, args) => {
     const wh = new Webhook(webhookSecret);
-    const payload = wh.verify(args.payload, args.headers) as WebhookEvent;
+    const payload = wh.verify(args.payload, args.headers) as WebhookEvent;  
     return payload;
   },
 });
