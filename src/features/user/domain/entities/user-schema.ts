@@ -8,6 +8,7 @@ export const userSchema = z.object({
   image: z.string().optional(),
   hostname: z.string().optional(),
   userId: z.string(),
+  email: z.string().optional(),
 });
 
 export type UserType = z.infer<typeof userSchema>;
