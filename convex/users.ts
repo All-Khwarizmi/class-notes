@@ -1,7 +1,7 @@
 import { Id } from "./_generated/dataModel";
 import { internalMutation, mutation, query } from "./_generated/server";
 import { ConvexError, v } from "convex/values";
-
+const FREE_CREDITS = 5;
 export const onboarding = mutation({
   args: {
     userId: v.string(),
@@ -82,23 +82,6 @@ export const saveUserMutation = mutation({
   },
 });
 
-export const createUser = internalMutation({
-  args: {
-    tokenIdentifier: v.string(),
-    name: v.string(),
-    image: v.string(),
-    email: v.string(),
-  },
-  async handler(ctx, args) {
-    await ctx.db.insert("Users", {
-      name: args.name,
-      image: args.image,
-      userId: args.tokenIdentifier,
-      email: args.email,
-    });
-  },
-});
-
 export const updateUser = internalMutation({
   args: { userId: v.string(), name: v.string(), image: v.string() },
   async handler(ctx, args) {
@@ -117,3 +100,79 @@ export const updateUser = internalMutation({
     });
   },
 });
+
+export const updateSubscription = internalMutation({
+  args: { subscriptionId: v.string(), userId: v.string(), endsOn: v.number() },
+  handler: async (ctx, args) => {
+    const user = await ctx.db
+      .query("Users")
+      .withIndex("by_userId", (q) => q.eq("userId", args.userId))
+      .first();
+
+    if (!user) {
+      throw new Error("no user found with that user id");
+    }
+
+    await ctx.db.patch(user._id, {
+      subscriptionId: args.subscriptionId,
+      endsOn: args.endsOn,
+    });
+  },
+});
+
+// export const isUserSubscribed = async (ctx: QueryCtx | MutationCtx) => {
+//   const userId = await getUserId(ctx);
+
+//   if (!userId) {
+//     return false;
+//   }
+
+//   const userToCheck = await getFullUser(ctx, userId);
+
+//   return (userToCheck?.endsOn ?? 0) > Date.now();
+// };
+
+export const createUser = internalMutation({
+  args: {
+    email: v.string(),
+    userId: v.string(),
+    name: v.string(),
+    image: v.string(),
+  },
+  handler: async (ctx, args) => {
+    await ctx.db.insert("Users", {
+      email: args.email,
+      userId: args.userId,
+      credits: FREE_CREDITS,
+      name: args.name,
+      image: args.image,
+    });
+  },
+});
+
+// export const updateSubscriptionBySubId = internalMutation({
+//   args: { subscriptionId: v.string(), endsOn: v.number() },
+//   handler: async (ctx, args) => {
+//     const user = await ctx.db
+//       .query("users")
+//       .withIndex("by_subscriptionId", (q) =>
+//         q.eq("subscriptionId", args.subscriptionId)
+//       )
+//       .first();
+
+//     if (!user) {
+//       throw new Error("no user found with that user id");
+//     }
+
+//     await ctx.db.patch(user._id, {
+//       endsOn: args.endsOn,
+//     });
+//   },
+// });
+
+// export function getFullUser(ctx: QueryCtx | MutationCtx, userId: string) {
+//   return ctx.db
+//     .query("users")
+//     .withIndex("by_userId", (q) => q.eq("userId", userId))
+//     .first();
+// }
