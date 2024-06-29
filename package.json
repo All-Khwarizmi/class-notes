@@ -23,6 +23,7 @@
     "e2e:headless"
   ],
   "dependencies": {
+    "@clerk/clerk-sdk-node": "^5.0.12",
     "@clerk/nextjs": "4.29.9",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
@@ -85,6 +86,7 @@
     "react-hook-form": "7.51.1",
     "react-papaparse": "^4.4.0",
     "sonner": "^1.4.41",
+    "svix": "^1.24.0",
     "tailwind-merge": "2.2.2",
     "tailwindcss-animate": "1.0.7",
     "zod": "3.22.4",
