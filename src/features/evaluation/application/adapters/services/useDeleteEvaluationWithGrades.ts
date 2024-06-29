@@ -2,7 +2,6 @@ import { DeleteEvaluationWithGradesOptions } from "@/features/evaluation/domain/
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { isLeft } from "fp-ts/lib/Either";
 import { toast } from "sonner";
-import deleteEvaluationWithGrades from "../actions/delete-evaluation-with-grades";
 import { evaluationUsecases } from "../../usecases/evaluation-usecases";
 
 export default function useDeleteEvaluationWithGrades() {
