@@ -25,13 +25,13 @@ http.route({
 
       switch (result.type) {
         case "user.created":
-          console.log("User created");
           await ctx.runMutation(internal.users.createUser, {
             tokenIdentifier: result.data.id,
             name: `${result.data.first_name ?? ""} ${
               result.data.last_name ?? ""
             }`,
             image: result.data.image_url,
+            email: result.data.email_addresses[0].email_address,
           });
           break;
         case "user.updated":
