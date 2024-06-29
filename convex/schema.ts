@@ -11,6 +11,7 @@ export default defineSchema({
     name: v.optional(v.string()),
     onboarding: v.optional(v.boolean()),
     hostname: v.optional(v.string()),
+    email: v.optional(v.string()),
   }).index("by_userId", ["userId"]),
   VisibilityTable: defineTable({
     userId: v.string(),
