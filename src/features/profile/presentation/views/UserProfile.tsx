@@ -60,7 +60,7 @@ export default function UserProfile({ user }: { user: UserType }) {
           <div className="text-muted-foreground">
             <CalendarDaysIcon className="inline-block w-5 h-5 mr-1" />{" "}
             {user.endsOn
-              ? new Date(user.endsOn).toLocaleDateString()
+              ? new Date(user.endsOn).toDateString()
               : "No subscription"}
           </div>
         </div>
