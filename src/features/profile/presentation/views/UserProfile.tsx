@@ -20,16 +20,17 @@ import { Button } from "@/core/components/ui/button";
 
 export default function UserProfile({ user }: { user: UserType }) {
   const { setSaveUserOptions, loading, error } = useSaveUser();
-  const form = useForm<UserType>({
+  const form = useForm<Omit<UserType, "_id" | "userId">>({
     resolver: zodResolver(
       userSchema.omit({
         _id: true,
+        userId: true,
       })
     ),
     defaultValues: user,
   });
 
-  function onSubmit(data: UserType) {
+  function onSubmit(data: Omit<UserType, "_id" | "userId">) {
     setSaveUserOptions({
       userId: user._id,
       ...data,

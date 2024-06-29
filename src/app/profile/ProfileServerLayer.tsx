@@ -7,7 +7,6 @@ import { redirect } from "next/navigation";
 import Dashboard from "@/core/components/icons/Dashboard";
 import { NavItem } from "@/lib/types";
 import { NotebookPen } from "lucide-react";
-import Sidebar from "@/core/components/layout/Sidebar";
 import LayoutWithProps from "@/core/components/layout/LayoutWithProps";
 async function ProfileServerLayer() {
   const authUser = await authUseCases.getUserAuth();
