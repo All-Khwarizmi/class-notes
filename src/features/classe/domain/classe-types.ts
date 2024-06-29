@@ -10,5 +10,5 @@ export interface CreateClasseOptions {
 }
 
 export interface GetClasseListOptions {
-  classeId: string;
+  userId: string;
 }
