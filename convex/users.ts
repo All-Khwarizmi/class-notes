@@ -60,8 +60,8 @@ export const getUserQuery = query({
 export const saveUserMutation = mutation({
   args: {
     userId: v.string(),
-    schoolSubject: v.string(),
-    name: v.string(),
+    schoolSubject: v.optional(v.string()),
+    name: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
     const user = await ctx.db
