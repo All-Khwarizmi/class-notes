@@ -20,7 +20,6 @@ import { Button } from "@/core/components/ui/button";
 import { useAction } from "convex/react";
 import { api } from "../../../../../convex/_generated/api";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
 import { Separator } from "@radix-ui/react-select";
 
 export default function UserProfile({ user }: { user: UserType }) {
@@ -54,41 +53,39 @@ export default function UserProfile({ user }: { user: UserType }) {
       <div className="h-full flex justify-center gap-4 pb-4">
         <UserButton />
       </div>
-      {user.subscriptionId && user.endsOn && (
-        <>
-          <Separator className="my-8" />
-          <div className="grid place-items-center grid-cols-2 gap-6 ">
-            <div className="space-y-2">
-              <h3 className="text-lg font-medium">Subscription Expiration</h3>
-              <div className="text-muted-foreground">
-                <CalendarDaysIcon className="inline-block w-5 h-5 mr-1" />
-                {new Date(user.endsOn).toDateString()}
-              </div>
-            </div>
-            <div className="space-y-2">
-              <h3 className="text-lg font-medium">Credits Remaining</h3>
-              <div className="text-muted-foreground">
-                <CoinsIcon className="inline-block w-5 h-5 mr-1" />
-                {checkUserSubscriptionStatus(user.endsOn, user.credits)}
-              </div>
-            </div>
+      <Separator className="my-8" />
+      <div className="grid place-items-center grid-cols-2 gap-6 ">
+        <div className="space-y-2">
+          <h3 className="text-lg font-medium">Subscription Expiration</h3>
+          <div className="text-muted-foreground">
+            <CalendarDaysIcon className="inline-block w-5 h-5 mr-1" />
+            {user.endsOn
+              ? new Date(user.endsOn).toLocaleDateString()
+              : "No subscription"}
           </div>
-          <Separator className="my-6" />
-          <div className="flex flex-col items-center space-y-4">
-            {!user.subscriptionId && (
-              <Button
-                variant="outline"
-                className="w-full"
-                onClick={handleOnClick}
-                data-testid="pay-subcription-btn"
-                type="button"
-              >
-                Upgrade
-              </Button>
-            )}
+        </div>
+        <div className="space-y-2">
+          <h3 className="text-lg font-medium">Credits Remaining</h3>
+          <div className="text-muted-foreground">
+            <CoinsIcon className="inline-block w-5 h-5 mr-1" />
+            {checkUserCredits(user.endsOn, user.credits)}
           </div>
-        </>
-      )}
+        </div>
+      </div>
+      <Separator className="my-6" />
+      <div className="flex flex-col items-center space-y-4">
+        {!user.subscriptionId && (
+          <Button
+            variant="default" // Change the variant to "primary" for a more call to action look
+            className="w-full"
+            onClick={handleOnClick}
+            data-testid="pay-subcription-btn"
+            type="button"
+          >
+            Upgrade Now 
+          </Button>
+        )}
+      </div>
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -131,7 +128,7 @@ export default function UserProfile({ user }: { user: UserType }) {
             }}
           />
           <div className="flex justify-end gap-4">
-            <Button data-testid="submit-onboarding-form" type="submit">
+            <Button variant="secondary" data-testid="submit-onboarding-form" type="submit">
               Update
             </Button>
           </div>
@@ -210,15 +207,26 @@ function CoinsIcon(props: React.SVGProps<SVGSVGElement>) {
   );
 }
 
-function checkUserSubscriptionStatus(endsOn: number, credits?: number) {
-  const now = new Date();
-  const endsOnDate = new Date(endsOn);
-  if (now < endsOnDate) {
+function checkUserCredits(endsOn?: number, credits?: number) {
+  if (checkUserSubscriptionStatus(endsOn) === "Active") {
     return "Unlimited";
   } else if (credits && credits > 0) {
     return String(credits);
   } else if (credits === 0) {
     return "No credits left";
+  } 
+
+  
+}
+
+export function checkUserSubscriptionStatus(endsOn?: number) {
+  if (!endsOn) {
+    return "No subscription";
+  }
+  const now = new Date();
+  const endsOnDate = new Date(endsOn);
+  if (now < endsOnDate) {
+    return "Active";
   } else {
     return "Expired";
   }
