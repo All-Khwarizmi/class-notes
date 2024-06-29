@@ -12,7 +12,12 @@ export default defineSchema({
     onboarding: v.optional(v.boolean()),
     hostname: v.optional(v.string()),
     email: v.optional(v.string()),
-  }).index("by_userId", ["userId"]),
+    subscriptionId: v.optional(v.string()),
+    endsOn: v.optional(v.number()),
+    credits: v.optional(v.number()),
+  })
+    .index("by_userId", ["userId"])
+    .index("by_subscriptionId", ["subscriptionId"]),
   VisibilityTable: defineTable({
     userId: v.string(),
     classe: v.array(
