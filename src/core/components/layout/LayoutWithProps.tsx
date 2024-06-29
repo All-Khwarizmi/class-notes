@@ -1,4 +1,4 @@
-import React from "react";
+import React, { PropsWithChildren } from "react";
 import Header from "@/core/components/layout/Header";
 import { NavItem } from "@/lib/types";
 import Sidebar from "./Sidebar";
@@ -16,7 +16,7 @@ export interface ErrorDialogProps {
   description?: string;
 }
 
-export interface LayoutWithPropsProps {
+export type LayoutWithPropsProps = PropsWithChildren & {
   readonly children?: React.ReactNode;
   readonly navItems?: NavItem[];
   readonly isEmpty?: boolean;
@@ -24,7 +24,7 @@ export interface LayoutWithPropsProps {
   readonly nothingToShow?: boolean;
   readonly isError?: ErrorDialogProps;
   readonly isLoading?: boolean;
-}
+};
 
 function LayoutWithProps({
   children,
