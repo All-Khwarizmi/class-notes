@@ -8,3 +8,7 @@ export interface CreateClasseOptions {
   description?: string;
   imageUrl?: string;
 }
+
+export interface GetClasseListOptions {
+  classeId: string;
+}
