@@ -83,12 +83,18 @@ export const saveUserMutation = mutation({
 });
 
 export const createUser = internalMutation({
-  args: { tokenIdentifier: v.string(), name: v.string(), image: v.string() },
+  args: {
+    tokenIdentifier: v.string(),
+    name: v.string(),
+    image: v.string(),
+    email: v.string(),
+  },
   async handler(ctx, args) {
     await ctx.db.insert("Users", {
       name: args.name,
       image: args.image,
       userId: args.tokenIdentifier,
+      email: args.email,
     });
   },
 });
