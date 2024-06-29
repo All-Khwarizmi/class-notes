@@ -50,14 +50,14 @@ export default function UserProfile({ user }: { user: UserType }) {
   }
 
   return (
-    <div data-testid="user-form" className="py-8 px-6 pt-12">
+    <div data-testid="user-form" className="py-8 px-6 pt-12 space-y-8">
       <div className="h-full flex justify-center gap-4 pb-4">
         <UserButton />
       </div>
       {user.subscriptionId && user.endsOn && (
         <>
-          <Separator className="my-6" />
-          <div className="grid place-items-center grid-cols-2 gap-6 py-4">
+          <Separator className="my-8" />
+          <div className="grid place-items-center grid-cols-2 gap-6 ">
             <div className="space-y-2">
               <h3 className="text-lg font-medium">Subscription Expiration</h3>
               <div className="text-muted-foreground">
@@ -69,12 +69,7 @@ export default function UserProfile({ user }: { user: UserType }) {
               <h3 className="text-lg font-medium">Credits Remaining</h3>
               <div className="text-muted-foreground">
                 <CoinsIcon className="inline-block w-5 h-5 mr-1" />
-                {
-                  checkUserSubscriptionStatus(
-                    user.endsOn,
-                    user.credits
-                  ) 
-                }
+                {checkUserSubscriptionStatus(user.endsOn, user.credits)}
               </div>
             </div>
           </div>
