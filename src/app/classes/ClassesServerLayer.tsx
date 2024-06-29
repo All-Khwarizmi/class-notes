@@ -2,54 +2,37 @@ import { authUseCases } from "@/features/auth/application/usecases/auth-usecases
 import { isLeft } from "fp-ts/lib/Either";
 import { redirect } from "next/navigation";
 import React from "react";
-import NotFound from "../not-found";
-import ErrorDialog from "@/core/components/common/ErrorDialog";
 import ClassesTable from "@/features/classe/presentation/components/ClassesTable";
 import { classeUsecases } from "@/features/classe/application/usecases/classe-usecases";
 import LayoutWithProps from "@/core/components/layout/LayoutWithProps";
-
+import {
+  dehydrate,
+  HydrationBoundary,
+  QueryClient,
+} from "@tanstack/react-query";
+import { QUERY_KEYS } from "@/core/query/ query-keys";
 async function ClassesServerLayer(props: { slug: string }) {
   if (!props.slug) {
-    return (
-      <LayoutWithProps isEmpty>
-        <NotFound />
-      </LayoutWithProps>
-    );
+    return <LayoutWithProps notFound />;
   }
   const authUser = await authUseCases.getUserAuth();
   if (isLeft(authUser)) {
     redirect("/login");
   }
+  const queryClient = new QueryClient();
 
-  const eitherClasses = await classeUsecases.getClasses({
-    id: authUser.right.userId,
+  queryClient.prefetchQuery({
+    queryKey: QUERY_KEYS.CLASSE.GET_ALL(),
+    queryFn: () =>
+      classeUsecases.getClasses({
+        id: authUser.right.userId,
+      }),
   });
-  if (isLeft(eitherClasses)) {
-    return (
-      <LayoutWithProps isEmpty>
-        <ErrorDialog
-          message={`
-        Une erreur s'est produite lors du chargement des classes
-        ${
-          process.env.NODE_ENV === "development"
-            ? eitherClasses.left.message
-            : ""
-        }
-    `}
-          code={eitherClasses.left.code}
-          description={eitherClasses.left.message}
-        />
-      </LayoutWithProps>
-    );
-  }
 
   return (
-    <LayoutWithProps>
-      <ClassesTable
-        classes={eitherClasses.right}
-        userId={authUser.right.userId}
-      />
-    </LayoutWithProps>
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <ClassesTable userId={authUser.right.userId} />
+    </HydrationBoundary>
   );
 }
 
