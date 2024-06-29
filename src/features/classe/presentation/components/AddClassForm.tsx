@@ -15,13 +15,12 @@ import { useForm } from "react-hook-form";
 import { Textarea } from "../../../../core/components/ui/textarea";
 import classSchema, { ClassType } from "@/features/classe/domain/class-schema";
 const BASE_IMAGE_URL = "https://source.unsplash.com/random/800x600";
-import { useEffect } from "react";
-import { classeRepository } from "@/features/classe/application/repository/classe-repository";
 import useAddClasse from "../../application/adapters/services/useAddClasse";
 
 export default function AddClassForm(props: {
   setOpen: (value: boolean) => void;
   userId: string;
+  refetchClasses: () => void;
 }) {
   const { mutate: setClasse } = useAddClasse();
   const form = useForm<Pick<ClassType, "description" | "name" | "imageUrl">>({
@@ -46,8 +45,8 @@ export default function AddClassForm(props: {
       },
       {
         onSuccess: () => {
+          props.refetchClasses();
           props.setOpen(false);
-          window.location.reload();
         },
       }
     );

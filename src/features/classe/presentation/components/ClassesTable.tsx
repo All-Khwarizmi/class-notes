@@ -133,7 +133,11 @@ export default function ClassesTable(props: { userId: string }) {
               description="Ajouter une classe pour commencer à ajouter des étudiants"
               testId="add-class"
             >
-              <AddClassForm setOpen={setOpen} userId={props.userId} />
+              <AddClassForm
+                setOpen={setOpen}
+                userId={props.userId}
+                refetchClasses={refetchClasses}
+              />
             </CustomDialog>
           </article>
         </section>
