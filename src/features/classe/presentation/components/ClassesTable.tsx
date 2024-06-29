@@ -13,35 +13,20 @@ import AddIcon from "../../../../core/components/icons/AddIcon";
 import Link from "next/link";
 import { Delete, Pen } from "lucide-react";
 import VisibilitySwitch from "@/features/cours-sequence/presentation/components/VisibilitySwitch";
-import useDeleteClasse from "../../application/adapters/services/useDeleteClasse";
-import { useState } from "react";
 import LayoutWithProps from "@/core/components/layout/LayoutWithProps";
-import useGetClasses from "../services/hooks/useGetClasses";
+import { useClassesTableLogic } from "../services/hooks/useClassesTableLogic";
 
 export default function ClassesTable(props: { userId: string }) {
   const {
-    data: classes,
+    classes,
     isLoading,
     isError,
     error,
-    refetch: refetchClasses,
-  } = useGetClasses({
-    userId: props.userId,
-  });
-  const [open, setOpen] = useState(false);
-  const { mutate: deleteClasse } = useDeleteClasse();
-  const handleDelete = async (id: string) => {
-    deleteClasse(
-      {
-        classeId: id,
-      },
-      {
-        onSuccess: () => {
-          refetchClasses();
-        },
-      }
-    );
-  };
+    refetchClasses,
+    open,
+    setOpen,
+    handleDelete,
+  } = useClassesTableLogic({ userId: props.userId });
 
   if (isLoading) {
     return <LayoutWithProps isLoading />;
