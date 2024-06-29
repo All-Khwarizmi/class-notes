@@ -9,6 +9,9 @@ export const userSchema = z.object({
   hostname: z.string().optional(),
   userId: z.string(),
   email: z.string().optional(),
+  subscriptionId: z.string().optional(),
+  endsOn: z.number().optional(),
+  credits: z.number().optional(),
 });
 
 export type UserType = z.infer<typeof userSchema>;
