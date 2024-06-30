@@ -103,7 +103,7 @@ export default function CustomDialog({
           {displayButton ? (
             <div
               className={cn(
-                "flex items-center justify-center gap-2",
+                "flex items-center justify-start gap-2",
                 ` ${buttonContainerClassName}`
               )}
             >
