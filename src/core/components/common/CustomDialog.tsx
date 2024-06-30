@@ -110,7 +110,9 @@ export default function CustomDialog({
               <Button
                 variant={buttonVariant}
                 onClick={() => setOpen?.(true)}
-                className={cn(`${buttonClassName} `)}
+                className={cn(
+                  `text-slate-800 bg-transparent hover:bg-slate-400  dark:text-white dark:hover:text-black dark:shadow-sm  dark:shadow-slate-700 ${buttonClassName} `
+                )}
                 data-testid={testId}
               >
                 {buttonText ?? icon}
