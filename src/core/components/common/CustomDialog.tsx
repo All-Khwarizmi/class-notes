@@ -32,6 +32,7 @@ export default function CustomDialog({
   buttonVariant,
   buttonSize,
   buttonClassName,
+  buttonContainerClassName,
   setOpen,
   text,
 }: {
@@ -89,6 +90,7 @@ export default function CustomDialog({
    * The class name for the button.
    */
   buttonClassName?: string;
+  buttonContainerClassName?: string;
   /**
    * Callback function to set the open state of the dialog.
    */
@@ -99,7 +101,12 @@ export default function CustomDialog({
       <Dialog onOpenChange={setOpen} open={open}>
         <DialogTrigger asChild>
           {displayButton ? (
-            <div className="flex items-center justify-center gap-2">
+            <div
+              className={cn(
+                "flex items-center justify-center gap-2",
+                ` ${buttonContainerClassName}`
+              )}
+            >
               <Button
                 variant={buttonVariant}
                 onClick={() => setOpen?.(true)}
