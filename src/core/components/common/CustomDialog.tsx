@@ -9,6 +9,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/core/components/ui/dialog";
+import { Button } from "../ui/button";
 
 /**
  * CustomDialog component displays a dialog with a title, description, and optional button.
@@ -98,16 +99,16 @@ export default function CustomDialog({
       <Dialog onOpenChange={setOpen} open={open}>
         <DialogTrigger asChild>
           {displayButton ? (
-            <button
-              onClick={() => setOpen?.(true)}
-              className={cn(
-                `text-gray-300 text-sm bg-green-900 p-2 rounded-xl  hover:text-gray-900 dark:text-gray-50 dark:hover:bg-slate-600  focus:outline-none`,
-                `${buttonClassName}`
-              )}
-              data-testid={testId}
-            >
-              {buttonText ?? icon}
-            </button>
+            <div className="flex items-center justify-center gap-2">
+              <Button
+                variant={buttonVariant}
+                onClick={() => setOpen?.(true)}
+                className={cn(`${buttonClassName} `)}
+                data-testid={testId}
+              >
+                {buttonText ?? icon}
+              </Button>
+            </div>
           ) : (
             <div className="text-gray-300 text-sm bg-green-900 p-2 rounded-xl text-center hover:text-gray-900 dark:text-gray-50 dark:hover:bg-green-600  focus:outline-none">
               {text}
