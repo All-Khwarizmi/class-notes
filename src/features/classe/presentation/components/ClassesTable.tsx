@@ -66,9 +66,6 @@ export default function ClassesTable(props: { userId: string }) {
       >
         {classes && classes.right.length > 0 ? (
           <>
-            <header className="flex py-4 justify-center gap-4">
-              <p className="text-2xl text-center font-bold">Classes</p>
-            </header>
             <Table data-testid="classes-table" className="">
               <TableCaption>Ajouter une classe</TableCaption>
               <TableHeader>
@@ -137,15 +134,11 @@ export default function ClassesTable(props: { userId: string }) {
           <CustomDialog
             open={open}
             setOpen={setOpen}
-            icon={
-              <Button variant={"outline"}>
-                <Plus size={16} />
-              </Button>
-            }
+            icon={<Plus size={16} />}
             title="Ajouter une classe"
             description="Ajouter une classe pour commencer à ajouter des étudiants"
             testId="add-class"
-            buttonClassName="bg-transparent text-white hover:bg-white hover:text-black"
+            buttonVariant="outline"
           >
             <AddClassForm
               setOpen={setOpen}
