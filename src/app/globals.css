@@ -4,7 +4,13 @@
  
 @layer base {
   :root {
-    --background: 10 5% 95%;;
+
+    /* yellow theme=  #F4CE14 */
+      --yellow: 50 100% 50%;
+      --yellow-contrast: 222.2 84% 4.9%;
+
+
+    --background: 10 10% 97%;;
     --foreground:222.2 80% 15%;;
 
     --card: 0 0% 98%;
@@ -39,11 +45,17 @@
   }
  
   .dark {
+    /* yellow theme=  #F4CE14 */
+    --yellow: 50 100% 50%;
+    --yellow-contrast: 222.2 84% 4.9%;
+
     --background: 222.2 84% 7.9%;
     --foreground: 210 40% 98%;
  
     --card: 222.2 84% 2.9%;
     --card-foreground: 210 40% 98%;
+
+
  
     --popover: 222.2 84% 4.9%;
     --popover-foreground: 210 40% 98%;
