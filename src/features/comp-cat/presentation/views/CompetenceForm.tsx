@@ -28,6 +28,7 @@ import { useEffect, useState } from "react";
 import useCreateCompetence from "../../application/usecases/services/useCreateCompetence";
 import CustomDialog from "@/core/components/common/CustomDialog";
 import CategoryForm from "../components/CategoryForm";
+import { Check } from "lucide-react";
 
 export default function CompetenceForm({
   categories,
@@ -127,13 +128,14 @@ export default function CompetenceForm({
         </div>
 
         <Button
+          variant={"outline"}
           onClick={() => {
             onSubmit(form.getValues());
           }}
           type="submit"
           className="btn"
         >
-          Add competence
+          <Check className="text-green-500" size={20} />
         </Button>
       </form>
     </Form>

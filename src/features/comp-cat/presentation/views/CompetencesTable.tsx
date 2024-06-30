@@ -12,6 +12,7 @@ import {
 import { Category, Competence } from "../../domain/entities/schemas";
 import { Button } from "@/core/components/ui/button";
 import Link from "next/link";
+import { Plus } from "lucide-react";
 
 export default function CompetencesTable({
   competences,
@@ -51,9 +52,11 @@ export default function CompetencesTable({
       </Table>
       {/* Add Competence button */}
       <div className="flex justify-center py-4">
-        <Button>
-          <Link href={"/competences/add"}>Add Competence</Link>
-        </Button>
+        <Link className="dark:shadow-sm dark:shadow-slate-700" href={"/competences/add"}>
+          <Button variant="outline">
+            <Plus size={20} />
+          </Button>
+        </Link>
       </div>
     </>
   );
