@@ -17,7 +17,6 @@ import VisibilitySwitch from "@/features/cours-sequence/presentation/components/
 import LayoutWithProps from "@/core/components/layout/LayoutWithProps";
 import { useClassesTableLogic } from "../services/hooks/useClassesTableLogic";
 import Layout from "@/core/components/layout/Layout";
-import { Button } from "@/core/components/ui/button";
 import { cn } from "@/lib/utils";
 
 export default function ClassesTable(props: { userId: string }) {
@@ -139,6 +138,7 @@ export default function ClassesTable(props: { userId: string }) {
             description="Ajouter une classe pour commencer à ajouter des étudiants"
             testId="add-class"
             buttonVariant="outline"
+            buttonContainerClassName="justify-center"
           >
             <AddClassForm
               setOpen={setOpen}
