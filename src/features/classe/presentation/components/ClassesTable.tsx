@@ -130,7 +130,7 @@ export default function ClassesTable(props: { userId: string }) {
             </p>
           </div>
         )}
-        <article className="flex flex-col py-2">
+        <article className="flex flex-col py-4">
           <CustomDialog
             open={open}
             setOpen={setOpen}
