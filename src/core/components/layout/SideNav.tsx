@@ -15,6 +15,7 @@ import {
 } from "@/core/components/layout/SubNavAccordion";
 import { useEffect, useState } from "react";
 import { ChevronDownIcon } from "@radix-ui/react-icons";
+import { cons } from "fp-ts/lib/ReadonlyNonEmptyArray";
 
 interface SideNavProps {
   items: NavItem[];
@@ -43,8 +44,17 @@ export function SideNav({ items, setOpen, className }: SideNavProps) {
   }, [path]);
 
   function pathIsActive(props: { path: string; liveHref: string }) {
-    if (items.length > 0) return false;
-    return props.liveHref.split("/")[1] === props.path.split("/")[1];
+    let { path, liveHref } = props;
+    
+    // Check if the path is nested and return false if it is
+    if (path.split("/").length > 2) return false;
+
+    // Check if there are search params in the path and remove them
+    if (path.includes("?")) {
+      path = path.split("?")[0];
+    }
+
+    return liveHref.split("/")[1] === path.split("/")[1];
   }
   return (
     <nav className="space-y-2">

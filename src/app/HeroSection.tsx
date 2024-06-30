@@ -27,14 +27,21 @@ export default function Hero() {
               </div>
             </div>
           </div>
-         
+
           <RandomFadingImage
             src="https://cdn.prod.website-files.com/645a9acecda2e0594fac6126/658054b9bde4219f7c818b9b_gradient-noise-purple-azure.png"
             alt="Hero"
           />
           <div className="flex flex-col  z-10 mt-4 gap-2 min-[400px]:flex-row text-primary  ">
             <SignedOut>
-              <SignInButton>Get Started</SignInButton>
+              <div
+                className="flex flex-col items-center justify-center gap-2 bg-white rounded-lg shadow-lg p-4 w-full md:w-1/2 lg:w-1/3"
+                data-testid="hero-cta"
+              >
+                <SignInButton redirectUrl="/dashboard">
+                  Get Started
+                </SignInButton>
+              </div>
             </SignedOut>
             <SignedIn>
               <Link href="/dashboard">

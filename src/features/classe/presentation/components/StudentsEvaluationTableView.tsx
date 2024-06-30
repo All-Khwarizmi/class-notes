@@ -70,7 +70,7 @@ export function StudentsEvaluationTableView(props: {
                     <CustomDialog
                       title={`Update ${student.name}'s Information`}
                       buttonText={student.name}
-                      buttonClassName="bg-transparent dark text-white px-4 py-2 rounded-md "
+                      buttonClassName="bg-transparent  px-4 py-2 rounded-md "
                     >
                       <StudentUpdateForm
                         student={student}
@@ -107,7 +107,7 @@ export function StudentsEvaluationTableView(props: {
                           {studentGrade ? (
                             <CustomDialog
                               buttonText={overallGrade.toString()}
-                              buttonClassName="bg-transparent dark:text-white px-4 py-2 rounded-md  w-fit"
+                              buttonClassName="px-4 py-2 rounded-md  w-fit"
                               open={isDialogOpen[dialogKey]}
                               setOpen={(value) =>
                                 setIsDialogOpen({
@@ -156,7 +156,7 @@ export function StudentsEvaluationTableView(props: {
               title="Evaluations Settings"
               icon={<Settings />}
               buttonText="Assign Evaluation"
-              buttonClassName="bg-transparent dark text-white px-4 py-2 rounded-md border border-white"
+              buttonClassName="bg-transparent  px-4 py-2 rounded-md border border-white"
             >
               <AssignEvaluation
                 classeId={props.classeId}
@@ -166,7 +166,7 @@ export function StudentsEvaluationTableView(props: {
             <CustomDialog
               title="Add Student"
               buttonText="Add Student"
-              buttonClassName="bg-transparent dark text-white px-4 py-2 rounded-md border border-white"
+              buttonClassName="bg-transparent   px-4 py-2 rounded-md border border-white"
             >
               <div>
                 <AddStudentForm
