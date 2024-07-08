@@ -5,19 +5,13 @@ import {
   TabsList,
   TabsTrigger,
 } from "@/core/components/ui/tabs";
-import { profileUseCases } from "@/features/profile/application/usecases/profile-usecases";
-import UserProfile from "@/features/profile/presentation/views/UserProfile";
 import { isLeft } from "fp-ts/lib/Either";
 import { redirect } from "next/navigation";
 import LoadingSkeleton from "@/core/components/common/LoadingSkeleton";
 import Layout from "@/core/components/layout/Layout";
-import NotFound from "@/app/not-found";
-import Dashboard from "@/core/components/icons/Dashboard";
 import LayoutWithProps from "@/core/components/layout/LayoutWithProps";
 import { coursUsecases } from "@/features/cours-sequence/application/usecases/cours-usecases";
 import CoursSequenceView from "@/features/cours-sequence/presentation/views/CoursSequenceView";
-import { NavItem } from "@/lib/types";
-import { BookA, BookCheck, NotebookPen, Plus } from "lucide-react";
 import { authUseCases } from "@/features/auth/application/usecases/auth-usecases";
 import NotesServerLayer from "@/app/profile/notes/[slug]/NotesServerLayer";
 import CoursesServerLayer from "@/app/cours/all/[slug]/CoursesServerLayer";
