@@ -26,7 +26,6 @@ export default function EvaluationEditForm(
     },
   });
   function onSubmit(values: TemplateType) {
-    console.log(values);
   }
   return (
     <>

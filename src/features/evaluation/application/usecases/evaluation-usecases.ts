@@ -79,7 +79,6 @@ export default class EvaluationUsecases {
       });
 
       if (validatedEval.success === false) {
-        console.log("Invalid Evaluation Base", validatedEval.error.errors);
         return left(
           Failure.invalidValue({
             message: "Invalid Evaluation Base",
@@ -203,7 +202,6 @@ export default class EvaluationUsecases {
       });
 
       if (validatedEval.success === false) {
-        console.log("Invalid Evaluation", validatedEval.error.errors);
         return left(
           Failure.invalidValue({
             message: "Invalid Evaluation",

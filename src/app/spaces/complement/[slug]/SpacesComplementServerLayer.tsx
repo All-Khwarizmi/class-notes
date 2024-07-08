@@ -45,7 +45,6 @@ async function SpacesComplementServerLayer(props: {
     id: props.slug,
   });
   if (isLeft(eitherComplement)) {
-    console.log(eitherComplement.left);
     return (
       <LayoutWithProps
         isError={{

@@ -27,7 +27,6 @@ function NoteEditorView(props: { note: Note }) {
   useEffect(() => {
     if (isSuccess) {
       toast.success("Note updated");
-      console.log("Note updated");
     }
   }, [isSuccess]);
   return (

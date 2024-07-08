@@ -285,7 +285,6 @@ export const updateCoursBody = mutation({
         }
       }
     } catch (error) {
-      console.log(error);
       return error;
     }
   },
@@ -309,7 +308,6 @@ export const deleteCours = mutation({
 
       await ctx.db.delete(cours._id);
     } catch (error) {
-      console.log(error);
       return error;
     }
   },

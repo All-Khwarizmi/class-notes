@@ -39,7 +39,6 @@ function StudentUpdateForm(props: {
   async function onSubmit(
     values: Pick<Student, "name" | "classId" | "imageUrl">
   ) {
-    console.log(values);
     const { name } = values;
     updateStudent(
       { name, id: student.id, imageUrl: localImageUrl },

@@ -3,10 +3,6 @@ import { InputRule } from "@tiptap/core";
 import { TextSelection } from "prosemirror-state";
 import { Node as ProseMirrorNode } from "prosemirror-model";
 
-// Simple function to log input rule triggers
-const logTrigger = (message: string) => {
-  console.log(message);
-};
 
 // Function to create an input rule for auto-closing curly braces
 const createCurlyBracesInputRule = () => {
@@ -14,7 +10,6 @@ const createCurlyBracesInputRule = () => {
     find: /\{$/,
     handler: ({ state, match, range }) => {
       // Log the trigger
-      logTrigger("Curly braces input rule triggered");
       const { tr, selection } = state;
       const { from: start, to: end } = selection;
       const { from, to } = range;
@@ -82,10 +77,7 @@ const createCurlyBracesInputRule = () => {
         parent.type.name === "align" ||
         parent.type.name === "indent";
 
-      console.log({
-        parent: parent.type.name,
-        isInCodeBlock,
-      });
+      
       if (isInCodeBlock) {
         // Insert just the closing brace in code blocks
         tr.insertText("{}", start, end);

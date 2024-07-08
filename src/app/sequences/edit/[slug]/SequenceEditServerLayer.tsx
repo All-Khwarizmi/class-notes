@@ -24,7 +24,6 @@ async function SequenceEditServerLayer(props: {
     type,
   });
   if (isFailure) {
-    console.log(failures);
     return (
       <LayoutWithProps isEmpty>
         <ErrorDialog
