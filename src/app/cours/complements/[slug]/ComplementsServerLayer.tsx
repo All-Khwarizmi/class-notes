@@ -54,13 +54,11 @@ async function ComplementsServerLayer(props: { slug: string }) {
   }
 
   return (
-    <LayoutWithProps>
       <ComplementsView
         complements={complements}
         coursId={props.slug}
         userId={authUser.right.userId}
       />
-    </LayoutWithProps>
   );
 }
 

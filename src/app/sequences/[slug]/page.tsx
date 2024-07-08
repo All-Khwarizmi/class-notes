@@ -1,5 +1,4 @@
 import LoadingSkeleton from "@/core/components/common/LoadingSkeleton";
-import SequenceServerLayer from "@/app/sequences/[slug]/SequenceServerLayer";
 import React, { Suspense } from "react";
 import LayoutWithProps from "@/core/components/layout/LayoutWithProps";
 import SequenceLayout from "./SequenceLayout";
