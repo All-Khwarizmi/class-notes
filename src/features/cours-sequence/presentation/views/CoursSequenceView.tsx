@@ -70,7 +70,7 @@ export default function CoursSequenceView({
       </>
     );
   }
-  if (type === "sequence" && sequence && coursFromSequence) {
+  if (type === "sequence" && sequence ) {
     const viewPath =
       sequenceType === "sequence"
         ? `/spaces/sequences/${sequence._id}?user=${userId}`
