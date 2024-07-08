@@ -24,6 +24,7 @@ interface SideNavProps {
 }
 
 export function SideNav({ items, setOpen, className }: SideNavProps) {
+  const [localItems, setLocalItems] = useState(items);
   const path = usePathname();
   const { isOpen } = useSidebar();
   const [openItem, setOpenItem] = useState("");
@@ -43,9 +44,18 @@ export function SideNav({ items, setOpen, className }: SideNavProps) {
     setLiveHref(path);
   }, [path]);
 
+  useEffect(() => {
+    // Check if the path contains a key word and remove the item if it does
+    const filteredItems = items.filter((item) => {
+      const regex = /spaces/i;
+      return !regex.test(item.href);
+    });
+    setLocalItems(filteredItems);
+  }, [path]);
+
   function pathIsActive(props: { path: string; liveHref: string }) {
     let { path, liveHref } = props;
-    
+
     // Check if the path is nested and return false if it is
     if (path.split("/").length > 2) return false;
 
@@ -58,7 +68,7 @@ export function SideNav({ items, setOpen, className }: SideNavProps) {
   }
   return (
     <nav className="space-y-2">
-      {items.map((item) =>
+      {localItems.map((item) =>
         item.isChidren ? (
           <Accordion
             type="single"
