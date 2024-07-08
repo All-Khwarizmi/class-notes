@@ -54,13 +54,13 @@ async function CoursesServerLayer({
     );
   }
   return (
-    <LayoutWithProps>
+    // <LayoutWithProps>
       <CoursesTable
         courses={eitherCourses.right}
         sequenceId={slug}
         userId={authUser.right.userId}
       />
-    </LayoutWithProps>
+    // </LayoutWithProps>
   );
 }
 

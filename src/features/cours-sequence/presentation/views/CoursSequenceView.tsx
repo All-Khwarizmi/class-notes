@@ -32,7 +32,7 @@ export default function CoursSequenceView({
 
   const { debounceUpdateCoursBody } = useUpdateCoursBody();
  
-  if (type === "cours" && cours && complements) {
+  if (type === "cours" && cours) {
     return (
       <>
         <h1 className="text-2xl font-bold pb-4 dark:text-slate-300 text-slate-500 ">
@@ -70,7 +70,7 @@ export default function CoursSequenceView({
       </>
     );
   }
-  if (type === "sequence" && sequence && coursFromSequence) {
+  if (type === "sequence" && sequence ) {
     const viewPath =
       sequenceType === "sequence"
         ? `/spaces/sequences/${sequence._id}?user=${userId}`

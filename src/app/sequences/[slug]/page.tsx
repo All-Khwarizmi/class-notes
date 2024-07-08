@@ -1,7 +1,7 @@
 import LoadingSkeleton from "@/core/components/common/LoadingSkeleton";
-import SequenceServerLayer from "@/app/sequences/[slug]/SequenceServerLayer";
 import React, { Suspense } from "react";
 import LayoutWithProps from "@/core/components/layout/LayoutWithProps";
+import SequenceLayout from "./SequenceLayout";
 
 async function Page({
   params,
@@ -29,7 +29,7 @@ async function Page({
   }
   return (
     <Suspense fallback={<LoadingSkeleton />}>
-      <SequenceServerLayer
+      <SequenceLayout
         slug={params.slug}
         type={searchParams?.type as "template" | "sequence"}
       />
