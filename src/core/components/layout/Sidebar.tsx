@@ -1,11 +1,13 @@
 "use client";
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { SideNav } from "@/core/components/layout/SideNav";
 import { NavItems } from "@/core/components/constants/side-nav";
 import { cn } from "@/lib/utils";
 import { useSidebar } from "@/core/application/common/useSidebar";
 import ArrowLeft from "../icons/ArrowLeft";
 import { NavItem } from "@/lib/types";
+import { User } from "lucide-react";
+import { useSession } from "@clerk/nextjs";
 
 export interface SidebarProps {
   className?: string;
@@ -15,7 +17,19 @@ export interface SidebarProps {
 export default function Sidebar({ className, navItems }: SidebarProps) {
   const { isOpen, toggle } = useSidebar();
   const [status, setStatus] = useState(false);
+  const { session } = useSession();
 
+  const navItemsCopy = useMemo(() => {
+    const tempCopy = navItems ? [...navItems] : [...NavItems];
+    tempCopy.push({
+      title: "My Space",
+      icon: <User size={16} />,
+      href: `/spaces?user=${session?.user.id}`,
+      color: "text-orange-500",
+    });
+    return tempCopy;
+  }, []);
+  
   const handleToggle = () => {
     setStatus(true);
     toggle();
@@ -42,7 +56,7 @@ export default function Sidebar({ className, navItems }: SidebarProps) {
           <div className="mt-3 space-y-1">
             <SideNav
               className="text-background opacity-0 transition-all duration-300 group-hover:z-50 group-hover:ml-4 group-hover:rounded group-hover:bg-foreground group-hover:p-2 group-hover:opacity-100"
-              items={navItems || NavItems}
+              items={navItemsCopy}
             />
           </div>
         </div>
