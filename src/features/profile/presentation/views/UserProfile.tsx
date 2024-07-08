@@ -36,7 +36,7 @@ export default function UserProfile({ user }: { user: UserType }) {
 
   function onSubmit(data: Omit<UserType, "_id" | "userId">) {
     setSaveUserOptions({
-      userId: user._id,
+      userId: user.userId,
       ...data,
     });
   }

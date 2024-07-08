@@ -1,6 +1,5 @@
 import NotFound from "@/app/not-found";
 import ErrorDialog from "@/core/components/common/ErrorDialog";
-import LayoutWithProps from "@/core/components/layout/LayoutWithProps";
 import { authUseCases } from "@/features/auth/application/usecases/auth-usecases";
 import getNotes from "@/features/notes/application/adapters/actions/get-notes";
 
@@ -15,9 +14,7 @@ async function NotesServerLayer(props: {
   type: "profile" | "sequence" | "cours" | "class" | "student";
 }) {
   if (!props.slug) {
-    <LayoutWithProps isEmpty>
       <NotFound />
-    </LayoutWithProps>;
   }
   const authUser = await authUseCases.getUserAuth();
   if (isLeft(authUser)) {
@@ -30,7 +27,6 @@ async function NotesServerLayer(props: {
   });
   if (isLeft(eitherNotes)) {
     return (
-      <LayoutWithProps isEmpty>
         <ErrorDialog
           message={`
         There was an error while fetching your notes.
@@ -39,17 +35,14 @@ async function NotesServerLayer(props: {
         Code: ${eitherNotes.left.code}
         `}
         />
-      </LayoutWithProps>
     );
   }
 
   return (
-    <LayoutWithProps>
       <NotesTableView
         notes={eitherNotes.right}
         parentId={props.type === "profile" ? authUser.right.userId : props.slug}
       />
-    </LayoutWithProps>
   );
 }
 
