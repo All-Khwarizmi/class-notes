@@ -1,5 +1,6 @@
 import { Inter } from "next/font/google";
 import { Providers } from "./providers";
+import NextTopLoader from "nextjs-toploader";
 import "./globals.css";
 import { ThemeProvider } from "@/core/components/common/theme-provider";
 import QueryProvider from "@/core/query/QueryProvider";
@@ -33,6 +34,7 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
+            <NextTopLoader />
             <main className="flex fixed h-screen w-screen flex-col border-collapse overflow-scroll">
               <QueryProvider>{children}</QueryProvider>
             </main>
