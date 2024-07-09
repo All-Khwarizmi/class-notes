@@ -6,7 +6,8 @@ import Dashboard from "../icons/Dashboard";
 import CopyClipboard from "../icons/CopyClipboard";
 import useGetAllSequences from "@/features/cours-sequence/application/adapters/services/useGetAllSequences";
 import { isRight } from "fp-ts/lib/Either";
-import { Presentation, User } from "lucide-react";
+import { CandlestickChart, Presentation, User } from "lucide-react";
+import useGetEvaluationsBaseList from "@/features/evaluation/application/adapters/services/useGetEvaluationsBaseList";
 
 export default function useExperimentalLayoutLogic(userId: string) {
   const [loading, setLoading] = useState(false);
@@ -19,15 +20,27 @@ export default function useExperimentalLayoutLogic(userId: string) {
     isError: sequencesError,
   } = useGetAllSequences(userId);
   const { data: classes, isLoading, isError } = useGetClasses({ userId });
+  const {
+    data: evaluations,
+    isLoading: evaluationsLoading,
+    isError: evaluationsError,
+  } = useGetEvaluationsBaseList({ userId });
 
   useEffect(() => {
-    if (sequencesLoading || isLoading) {
+    if (sequencesLoading || isLoading || evaluationsLoading) {
       setLoading(true);
     }
-    if (sequencesError || isError) {
+    if (sequencesError || isError || evaluationsError) {
       setError(true);
     }
-  }, [isLoading, isError]);
+  }, [
+    isLoading,
+    isError,
+    sequencesLoading,
+    sequencesError,
+    evaluationsLoading,
+    evaluationsError,
+  ]);
 
   useEffect(() => {
     if (
@@ -36,9 +49,19 @@ export default function useExperimentalLayoutLogic(userId: string) {
       !isError &&
       sequences &&
       !sequencesLoading &&
-      !sequencesError
+      !sequencesError &&
+      evaluations &&
+      !evaluationsLoading &&
+      !evaluationsError
     ) {
-      if (isRight(classes) && isRight(sequences)) {
+      if (isRight(classes) && isRight(sequences) && isRight(evaluations)) {
+        const evaluationsNavItems = evaluations.right.map((evaluation) => ({
+          title: evaluation.name,
+          icon: <CandlestickChart size={16} />,
+          href: `/evaluations/${evaluation.id}`,
+          color: "text-orange-500",
+        }));
+
         const sequencesNavItems = sequences.right.map((sequence) => ({
           title: sequence.name,
           icon: <Presentation size={16} />,
@@ -74,6 +97,14 @@ export default function useExperimentalLayoutLogic(userId: string) {
             isChidren: true,
             children: sequencesNavItems,
           },
+          {
+            title: "Evaluations",
+            icon: <CandlestickChart size={16} />,
+            href: "/evaluations",
+            color: "text-sky-500",
+            isChidren: true,
+            children: evaluationsNavItems,
+          },
 
           {
             title: "My Space",
@@ -91,6 +122,9 @@ export default function useExperimentalLayoutLogic(userId: string) {
     sequences,
     sequencesLoading,
     sequencesError,
+    evaluations,
+    evaluationsLoading,
+    evaluationsError,
   ]);
 
   return {
