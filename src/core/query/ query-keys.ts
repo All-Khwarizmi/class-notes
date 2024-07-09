@@ -12,4 +12,9 @@ export const QUERY_KEYS = {
     GET_ALL: (options: string[] = []) => ["GET_ALL_CLASSES", ...options],
     CREATE: (options: string[] = []) => ["CREATE_CLASSE", ...options],
   },
+  SEQUENCE: {
+    DELETE: (options: string[] = []) => ["DELETE_SEQUENCE", ...options],
+    GET_ALL: (options: string[] = []) => ["GET_ALL_SEQUENCES", ...options],
+    CREATE: (options: string[] = []) => ["CREATE_SEQUENCE", ...options],
+  },
 };
