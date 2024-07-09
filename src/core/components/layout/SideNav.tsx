@@ -29,7 +29,6 @@ export function SideNav({ items, setOpen, className }: SideNavProps) {
   const [openItem, setOpenItem] = useState("");
   const [lastOpenItem, setLastOpenItem] = useState("");
   const [liveHref, setLiveHref] = useState(path);
-  console.log({ items });
   useEffect(() => {
     if (isOpen) {
       setOpenItem(lastOpenItem);
