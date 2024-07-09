@@ -1,5 +1,5 @@
 "use client";
-import { Plus, Delete } from "lucide-react";
+import { Plus, Delete, Link2, Link as LucideLink } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { TableCaption, TableHeader } from "@/core/components/ui/table";
 import {
@@ -15,6 +15,7 @@ import useAddClasseSequence from "../../application/adapters/services/useAddClas
 import { useState } from "react";
 import { toast } from "sonner";
 import useDeleteSequence from "@/features/complement/application/adapters/services/useDeleteSequence";
+import Link from "next/link";
 
 function ClasseSequencesTableView(props: {
   sequences: Sequence[];
@@ -78,14 +79,23 @@ function ClasseSequencesTableView(props: {
                       <ExternalLink size={16} />
                     </Link> */}
                     {classeSequence ? (
-                      <button
-                        onClick={() => handleDelete(classeSequence._id)}
-                        className={cn(
-                          "bg-red-500 rounded-md p-1 px-2 flex items-center ml-2 hover:bg-red-600"
-                        )}
-                      >
-                        <Delete size={12} />
-                      </button>
+                      <>
+                        <Link
+                          className="cursor-pointer "
+                          href={`/sequences/${classeSequence._id}?type=sequence`}
+                          legacyBehavior
+                        >
+                          <LucideLink size={12} />
+                        </Link>
+                        <button
+                          onClick={() => handleDelete(classeSequence._id)}
+                          className={cn(
+                            "bg-red-500 rounded-md p-1 px-2 flex items-center  hover:bg-red-600"
+                          )}
+                        >
+                          <Delete size={12} />
+                        </button>
+                      </>
                     ) : (
                       <button
                         onClick={() => {

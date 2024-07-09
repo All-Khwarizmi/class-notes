@@ -32,24 +32,20 @@ async function ClasseSequencesServerLayer(props: { slug: string }) {
 
   if (isLeft(eitherClasseSequences)) {
     return (
-      <LayoutWithProps isEmpty>
         <ErrorDialog
           message="An error occurred"
           description="An error occurred while fetching classe sequences"
           code={eitherClasseSequences.left.code}
         />
-      </LayoutWithProps>
     );
   }
 
   return (
-    <LayoutWithProps>
       <ClasseSequencesTableView
         sequences={eitherSequences.right}
         classeId={props.slug}
         classeSequences={eitherClasseSequences.right}
       />
-    </LayoutWithProps>
   );
 }
 
