@@ -5,7 +5,6 @@ import { cn } from "@/lib/utils";
 import { useSidebar } from "@/core/application/common/useSidebar";
 import ArrowLeft from "../icons/ArrowLeft";
 import { NavItem } from "@/lib/types";
-import { User } from "lucide-react";
 import { useSession } from "@clerk/nextjs";
 import { useLayoutContext } from "./ExperimentalLayoutCtx";
 
@@ -17,10 +16,7 @@ export interface SidebarProps {
 export default function Sidebar() {
   const { isOpen, toggle } = useSidebar();
   const [status, setStatus] = useState(false);
-  const { session } = useSession();
   const { navItems } = useLayoutContext();
-  console.log({ navItems });
-
 
   const handleToggle = () => {
     setStatus(true);

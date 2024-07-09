@@ -46,7 +46,7 @@ export function SideNav({ items, setOpen, className }: SideNavProps) {
     // Check if the path contains a key word and remove the item if it does
     const filteredItems = items?.filter((item) => {
       const regex = /spaces/i;
-      return !regex.test(item.href);
+      return !regex.test(path);
     });
     setLocalItems(filteredItems);
   }, [path, items]);

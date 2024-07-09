@@ -6,7 +6,12 @@ import Dashboard from "../icons/Dashboard";
 import CopyClipboard from "../icons/CopyClipboard";
 import useGetAllSequences from "@/features/cours-sequence/application/adapters/services/useGetAllSequences";
 import { isRight } from "fp-ts/lib/Either";
-import { CandlestickChart, Presentation, User } from "lucide-react";
+import {
+  BookmarkCheck,
+  CandlestickChart,
+  Presentation,
+  User,
+} from "lucide-react";
 import useGetEvaluationsBaseList from "@/features/evaluation/application/adapters/services/useGetEvaluationsBaseList";
 
 export default function useExperimentalLayoutLogic(userId: string) {
@@ -65,7 +70,7 @@ export default function useExperimentalLayoutLogic(userId: string) {
         const sequencesNavItems = sequences.right.map((sequence) => ({
           title: sequence.name,
           icon: <Presentation size={16} />,
-          href: `/classes/sequences/${sequence._id}`,
+          href: `/sequences/${sequence._id}?type=template`,
           color: "text-orange-500",
         }));
         const classesNavItems = classes.right.map((classe) => ({
@@ -104,6 +109,19 @@ export default function useExperimentalLayoutLogic(userId: string) {
             color: "text-sky-500",
             isChidren: true,
             children: evaluationsNavItems,
+          },
+          {
+            title: "Competences",
+            icon: <BookmarkCheck size={16} />,
+            href: "/competences",
+            color: "text-sky-500",
+          },
+
+          {
+            title: "Profile",
+            icon: <User size={16} />,
+            href: "/profile",
+            color: "text-sky-500",
           },
 
           {
