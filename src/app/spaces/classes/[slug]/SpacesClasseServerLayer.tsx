@@ -45,13 +45,11 @@ async function SpacesClasseServerLayer(props: {
   return (
     <>
       {sequences.length > 0 ? (
-        <LayoutWithProps navItems={sequenceNavItems}>
-          <SequencesListViewSpaces
-            sequences={sequences}
-            spacesMode={true}
-            userId={props.searchParams.user}
-          />
-        </LayoutWithProps>
+        <SequencesListViewSpaces
+          sequences={sequences}
+          spacesMode={true}
+          userId={props.searchParams.user}
+        />
       ) : (
         <LayoutWithProps nothingToShow />
       )}

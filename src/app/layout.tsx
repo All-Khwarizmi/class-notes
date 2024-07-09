@@ -7,6 +7,7 @@ import QueryProvider from "@/core/query/QueryProvider";
 import { Metadata } from "next";
 const inter = Inter({ subsets: ["latin"] });
 import { Toaster } from "@/core/components/ui/sonner";
+import LayoutServerLayer from "@/core/components/layout/LayoutServerLayer";
 export const metadata: Metadata = {
   title: "La Classe - Votre nouveau carnet de notes.",
   description:
@@ -36,7 +37,9 @@ export default function RootLayout({
           >
             <NextTopLoader />
             <main className="flex fixed h-screen w-screen flex-col border-collapse overflow-scroll">
-              <QueryProvider>{children}</QueryProvider>
+              <QueryProvider>
+                <LayoutServerLayer>{children}</LayoutServerLayer>
+              </QueryProvider>
             </main>
 
             <Toaster richColors expand />

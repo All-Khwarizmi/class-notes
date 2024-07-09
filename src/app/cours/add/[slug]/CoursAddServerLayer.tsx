@@ -24,7 +24,6 @@ async function CoursAddServerLayer(props: { slug: string }) {
     competences = [];
   }
   return (
-    <LayoutWithProps>
       <AddUpdateCoursSequenceView
         competences={competences}
         authUser={authUser.right}
@@ -32,7 +31,6 @@ async function CoursAddServerLayer(props: { slug: string }) {
         type="cours"
         title="Add Cours"
       />
-    </LayoutWithProps>
   );
 }
 

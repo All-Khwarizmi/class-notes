@@ -38,7 +38,6 @@ async function CoursesServerLayer({
   });
   if (isLeft(eitherCourses)) {
     return (
-      <LayoutWithProps isEmpty>
         <ErrorDialog
           message={`
         An error occurred while fetching courses. 
@@ -50,17 +49,14 @@ async function CoursesServerLayer({
               : "An error occurred while fetching courses."
           }
         />
-      </LayoutWithProps>
     );
   }
   return (
-    // <LayoutWithProps>
       <CoursesTable
         courses={eitherCourses.right}
         sequenceId={slug}
         userId={authUser.right.userId}
       />
-    // </LayoutWithProps>
   );
 }
 

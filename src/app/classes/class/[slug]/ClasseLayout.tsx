@@ -57,7 +57,6 @@ async function ClasseLayout(props: { slug: string }) {
   await Promise.allSettled(queriesBulk);
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <Layout>
         <Tabs defaultValue="classe">
           <div className="w-full flex justify-center py-4">
             <TabsList>
@@ -91,7 +90,6 @@ async function ClasseLayout(props: { slug: string }) {
             </div>
           </TabsContent>
         </Tabs>
-      </Layout>
     </HydrationBoundary>
   );
 }

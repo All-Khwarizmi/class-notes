@@ -17,25 +17,21 @@ async function ComplementServerLayer(props: { slug: string }) {
   });
   if (isLeft(complement)) {
     return (
-      <LayoutWithProps isEmpty>
         <ErrorDialog
           message={`Unable to fetch complement with id: ${props.slug}
             ${complement.left}
             Code: ${complement.left.code}
         `}
         />
-      </LayoutWithProps>
     );
   }
 
   return (
-    <LayoutWithProps>
       <ComplementView
         slug={props.slug}
         complement={complement.right}
         userId={authUser.right.userId}
       />
-    </LayoutWithProps>
   );
 }
 

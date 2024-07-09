@@ -5,7 +5,6 @@ import { cn } from "@/lib/utils";
 import { useSidebar } from "@/core/application/common/useSidebar";
 import ArrowLeft from "../icons/ArrowLeft";
 import { NavItem } from "@/lib/types";
-import { useSession } from "@clerk/nextjs";
 import { useLayoutContext } from "./ExperimentalLayoutCtx";
 
 export interface SidebarProps {

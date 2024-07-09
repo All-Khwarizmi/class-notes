@@ -25,7 +25,6 @@ async function SequenceEditServerLayer(props: {
   });
   if (isFailure) {
     return (
-      <LayoutWithProps isEmpty>
         <ErrorDialog
           message={`
         Failed to fetch data for the cours edit page.
@@ -33,12 +32,10 @@ async function SequenceEditServerLayer(props: {
         Code: PRE303
     `}
         />
-      </LayoutWithProps>
     );
   }
   if (!sequence) {
     return (
-      <LayoutWithProps isEmpty>
         <ErrorDialog
           message={`
         Failed to fetch data for the sequence edit page.
@@ -46,12 +43,10 @@ async function SequenceEditServerLayer(props: {
         Code: PRE303
     `}
         />
-      </LayoutWithProps>
     );
   }
 
   return (
-    <LayoutWithProps>
       <AddUpdateCoursSequenceView
         competences={competences}
         sequence={sequence}
@@ -61,7 +56,6 @@ async function SequenceEditServerLayer(props: {
         type="sequence"
         sequenceType={type}
       />
-    </LayoutWithProps>
   );
 }
 

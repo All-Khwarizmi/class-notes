@@ -24,7 +24,6 @@ async function ComplementsServerLayer(props: { slug: string }) {
   });
   if (isLeft(eitherComplements)) {
     return (
-      <LayoutWithProps isEmpty>
         <ErrorDialog
           message={`
             Unable to fetch cours with id: ${props.slug}
@@ -32,14 +31,12 @@ async function ComplementsServerLayer(props: { slug: string }) {
                 ${eitherComplements.left}
             `}
         />
-      </LayoutWithProps>
     );
   }
   for (const complement of eitherComplements.right) {
     const validateComplement = ComplementSchema.safeParse(complement);
     if (!validateComplement.success) {
       return (
-        <LayoutWithProps isEmpty>
           <ErrorDialog
             message={`
             Unable to validate complement with id: ${complement.id}
@@ -47,7 +44,6 @@ async function ComplementsServerLayer(props: { slug: string }) {
             ${JSON.stringify(validateComplement.error)}
             `}
           />
-        </LayoutWithProps>
       );
     }
     complements.push(validateComplement.data);

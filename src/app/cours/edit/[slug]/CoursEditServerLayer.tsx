@@ -71,7 +71,6 @@ async function CoursEditServerLayer(props: { slug: string }) {
   });
   if (isFailure) {
     return (
-      <LayoutWithProps isEmpty>
         <ErrorDialog
           message={`
         Failed to fetch data for the cours edit page.
@@ -79,12 +78,10 @@ async function CoursEditServerLayer(props: { slug: string }) {
         Code: PRE303
     `}
         />
-      </LayoutWithProps>
     );
   }
   if (!cours) {
     return (
-      <LayoutWithProps isEmpty>
         <ErrorDialog
           message={`
         Failed to fetch data for the cours edit page.
@@ -92,12 +89,10 @@ async function CoursEditServerLayer(props: { slug: string }) {
         Code: PRE303
     `}
         />
-      </LayoutWithProps>
     );
   }
 
   return (
-    <LayoutWithProps>
       <AddUpdateCoursSequenceView
         authUser={authUser.right}
         type="cours"
@@ -106,7 +101,6 @@ async function CoursEditServerLayer(props: { slug: string }) {
         title="Edit Cours"
         competences={competences}
       />
-    </LayoutWithProps>
   );
 }
 

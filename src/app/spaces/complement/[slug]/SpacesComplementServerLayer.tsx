@@ -70,9 +70,7 @@ async function SpacesComplementServerLayer(props: {
     return <LayoutWithProps nothingToShow />;
   }
   return (
-    <LayoutWithProps isEmpty>
       <ContentViewer content={eitherComplement.right.body} />
-    </LayoutWithProps>
   );
 }
 
