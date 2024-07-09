@@ -57,7 +57,6 @@ export default function AddTemplateForm() {
   function onSubmit(values: TemplateType) {
     return () => {
       setIsCreating({ isCreating: false });
-      console.log(values);
     };
   }
 

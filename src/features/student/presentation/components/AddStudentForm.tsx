@@ -32,7 +32,6 @@ export default function AddStudentForm({
     },
   });
   async function onSubmit(values: Student) {
-    console.log(values);
     const { name } = values;
     addStudent(
       { name, classId },

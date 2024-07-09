@@ -24,7 +24,6 @@ export default function CategoryForm({ userId }: { userId: string }) {
   });
 
   function onSubmit(data: Pick<Category, "name" | "description">) {
-    console.log(data);
     setCreateCategoryOptions({
       ...data,
       createdBy: userId,

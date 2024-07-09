@@ -6,9 +6,7 @@ import React, { Suspense } from "react";
 function Page({ params }: { params: { slug: string } }) {
   return (
     <Suspense fallback={<LoadingSkeleton />}>
-      <Layout>
         <ComplementAddBaseForm slug={params.slug} />
-      </Layout>
     </Suspense>
   );
 }

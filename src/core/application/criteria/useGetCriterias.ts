@@ -22,7 +22,6 @@ export default function useGetCriterias() {
     }
     if (criterias) {
       const parsedCriterias: CriteriaType[] = [];
-      console.log(criterias);
       criterias.forEach((criteria) => {
         const criteriaData = CriteriaSchema.safeParse(criteria);
         if (criteriaData.success) {

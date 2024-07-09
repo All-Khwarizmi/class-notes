@@ -14,7 +14,6 @@ const doubleBrakets = () => {
       const parentNode = findParentNode(
         (node) => node.type.name === "code_block"
       )(selection);
-      console.log(parentNode);
       if (parentNode) {
         // If inside a code block, insert the closing brace directly
         tr.insertText("[]", start, end);

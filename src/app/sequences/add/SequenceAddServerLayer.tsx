@@ -22,14 +22,12 @@ async function SequenceAddServerLayer() {
     competences = [];
   }
   return (
-    <LayoutWithProps>
       <AddUpdateCoursSequenceView
         competences={competences}
         authUser={authUser.right}
         type="sequence"
         title="Add Sequence"
       />
-    </LayoutWithProps>
   );
 }
 

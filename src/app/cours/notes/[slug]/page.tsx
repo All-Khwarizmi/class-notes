@@ -12,9 +12,7 @@ async function Page({
 }) {
   return (
     <Suspense fallback={<LoadingSkeleton />}>
-      <LayoutWithProps>
         <NotesServerLayer slug={params.slug} type="cours" />
-      </LayoutWithProps>
     </Suspense>
   );
 }

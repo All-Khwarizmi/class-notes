@@ -17,7 +17,6 @@ async function SequenceShowServerLayer(props: { slug: string }) {
     sequenceId: props.slug,
   });
   if (isLeft(eitherSequence)) {
-    console.log(eitherSequence.left);
     return <NotFound />;
   }
   // Get all cours from the sequence
@@ -26,7 +25,6 @@ async function SequenceShowServerLayer(props: { slug: string }) {
     sequenceId: props.slug,
   });
   if (isLeft(eitherCours)) {
-    console.log(eitherCours.left);
     return <NotFound />;
   }
   // Merge the sequence and cours content

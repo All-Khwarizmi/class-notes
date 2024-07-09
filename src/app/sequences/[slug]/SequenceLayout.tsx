@@ -57,7 +57,6 @@ async function SequenceLayout(props: {
     );
   }
   return (
-    <Layout>
       <Tabs defaultValue="sequence">
         <div className="w-full flex justify-center">
           <TabsList>
@@ -96,7 +95,6 @@ async function SequenceLayout(props: {
             </div>
         </TabsContent>
       </Tabs>
-    </Layout>
   );
 }
 

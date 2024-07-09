@@ -79,7 +79,6 @@ describe("evaluateCompetence", () => {
       },
     ];
     const result = evaluateCompetence(grades, criteria);
-    console.log("result", result);
     // Mock `checkSpecialGradeType` to return a special type
     expect(result).toBe("N/D"); // Adjust based on actual logic
   });

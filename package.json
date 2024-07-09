@@ -89,6 +89,7 @@
     "react-dom": "18",
     "react-hook-form": "7.51.1",
     "react-papaparse": "^4.4.0",
+    "react-wrap-balancer": "^1.1.1",
     "sonner": "^1.4.41",
     "stripe": "^16.1.0",
     "svix": "^1.24.0",

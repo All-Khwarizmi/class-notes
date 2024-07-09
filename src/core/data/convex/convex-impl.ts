@@ -77,10 +77,7 @@ export default class ConvexDatabase extends IDatabase {
     user: UserType;
   }): Promise<Either<Failure<string>, void>> {
     try {
-      console.log({
-        userId,
-        user,
-      });
+     
       const result = await fetchMutation(this._db.users.saveUserMutation, {
         userId,
         name: user.name,
@@ -339,7 +336,6 @@ export default class ConvexDatabase extends IDatabase {
 
       return right(undefined);
     } catch (error) {
-      console.log({ error });
       return left(
         Failure.invalidValue({
           invalidValue: body,
@@ -482,7 +478,6 @@ export default class ConvexDatabase extends IDatabase {
     sequenceId: string;
     type?: "template" | "sequence";
   }): Promise<Either<Failure<string>, DocumentData>> {
-    console.log({ type, sequenceId });
     try {
       if (!type || type === "template") {
         const result = await fetchQuery(this._db.sequence.getSingleSequence, {
@@ -505,7 +500,6 @@ export default class ConvexDatabase extends IDatabase {
             id: sequenceId,
           });
           if (!result) {
-            console.log({ result });
             return left(
               Failure.invalidValue({
                 invalidValue: sequenceId,
@@ -559,9 +553,7 @@ export default class ConvexDatabase extends IDatabase {
         classId: classeId,
         sequenceId,
       });
-      console.log({ result });
       if (result.error) {
-        console.log({ result });
         return left(
           Failure.invalidValue({
             invalidValue: sequenceId,

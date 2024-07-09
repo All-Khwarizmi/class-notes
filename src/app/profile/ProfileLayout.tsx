@@ -26,7 +26,6 @@ async function ProfileLayout() {
   }
 
   return (
-    <Layout>
       <Tabs defaultValue="profile">
         <div className="w-full flex justify-center">
           <TabsList>
@@ -45,7 +44,6 @@ async function ProfileLayout() {
           </Suspense>
         </TabsContent>
       </Tabs>
-    </Layout>
   );
 }
 

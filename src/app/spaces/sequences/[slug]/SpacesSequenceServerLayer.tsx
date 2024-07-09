@@ -81,9 +81,7 @@ async function SpacesSequenceServerLayer(props: {
     },
   ];
   return (
-    <LayoutWithProps navItems={sequenceNavItems}>
       <ContentViewer content={eitherSequence.right.body} />
-    </LayoutWithProps>
   );
 }
 

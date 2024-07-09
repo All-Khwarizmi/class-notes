@@ -9,9 +9,7 @@ export default async function Page({
   params: { slug: string };
   searchParams?: { [key: string]: string | string[] | undefined };
 }) {
-  console.log("hitting page route for sequence edit");
   if (!params.slug) {
-    console.log(params.slug);
     return <NotFound />;
   }
 

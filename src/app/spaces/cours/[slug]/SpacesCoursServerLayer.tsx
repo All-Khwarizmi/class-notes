@@ -18,13 +18,11 @@ async function SpacesCoursServerLayer(props: {
 }) {
   if (!props.slug || !props.searchParams.user) {
     return (
-      <LayoutWithProps isEmpty>
         <ErrorDialog
           message={`
         The user id or the course id is missing
         `}
         />
-      </LayoutWithProps>
     );
   }
   const userId = props.searchParams.user;
@@ -34,7 +32,6 @@ async function SpacesCoursServerLayer(props: {
   });
   if (isLeft(eitherCours)) {
     return (
-      <LayoutWithProps isEmpty>
         <ErrorDialog
           message="An error occured while fetching the course"
           code={eitherCours.left.code}
@@ -44,13 +41,11 @@ async function SpacesCoursServerLayer(props: {
               : ""
           }
         />
-      </LayoutWithProps>
     );
   }
   const eitherVibility = await getVisibility({ userId });
   if (isLeft(eitherVibility)) {
     return (
-      <LayoutWithProps isEmpty>
         <ErrorDialog
           message="An error occured while fetching the visibility"
           code={eitherVibility.left.code}
@@ -60,7 +55,6 @@ async function SpacesCoursServerLayer(props: {
               : ""
           }
         />
-      </LayoutWithProps>
     );
   }
   const coursVisibility = eitherVibility.right.cours.find(
@@ -118,9 +112,7 @@ async function SpacesCoursServerLayer(props: {
   }));
 
   return (
-    <LayoutWithProps navItems={complementNavItems}>
       <ContentViewer content={eitherCours.right.body} />
-    </LayoutWithProps>
   );
 }
 

@@ -69,13 +69,13 @@ async function UserSpaceServerLayer(props: {
     icon: <Presentation size={16} />,
   }));
   return (
-    <LayoutWithProps navItems={userSpaceNavItems}>
+    <>
       {classes.length > 0 ? (
         <UserSpaceClassesGridView userId={userId} classes={classes} />
       ) : (
         <NothingToShow />
       )}
-    </LayoutWithProps>
+    </>
   );
 }
 

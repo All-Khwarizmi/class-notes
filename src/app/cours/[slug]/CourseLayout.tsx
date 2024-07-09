@@ -38,7 +38,6 @@ async function CourseLayout(props: { slug: string }) {
     );
   }
   return (
-    <Layout>
       <Tabs defaultValue="course">
         <div className="w-full flex justify-center">
           <TabsList>
@@ -65,7 +64,6 @@ async function CourseLayout(props: { slug: string }) {
           </div>
         </TabsContent>
       </Tabs>
-    </Layout>
   );
 }
 

@@ -22,13 +22,11 @@ export default async function Page() {
     competences = [];
   }
   return (
-    <LayoutWithProps>
       <AddUpdateCoursSequenceView
         competences={competences}
         authUser={authUser.right}
         type="cours"
         title="Add Cours"
       />
-    </LayoutWithProps>
   );
 }

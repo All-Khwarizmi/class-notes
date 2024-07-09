@@ -174,7 +174,6 @@ function NoteItemFormRow(props: {
 
   function onChangeNoteType(value: string) {
     if (value !== "Diagram" && value !== "Flowchart" && value !== "Markup") {
-      console.log("Invalid content type", value);
       return;
     }
     setLocalNotes({ ...localNotes, contentType: value });

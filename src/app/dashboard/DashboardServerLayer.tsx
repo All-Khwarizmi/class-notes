@@ -3,11 +3,7 @@ import DashboardContainer from "@/features/dashboard/presentation/components/Das
 import React from "react";
 
 async function DashboardServerLayer() {
-  return (
-    <LayoutWithProps>
-      <DashboardContainer />;
-    </LayoutWithProps>
-  );
+  return <DashboardContainer />;
 }
 
 export default DashboardServerLayer;
