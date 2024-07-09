@@ -11,17 +11,15 @@ import {
   QueryClient,
 } from "@tanstack/react-query";
 import { QUERY_KEYS } from "@/core/query/ query-keys";
+import LayoutServerLayer from "@/core/components/layout/LayoutServerLayer";
 async function ClassesServerLayer(props: { slug: string }) {
-  if (!props.slug) {
-    return <LayoutWithProps notFound />;
-  }
   const authUser = await authUseCases.getUserAuth();
   if (isLeft(authUser)) {
     redirect("/login");
   }
   const queryClient = new QueryClient();
 
-  queryClient.prefetchQuery({
+  await queryClient.prefetchQuery({
     queryKey: QUERY_KEYS.CLASSE.GET_ALL(),
     queryFn: () =>
       classeUsecases.getClasses({
@@ -31,7 +29,9 @@ async function ClassesServerLayer(props: { slug: string }) {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <ClassesTable userId={authUser.right.userId} />
+      <LayoutServerLayer>
+        <ClassesTable userId={authUser.right.userId} />
+      </LayoutServerLayer>
     </HydrationBoundary>
   );
 }

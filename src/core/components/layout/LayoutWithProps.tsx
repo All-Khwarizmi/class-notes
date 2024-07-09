@@ -24,6 +24,8 @@ export type LayoutWithPropsProps = PropsWithChildren & {
   readonly nothingToShow?: boolean;
   readonly isError?: ErrorDialogProps;
   readonly isLoading?: boolean;
+  readonly experimentalItems?: boolean;
+  readonly userId?: string;
 };
 
 function LayoutWithProps({

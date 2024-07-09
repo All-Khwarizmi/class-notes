@@ -1,16 +1,17 @@
 "use client";
 
 import React from "react";
-import { LayoutWithPropsProps } from "./LayoutWithProps";
-import LayoutContext, { useLayoutContext } from "./LayoutContext";
-import Header from "@/core/components/layout/Header";
-import { NavItem } from "@/lib/types";
-import Sidebar from "./Sidebar";
 import NotFound from "@/app/not-found";
 import NothingToShow from "../common/editor/NothingToShow";
 import ErrorDialog from "../common/ErrorDialog";
-import { Home } from "lucide-react";
 import LoadingSkeleton from "../common/LoadingSkeleton";
+import Header from "./ExperimentalHeader";
+import Sidebar from "./ExperimentalSidebar";
+import useExperimentalLayoutLogic from "./useExperimentalLayoutLogic";
+import LayoutContext, {
+  LayoutWithPropsProps,
+  useLayoutContext,
+} from "./ExperimentalLayoutCtx";
 
 /**
  * Renders the layout component with the provided props.
@@ -27,33 +28,31 @@ import LoadingSkeleton from "../common/LoadingSkeleton";
  */
 function Layout({
   children,
-  navItems,
   isEmpty = false,
   notFound = false,
   nothingToShow = false,
   isError,
   isLoading,
-  experimentalItems,
+  userId,
 }: LayoutWithPropsProps) {
-  const defaultNavItem: NavItem = {
-    title: "Home",
-    href: "/",
-    icon: <Home size={16} />,
-  };
+  const { navItems: experimentalNavItems, loading } =
+    useExperimentalLayoutLogic(userId);
+    console.log(experimentalNavItems);
   return (
     <LayoutContext.Provider
       value={{
-        navItems,
+        navItems: experimentalNavItems,
         isEmpty,
         notFound,
         nothingToShow,
         isError,
         isLoading,
+        userId,
       }}
     >
-      <Header navItems={isEmpty === true ? [defaultNavItem] : navItems} />
+      <Header />
       <section className="flex h-full w-full border-collapse overflow-hidden">
-        <Sidebar navItems={isEmpty === true ? [defaultNavItem] : navItems} />
+        <Sidebar />
         <section className="h-full flex-1  pt-4 px-4 overflow-x-hidden">
           {children}
         </section>

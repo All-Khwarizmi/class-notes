@@ -1,7 +1,6 @@
 import { useState, useEffect, useMemo } from "react";
 import { Sheet, SheetContent, SheetTrigger } from "@/core/components/ui/sheet";
 import { SideNav } from "@/core/components/layout/SideNav";
-import { NavItems } from "@/core/components/constants/side-nav";
 import MenuIcon from "../icons/MenuIcon";
 import { NavItem } from "@/lib/types";
 import { useSession } from "@clerk/nextjs";
@@ -12,7 +11,7 @@ export const MobileSidebar = (props: { navItems?: NavItem[] }) => {
   const [isMounted, setIsMounted] = useState(false);
   const { session } = useSession();
   const navItemsCopy = useMemo(() => {
-    const tempCopy = props.navItems ? [...props.navItems] : [...NavItems];
+    const tempCopy = props.navItems ? [...props.navItems] : [];
     tempCopy.push({
       title: "My Space",
       icon: <User size={16} />,
@@ -20,7 +19,7 @@ export const MobileSidebar = (props: { navItems?: NavItem[] }) => {
       color: "text-orange-500",
     });
     return tempCopy;
-  }, []);
+  }, [props.navItems, session?.user.id]);
 
   useEffect(() => {
     setIsMounted(true);

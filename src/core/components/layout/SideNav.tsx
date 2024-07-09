@@ -15,10 +15,9 @@ import {
 } from "@/core/components/layout/SubNavAccordion";
 import { useEffect, useState } from "react";
 import { ChevronDownIcon } from "@radix-ui/react-icons";
-import { cons } from "fp-ts/lib/ReadonlyNonEmptyArray";
 
 interface SideNavProps {
-  items: NavItem[];
+  items?: NavItem[];
   setOpen?: (open: boolean) => void;
   className?: string;
 }
@@ -30,7 +29,7 @@ export function SideNav({ items, setOpen, className }: SideNavProps) {
   const [openItem, setOpenItem] = useState("");
   const [lastOpenItem, setLastOpenItem] = useState("");
   const [liveHref, setLiveHref] = useState(path);
-
+  console.log({ items });
   useEffect(() => {
     if (isOpen) {
       setOpenItem(lastOpenItem);
@@ -46,12 +45,12 @@ export function SideNav({ items, setOpen, className }: SideNavProps) {
 
   useEffect(() => {
     // Check if the path contains a key word and remove the item if it does
-    const filteredItems = items.filter((item) => {
+    const filteredItems = items?.filter((item) => {
       const regex = /spaces/i;
       return !regex.test(item.href);
     });
     setLocalItems(filteredItems);
-  }, [path]);
+  }, [path, items]);
 
   function pathIsActive(props: { path: string; liveHref: string }) {
     let { path, liveHref } = props;
@@ -68,7 +67,7 @@ export function SideNav({ items, setOpen, className }: SideNavProps) {
   }
   return (
     <nav className="space-y-2">
-      {localItems.map((item) =>
+      {localItems?.map((item) =>
         item.isChidren ? (
           <Accordion
             type="single"
