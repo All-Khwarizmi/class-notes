@@ -12,7 +12,6 @@ import { classeUsecases } from "@/features/classe/application/usecases/classe-us
 
 import { QUERY_KEYS } from "@/core/query/ query-keys";
 import Layout from "./ExperimentalLayout";
-import LoadingSkeleton from "../common/LoadingSkeleton";
 import { Loader } from "lucide-react";
 async function LayoutServerLayer({ children }: { children: React.ReactNode }) {
   const authUser = await authUseCases.getUserAuth();
