@@ -8,7 +8,6 @@ import {
 import { isLeft } from "fp-ts/lib/Either";
 import { redirect } from "next/navigation";
 import LoadingSkeleton from "@/core/components/common/LoadingSkeleton";
-import Layout from "@/core/components/layout/Layout";
 import LayoutWithProps from "@/core/components/layout/LayoutWithProps";
 import { coursUsecases } from "@/features/cours-sequence/application/usecases/cours-usecases";
 import CoursSequenceView from "@/features/cours-sequence/presentation/views/CoursSequenceView";
