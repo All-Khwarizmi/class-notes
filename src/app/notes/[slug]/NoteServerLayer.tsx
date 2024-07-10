@@ -1,20 +1,14 @@
-import NotFound from "@/app/not-found";
 import ErrorDialog from "@/core/components/common/ErrorDialog";
-import { authUseCases } from "@/features/auth/application/usecases/auth-usecases";
+import Layout from "@/core/components/layout/ExperimentalLayout";
 import { notesUsecases } from "@/features/notes/application/usecases/note-usecases";
 import { NoteSchema } from "@/features/notes/domain/notes-schemas";
 import NoteEditorView from "@/features/notes/presentation/views/NoteEditorView";
 import { isLeft } from "fp-ts/lib/Either";
-import { redirect } from "next/navigation";
 import React from "react";
 
 async function NoteServerLayer(props: { slug: string }) {
   if (!props.slug) {
-    return <NotFound />;
-  }
-  const authUser = await authUseCases.getUserAuth();
-  if (isLeft(authUser)) {
-    redirect("/login");
+    return <Layout.NotFound />;
   }
 
   const eitherNote = await notesUsecases.getNote({
@@ -44,22 +38,14 @@ async function NoteServerLayer(props: { slug: string }) {
     return (
       <ErrorDialog
         message={`
-            Failed to validate note with id: ${props.slug}
-    
-            ${validatedNote.error}
-
-            Code: APP203
-            `}
+        Failed to parse note with id: ${props.slug}
+        `}
+        description="Failed to parse note."
       />
     );
   }
 
-
-  return (
-     
-          <NoteEditorView note={validatedNote.data} />
-       
-  );
+  return <NoteEditorView note={validatedNote.data} />;
 }
 
 export default NoteServerLayer;
