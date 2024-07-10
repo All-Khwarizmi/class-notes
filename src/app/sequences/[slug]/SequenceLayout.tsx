@@ -57,44 +57,44 @@ async function SequenceLayout(props: {
     );
   }
   return (
-      <Tabs defaultValue="sequence">
-        <div className="w-full flex justify-center">
-          <TabsList>
-            <TabsTrigger value="sequence">Sequence</TabsTrigger>
-            <TabsTrigger value="courses">Courses</TabsTrigger>
-            <TabsTrigger value="notes">Notes</TabsTrigger>
-          </TabsList>
+    <Tabs defaultValue="sequence">
+      <div className="w-full flex justify-center">
+        <TabsList>
+          <TabsTrigger value="sequence">Sequence</TabsTrigger>
+          <TabsTrigger value="courses">Courses</TabsTrigger>
+          <TabsTrigger value="notes">Notes</TabsTrigger>
+        </TabsList>
+      </div>
+      <TabsContent value="sequence">
+        <div>
+          <Suspense fallback={<LoadingSkeleton />}>
+            <CoursSequenceView
+              sequence={eitherSequence.right}
+              userId={authUser.right.userId}
+              type="sequence"
+              sequenceType={props.type}
+            />
+          </Suspense>
         </div>
-        <TabsContent value="sequence">
-            <div>
+      </TabsContent>
+      <TabsContent value="courses">
+        <div>
           <Suspense fallback={<LoadingSkeleton />}>
-              <CoursSequenceView
-                sequence={eitherSequence.right}
-                userId={authUser.right.userId}
-                type="sequence"
-                sequenceType={props.type}
-              />
+            <CoursesServerLayer
+              params={{ slug: props.slug }}
+              searchParams={{ type: props.type }}
+            />
           </Suspense>
-            </div>
-        </TabsContent>
-        <TabsContent value="courses">
-            <div>
+        </div>
+      </TabsContent>
+      <TabsContent value="notes">
+        <div>
           <Suspense fallback={<LoadingSkeleton />}>
-              <CoursesServerLayer
-                params={{ slug: props.slug }}
-                searchParams={{ type: props.type }}
-              />
+            <NotesServerLayer type="sequence" slug={props.slug} />
           </Suspense>
-            </div>
-        </TabsContent>
-        <TabsContent value="notes">
-            <div>
-          <Suspense fallback={<LoadingSkeleton />}>
-              <NotesServerLayer type="sequence" slug={authUser.right.userId} />
-          </Suspense>
-            </div>
-        </TabsContent>
-      </Tabs>
+        </div>
+      </TabsContent>
+    </Tabs>
   );
 }
 
