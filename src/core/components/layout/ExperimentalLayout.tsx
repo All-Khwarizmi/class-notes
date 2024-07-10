@@ -37,7 +37,6 @@ function Layout({
 }: LayoutWithPropsProps) {
   const { navItems: experimentalNavItems, loading } =
     useExperimentalLayoutLogic(userId);
-    console.log(experimentalNavItems);
   return (
     <LayoutContext.Provider
       value={{
