@@ -1,7 +1,6 @@
 "use client";
 import Link from "next/link";
-import { Delete, ExternalLink, Plus } from "lucide-react";
-import { cn } from "@/lib/utils";
+import {  Plus } from "lucide-react";
 import { TableCaption, TableHeader } from "@/core/components/ui/table";
 import {
   Table,
@@ -14,12 +13,15 @@ import VisibilitySwitch from "./VisibilitySwitch";
 import { Cours } from "../../domain/entities/cours-schemas";
 import useDeleteCourse from "../../application/adapters/services/useDeleteCourse";
 import { Button } from "@/core/components/ui/button";
+import DeleteTableButton from "@/core/components/common/DeleteTableButton";
+import { useRouter } from "next/navigation";
 
 function CoursesTable(props: {
   courses: Cours[];
   userId: string;
   sequenceId: string;
 }) {
+  const router = useRouter();
   const { mutate: deleteCourse } = useDeleteCourse();
   return (
     <div className="w-full h-full py-4">
@@ -31,14 +33,19 @@ function CoursesTable(props: {
 
             <TableHead className="w-[200px]">Description</TableHead>
             <TableHead className="w-[200px]"> Publish </TableHead>
-            <TableHead className="w-[200px]">Publish Date</TableHead>
+
             <TableHead className="w-[200px]">Actions</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {props.courses.map((course) => {
             return (
-              <TableRow key={course._id}>
+              <TableRow
+                key={course._id}
+                onClick={() => {
+                  router.push(`/cours/${course._id}`);
+                }}
+              >
                 <TableCell className="w-[200px]">{course.name}</TableCell>
                 <TableCell className="w-[200px]">
                   {course.description}
@@ -50,26 +57,12 @@ function CoursesTable(props: {
                     typeId={course._id}
                   />
                 </TableCell>
-                <TableCell className="w-[200px]">
-                  {course.createdAt
-                    ? new Date(course.createdAt).toDateString()
-                    : "Not published"}
-                </TableCell>
+
                 <TableCell className="w-[200px] ">
-                  <div className="flex items-center justify-center w-full h-full">
+                  <div className="flex items-center  w-full h-full">
                     {" "}
-                    <Link
-                      className={cn(
-                        "bg-transparent rounded-md p-1 px-2 flex items-center ml-2 hover:text-blue-400  "
-                      )}
-                      href={`/cours/${course._id}`}
-                    >
-                      <ExternalLink size={12} />
-                    </Link>
-                    <button
-                      className={cn(
-                        "bg-transparent rounded-md p-1 px-2 flex items-center ml-2 hover:text-red-400  "
-                      )}
+                   
+                    <DeleteTableButton
                       onClick={() => {
                         confirm(
                           "Are you sure you want to delete this complement?"
@@ -78,9 +71,7 @@ function CoursesTable(props: {
                             coursId: course._id,
                           });
                       }}
-                    >
-                      <Delete size={14} />
-                    </button>
+                    />
                   </div>
                 </TableCell>
               </TableRow>
@@ -91,7 +82,7 @@ function CoursesTable(props: {
 
       <div className="flex  justify-center w-full mt-4">
         <Link href={`/cours/add/${props.sequenceId}`}>
-          <Button variant={"outline"}>
+          <Button>
             <Plus size={16} />
           </Button>
         </Link>
