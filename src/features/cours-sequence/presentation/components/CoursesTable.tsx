@@ -41,6 +41,7 @@ function CoursesTable(props: {
           {props.courses.map((course) => {
             return (
               <TableRow
+               className="cursor-pointer"
                 key={course._id}
                 onClick={() => {
                   router.push(`/cours/${course._id}`);
