@@ -52,8 +52,8 @@ export default function CompetencesTable({
       </Table>
       {/* Add Competence button */}
       <div className="flex justify-center py-4">
-        <Link className="dark:shadow-sm dark:shadow-slate-700" href={"/competences/add"}>
-          <Button variant="outline">
+        <Link  href={"/competences/add"}>
+          <Button >
             <Plus size={20} />
           </Button>
         </Link>
