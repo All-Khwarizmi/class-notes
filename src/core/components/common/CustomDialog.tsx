@@ -111,7 +111,7 @@ export default function CustomDialog({
                 variant={buttonVariant}
                 onClick={() => setOpen?.(true)}
                 className={cn(
-                  `text-slate-800 bg-transparent hover:bg-slate-400  dark:text-white dark:hover:text-black dark:shadow-sm  dark:shadow-slate-700 ${buttonClassName} `
+                  `${buttonClassName} `
                 )}
                 data-testid={testId}
               >
@@ -119,7 +119,7 @@ export default function CustomDialog({
               </Button>
             </div>
           ) : (
-            <div className="text-gray-300 text-sm bg-green-900 p-2 rounded-xl text-center hover:text-gray-900 dark:text-gray-50 dark:hover:bg-green-600  focus:outline-none">
+            <div className="">
               {text}
             </div>
           )}

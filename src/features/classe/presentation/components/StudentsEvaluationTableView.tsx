@@ -30,7 +30,6 @@ export function StudentsEvaluationTableView(props: {
   const {
     tableData: data,
     isLoading,
-    classeNavItems,
     refetchCompoundEvaluations,
     refetchStudents,
   } = useGetStudentTableData({ classeId: props.classeId });
@@ -68,7 +67,7 @@ export function StudentsEvaluationTableView(props: {
                   <CustomDialog
                     title={`Update ${student.name}'s Information`}
                     buttonText={student.name}
-                    buttonClassName="bg-transparent  px-4 py-2 rounded-md "
+                    buttonVariant="outline"
                   >
                     <StudentUpdateForm
                       student={student}
@@ -105,7 +104,7 @@ export function StudentsEvaluationTableView(props: {
                         {studentGrade ? (
                           <CustomDialog
                             buttonText={overallGrade.toString()}
-                            buttonClassName="px-4 py-2 rounded-md  w-fit"
+                            buttonVariant="outline"
                             open={isDialogOpen[dialogKey]}
                             setOpen={(value) =>
                               setIsDialogOpen({
@@ -154,15 +153,10 @@ export function StudentsEvaluationTableView(props: {
             title="Evaluations Settings"
             icon={<Settings />}
             buttonText="Assign Evaluation"
-            buttonClassName="bg-transparent  px-4 py-2 rounded-md border border-white"
           >
             <AssignEvaluation classeId={props.classeId} userId={props.userId} />
           </CustomDialog>
-          <CustomDialog
-            title="Add Student"
-            buttonText="Add Student"
-            buttonClassName="bg-transparent   px-4 py-2 rounded-md border border-white"
-          >
+          <CustomDialog title="Add Student" buttonText="Add Student">
             <div>
               <AddStudentForm
                 classId={props.classeId as Id<"Classes">}
