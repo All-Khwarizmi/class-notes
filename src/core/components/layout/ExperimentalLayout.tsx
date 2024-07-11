@@ -12,6 +12,7 @@ import LayoutContext, {
   LayoutWithPropsProps,
   useLayoutContext,
 } from "./ExperimentalLayoutCtx";
+import { Loader } from "lucide-react";
 
 /**
  * Renders the layout component with the provided props.
@@ -37,7 +38,6 @@ function Layout({
 }: LayoutWithPropsProps) {
   const { navItems: experimentalNavItems, loading } =
     useExperimentalLayoutLogic(userId);
-    console.log(experimentalNavItems);
   return (
     <LayoutContext.Provider
       value={{
@@ -50,9 +50,21 @@ function Layout({
         userId,
       }}
     >
-      <Header />
+      {loading ? (
+        <div className="h-fit w-full overflow-hidden flex items-center justify-center py-4">
+          <Layout.Loader />
+        </div>
+      ) : (
+        <Header />
+      )}
       <section className="flex h-full w-full border-collapse overflow-hidden">
-        <Sidebar />
+        {loading ? (
+          <div className="h-full w-72 px-4 overflow-hidden flex items-center justify-center py-4">
+            <Layout.Loader />
+          </div>
+        ) : (
+          <Sidebar />
+        )}
         <section className="h-full flex-1  pt-4 px-4 overflow-x-hidden">
           {children}
         </section>
@@ -92,6 +104,12 @@ Layout.LoadingSkeleton = function LayoutLoadingSkeleton() {
 Layout.Children = function LayoutChildren() {
   const { children } = useLayoutContext();
   return children;
+};
+
+Layout.Loader = function LayoutLoader() {
+  return (
+      <Loader className="animate-spin" />
+  );
 };
 
 export default Layout;

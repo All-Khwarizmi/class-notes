@@ -17,4 +17,9 @@ export const QUERY_KEYS = {
     GET_ALL: (options: string[] = []) => ["GET_ALL_SEQUENCES", ...options],
     CREATE: (options: string[] = []) => ["CREATE_SEQUENCE", ...options],
   },
+  EVALUATIONS: {
+    BASE_GET_ALL: (options: string[] = []) => ["GET_ALL_EVALUATIONS_BASE", ...options],
+    // CREATE: (options: string[] = []) => ["CREATE_EVALUATION", ...options],
+    // DELETE: (options: string[] = []) => ["DELETE_EVALUATION", ...options],
+  },
 };

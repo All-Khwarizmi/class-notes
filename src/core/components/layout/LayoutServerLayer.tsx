@@ -12,22 +12,40 @@ import { classeUsecases } from "@/features/classe/application/usecases/classe-us
 
 import { QUERY_KEYS } from "@/core/query/ query-keys";
 import Layout from "./ExperimentalLayout";
-import LoadingSkeleton from "../common/LoadingSkeleton";
 import { Loader } from "lucide-react";
+import { coursUsecases } from "@/features/cours-sequence/application/usecases/cours-usecases";
+import getEvaluations from "@/features/evaluation/application/adapters/actions/get-evaluations";
 async function LayoutServerLayer({ children }: { children: React.ReactNode }) {
   const authUser = await authUseCases.getUserAuth();
   if (isLeft(authUser)) {
-    redirect("/login");
+    return <>{children}</>;
   }
   const queryClient = new QueryClient();
-
-  await queryClient.prefetchQuery({
-    queryKey: QUERY_KEYS.CLASSE.GET_ALL(),
-    queryFn: () =>
-      classeUsecases.getClasses({
-        id: authUser.right.userId,
-      }),
-  });
+  const batch = [
+    queryClient.prefetchQuery({
+      queryKey: QUERY_KEYS.CLASSE.GET_ALL(),
+      queryFn: () =>
+        classeUsecases.getClasses({
+          id: authUser.right.userId,
+        }),
+    }),
+    queryClient.prefetchQuery({
+      queryKey: QUERY_KEYS.SEQUENCE.GET_ALL(),
+      queryFn: () =>
+        coursUsecases.getAllSequences({
+          userId: authUser.right.userId,
+        }),
+    }),
+    queryClient.prefetchQuery({
+      queryKey: QUERY_KEYS.EVALUATIONS.BASE_GET_ALL(),
+      queryFn: () =>
+        getEvaluations({
+          userId: authUser.right.userId,
+        }),
+    }),
+  ];
+  // Since the prefetchQuery method does not throw an error, we no need to handle it here by using allSettled or try/catch
+  await Promise.all(batch);
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>

@@ -16,6 +16,8 @@ import { useState } from "react";
 import { toast } from "sonner";
 import useDeleteSequence from "@/features/complement/application/adapters/services/useDeleteSequence";
 import Link from "next/link";
+import DeleteTableButton from "@/core/components/common/DeleteTableButton";
+import AddTableButton from "@/core/components/common/AddTableButton";
 
 function ClasseSequencesTableView(props: {
   sequences: Sequence[];
@@ -75,9 +77,7 @@ function ClasseSequencesTableView(props: {
                 </TableCell>
                 <TableCell className="w-[200px]">
                   <div className={cn("flex items-center gap-4")}>
-                    {/* <Link href={`/sequences/${sequence._id}?type=sequence`}>
-                      <ExternalLink size={16} />
-                    </Link> */}
+                
                     {classeSequence ? (
                       <>
                         <Link
@@ -87,29 +87,19 @@ function ClasseSequencesTableView(props: {
                         >
                           <LucideLink size={12} />
                         </Link>
-                        <button
+                        <DeleteTableButton
                           onClick={() => handleDelete(classeSequence._id)}
-                          className={cn(
-                            "bg-red-500 rounded-md p-1 px-2 flex items-center  hover:bg-red-600"
-                          )}
-                        >
-                          <Delete size={12} />
-                        </button>
+                        />
                       </>
                     ) : (
-                      <button
+                      <AddTableButton
                         onClick={() => {
                           setClasseSequenceOptions({
                             classeId: props.classeId,
                             sequenceId: sequence._id,
                           });
                         }}
-                        className={cn(
-                          "bg-green-500 rounded-md p-1 px-2 flex items-center ml-2 hover:bg-green-600"
-                        )}
-                      >
-                        <Plus size={12} />
-                      </button>
+                      />
                     )}
                   </div>
                 </TableCell>

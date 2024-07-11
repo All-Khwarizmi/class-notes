@@ -1,6 +1,14 @@
 "use client";
 import Link from "next/link";
-import { ExternalLink, Folder, Plus, File, X, Delete, Check } from "lucide-react";
+import {
+  ExternalLink,
+  Folder,
+  Plus,
+  File,
+  X,
+  Delete,
+  Check,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 import { TableCaption, TableHeader } from "@/core/components/ui/table";
 import {
@@ -24,6 +32,8 @@ import {
 import useAddNote from "../../application/adapters/services/useAddProfileNote";
 import useDeleteNote from "../../application/adapters/services/useDeleteNote";
 import { toast } from "sonner";
+import AddTableButton from "@/core/components/common/AddTableButton";
+import { Button } from "@/core/components/ui/button";
 function NotesTableView(props: { notes: Note[]; parentId: string }) {
   const [localNotes, setLocalNotes] = useState<Note[]>(props.notes);
   const [isFileFormVisible, setIsFileFormVisible] = useState(false);
@@ -129,16 +139,13 @@ function NotesTableView(props: { notes: Note[]; parentId: string }) {
           </TableBody>
         </Table>
         <div className="flex justify-center py-4 gap-4">
-          <button
+          <Button
             onClick={() => {
               setIsFileFormVisible(true);
             }}
-            className={cn(
-              "bg-transparent rounded-md p-1 px-2 flex items-center ml-2 hover:bg-slate-400 border border-slate-400 hover:border-slate-400"
-            )}
           >
-            <File size={12} />
-          </button>
+            <Plus size={16} />
+          </Button>
         </div>
       </div>
     </>

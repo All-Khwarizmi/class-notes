@@ -1,6 +1,5 @@
 import useGetClasses from "@/features/classe/presentation/services/hooks/useGetClasses";
 import { NavItem } from "@/lib/types";
-import { useSession, useUser } from "@clerk/nextjs";
 import { useEffect, useState } from "react";
 import Dashboard from "../icons/Dashboard";
 import CopyClipboard from "../icons/CopyClipboard";
@@ -18,13 +17,13 @@ export default function useExperimentalLayoutLogic(userId: string) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [navItems, setNavItems] = useState<NavItem[]>([]);
-
+  const { data: classes, isLoading, isError } = useGetClasses({ userId });
   const {
     data: sequences,
     isLoading: sequencesLoading,
     isError: sequencesError,
   } = useGetAllSequences(userId);
-  const { data: classes, isLoading, isError } = useGetClasses({ userId });
+
   const {
     data: evaluations,
     isLoading: evaluationsLoading,
@@ -37,6 +36,12 @@ export default function useExperimentalLayoutLogic(userId: string) {
     }
     if (sequencesError || isError || evaluationsError) {
       setError(true);
+    } 
+    if (!sequencesLoading && !isLoading && !evaluationsLoading) {
+      setLoading(false);
+    }
+    if (!sequencesError && !isError && !evaluationsError) {
+      setError(false);
     }
   }, [
     isLoading,
