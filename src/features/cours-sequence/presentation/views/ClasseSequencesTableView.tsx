@@ -77,9 +77,7 @@ function ClasseSequencesTableView(props: {
                 </TableCell>
                 <TableCell className="w-[200px]">
                   <div className={cn("flex items-center gap-4")}>
-                    {/* <Link href={`/sequences/${sequence._id}?type=sequence`}>
-                      <ExternalLink size={16} />
-                    </Link> */}
+                
                     {classeSequence ? (
                       <>
                         <Link
