@@ -17,13 +17,13 @@ export default function useExperimentalLayoutLogic(userId: string) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [navItems, setNavItems] = useState<NavItem[]>([]);
-
+  const { data: classes, isLoading, isError } = useGetClasses({ userId });
   const {
     data: sequences,
     isLoading: sequencesLoading,
     isError: sequencesError,
   } = useGetAllSequences(userId);
-  const { data: classes, isLoading, isError } = useGetClasses({ userId });
+
   const {
     data: evaluations,
     isLoading: evaluationsLoading,
