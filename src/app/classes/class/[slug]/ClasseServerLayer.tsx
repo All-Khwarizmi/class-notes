@@ -1,71 +1,58 @@
-import ErrorDialog from "@/core/components/common/ErrorDialog";
-import Dashboard from "@/core/components/icons/Dashboard";
-import Sidebar from "@/core/components/layout/Sidebar";
 import { authUseCases } from "@/features/auth/application/usecases/auth-usecases";
-import StudentsTable from "@/features/classe/presentation/components/StudentsTable";
+import getStudents from "@/features/classe/application/adapters/actions/get-students";
+import { StudentsEvaluationTableView } from "@/features/classe/presentation/components/StudentsEvaluationTableView";
 import { coursUsecases } from "@/features/cours-sequence/application/usecases/cours-usecases";
-import { NavItem } from "@/lib/types";
+import getEvaluationCompoundList from "@/features/evaluation/application/adapters/actions/get-evaluation-compound-list";
 import { isLeft } from "fp-ts/lib/Either";
-import { NotebookPen, Plus, Presentation } from "lucide-react";
 import { redirect } from "next/navigation";
 import React from "react";
-
+import {
+  dehydrate,
+  HydrationBoundary,
+  QueryClient,
+} from "@tanstack/react-query";
 async function ClasseServerLayer(props: { slug: string }) {
   const authUser = await authUseCases.getUserAuth();
   if (isLeft(authUser)) {
     redirect("/login");
   }
-  const eitherSequences = await coursUsecases.getClasseSequences({
-    classeId: props.slug,
-  });
-  if (isLeft(eitherSequences)) {
-    return (
-      <ErrorDialog
-        message="An error occurred"
-        description="An error occurred while fetching sequences"
-        code={eitherSequences.left.code}
-      />
-    );
-  }
-  const sequenceNavItems: NavItem[] = eitherSequences.right.map((sequence) => ({
-    title: sequence.name,
-    href: `/sequences/${sequence._id}?type=sequence`,
-    icon: <Presentation size={16} />,
-  }));
 
-  sequenceNavItems.push({
-    title: "Add new sequence",
-    href: `/classes/sequences/${props.slug}`,
-    icon: <Plus size={16} />,
-  });
-  const classeNavItems: NavItem[] = [
-    {
-      title: "Dashboard",
-      href: "/dashboard",
-      icon: Dashboard(),
-    },
-    {
-      title: "Sequences",
-      href: `#`,
-      icon: <Presentation size={16} />,
-      isChidren: true,
-      children: sequenceNavItems,
-    },
-    {
-      title: "Notes",
-      href: `/classes/notes/${props.slug}`,
-      icon: <NotebookPen size={16} />,
-    },
+  const queryClient = new QueryClient();
+
+  const queriesBulk = [
+    queryClient.prefetchQuery({
+      queryKey: ["classe-sequences", props.slug],
+      queryFn: () =>
+        coursUsecases.getClasseSequences({
+          classeId: props.slug,
+        }),
+    }),
+
+    queryClient.prefetchQuery({
+      queryKey: ["compound-evaluations",],
+      queryFn: () =>
+        getEvaluationCompoundList({
+          classeId: props.slug,
+        }),
+    }),
+    queryClient.prefetchQuery({
+      queryKey: ["students"],
+      queryFn: () =>
+        getStudents({
+          classeId: props.slug,
+        }),
+    }),
   ];
+
+  await Promise.allSettled(queriesBulk);
+
   return (
-    <>
-      <Sidebar navItems={classeNavItems} />
-      <section className="h-full flex-1  overflow-x-hidden">
-        <div className="h-full pt-4 px-6">
-          <StudentsTable classId={props.slug} />
-        </div>
-      </section>
-    </>
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <StudentsEvaluationTableView
+        classeId={props.slug}
+        userId={authUser.right.userId}
+      />
+    </HydrationBoundary>
   );
 }
 

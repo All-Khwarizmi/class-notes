@@ -10,11 +10,25 @@ import { IndentExtension } from "../common/editor/Indent";
 import YouTube from "@tiptap/extension-youtube";
 import DoubleCurlyBracesExtension from "../common/editor/DoubleCurlyBracesExtension";
 import { DoubleBrakets } from "../common/editor/DoubleBrakets";
-
+import Link from "@tiptap/extension-link";
+import FloatingMenu from "@tiptap/extension-floating-menu";
 const lowlight = createLowlight(common);
 
 export const EXTENSIONS = [
-  YouTube,
+  
+  Link.configure({
+    HTMLAttributes: {
+      target: "_blank",
+      rel: "noopener noreferrer",
+      class: "link-class",
+    },
+  }),
+  YouTube.configure({
+    inline: true,
+    HTMLAttributes: {
+      class: "youtube-embed",
+    },
+  }),
   IndentExtension,
   CodeBlockLowlight.configure({
     lowlight,

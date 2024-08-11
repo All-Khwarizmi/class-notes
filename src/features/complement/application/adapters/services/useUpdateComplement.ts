@@ -1,44 +1,41 @@
 import { Complement } from "@/features/complement/domain/complement-schemas";
-import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { complementUsecases } from "../../usecases/complement-usecases";
 import { isLeft } from "fp-ts/lib/Either";
+import { useMutation } from "@tanstack/react-query";
+import updateComplement from "../actions/update-complement";
+import { useCallback } from "react";
+import { debounce } from "lodash";
+import {
+  EDITOR_DEBOUNCE_TIME,
+  EDITOR_ERROR_TOAST_DURATION,
+  EDITOR_TOAST_UPDATE_DURATION,
+} from "@/core/components/constants/editor-constants";
 
 function useUpdateComplement() {
-  const [complementOptions, setComplementOptions] = useState<Complement | null>(
-    null
-  );
-  useEffect(() => {
-    if (complementOptions) {
-      const loadingToast = toast.loading("Updating...", {
-        position: "top-center",
-      });
-      complementUsecases
-        .updateCoursComplement({
-          coursComplement: complementOptions,
-        })
-        .then((eitherComplement) => {
-          if (isLeft(eitherComplement)) {
-            toast.error("Error updating complement", {
-              position: "top-center",
-            });
-            toast.dismiss(loadingToast);
-            return;
-          }
-          toast.success("Complement updated", {
-            position: "top-center",
-          });
-          toast.dismiss(loadingToast);
-        })
-        .finally(() => {
-          setComplementOptions(null);
+  const { mutate } = useMutation({
+    mutationKey: ["update-complement"],
+    mutationFn: async (options: Complement) => {
+      const result = await updateComplement(options);
+      if (isLeft(result)) {
+        toast.error("Failed to update the complement", {
+          duration: EDITOR_ERROR_TOAST_DURATION,
         });
-    }
-  }, [complementOptions]);
-
-  return {
-    setComplementOptions,
-  };
+      } else {
+        toast.success("Complement updated successfully", {
+          duration: EDITOR_TOAST_UPDATE_DURATION,
+        });
+      }
+    },
+  });
+  const debounceUpdateComplement = useCallback(
+    (options: Complement) => {
+      return debounce((content: string) => {
+        return mutate({ ...options, body: content });
+      }, EDITOR_DEBOUNCE_TIME);
+    },
+    [mutate]
+  );
+  return { debounceUpdateComplement };
 }
 
 export default useUpdateComplement;

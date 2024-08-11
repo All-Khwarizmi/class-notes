@@ -1,7 +1,8 @@
 import NotFound from "@/app/not-found";
 import ErrorDialog from "@/core/components/common/ErrorDialog";
 import { authUseCases } from "@/features/auth/application/usecases/auth-usecases";
-import { notesUsecases } from "@/features/notes/application/usecases/note-usecases";
+import getNotes from "@/features/notes/application/adapters/actions/get-notes";
+
 import NotesTableView from "@/features/notes/presentation/views/NotesTableView";
 
 import { isLeft } from "fp-ts/lib/Either";
@@ -13,33 +14,35 @@ async function NotesServerLayer(props: {
   type: "profile" | "sequence" | "cours" | "class" | "student";
 }) {
   if (!props.slug) {
-    return <NotFound />;
+      <NotFound />
   }
   const authUser = await authUseCases.getUserAuth();
   if (isLeft(authUser)) {
     redirect("/login");
   }
-  const eitherNotes = await notesUsecases.getNotes({
-    parentId: props.type === "profile" ? authUser.right.userId : props.slug,
+  const eitherNotes = await getNotes({
+    slug: props.slug,
+    userId: authUser.right.userId,
+    type: props.type,
   });
   if (isLeft(eitherNotes)) {
     return (
-      <ErrorDialog
-        message={`
+        <ErrorDialog
+          message={`
         There was an error while fetching your notes.
         Please try again later.
         ${eitherNotes.left}
         Code: ${eitherNotes.left.code}
         `}
-      />
+        />
     );
   }
 
   return (
-    <NotesTableView
-      notes={eitherNotes.right}
-      parentId={props.type === "profile" ? authUser.right.userId : props.slug}
-    />
+      <NotesTableView
+        notes={eitherNotes.right}
+        parentId={props.type === "profile" ? authUser.right.userId : props.slug}
+      />
   );
 }
 

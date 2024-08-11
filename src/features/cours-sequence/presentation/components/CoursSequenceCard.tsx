@@ -28,7 +28,7 @@ export default function CoursSequenceCard({
   spacesMode?: boolean;
 }) {
   return (
-    <Card className=" max-w-sm">
+    <Card className=" md:max-w-sm">
       <img
         alt="Product Image"
         className="rounded-t-lg object-cover w-full aspect-[3/2]"

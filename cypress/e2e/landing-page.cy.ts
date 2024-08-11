@@ -6,7 +6,7 @@ describe("Landing Page", () => {
       timeout: 10000,
       failOnStatusCode: false,
     });
-    cy.get("h1").should("contain", "ClassAI", {
+    cy.get("h1").should("contain", "La Classe", {
       timeout: 10000,
     });
   });

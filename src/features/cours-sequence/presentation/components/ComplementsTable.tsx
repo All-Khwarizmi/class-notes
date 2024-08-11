@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { ExternalLink, Plus } from "lucide-react";
+import { Delete, ExternalLink, Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Complement } from "@/features/complement/domain/complement-schemas";
 import { TableCaption, TableHeader } from "@/core/components/ui/table";
@@ -11,14 +11,20 @@ import {
   TableBody,
   TableCell,
 } from "@/core/components/ui/table";
-import { Switch } from "@/core/components/ui/switch";
 import VisibilitySwitch from "./VisibilitySwitch";
+import useDeleteComplement from "@/features/complement/application/adapters/services/useDeleteComplement";
+import { Button } from "@/core/components/ui/button";
+import { useRouter } from "next/navigation";
+import DeleteTableButton from "@/core/components/common/DeleteTableButton";
 
 function ComplementsTable(props: {
   complements: Complement[];
   coursId: string;
   userId: string;
 }) {
+  const router = useRouter();
+  const { mutate: deleteComplement, isPending: isDeleting } =
+    useDeleteComplement();
   return (
     <div className="w-full h-full py-4">
       <Table className="w-full">
@@ -31,15 +37,19 @@ function ComplementsTable(props: {
 
             <TableHead className="w-[200px]">Type</TableHead>
             <TableHead className="w-[200px]"> Publish </TableHead>
-            <TableHead className="w-[200px]">Publish Date</TableHead>
             <TableHead className="w-[200px]">Actions</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {props.complements.map((complement) => {
-            console.log({ complement });
             return (
-              <TableRow key={complement.id}>
+              <TableRow
+                key={complement.id}
+                className="cursor-pointer"
+                onClick={() => {
+                  router.push(`/complements/${complement.id}`);
+                }}
+              >
                 <TableCell className="w-[200px]">{complement.name}</TableCell>
                 <TableCell className="w-[200px]">
                   {complement.description}
@@ -52,15 +62,24 @@ function ComplementsTable(props: {
                     typeId={complement.id}
                   />
                 </TableCell>
-                <TableCell className="w-[200px]">
-                  {complement.publishDate
-                    ? new Date(complement.publishDate).toLocaleDateString()
-                    : "Not published"}
-                </TableCell>
-                <TableCell className="w-[200px]">
-                  <Link href={`/complements/${complement.id}`}>
-                    <ExternalLink size={12} />
-                  </Link>
+
+                <TableCell className="w-[200px] ">
+                  <div className="flex items-center w-full h-full">
+                    {" "}
+                    
+                    <DeleteTableButton
+                   
+                      onClick={() => {
+                        confirm(
+                          "Are you sure you want to delete this complement?"
+                        ) &&
+                          deleteComplement({
+                            id: complement.id,
+                          });
+                      }}
+                    >
+                    </DeleteTableButton>
+                  </div>
                 </TableCell>
               </TableRow>
             );
@@ -69,13 +88,10 @@ function ComplementsTable(props: {
       </Table>
       {/* Add Competence button */}
       <div className="flex justify-center py-4">
-        <Link
-          href={`/complements/add/${props.coursId}`}
-          className={cn(
-            "bg-transparent rounded-md p-1 px-2 flex items-center ml-2 hover:bg-slate-400 border border-slate-400 hover:border-slate-400"
-          )}
-        >
-          <Plus size={12} />
+        <Link href={`/complements/add/${props.coursId}`}>
+          <Button>
+            <Plus size={16} />
+          </Button>
         </Link>
       </div>
     </div>

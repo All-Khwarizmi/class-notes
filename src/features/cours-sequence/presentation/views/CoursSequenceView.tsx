@@ -1,16 +1,15 @@
 "use client";
 import { Cours, Sequence } from "../../domain/entities/cours-schemas";
-import EditorProviderWrapper from "../../../../core/components/common/editor/EditorProvider";
 import CoursSaveButton from "../../../../core/components/common/editor/CoursSaveButton";
 import SaveSequenceBodyButton from "../components/SaveSequenceBodyButton";
 import Link from "next/link";
 import { Eye, Settings } from "lucide-react";
 import AfterMenuButton from "@/core/components/common/editor/AfterMenuButton";
-import AfterMenuBar from "@/core/components/common/editor/AfterMunuBar";
 import { Complement } from "@/features/complement/domain/complement-schemas";
 import VisibilitySwitch from "../components/VisibilitySwitch";
-import useUpdateSequenceBody from "../../application/usecases/services/useUpdateSequenceBody";
-import useUpdateCoursBody from "../../application/usecases/services/useUpdateCoursBody";
+import useUpdateSequenceBody from "../../application/adapters/services/useUpdateSequenceBody";
+import useUpdateCoursBody from "../../application/adapters/services/useUpdateCoursBody";
+import FloatingEditor from "@/core/components/common/editor/FloatingEditor";
 
 export default function CoursSequenceView({
   cours,
@@ -29,53 +28,49 @@ export default function CoursSequenceView({
   complements?: Complement[];
   sequenceType?: "template" | "sequence";
 }) {
-  const { setUpdateSequenceBodyOptions } = useUpdateSequenceBody();
-  const { setUpdateCoursBodyOptions } = useUpdateCoursBody();
-  if (type === "cours" && cours && complements) {
+  const { debounceUpdateSequenceBody } = useUpdateSequenceBody();
+
+  const { debounceUpdateCoursBody } = useUpdateCoursBody();
+ 
+  if (type === "cours" && cours) {
     return (
       <>
         <h1 className="text-2xl font-bold pb-4 dark:text-slate-300 text-slate-500 ">
           {cours.name}
         </h1>
-        <EditorProviderWrapper
+
+        <FloatingEditor
           content={cours.body}
-          onUpdate={(content) => {
-            setUpdateCoursBodyOptions({
+          debounceUpdateFn={
+            debounceUpdateCoursBody({
               userId,
               coursId: cours._id,
-              body: content,
-            });
-          }}
+            })
+          }
+          afterMenuBar
         >
-          <div className=" flex flex-col gap-4 ">
-            <AfterMenuBar>
-              <div className="flex items-center justify-between w-full gap-4 ">
-                <div className="flex items-center gap-1">
-                  <CoursSaveButton userId={userId} cours={cours} />
-                  <AfterMenuButton>
-                    <Link href={`/spaces/cours/${cours._id}?user=${userId}`}>
-                      <Eye size={12} />
-                    </Link>
-                  </AfterMenuButton>
-                  <AfterMenuButton>
-                    <Link href={`/cours/edit/${cours._id}`}>
-                      <Settings size={12} />
-                    </Link>
-                  </AfterMenuButton>
-                </div>
-                <VisibilitySwitch
-                  userId={userId}
-                  type="cours"
-                  typeId={cours._id}
-                />
-              </div>
-            </AfterMenuBar>
+          {" "}
+          <div className="flex items-center justify-between w-full gap-4 ">
+            <div className="flex items-center gap-1">
+              <CoursSaveButton userId={userId} cours={cours} />
+              <AfterMenuButton>
+                <Link href={`/spaces/cours/${cours._id}?user=${userId}`}>
+                  <Eye size={12} />
+                </Link>
+              </AfterMenuButton>
+              <AfterMenuButton>
+                <Link href={`/cours/edit/${cours._id}`}>
+                  <Settings size={12} />
+                </Link>
+              </AfterMenuButton>
+            </div>
+            <VisibilitySwitch userId={userId} type="cours" typeId={cours._id} />
           </div>
-        </EditorProviderWrapper>
+        </FloatingEditor>
       </>
     );
   }
-  if (type === "sequence" && sequence && coursFromSequence) {
+  if (type === "sequence" && sequence ) {
     const viewPath =
       sequenceType === "sequence"
         ? `/spaces/sequences/${sequence._id}?user=${userId}`
@@ -85,52 +80,46 @@ export default function CoursSequenceView({
         <h1 className="text-2xl font-bold pb-4 dark:text-slate-300 text-slate-500 ">
           {sequence.name}
         </h1>
-        <EditorProviderWrapper
+        <FloatingEditor
           content={sequence.body}
-          onUpdate={(content) => {
-            setUpdateSequenceBodyOptions({
-              userId,
-              sequenceId: sequence._id,
-              body: content,
-              type: sequenceType,
-            });
-          }}
+          debounceUpdateFn={debounceUpdateSequenceBody({
+            userId,
+            sequenceId: sequence._id,
+            type: sequenceType,
+          })}
+          afterMenuBar
         >
-          <div className="flex flex-col gap-4 ">
-            <AfterMenuBar>
-              <div className="flex items-center justify-between w-full gap-4 ">
-                <div className="flex items-center gap-1">
-                  <SaveSequenceBodyButton
-                    userId={userId}
-                    sequence={sequence}
-                    type={sequenceType}
-                  />
-                  <AfterMenuButton>
-                    <Link href={viewPath}>
-                      <Eye size={12} />
-                    </Link>
-                  </AfterMenuButton>
-                  <AfterMenuButton>
-                    <Link
-                      href={
-                        sequenceType === "sequence"
-                          ? `/sequences/edit/${sequence._id}?type=sequence`
-                          : `/sequences/edit/${sequence._id}`
-                      }
-                    >
-                      <Settings size={12} />
-                    </Link>
-                  </AfterMenuButton>
-                </div>
-                <VisibilitySwitch
-                  userId={userId}
-                  type="sequence"
-                  typeId={sequence._id}
-                />
-              </div>
-            </AfterMenuBar>
+          <div className="flex items-center justify-between w-full gap-4 ">
+            <div className="flex items-center gap-1">
+              <SaveSequenceBodyButton
+                userId={userId}
+                sequence={sequence}
+                type={sequenceType}
+              />
+              <AfterMenuButton>
+                <Link href={viewPath}>
+                  <Eye size={12} />
+                </Link>
+              </AfterMenuButton>
+              <AfterMenuButton>
+                <Link
+                  href={
+                    sequenceType === "sequence"
+                      ? `/sequences/edit/${sequence._id}?type=sequence`
+                      : `/sequences/edit/${sequence._id}`
+                  }
+                >
+                  <Settings size={12} />
+                </Link>
+              </AfterMenuButton>
+            </div>
+            <VisibilitySwitch
+              userId={userId}
+              type="sequence"
+              typeId={sequence._id}
+            />
           </div>
-        </EditorProviderWrapper>
+        </FloatingEditor>
       </>
     );
   }

@@ -1,4 +1,5 @@
-import type { Config } from "tailwindcss"
+import { yellow } from "@mui/material/colors";
+import type { Config } from "tailwindcss";
 
 const config = {
   darkMode: ["class"],
@@ -25,6 +26,7 @@ const config = {
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
+        yellow: "hsl(var(--yellow))",
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
@@ -78,4 +80,4 @@ const config = {
   plugins: [require("tailwindcss-animate"), require("@tailwindcss/typography")],
 } satisfies Config;
 
-export default config
+export default config;

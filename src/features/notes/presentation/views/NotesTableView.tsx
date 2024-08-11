@@ -1,6 +1,14 @@
 "use client";
 import Link from "next/link";
-import { ExternalLink, Folder, Plus, File, X } from "lucide-react";
+import {
+  ExternalLink,
+  Folder,
+  Plus,
+  File,
+  X,
+  Delete,
+  Check,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 import { TableCaption, TableHeader } from "@/core/components/ui/table";
 import {
@@ -11,7 +19,7 @@ import {
   TableCell,
 } from "@/core/components/ui/table";
 import { Note } from "../../domain/notes-schemas";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Input } from "@/core/components/ui/input";
 import {
   Select,
@@ -22,11 +30,21 @@ import {
   SelectValue,
 } from "@/core/components/ui/select";
 import useAddNote from "../../application/adapters/services/useAddProfileNote";
+import useDeleteNote from "../../application/adapters/services/useDeleteNote";
+import { toast } from "sonner";
+import AddTableButton from "@/core/components/common/AddTableButton";
+import { Button } from "@/core/components/ui/button";
 function NotesTableView(props: { notes: Note[]; parentId: string }) {
   const [localNotes, setLocalNotes] = useState<Note[]>(props.notes);
   const [isFileFormVisible, setIsFileFormVisible] = useState(false);
-  const [isFolderFormVisible, setIsFolderFormVisible] = useState(false);
   const { setNoteOptions } = useAddNote();
+  const {
+    mutate: deleteNote,
+    isPending: isDeletingNote,
+    isSuccess: isNoteDeleted,
+    isError: isNoteDeleteError,
+    error: noteDeleteError,
+  } = useDeleteNote();
   function handleSubmit(note: Omit<Note, "id" | "createdBy">) {
     const newNote = {
       ...note,
@@ -36,6 +54,13 @@ function NotesTableView(props: { notes: Note[]; parentId: string }) {
     setNoteOptions(newNote);
   }
 
+  useEffect(() => {
+    if (isNoteDeleteError === true) {
+      toast.error("Error while deleting note", {
+        description: noteDeleteError.message,
+      });
+    }
+  }, [isNoteDeleteError, noteDeleteError]);
   return (
     <>
       {/* Add a table to display notes */}
@@ -74,10 +99,33 @@ function NotesTableView(props: { notes: Note[]; parentId: string }) {
                   <TableCell className="w-[200px]">
                     {new Date(note.createdAt).toDateString()}
                   </TableCell>
-                  <TableCell className="w-[200px]">
-                    <Link href={`/notes/${note.id}`}>
-                      <ExternalLink size={12} />
-                    </Link>
+                  <TableCell className="w-[200px] ">
+                    <div className="flex items-center justify-center w-full h-full">
+                      <Link
+                        href={`/notes/${note.id}`}
+                        className={cn(
+                          "bg-transparent rounded-md p-1 px-2 flex items-center ml-2 hover:text-blue-400  "
+                        )}
+                      >
+                        <ExternalLink size={14} />
+                      </Link>
+                      <button
+                        className={cn(
+                          "bg-transparent rounded-md p-1 px-2 flex items-center ml-2 hover:text-red-400  "
+                        )}
+                        onClick={() => {
+                          confirm(
+                            "Are you sure you want to delete this note?"
+                          ) &&
+                            deleteNote({
+                              noteId: note.id,
+                              pathToRevalidate: `/profile/notes/${note.id}`,
+                            });
+                        }}
+                      >
+                        <Delete size={14} />
+                      </button>
+                    </div>
                   </TableCell>
                 </TableRow>
               );
@@ -91,16 +139,13 @@ function NotesTableView(props: { notes: Note[]; parentId: string }) {
           </TableBody>
         </Table>
         <div className="flex justify-center py-4 gap-4">
-          <button
+          <Button
             onClick={() => {
               setIsFileFormVisible(true);
             }}
-            className={cn(
-              "bg-transparent rounded-md p-1 px-2 flex items-center ml-2 hover:bg-slate-400 border border-slate-400 hover:border-slate-400"
-            )}
           >
-            <File size={12} />
-          </button>
+            <Plus size={16} />
+          </Button>
         </div>
       </div>
     </>
@@ -136,7 +181,6 @@ function NoteItemFormRow(props: {
 
   function onChangeNoteType(value: string) {
     if (value !== "Diagram" && value !== "Flowchart" && value !== "Markup") {
-      console.log("Invalid content type", value);
       return;
     }
     setLocalNotes({ ...localNotes, contentType: value });
@@ -163,17 +207,14 @@ function NoteItemFormRow(props: {
         />
       </TableCell>
       <TableCell>
-        <Select onValueChange={onChangeNoteType}>
+        <Select onValueChange={onChangeNoteType} value={localNotes.contentType}>
           <SelectTrigger className="w-[180px]">
-            <SelectValue
-              placeholder="Select a type"
-              defaultValue={localNotes.type}
-            />
+            <SelectValue placeholder="Select a type" />
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
-              <SelectItem value="Diagram">Diagram</SelectItem>
-              <SelectItem value="Flowchart">Flowchart</SelectItem>
+              {/* <SelectItem value="Diagram">Diagram</SelectItem>
+              <SelectItem value="Flowchart">Flowchart</SelectItem> */}
               <SelectItem value="Markup">Markup</SelectItem>
             </SelectGroup>
           </SelectContent>
@@ -186,17 +227,17 @@ function NoteItemFormRow(props: {
           <button
             onClick={() => props.handleSubmit(localNotes)}
             className={cn(
-              "bg-transparent rounded-md p-1 px-2 flex items-center ml-2 hover:bg-slate-400 border border-slate-400 hover:border-slate-400"
+              "bg-transparent text-green-500 rounded-md p-1 px-2 flex items-center ml-2 hover:bg-slate-400 border border-slate-400 hover:border-slate-400"
             )}
           >
-            <Plus size={12} />
+            <Check size={12} />
           </button>
           <button
             onClick={() => {
               props.setOpen(false);
             }}
             className={cn(
-              "bg-transparent rounded-md p-1 px-2 flex items-center ml-2 hover:bg-slate-400 border border-slate-400 hover:border-slate-400"
+              "bg-transparent text-red-600 rounded-md p-1 px-2 flex items-center ml-2 hover:bg-slate-400 border border-slate-400 hover:border-slate-400"
             )}
           >
             <X size={12} />

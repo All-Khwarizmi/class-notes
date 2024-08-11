@@ -12,6 +12,29 @@ import {
 } from "@/features/cours-sequence/domain/entities/cours-schemas";
 import { Complement } from "@/features/complement/domain/complement-schemas";
 import { Note } from "@/features/notes/domain/notes-schemas";
+import {
+  AssignEvaluationOptions,
+  CreateEvaluationOptions,
+  DeleteEvaluationBase,
+  GetEvaluationBaseOptions,
+  GetEvaluationBasesOptions,
+  GetEvaluationOptions,
+  GetEvaluationsWithGradesByEvalauationBaseIdOptions,
+  GetEvaluationsListOptions,
+  IsEvaluationAssigned,
+  UpdateEvaluationBaseOptions,
+  UpdateGradeOptions,
+  DeleteEvaluationWithGradesOptions,
+} from "@/features/evaluation/domain/entities/evaluation-types";
+import {
+  CreateStudentOptions,
+  DeleteStudentOptions,
+  UpdateStudentOptions,
+} from "@/features/student/domain/entities/student-types";
+import {
+  CreateClasseOptions,
+  DeleteClasseOptions,
+} from "@/features/classe/domain/classe-types";
 
 export default abstract class IDatabase {
   abstract getUser({
@@ -96,6 +119,11 @@ export default abstract class IDatabase {
     body: string;
   }): Promise<Either<Failure<string>, void>>;
 
+  abstract deleteCourse({
+    coursId,
+  }: {
+    coursId: string;
+  }): Promise<Either<Failure<string>, void>>;
   abstract addSequence({
     userId,
     sequence,
@@ -150,6 +178,14 @@ export default abstract class IDatabase {
     type?: "template" | "sequence";
   }): Promise<Either<Failure<string>, void>>;
 
+  abstract deleteSequence({
+    sequenceId,
+    type,
+  }: {
+    sequenceId: string;
+    type: "template" | "sequence";
+  }): Promise<Either<Failure<string>, void>>;
+
   abstract getAllCoursFromSequence({
     userId,
     sequenceId,
@@ -201,6 +237,11 @@ export default abstract class IDatabase {
     coursComplement: Complement;
   }): Promise<Either<Failure<string>, void>>;
 
+  abstract deleteComplement({
+    id,
+  }: {
+    id: string;
+  }): Promise<Either<Failure<string>, void>>;
   abstract createNote({
     note,
   }: {
@@ -247,17 +288,14 @@ export default abstract class IDatabase {
     >;
   }): Promise<Either<Failure<string>, void>>;
 
-  abstract createClass({
-    userId,
-    name,
-    description,
-    imageUrl,
+  abstract deleteNote({
+    id,
   }: {
-    userId: string;
-    name: string;
-    description: string;
-    imageUrl: string;
-  }): Promise<Either<Failure<string>, string>>;
+    id: string;
+  }): Promise<Either<Failure<string>, void>>;
+  abstract createClass(
+    options: CreateClasseOptions
+  ): Promise<Either<Failure<string>, string>>;
 
   abstract deleteClass({
     id,
@@ -302,4 +340,85 @@ export default abstract class IDatabase {
     type: "classe" | "sequence" | "cours" | "complement";
     typeId: string;
   }): Promise<Either<Failure<string>, void>>;
+
+  abstract createEvaluationBase(
+    options: CreateEvaluationOptions
+  ): Promise<Either<Failure<string>, string>>;
+
+  abstract getEvaluationBase(
+    options: GetEvaluationBaseOptions
+  ): Promise<Either<Failure<string>, DocumentData>>;
+
+  abstract getEvaluationBases(
+    options: GetEvaluationBasesOptions
+  ): Promise<Either<Failure<string>, DocumentData[]>>;
+
+  abstract updateEvaluationBase(
+    options: UpdateEvaluationBaseOptions
+  ): Promise<Either<Failure<string>, void>>;
+
+  abstract assignEvaluationBaseToClasse(
+    options: AssignEvaluationOptions
+  ): Promise<Either<Failure<string>, string>>;
+
+  abstract deleteEvaluationBase(
+    options: DeleteEvaluationBase
+  ): Promise<Either<Failure<string>, void>>;
+
+  abstract isEvaluationAssigned(
+    options: IsEvaluationAssigned
+  ): Promise<Either<Failure<string>, boolean>>;
+
+  abstract getEvaluationsWithGradesByEvaluationBaseId(
+    options: GetEvaluationsWithGradesByEvalauationBaseIdOptions
+  ): Promise<Either<Failure<string>, DocumentData[]>>;
+
+  abstract deleteEvaluationWithGrades(
+    options: DeleteEvaluationWithGradesOptions
+  ): Promise<Either<Failure<string>, void>>;
+
+  abstract updateGrade(
+    options: UpdateGradeOptions
+  ): Promise<Either<Failure<string>, void>>;
+
+  abstract getEvaluationWithGrade(
+    options: GetEvaluationOptions
+  ): Promise<Either<Failure<string>, DocumentData>>;
+
+  abstract getEvaluationsListWithGrade(
+    options: GetEvaluationsListOptions
+  ): Promise<Either<Failure<string>, DocumentData[]>>;
+
+  abstract createStudent(
+    options: CreateStudentOptions
+  ): Promise<Either<Failure<string>, string>>;
+
+  /**
+   * Deletes a student from the database.
+   *
+   * @param options - The options for deleting the student.
+   * @returns A promise that resolves to either a failure or void.
+   *
+   * @remarks
+   * ⚠️ WARNING: This method violates our architecture principles. According to our architecture, the deletion of resources where the student appears should be handled in the application layer, not in the backend implementation. Please refactor this code accordingly.
+   */
+  abstract deleteStudent(
+    options: DeleteStudentOptions
+  ): Promise<Either<Failure<string>, void>>;
+
+  abstract updateStudent(
+    options: UpdateStudentOptions
+  ): Promise<Either<Failure<string>, void>>;
+
+  abstract deleteClassesSequenceFromClasse(
+    options: DeleteClasseOptions
+  ): Promise<Either<Failure<string>, void>>;
+
+  abstract deleteEvaluationsWithGradesFromClasse(
+    options: DeleteClasseOptions
+  ): Promise<Either<Failure<string>, void>>;
+
+  abstract deleteStudentsFromClasseId(
+    options: DeleteClasseOptions
+  ): Promise<Either<Failure<string>, void>>;
 }

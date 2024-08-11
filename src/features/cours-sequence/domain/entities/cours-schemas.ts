@@ -33,3 +33,9 @@ export const SequenceSchema = z.object({
 });
 
 export type Sequence = z.infer<typeof SequenceSchema>;
+
+export const ClasseSequenceSchema = SequenceSchema.extend({
+  originalSequenceId: z.string(),
+});
+
+export type ClasseSequence = z.infer<typeof ClasseSequenceSchema>;

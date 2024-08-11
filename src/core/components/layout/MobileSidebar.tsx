@@ -1,9 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Sheet, SheetContent, SheetTrigger } from "@/core/components/ui/sheet";
 import { SideNav } from "@/core/components/layout/SideNav";
-import { NavItems } from "@/core/components/constants/side-nav";
 import MenuIcon from "../icons/MenuIcon";
 import { NavItem } from "@/lib/types";
+import { useSession } from "@clerk/nextjs";
+import { Space, User } from "lucide-react";
 
 export const MobileSidebar = (props: { navItems?: NavItem[] }) => {
   const [open, setOpen] = useState(false);
@@ -27,7 +28,7 @@ export const MobileSidebar = (props: { navItems?: NavItem[] }) => {
         </SheetTrigger>
         <SheetContent side="left" className="w-72">
           <div className="px-1 py-6 pt-16">
-            <SideNav items={props.navItems ?? NavItems} setOpen={setOpen} />
+            <SideNav items={props.navItems} setOpen={setOpen} />
           </div>
         </SheetContent>
       </Sheet>

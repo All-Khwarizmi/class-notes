@@ -1,30 +1,16 @@
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/core/components/ui/dropdown-menu";
-import { useCurrentEditor } from "@tiptap/react";
 import { cn } from "@/lib/utils";
+import { AlignCenter, AlignJustify, AlignLeft, AlignRight } from "lucide-react";
 import {
-  AlignCenter,
-  AlignJustify,
-  AlignLeft,
-  AlignRight,
-  Heading,
-} from "lucide-react";
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/core/components/ui/popover";
 
 import React from "react";
+import { Editor } from "@tiptap/react";
 
-function MenuTextAlign() {
-  const { editor } = useCurrentEditor();
-
-  if (!editor) {
-    return null;
-  }
-
+function MenuTextAlign(props: { editor: Editor }) {
+  const editor = props.editor;
   function setAlignement(align: string) {
     editor!.chain().focus().setTextAlign(align).run();
   }
@@ -43,49 +29,55 @@ function MenuTextAlign() {
   }
 
   return (
-    <div>
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <button
-            className={cn(
-              editor.isActive("align") ? "is-active" : "",
-              "bg-slate-400 rounded-md p-1 px-2"
-            )}
-          >
-            {whichAlignement()}
-          </button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent className="w-56">
-          <DropdownMenuLabel>Paragraph</DropdownMenuLabel>
-          <DropdownMenuSeparator />
-
-          <DropdownMenuItem
-            onClick={() => setAlignement("left")}
-            className="text-4xl"
-          >
-            <AlignLeft size={12} />
-          </DropdownMenuItem>
-          <DropdownMenuItem
-            onClick={() => setAlignement("center")}
-            className="text-3xl"
-          >
-            <AlignCenter size={12} />
-          </DropdownMenuItem>
-          <DropdownMenuItem
-            onClick={() => setAlignement("right")}
-            className="text-2xl"
-          >
-            <AlignRight size={12} />
-          </DropdownMenuItem>
-          <DropdownMenuItem
-            onClick={() => setAlignement("justify")}
-            className="text-xl"
-          >
-            <AlignJustify size={12} />
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
-    </div>
+    <Popover>
+      <PopoverTrigger asChild>
+        <button className="bg-slate-400 rounded-md p-1 px-2">
+          {whichAlignement()}
+        </button>
+      </PopoverTrigger>
+      <PopoverContent className="w-full flex gap-2">
+        <button
+          onClick={() => setAlignement("left")}
+          className={cn(
+            "text-left",
+            editor.isActive("textAlign", { alignment: "left" }) &&
+              "text-blue-500"
+          )}
+        >
+          <AlignLeft size={12} />
+        </button>
+        <button
+          onClick={() => setAlignement("center")}
+          className={cn(
+            "text-center",
+            editor.isActive("textAlign", { alignment: "center" }) &&
+              "text-blue-500"
+          )}
+        >
+          <AlignCenter size={12} />
+        </button>
+        <button
+          onClick={() => setAlignement("right")}
+          className={cn(
+            "text-right",
+            editor.isActive("textAlign", { alignment: "right" }) &&
+              "text-blue-500"
+          )}
+        >
+          <AlignRight size={12} />
+        </button>
+        <button
+          onClick={() => setAlignement("justify")}
+          className={cn(
+            "text-justify",
+            editor.isActive("textAlign", { alignment: "justify" }) &&
+              "text-blue-500"
+          )}
+        >
+          <AlignJustify size={12} />
+        </button>
+      </PopoverContent>
+    </Popover>
   );
 }
 

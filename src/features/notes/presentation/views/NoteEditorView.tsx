@@ -1,26 +1,38 @@
 "use client";
-import React from "react";
+import React, { useCallback, useEffect } from "react";
 import { Note } from "../../domain/notes-schemas";
-import Editor from "@/core/components/common/editor/Editor";
-import UpdateNoteButton from "../components/UpdateNote";
 import useUpdateNote from "../../application/adapters/services/useUpdateNote";
+import { debounce } from "lodash";
+import { toast } from "sonner";
+import FloatingEditor from "@/core/components/common/editor/FloatingEditor";
+import { EDITOR_DEBOUNCE_TIME } from "@/core/components/constants/editor-constants";
 
 function NoteEditorView(props: { note: Note }) {
-  const { setNote } = useUpdateNote();
+  const { mutate: setNote, isSuccess } = useUpdateNote();
+  const debounceSaveNote = useCallback(
+    () =>
+      debounce(
+        (content: string) => {
+          setNote({
+            ...props.note,
+            content,
+          });
+        },
+        EDITOR_DEBOUNCE_TIME,
+        { leading: false, trailing: true }
+      ),
+    [props.note, setNote]
+  );
+
+  useEffect(() => {
+    if (isSuccess) {
+      toast.success("Note updated");
+    }
+  }, [isSuccess]);
   return (
-    <Editor
-      onUpdate={(content) => {
-        setNote({
-          ...props.note,
-          content: content,
-        });
-      }}
+    <FloatingEditor
       content={props.note.content}
-      slotafter={
-        <div className=" flex flex-col gap-4 ">
-          <UpdateNoteButton note={props.note} />
-        </div>
-      }
+      debounceUpdateFn={debounceSaveNote()}
     />
   );
 }

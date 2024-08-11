@@ -1,10 +1,10 @@
-import { Suspense } from "react";
-import ProfileServerLayer from "./ProfileServerLayer";
-import LoadingSkeleton from "@/core/components/common/LoadingSkeleton";
+import ProfileLayout from "./ProfileLayout";
+
+export const dynamic = "force-dynamic";
 export default async function Page() {
   return (
-    <Suspense fallback={<LoadingSkeleton />}>
-      <ProfileServerLayer />
-    </Suspense>
+    
+      <ProfileLayout />
+  
   );
 }

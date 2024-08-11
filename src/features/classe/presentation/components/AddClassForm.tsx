@@ -15,12 +15,15 @@ import { useForm } from "react-hook-form";
 import { Textarea } from "../../../../core/components/ui/textarea";
 import classSchema, { ClassType } from "@/features/classe/domain/class-schema";
 const BASE_IMAGE_URL = "https://source.unsplash.com/random/800x600";
-import { useEffect } from "react";
-import { classeRepository } from "@/features/classe/application/repository/classe-repository";
+import useAddClasse from "../../application/adapters/services/useAddClasse";
 
-export default function AddClassForm() {
-  const { setClasse, createdClassId } = classeRepository.useCreateClasse();
-  const form = useForm<ClassType>({
+export default function AddClassForm(props: {
+  setOpen: (value: boolean) => void;
+  userId: string;
+  refetchClasses: () => void;
+}) {
+  const { mutate: setClasse } = useAddClasse();
+  const form = useForm<Pick<ClassType, "description" | "name" | "imageUrl">>({
     resolver: zodResolver(classSchema),
     defaultValues: {
       name: "",
@@ -31,14 +34,22 @@ export default function AddClassForm() {
     },
   });
 
-  useEffect(() => {
-    if (createdClassId) {
-      form.reset();
-    }
-  }, [createdClassId]);
-
-  async function onSubmit(values: ClassType) {
-    setClasse(values);
+  async function onSubmit(
+    values: Pick<ClassType, "description" | "name" | "imageUrl">
+  ) {
+    const {} = values;
+    setClasse(
+      {
+        ...values,
+        userId: props.userId,
+      },
+      {
+        onSuccess: () => {
+          props.refetchClasses();
+          props.setOpen(false);
+        },
+      }
+    );
   }
   return (
     <>
@@ -105,7 +116,16 @@ export default function AddClassForm() {
           />
 
           <div className="flex justify-end">
-            <Button data-testid="submit-class" className="mt-8" type="submit">
+            <Button
+              onClick={() => {
+                const values = form.getValues();
+                form.setValue("imageUrl", BASE_IMAGE_URL);
+                onSubmit(values);
+              }}
+              data-testid="submit-class"
+              className="mt-8"
+              type="submit"
+            >
               Submit
             </Button>
           </div>

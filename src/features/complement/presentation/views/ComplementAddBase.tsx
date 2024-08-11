@@ -171,8 +171,8 @@ function ComplementAddBaseForm(props: { slug: string }) {
                         </SelectTrigger>
                         <SelectContent>
                           <SelectGroup>
-                            <SelectItem value="Diagram">Diagram</SelectItem>
-                            <SelectItem value="Flowchart">Flowchart</SelectItem>
+                            {/* <SelectItem value="Diagram">Diagram</SelectItem>
+                            <SelectItem value="Flowchart">Flowchart</SelectItem> */}
                             <SelectItem value="Markup">Markup</SelectItem>
                           </SelectGroup>
                         </SelectContent>

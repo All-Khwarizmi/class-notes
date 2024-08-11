@@ -3,7 +3,6 @@ import { authUseCases } from "@/features/auth/application/usecases/auth-usecases
 import { coursUsecases } from "@/features/cours-sequence/application/usecases/cours-usecases";
 import { isLeft } from "fp-ts/lib/Either";
 import { redirect } from "next/navigation";
-import Sidebar from "@/core/components/layout/Sidebar";
 import ErrorDialog from "@/core/components/common/ErrorDialog";
 import ClasseSequencesTableView from "@/features/cours-sequence/presentation/views/ClasseSequencesTableView";
 
@@ -15,28 +14,35 @@ async function ClasseSequencesServerLayer(props: { slug: string }) {
   const eitherSequences = await coursUsecases.getAllSequences({
     userId: authUser.right.userId,
   });
+  const eitherClasseSequences = await coursUsecases.getClasseSequences({
+    classeId: props.slug,
+  });
   if (isLeft(eitherSequences)) {
     return (
-      <ErrorDialog
-        message="An error occurred"
-        description="An error occurred while fetching sequences"
-        code={eitherSequences.left.code}
-      />
+        <ErrorDialog
+          message="An error occurred"
+          description="An error occurred while fetching sequences"
+          code={eitherSequences.left.code}
+        />
+    );
+  }
+
+  if (isLeft(eitherClasseSequences)) {
+    return (
+        <ErrorDialog
+          message="An error occurred"
+          description="An error occurred while fetching classe sequences"
+          code={eitherClasseSequences.left.code}
+        />
     );
   }
 
   return (
-    <>
-      <Sidebar />
-      <section className="h-full flex-1  overflow-x-hidden">
-        <div className="h-full pt-4 px-6">
-          <ClasseSequencesTableView
-            sequences={eitherSequences.right}
-            classeId={props.slug}
-          />
-        </div>
-      </section>
-    </>
+      <ClasseSequencesTableView
+        sequences={eitherSequences.right}
+        classeId={props.slug}
+        classeSequences={eitherClasseSequences.right}
+      />
   );
 }
 

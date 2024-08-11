@@ -17,18 +17,18 @@ import { useEffect, useState } from "react";
 import { ChevronDownIcon } from "@radix-ui/react-icons";
 
 interface SideNavProps {
-  items: NavItem[];
+  items?: NavItem[];
   setOpen?: (open: boolean) => void;
   className?: string;
 }
 
 export function SideNav({ items, setOpen, className }: SideNavProps) {
+  const [localItems, setLocalItems] = useState(items);
   const path = usePathname();
   const { isOpen } = useSidebar();
   const [openItem, setOpenItem] = useState("");
   const [lastOpenItem, setLastOpenItem] = useState("");
   const [liveHref, setLiveHref] = useState(path);
-
   useEffect(() => {
     if (isOpen) {
       setOpenItem(lastOpenItem);
@@ -42,13 +42,31 @@ export function SideNav({ items, setOpen, className }: SideNavProps) {
     setLiveHref(path);
   }, [path]);
 
+  useEffect(() => {
+    // Check if the path contains a key word and remove the item if it does
+    const filteredItems = items?.filter((item) => {
+      const regex = /spaces/i;
+      return !regex.test(path);
+    });
+    setLocalItems(filteredItems);
+  }, [path, items]);
+
   function pathIsActive(props: { path: string; liveHref: string }) {
-    if (items.length > 0) return false;
-    return props.liveHref.split("/")[1] === props.path.split("/")[1];
+    let { path, liveHref } = props;
+
+    // Check if the path is nested and return false if it is
+    if (path.split("/").length > 2) return false;
+
+    // Check if there are search params in the path and remove them
+    if (path.includes("?")) {
+      path = path.split("?")[0];
+    }
+
+    return liveHref.split("/")[1] === path.split("/")[1];
   }
   return (
     <nav className="space-y-2">
-      {items.map((item) =>
+      {localItems?.map((item) =>
         item.isChidren ? (
           <Accordion
             type="single"

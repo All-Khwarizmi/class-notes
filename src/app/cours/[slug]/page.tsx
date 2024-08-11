@@ -1,7 +1,7 @@
 import NotFound from "@/app/not-found";
-import CoursServerLayer from "./CoursServerLayer";
 import LoadingSkeleton from "@/core/components/common/LoadingSkeleton";
 import { Suspense } from "react";
+import CourseLayout from "./CourseLayout";
 
 export default async function Page({ params }: { params: { slug: string } }) {
   if (!params.slug) {
@@ -9,7 +9,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
   }
   return (
     <Suspense fallback={<LoadingSkeleton />}>
-      <CoursServerLayer slug={params.slug} />
+      <CourseLayout slug={params.slug} />
     </Suspense>
   );
 }

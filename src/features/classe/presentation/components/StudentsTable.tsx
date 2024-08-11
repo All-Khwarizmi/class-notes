@@ -2,6 +2,7 @@
 import {
   Table,
   TableBody,
+  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
@@ -9,11 +10,10 @@ import {
 } from "@/core/components/ui/table";
 import { useQuery } from "convex/react";
 import { api } from "../../../../../convex/_generated/api";
-import { Id } from "../../../../../convex/_generated/dataModel";
 import CustomDialog from "@/core/components/common/CustomDialog";
-import AddStudentForm from "./AddStudentForm";
-import AddIcon from "@/core/components/icons/AddIcon";
+import AddStudentForm from "../../../student/presentation/components/AddStudentForm";
 import { useMemo } from "react";
+import { Id } from "../../../../../convex/_generated/dataModel";
 
 export default function StudentsTable({ classId }: { classId: string }) {
   //! TODO: refactor this to use the new api hook
@@ -24,8 +24,9 @@ export default function StudentsTable({ classId }: { classId: string }) {
   );
 
   return (
-    <section className="flex flex-col justify-between h-full px-4 py-4">
+    <section className="flex flex-col  h-full pb-4">
       <Table>
+        <TableCaption>Élèves</TableCaption>
         {isStudents && (
           <>
             <TableHeader>
@@ -43,14 +44,17 @@ export default function StudentsTable({ classId }: { classId: string }) {
           </>
         )}
       </Table>
-      <div className=" flex justify-between ">
-        <footer className="flex h-full items-center">
-          <h1 className="font-bold text-sm py-1 px-4 dark:bg-gray-600 rounded ">
-            {students?.length} élèves
-          </h1>
-        </footer>
-        <CustomDialog icon={<AddIcon />} title="Ajouter un étudiant">
-          <AddStudentForm classId={classId as Id<"Classes">} />
+      <div className=" flex justify-center pt-2">
+        <CustomDialog
+          buttonClassName={
+            "flex items-center justify-center bg-transparent border border-gray-300 text-gray-300 hover:bg-gray-300 hover:text-white dark:hover:bg-gray-700 dark:text-gray-50 dark:border-gray-700"
+          }
+          title="Ajouter un étudiant"
+        >
+          <AddStudentForm
+            classId={classId as Id<"Classes">}
+            refetch={() => {}}
+          />
         </CustomDialog>
       </div>
     </section>

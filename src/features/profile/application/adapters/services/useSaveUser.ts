@@ -7,8 +7,8 @@ import { isLeft } from "fp-ts/lib/Either";
 import { toast } from "sonner";
 
 export interface SaveUserOptions {
-  schoolSubject: string;
-  name: string;
+  schoolSubject?: string;
+  name?: string;
   userId: string;
 }
 

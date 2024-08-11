@@ -1,37 +1,21 @@
 import { Note } from "@/features/notes/domain/notes-schemas";
-import React, { useEffect } from "react";
-import { notesUsecases } from "../../usecases/note-usecases";
 import { isLeft } from "fp-ts/lib/Either";
-import router from "next/router";
-import { toast } from "sonner";
-import { useRouter } from "next/navigation";
+import { useMutation } from "@tanstack/react-query";
+import saveNote from "../actions/save-note";
+
 function useUpdateNote() {
-  const [note, setNote] = React.useState<Note | null>(null);
-  const router = useRouter();
-  useEffect(() => {
-    if (note) {
-      const loadingToast = toast.loading("", {
-        position: "bottom-right",
+  return useMutation({
+    mutationKey: ["update-note"],
+    mutationFn: async (note: Note) => {
+      const result = await saveNote({
+        note,
       });
-      notesUsecases.updateNote({ note }).then((eitherNote) => {
-        if (isLeft(eitherNote)) {
-          toast.error("Error updating note", {
-            position: "top-center",
-          });
-        } else {
-          toast.success("", {
-            position: "bottom-right",
-            duration: 500,
-          });
-          router.refresh();
-        }
-        toast.dismiss(loadingToast);
-      });
-    }
-  }, [note]);
-  return {
-    setNote,
-  };
+      if (isLeft(result)) {
+        throw new Error(result.left.message);
+      }
+      return result.right;
+    },
+  });
 }
 
 export default useUpdateNote;

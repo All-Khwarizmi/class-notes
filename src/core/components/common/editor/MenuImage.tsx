@@ -1,12 +1,8 @@
 import { Image } from "lucide-react";
-import { useCurrentEditor } from "@tiptap/react";
+import { Editor } from "@tiptap/react";
 
-export default function MenuImage() {
-  const { editor } = useCurrentEditor();
-
-  if (!editor) {
-    return null;
-  }
+export default function MenuImage(props: { editor: Editor }) {
+  const editor = props.editor;
 
   function insertImage() {
     const url = window.prompt("URL");
@@ -16,10 +12,7 @@ export default function MenuImage() {
     }
   }
   return (
-    <button
-      onClick={insertImage}
-      className="bg-slate-400 rounded-md p-1 px-2"
-    >
+    <button onClick={insertImage} className="bg-slate-400 rounded-md p-1 px-2">
       <Image size={12} />
     </button>
   );

@@ -15,6 +15,29 @@ import {
 } from "@/features/cours-sequence/domain/entities/cours-schemas";
 import { Complement } from "@/features/complement/domain/complement-schemas";
 import { Note } from "@/features/notes/domain/notes-schemas";
+import {
+  AssignEvaluationOptions,
+  CreateEvaluationOptions,
+  DeleteEvaluationBase,
+  DeleteEvaluationWithGradesOptions,
+  GetEvaluationBaseOptions,
+  GetEvaluationBasesOptions,
+  GetEvaluationOptions,
+  GetEvaluationsListOptions,
+  GetEvaluationsWithGradesByEvalauationBaseIdOptions,
+  IsEvaluationAssigned,
+  UpdateEvaluationBaseOptions,
+  UpdateGradeOptions,
+} from "@/features/evaluation/domain/entities/evaluation-types";
+import {
+  CreateStudentOptions,
+  DeleteStudentOptions,
+  UpdateStudentOptions,
+} from "@/features/student/domain/entities/student-types";
+import {
+  CreateClasseOptions,
+  DeleteClasseOptions,
+} from "@/features/classe/domain/classe-types";
 
 export interface ConvexDatabaseOptions {
   db: typeof api;
@@ -54,10 +77,7 @@ export default class ConvexDatabase extends IDatabase {
     user: UserType;
   }): Promise<Either<Failure<string>, void>> {
     try {
-      console.log({
-        userId,
-        user,
-      });
+     
       const result = await fetchMutation(this._db.users.saveUserMutation, {
         userId,
         name: user.name,
@@ -246,7 +266,7 @@ export default class ConvexDatabase extends IDatabase {
         lessons: cours.lessons,
         description: cours.description,
         competences: cours.competences,
-
+        publish: cours.publish ?? false,
         category: cours.category,
       });
       if (!result) {
@@ -283,6 +303,7 @@ export default class ConvexDatabase extends IDatabase {
         description: cours.description,
         category: cours.category,
         imageUrl: cours.imageUrl,
+        publish: cours.publish ?? false,
       });
 
       return right(undefined);
@@ -315,11 +336,31 @@ export default class ConvexDatabase extends IDatabase {
 
       return right(undefined);
     } catch (error) {
-      console.log({ error });
       return left(
         Failure.invalidValue({
           invalidValue: body,
           message: "Error updating cours body: unknown",
+        })
+      );
+    }
+  }
+
+  async deleteCourse({
+    coursId,
+  }: {
+    coursId: string;
+  }): Promise<Either<Failure<string>, void>> {
+    try {
+      await fetchMutation(this._db.cours.deleteCours, {
+        coursId,
+      });
+      return right(undefined);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: coursId,
+          message: "Error deleting cours",
+          code: "INF101",
         })
       );
     }
@@ -437,7 +478,6 @@ export default class ConvexDatabase extends IDatabase {
     sequenceId: string;
     type?: "template" | "sequence";
   }): Promise<Either<Failure<string>, DocumentData>> {
-    console.log({ type, sequenceId });
     try {
       if (!type || type === "template") {
         const result = await fetchQuery(this._db.sequence.getSingleSequence, {
@@ -460,7 +500,6 @@ export default class ConvexDatabase extends IDatabase {
             id: sequenceId,
           });
           if (!result) {
-            console.log({ result });
             return left(
               Failure.invalidValue({
                 invalidValue: sequenceId,
@@ -514,9 +553,7 @@ export default class ConvexDatabase extends IDatabase {
         classId: classeId,
         sequenceId,
       });
-      console.log({ result });
       if (result.error) {
-        console.log({ result });
         return left(
           Failure.invalidValue({
             invalidValue: sequenceId,
@@ -592,6 +629,31 @@ export default class ConvexDatabase extends IDatabase {
         Failure.invalidValue({
           invalidValue: body,
           message: "Error adding body to sequence",
+          code: "INF101",
+        })
+      );
+    }
+  }
+
+  async deleteSequence({
+    sequenceId,
+    type,
+  }: {
+    sequenceId: string;
+    type: "template" | "sequence";
+  }): Promise<Either<Failure<string>, void>> {
+    try {
+      const result = await fetchMutation(this._db.sequence.deleteSequence, {
+        sequenceId,
+        type,
+      });
+
+      return right(undefined);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: sequenceId,
+          message: "Error deleting sequence",
           code: "INF101",
         })
       );
@@ -769,6 +831,36 @@ export default class ConvexDatabase extends IDatabase {
     }
   }
 
+  async deleteComplement({
+    id,
+  }: {
+    id: string;
+  }): Promise<Either<Failure<string>, void>> {
+    try {
+      const result = await fetchMutation(this._db.complement.deleteComplement, {
+        id,
+      });
+      if (!result) {
+        return left(
+          Failure.invalidValue({
+            invalidValue: id,
+            message: "Error deleting cours complement",
+            code: "INF103",
+          })
+        );
+      }
+      return right(undefined);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: id,
+          message: "Error deleting cours complement",
+          code: "INF101",
+        })
+      );
+    }
+  }
+
   async createNote({
     note,
   }: {
@@ -930,24 +1022,41 @@ export default class ConvexDatabase extends IDatabase {
     }
   }
 
-  async createClass({
-    userId,
-    name,
-    description,
-    imageUrl,
+  async deleteNote({
+    id,
   }: {
-    userId: string;
-    name: string;
-    description: string;
-    imageUrl: string;
-  }): Promise<Either<Failure<string>, string>> {
+    id: string;
+  }): Promise<Either<Failure<string>, void>> {
     try {
-      const result = await fetchMutation(this._db.classes.createClass, {
-        userId,
-        name,
-        description,
-        imageUrl,
+      const result = await fetchMutation(this._db.notes.deleteNote, {
+        id,
       });
+      if (!result) {
+        return left(
+          Failure.invalidValue({
+            invalidValue: id,
+            message: "Error deleting note",
+            code: "INF103",
+          })
+        );
+      }
+      return right(undefined);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: id,
+          message: "Error deleting note",
+          code: "INF101",
+        })
+      );
+    }
+  }
+
+  async createClass(
+    options: CreateClasseOptions
+  ): Promise<Either<Failure<string>, string>> {
+    try {
+      const result = await fetchMutation(this._db.classes.createClass, options);
       if (!result) {
         return left(
           Failure.invalidValue({
@@ -1150,6 +1259,445 @@ export default class ConvexDatabase extends IDatabase {
         Failure.invalidValue({
           invalidValue: userId,
           message: "Error updating visibility",
+          code: "INF101",
+        })
+      );
+    }
+  }
+
+  async createEvaluationBase(
+    options: CreateEvaluationOptions
+  ): Promise<Either<Failure<string>, string>> {
+    try {
+      const result = await fetchMutation(
+        this._db.evaluation_base.createEvaluationBase,
+        {
+          name: options.name,
+          description: options.description,
+          createdBy: options.createdBy,
+          gradeType: options.gradeType,
+          criterias: options.criterias,
+          isGraded: options.isGraded,
+        }
+      );
+      if (!result) {
+        return left(
+          Failure.invalidValue({
+            invalidValue: options,
+            message: "Error creating evaluation base",
+            code: "INF103",
+          })
+        );
+      }
+      return right(result);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: options,
+          message: "Error creating evaluation base",
+          code: "INF101",
+        })
+      );
+    }
+  }
+
+  async getEvaluationBase(
+    options: GetEvaluationBaseOptions
+  ): Promise<Either<Failure<string>, DocumentData>> {
+    try {
+      const result = await fetchQuery(
+        this._db.evaluation_base.getEvaluationBase,
+        {
+          evaluationId: options.evaluationId,
+        }
+      );
+      if (!result) {
+        return left(
+          Failure.invalidValue({
+            invalidValue: options.evaluationId,
+            message: "Error getting evaluation base",
+            code: "INF103",
+          })
+        );
+      }
+      return right(result);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: options.evaluationId,
+          message: "Error getting evaluation base",
+          code: "INF101",
+        })
+      );
+    }
+  }
+
+  async getEvaluationBases(
+    options: GetEvaluationBasesOptions
+  ): Promise<Either<Failure<string>, DocumentData[]>> {
+    try {
+      const result = await fetchQuery(
+        this._db.evaluation_base.listEvaluationsBase,
+        {
+          createdBy: options.createdBy,
+        }
+      );
+      if (!result) {
+        return left(
+          Failure.invalidValue({
+            invalidValue: options.createdBy,
+            message: "Error getting evaluation bases",
+            code: "INF103",
+          })
+        );
+      }
+      return right(result);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: options.createdBy,
+          message: "Error getting evaluation bases",
+          code: "INF101",
+        })
+      );
+    }
+  }
+
+  async updateEvaluationBase(
+    options: UpdateEvaluationBaseOptions
+  ): Promise<Either<Failure<string>, void>> {
+    try {
+      await fetchMutation(this._db.evaluation_base.updateEvaluationBase, {
+        evaluationId: options.evaluationId,
+        updates: {
+          name: options.name,
+          description: options.description,
+          gradeType: options.gradeType,
+          criterias: options.criterias,
+          isGraded: options.isGraded,
+        },
+      });
+      return right(undefined);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: options,
+          message: "Error updating evaluation base",
+          code: "INF101",
+        })
+      );
+    }
+  }
+
+  async assignEvaluationBaseToClasse(
+    options: AssignEvaluationOptions
+  ): Promise<Either<Failure<string>, string>> {
+    try {
+      const resultId = await fetchMutation(
+        this._db.evaluation_with_grades.assignEvaluationToClasse,
+        {
+          classeId: options.classeId,
+          evaluationId: options.evaluationId,
+        }
+      );
+      if (!resultId) {
+        return left(
+          Failure.invalidValue({
+            invalidValue: options,
+            message: "Failed to assign evaluation to class",
+            code: "INF103",
+          })
+        );
+      }
+      return right(resultId);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: options,
+          message: "Failed to create evaluation with grades",
+          code: "INF101",
+        })
+      );
+    }
+  }
+
+  async isEvaluationAssigned(options: IsEvaluationAssigned) {
+    try {
+      const result = await fetchQuery(
+        this._db.evaluation_base.isEvaluationAssigned,
+        {
+          evaluationId: options.evaluationId,
+        }
+      );
+      if (!result) {
+        return left(
+          Failure.invalidValue({
+            invalidValue: options,
+            message: "Failed to check if evaluation is assigned to class",
+            code: "INF103",
+          })
+        );
+      }
+      return right(result);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: options,
+          message: "Failed to check if evaluation is assigned to class",
+          code: "INF101",
+        })
+      );
+    }
+  }
+
+  async deleteEvaluationBase(
+    options: DeleteEvaluationBase
+  ): Promise<Either<Failure<string>, void>> {
+    try {
+      await fetchMutation(this._db.evaluation_base.deleteEvaluationBase, {
+        evaluationId: options.evaluationId,
+      });
+      return right(undefined);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: options,
+          message: "Failed to delete evaluation base",
+          code: "INF101",
+        })
+      );
+    }
+  }
+
+  async getEvaluationsWithGradesByEvaluationBaseId(
+    options: GetEvaluationsWithGradesByEvalauationBaseIdOptions
+  ): Promise<Either<Failure<string>, DocumentData[]>> {
+    try {
+      const operationResult = await fetchQuery(
+        this._db.evaluation_with_grades
+          .getEvaluationsWithGradesByEvaluationBaseId,
+        options
+      );
+      return right(operationResult);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: options,
+          message:
+            "Failed to get evaluations with grades by evaluation base id",
+          code: "INF101",
+        })
+      );
+    }
+  }
+  async deleteEvaluationWithGrades(
+    options: DeleteEvaluationWithGradesOptions
+  ): Promise<Either<Failure<string>, void>> {
+    try {
+      fetchMutation(
+        this._db.evaluation_with_grades.deleteEvaluationWithGrades,
+        {
+          evaluationId: options.evaluationId,
+        }
+      );
+      return right(undefined);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: options,
+          message: "Failed to delete evaluation with grades",
+          code: "INF101",
+        })
+      );
+    }
+  }
+
+  async updateGrade(
+    options: UpdateGradeOptions
+  ): Promise<Either<Failure<string>, void>> {
+    try {
+      await fetchMutation(this._db.evaluation_with_grades.updateGrade, options);
+      return right(undefined);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: options,
+          message: "Failed to update grade",
+          code: "INF101",
+        })
+      );
+    }
+  }
+
+  async getEvaluationWithGrade(
+    options: GetEvaluationOptions
+  ): Promise<Either<Failure<string>, DocumentData>> {
+    try {
+      const result = await fetchQuery(
+        this._db.evaluation_with_grades.getEvaluationWithGrade,
+        options
+      );
+      if (!result) {
+        return left(
+          Failure.invalidValue({
+            invalidValue: options,
+            message: "Error getting evaluation with grade",
+            code: "INF103",
+          })
+        );
+      }
+      return right(result);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: options,
+          message: "Error getting evaluation with grade",
+          code: "INF101",
+        })
+      );
+    }
+  }
+
+  async getEvaluationsListWithGrade(
+    options: GetEvaluationsListOptions
+  ): Promise<Either<Failure<string>, DocumentData[]>> {
+    try {
+      const result = await fetchQuery(
+        this._db.evaluation_with_grades.getEvaluationsWithGrades,
+        options
+      );
+      if (!result) {
+        return left(
+          Failure.invalidValue({
+            invalidValue: options,
+            message: "Error getting evaluations with grades",
+            code: "INF103",
+          })
+        );
+      }
+      return right(result);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: options,
+          message: "Error getting evaluations with grades",
+          code: "INF101",
+        })
+      );
+    }
+  }
+  async createStudent(
+    options: CreateStudentOptions
+  ): Promise<Either<Failure<string>, string>> {
+    try {
+      const result = await fetchMutation(
+        this._db.students.createStudent,
+        options
+      );
+      if (!result) {
+        return left(
+          Failure.invalidValue({
+            invalidValue: options,
+            message: "Failed to create student",
+            code: "INF103",
+          })
+        );
+      }
+      const userId = result as unknown as string;
+      return right(userId);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: options,
+          message: "Failed to create student",
+          code: "INF101",
+        })
+      );
+    }
+  }
+
+  async deleteStudent(
+    options: DeleteStudentOptions
+  ): Promise<Either<Failure<string>, void>> {
+    try {
+      await fetchMutation(this._db.students.deleteStudent, options);
+      return right(undefined);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: options,
+          message: "Failed to delete student",
+          code: "INF101",
+        })
+      );
+    }
+  }
+  async updateStudent(
+    options: UpdateStudentOptions
+  ): Promise<Either<Failure<string>, void>> {
+    try {
+      await fetchMutation(this._db.students.updateStudent, options);
+      return right(undefined);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: options,
+          message: "Failed to update student",
+          code: "INF101",
+        })
+      );
+    }
+  }
+  async deleteClassesSequenceFromClasse(
+    options: DeleteClasseOptions
+  ): Promise<Either<Failure<string>, void>> {
+    try {
+      await fetchMutation(
+        this._db.classes.deleteClasseSequencesFromClasseId,
+        options
+      );
+      return right(undefined);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: options,
+          message: "Failed to delete classes sequence from class",
+          code: "INF101",
+        })
+      );
+    }
+  }
+  async deleteEvaluationsWithGradesFromClasse(
+    options: DeleteClasseOptions
+  ): Promise<Either<Failure<string>, void>> {
+    try {
+      await fetchMutation(
+        this._db.classes.deleteEvualuationsWithGradesFromClasseId,
+        options
+      );
+      return right(undefined);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: options,
+          message: "Failed to delete evaluations with grades from class",
+          code: "INF101",
+        })
+      );
+    }
+  }
+
+  async deleteStudentsFromClasseId(
+    options: DeleteClasseOptions
+  ): Promise<Either<Failure<string>, void>> {
+    try {
+      await fetchMutation(this._db.classes.deleteStudentsFromClasseId, options);
+      return right(undefined);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: options,
+          message: "Failed to delete students from class",
           code: "INF101",
         })
       );

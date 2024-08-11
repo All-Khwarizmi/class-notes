@@ -1,11 +1,11 @@
 import { Competence } from "@/features/comp-cat/domain/entities/schemas";
-import useSaveCoursMetadata from "../../application/usecases/services/useSaveCoursMetadata";
-import useSaveSequenceMetadata from "../../application/usecases/services/useSaveSequenceMetadata";
-import useUpdateCoursMetadata from "../../application/usecases/services/useUpdateCoursMetadata";
+import useSaveCoursMetadata from "../../application/adapters/services/useSaveCoursMetadata";
+import useSaveSequenceMetadata from "../../application/adapters/services/useSaveSequenceMetadata";
+import useUpdateCoursMetadata from "../../application/adapters/services/useUpdateCoursMetadata";
 import { Cours, Sequence } from "../../domain/entities/cours-schemas";
 import { CoursSequenceForm } from "../views/AddCoursView";
 import { UserAuth } from "@/core/auth/i-auth";
-import useUpdateSequenceMetadata from "../../application/usecases/services/useUpdateSequenceMetadata";
+import useUpdateSequenceMetadata from "../../application/adapters/services/useUpdateSequenceMetadata";
 
 function useGetSubmitFunction(options: {
   edit?: boolean;

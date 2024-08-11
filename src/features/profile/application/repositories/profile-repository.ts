@@ -1,4 +1,5 @@
 import { convexDatabase } from "@/core/data/convex/convex-impl";
+import { getAppDataBase } from "@/core/data/get-app-db";
 import IDatabase from "@/core/data/idatabase";
 
 export interface ProfileRepositoryOptions {
@@ -19,9 +20,8 @@ export class ProfileRepository {
   async saveUser({ userId, user }: { userId: string; user: any }) {
     return this._db.saveUser({ userId, user });
   }
-
-
-  
 }
 
-export const profileRepository = new ProfileRepository({ db: convexDatabase });
+export const profileRepository = new ProfileRepository({
+  db: getAppDataBase(),
+});

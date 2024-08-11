@@ -9,13 +9,11 @@ function ComplementsView(props: {
   userId: string;
 }) {
   return (
-    <>
-      <ComplementsTable
-        complements={props.complements}
-        coursId={props.coursId}
-        userId={props.userId}
-      />
-    </>
+    <ComplementsTable
+      complements={props.complements}
+      coursId={props.coursId}
+      userId={props.userId}
+    />
   );
 }
 

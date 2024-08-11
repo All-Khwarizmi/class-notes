@@ -1,14 +1,23 @@
 import { defineSchema, defineTable } from "convex/server";
 import { v } from "convex/values";
+import { EvaluationWithGrade } from "./tables/evaluations_with_grades_convex_schema";
+import { EvaluationBase } from "./tables/evaluation_base_convex_schema";
 
 export default defineSchema({
   Users: defineTable({
     userId: v.string(),
-    schoolSubject: v.string(),
-    name: v.string(),
-    onboarding: v.boolean(),
+    image: v.optional(v.string()),
+    schoolSubject: v.optional(v.string()),
+    name: v.optional(v.string()),
+    onboarding: v.optional(v.boolean()),
     hostname: v.optional(v.string()),
-  }),
+    email: v.optional(v.string()),
+    subscriptionId: v.optional(v.string()),
+    endsOn: v.optional(v.number()),
+    credits: v.optional(v.number()),
+  })
+    .index("by_userId", ["userId"])
+    .index("by_subscriptionId", ["subscriptionId"]),
   VisibilityTable: defineTable({
     userId: v.string(),
     classe: v.array(
@@ -47,7 +56,7 @@ export default defineSchema({
         classeId: v.string(),
       })
     ),
-  }),
+  }).index("by_userId", ["userId"]),
   Category: defineTable({
     name: v.string(),
     description: v.string(),
@@ -198,12 +207,14 @@ export default defineSchema({
     evaluationsTemplatesId: v.array(v.id("EvaluationTemplates")),
     publish: v.optional(v.boolean()),
   }),
+  EvaluationBase,
 
   Students: defineTable({
     name: v.string(),
     classId: v.id("Classes"),
     observations: v.array(v.string()),
     evaluationsResults: v.array(v.id("StudentEvaluationGrades")),
+    imageUrl: v.optional(v.string()),
   }),
 
   StudentEvaluationGrades: defineTable({
@@ -236,6 +247,7 @@ export default defineSchema({
     .index("by_gradeType", ["gradeType"]), // Indexing by gradeType for quick filtering,
   CriteriaWithGrades: defineTable({
     name: v.string(),
+    // status: v.optional(v.union(v.literal("published"), v.literal("draft"))),
     classId: v.id("Classes"),
     studentId: v.id("Students"),
     wheight: v.optional(v.number()),
@@ -266,19 +278,7 @@ export default defineSchema({
     gradeType: v.string(),
     criteriaIds: v.array(v.id("Criteria")),
   }).index("by_createdBy", ["createdBy"]),
-  EvaluationsWithGrades: defineTable({
-    templateId: v.id("EvaluationTemplates"),
-    classId: v.id("Classes"),
-    studentId: v.id("Students"),
-    conductedBy: v.id("Users"),
-    conductedAt: v.float64(),
-    overallGrade: v.optional(v.union(v.string(), v.number())),
-    feedback: v.optional(v.string()),
-    criterias: v.array(v.id("CriteriaWithGrades")),
-  })
-    .index("by_classId", ["classId"])
-    .index("by_studentId", ["studentId"])
-    .index("by_conductedBy", ["conductedBy"]),
+  EvaluationsWithGrades: EvaluationWithGrade,
   RapportStudent: defineTable({
     studentId: v.id("Students"),
     rapport: v.string(),

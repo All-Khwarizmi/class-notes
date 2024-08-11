@@ -45,7 +45,6 @@ export default function EditEvaluation({
   });
 
   async function onSubmit(values: TemplateType) {
-    console.log(values);
   }
   return (
     <section className="h-ful w-full p-8">

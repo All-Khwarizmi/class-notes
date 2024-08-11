@@ -1,7 +1,7 @@
 import React from "react";
 import { useCurrentEditor } from "@tiptap/react";
 import { Sequence } from "../../domain/entities/cours-schemas";
-import useUpdateSequenceBody from "../../application/usecases/services/useUpdateSequenceBody";
+import useUpdateSequenceBody from "../../application/adapters/services/useUpdateSequenceBody";
 import AfterMenuButton from "@/core/components/common/editor/AfterMenuButton";
 import { Save } from "lucide-react";
 
@@ -15,7 +15,7 @@ function SaveSequenceBodyButton({
   type?: "template" | "sequence";
 }) {
   const { editor } = useCurrentEditor();
-  const { setUpdateSequenceBodyOptions } = useUpdateSequenceBody();
+  const { debounceUpdateSequenceBody } = useUpdateSequenceBody();
   if (!editor) {
     return null;
   }
@@ -28,25 +28,18 @@ function SaveSequenceBodyButton({
           if (prevContent === currentContent) {
             return alert("No changes to save");
           }
-          setUpdateSequenceBodyOptions({
+          debounceUpdateSequenceBody({
             userId,
             sequenceId: sequence._id,
-            body: editor.getHTML(),
             type,
-          });
+          })(currentContent);
         },
       }}
     >
-      <Save size={12} />
+      <Save size={14} />
     </AfterMenuButton>
   );
 }
 
 export default SaveSequenceBodyButton;
-//   onClick={() => {
-//   setUpdateSequenceBodyOptions({
-//     userId,
-//     sequenceId: sequence._id,
-//     body: editor.getHTML(),
-//   });
-// }}
+

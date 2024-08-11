@@ -5,6 +5,7 @@ import { authUseCases } from "@/features/auth/application/usecases/auth-usecases
 import { isLeft } from "fp-ts/lib/Either";
 import { redirect } from "next/navigation";
 import { Competence } from "@/features/comp-cat/domain/entities/schemas";
+import LayoutWithProps from "@/core/components/layout/LayoutWithProps";
 
 async function SequenceAddServerLayer() {
   const authUser = await authUseCases.getUserAuth();
@@ -21,12 +22,12 @@ async function SequenceAddServerLayer() {
     competences = [];
   }
   return (
-    <AddUpdateCoursSequenceView
-      competences={competences}
-      authUser={authUser.right}
-      type="sequence"
-      title="Add Sequence"
-    />
+      <AddUpdateCoursSequenceView
+        competences={competences}
+        authUser={authUser.right}
+        type="sequence"
+        title="Add Sequence"
+      />
   );
 }
 

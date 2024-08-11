@@ -9,6 +9,7 @@ import {
   VisibilitySchema,
   VisibilityType,
 } from "../../domain/visibility-schema";
+import { CreateClasseOptions } from "../../domain/classe-types";
 
 export default class ClasseUseCases {
   private readonly _repository: ClasseRepository;
@@ -17,27 +18,33 @@ export default class ClasseUseCases {
     this._repository = repository;
   }
 
-  async createClasse({
-    userId,
-    name,
-    description,
-    imageUrl,
-  }: {
-    userId: string;
-    name: string;
-    description: string;
-    imageUrl: string;
-  }) {
-    return await this._repository.createClasse({
-      userId,
-      name,
-      description,
-      imageUrl,
-    });
+  async createClasse(options: CreateClasseOptions) {
+    return await this._repository.createClasse(options);
   }
 
   async deleteClasse({ id }: { id: string }) {
-    return await this._repository.deleteClasse({ id });
+    const batchOperations = [
+      this._repository.deleteClasseSequencesFromClasseId({ classeId: id }),
+      this._repository.deleteEvualuationsWithGradesFromClasseId({
+        classeId: id,
+      }),
+      this._repository.deleteStudentsFromClasseId({ classeId: id }),
+      this._repository.deleteClasse({ id }),
+    ];
+    const operationsResults = await Promise.allSettled(batchOperations);
+    const failures = operationsResults.filter(
+      (result) => result.status === "rejected"
+    );
+    if (failures.length > 0) {
+      return left(
+        Failure.invalidValue({
+          message: "Could not delete classe",
+          code: "APP204",
+          invalidValue: failures,
+        })
+      );
+    }
+    return right(undefined);
   }
 
   async getClasse({ id }: { id: string }) {

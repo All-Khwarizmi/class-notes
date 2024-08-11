@@ -117,6 +117,10 @@ export default class ComplementUsecases {
   }) {
     return this._repository.updateComplement({ coursComplement });
   }
+
+  async deleteCoursComplement({ id }: { id: string }) {
+    return this._repository.deleteComplement({ id });
+  }
 }
 
 export const complementUsecases = new ComplementUsecases({
