@@ -11,7 +11,7 @@
 | Séquences                            | Ajouter catégorisation    | À envisager  | Structurer les séquences par niveau ou par matière                  |
 | Programme                            | Créer                     | À planifier  | Introduire l'entité Programme pour standardiser les niveaux         |
 | Notes                                | Uniformiser le design     | À faire      | Assurer une cohérence visuelle avec les autres features             |
-| Contenu                              | Modifier la visibilité    | À faire      | Adapter la visibilité selon le déroulement de l'année               |
+| Contenu                              | Modifier la visibilité    | À faire      | Adapter la page visibilité sous forme de table avec le design système    |
 | Internationalisation                 | Implémenter               | À faire      | Essentiel pour rendre l'application accessible globalement          |
 | Dashboard                            | Créer des raccourcis      | À développer | Faciliter l'accès aux fonctionnalités fréquemment utilisées         |
 
