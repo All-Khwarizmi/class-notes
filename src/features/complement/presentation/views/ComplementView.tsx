@@ -17,29 +17,31 @@ function ComplementView(props: {
   const { debounceUpdateComplement } = useUpdateComplement();
   //! Check complement type and return the right component
   return (
-    <FloatingEditor
-      debounceUpdateFn={debounceUpdateComplement(props.complement)}
-      content={props.complement.body}
-      afterMenuBar
-    >
-      <div className="flex items-center justify-between w-full gap-4 ">
-        <div className="flex items-center gap-1">
-          <UpdateComplement complement={props.complement} />
-          <AfterMenuButton>
-            <Link
-              href={`/spaces/complement/${props.complement.id}?user=${props.userId}`}
-            >
-              <Eye size={12} />
-            </Link>
-          </AfterMenuButton>
+    <div>
+      <FloatingEditor
+        debounceUpdateFn={debounceUpdateComplement(props.complement)}
+        content={props.complement.body}
+        afterMenuBar
+      >
+        <div className="flex items-center justify-between w-full gap-4 ">
+          <div className="flex items-center gap-1">
+            <UpdateComplement complement={props.complement} />
+            <AfterMenuButton>
+              <Link
+                href={`/spaces/complement/${props.complement.id}?user=${props.userId}`}
+              >
+                <Eye size={12} />
+              </Link>
+            </AfterMenuButton>
+          </div>
+          <VisibilitySwitch
+            userId={props.userId}
+            type="complement"
+            typeId={props.complement.id}
+          />
         </div>
-        <VisibilitySwitch
-          userId={props.userId}
-          type="complement"
-          typeId={props.complement.id}
-        />
-      </div>
-    </FloatingEditor>
+      </FloatingEditor>
+    </div>
   );
 }
 

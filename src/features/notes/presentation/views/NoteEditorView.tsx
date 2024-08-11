@@ -24,16 +24,13 @@ function NoteEditorView(props: { note: Note }) {
     [props.note, setNote]
   );
 
-  useEffect(() => {
-    if (isSuccess) {
-      toast.success("Note updated");
-    }
-  }, [isSuccess]);
   return (
-    <FloatingEditor
-      content={props.note.content}
-      debounceUpdateFn={debounceSaveNote()}
-    />
+    <div>
+      <FloatingEditor
+        content={props.note.content}
+        debounceUpdateFn={debounceSaveNote()}
+      />
+    </div>
   );
 }
 
