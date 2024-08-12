@@ -6,16 +6,20 @@ const CountrySchema = z.enum([
   "France",
   "Spain",
   "Germany",
-  "Australia",
-  "England",
+  "UK",
 ]);
 
 export type CountryType = z.infer<typeof CountrySchema>;
+
+// Extraire les valeurs pour utilisation dans un composant select
+export const countryOptions = CountrySchema.options.map(option => ({ value: option, label: option }));
+
 
 export const userSchema = z.object({
   _id: z.string(),
   schoolSubject: GlobalEducationSubjectsSchema.default("Arts"),
   country: CountrySchema.default("USA"),
+  educationSystem: CountrySchema.default("USA"),
   name: z.string().optional(),
   onboarding: z.boolean().optional(),
   image: z.string().optional(),
