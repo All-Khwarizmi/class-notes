@@ -2,6 +2,7 @@ import useGetUserInfra from "../services/useGetUserInfra";
 import { Either, left, right } from "fp-ts/Either";
 import Failure from "@/core/failures/failures";
 import type { UserType } from "../../domain/entities/user-schema";
+import { User } from "@clerk/clerk-sdk-node";
 
 export type UserInfra = ReturnType<typeof useGetUserInfra>["user"];
 
@@ -31,6 +32,9 @@ export default class UserDto {
         endsOn: userInfra.endsOn,
         email: userInfra.email,
         hostname: userInfra.hostname,
+        educationSystem:
+          userInfra.educationSystem as UserType["educationSystem"],
+        country: userInfra.country as UserType["country"],
       });
     }
     return left(

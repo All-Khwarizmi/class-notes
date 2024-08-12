@@ -21,6 +21,16 @@ import { useAction } from "convex/react";
 import { api } from "../../../../../convex/_generated/api";
 import { useRouter } from "next/navigation";
 import { Separator } from "@radix-ui/react-select";
+import { countryOptions } from "@/features/user/domain/entities/user-schema";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/core/components/ui/select";
+import { getEducationSystemOptions } from "@/features/user/domain/entities/education-systems/global";
 
 export default function UserProfile({ user }: { user: UserType }) {
   const { setSaveUserOptions, loading, error } = useSaveUser();
@@ -48,6 +58,8 @@ export default function UserProfile({ user }: { user: UserType }) {
     router.push(url);
   }
 
+  const selectedSystem = form.watch("educationSystem");
+  const subjectsOptions = getEducationSystemOptions(selectedSystem);
   return (
     <div data-testid="user-form" className="py-8 px-6 pt-12 space-y-8">
       <div className="h-full flex justify-center gap-4 pb-4">
@@ -108,21 +120,88 @@ export default function UserProfile({ user }: { user: UserType }) {
               );
             }}
           />
+          {/* Country select option */}
+          <FormField
+            control={form.control}
+            name="country"
+            render={({ field }) => {
+              return (
+                <FormItem>
+                  <FormLabel htmlFor={field.name}>Country</FormLabel>
+                  <FormControl>
+                    <Select onValueChange={field.onChange} value={field.value}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select a country" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          {countryOptions.map((option) => (
+                            <SelectItem key={option.value} value={option.value}>
+                              {option.label}
+                            </SelectItem>
+                          ))}
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                  </FormControl>
+                </FormItem>
+              );
+            }}
+          />
+          <FormField
+            control={form.control}
+            name="educationSystem"
+            render={({ field }) => {
+              return (
+                <FormItem>
+                  <FormLabel htmlFor={field.name}>Education System</FormLabel>
+                  <FormControl>
+                    <Select onValueChange={field.onChange} value={field.value}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select your education system" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          {countryOptions.map((option) => (
+                            <SelectItem key={option.value} value={option.value}>
+                              {option.label}
+                            </SelectItem>
+                          ))}
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                  </FormControl>
+                </FormItem>
+              );
+            }}
+          />
+
           <FormField
             control={form.control}
             name="schoolSubject"
             render={({ field }) => {
               return (
                 <FormItem>
-                  <FormLabel htmlFor={field.name}>School Subject</FormLabel>
+                  <FormLabel htmlFor={field.name}>Subject</FormLabel>
                   <FormControl>
-                    <Input
-                      data-testid="matiere-input"
-                      {...field}
-                      placeholder="Math"
-                    />
+                    <Select onValueChange={field.onChange} value={field.value}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select your subjects" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          {subjectsOptions.map((option) => {
+                            console.log({ option });
+                            return (
+                              <SelectItem value={option} key={option}>
+                                {option}
+                              </SelectItem>
+                            );
+                          })}
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
                   </FormControl>
-                  <FormDescription>Enter your school subject</FormDescription>
                 </FormItem>
               );
             }}
@@ -232,4 +311,7 @@ export function checkUserSubscriptionStatus(endsOn?: number) {
   } else {
     return "Expired";
   }
+}
+function getSubjectsByEducationSystem(selectedSystem: string) {
+  throw new Error("Function not implemented.");
 }

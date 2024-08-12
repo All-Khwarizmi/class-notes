@@ -8,6 +8,7 @@ import {
   UserType,
   userSchema,
 } from "@/features/user/domain/entities/user-schema";
+import { SaveUserOptions } from "@/features/user/domain/types/types";
 
 export interface ProfileUseCasesOptions {
   repository: ProfileRepository;
@@ -46,10 +47,7 @@ export default class ProfileUseCases {
   async saveUser({
     userId,
     user,
-  }: {
-    userId: string;
-    user: Pick<UserType, "name" | "schoolSubject">;
-  }): Promise<Either<Failure<string>, void>> {
+  }: SaveUserOptions): Promise<Either<Failure<string>, void>> {
     const eitherUser = await this._repository.saveUser({ userId, user });
 
     if (isLeft(eitherUser)) {
