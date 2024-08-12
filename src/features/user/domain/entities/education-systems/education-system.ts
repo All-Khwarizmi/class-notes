@@ -1,6 +1,5 @@
 import { z } from "zod";
 
-
 // Schéma de base pour les matières
 export const BasicSubjectsEnum = z.enum([
   "Mathematics",
@@ -30,15 +29,21 @@ export const LanguageSchema = z.enum([
 ]);
 
 // Ajout d'autres matières spécifiques
-export const ExtendedEducationSubjectsSchema = z.union([
-  BasicSubjectsEnum,
-  LanguageSchema,
-  z.literal("Technology"),
-  z.literal("HealthSciences"),
-  z.literal("Sociology"),
-  z.literal("Psychology"),
-  z.literal("Economics"),
-  z.literal("Anthropology"),
+const basicSubjects = BasicSubjectsEnum.options;
+const languages = LanguageSchema.options;
+const otherSubjects = [
+  "Technology",
+  "HealthSciences",
+  "Sociology",
+  "Psychology",
+  "Economics",
+  "Anthropology",
+];
+
+export const ExtendedEducationSubjectsSchema = z.enum([
+  ...basicSubjects,
+  ...languages,
+  ...otherSubjects,
 ]);
 
 export type ExtendedEducationSubjectsType = z.infer<
