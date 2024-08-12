@@ -34,6 +34,7 @@ import useDeleteNote from "../../application/adapters/services/useDeleteNote";
 import { toast } from "sonner";
 import AddTableButton from "@/core/components/common/AddTableButton";
 import { Button } from "@/core/components/ui/button";
+import { useRouter } from "next/navigation";
 function NotesTableView(props: { notes: Note[]; parentId: string }) {
   const [localNotes, setLocalNotes] = useState<Note[]>(props.notes);
   const [isFileFormVisible, setIsFileFormVisible] = useState(false);
@@ -45,6 +46,7 @@ function NotesTableView(props: { notes: Note[]; parentId: string }) {
     isError: isNoteDeleteError,
     error: noteDeleteError,
   } = useDeleteNote();
+  const router = useRouter();
   function handleSubmit(note: Omit<Note, "id" | "createdBy">) {
     const newNote = {
       ...note,
@@ -101,14 +103,16 @@ function NotesTableView(props: { notes: Note[]; parentId: string }) {
                   </TableCell>
                   <TableCell className="w-[200px] ">
                     <div className="flex items-center justify-center w-full h-full">
-                      <Link
-                        href={`/notes/${note.id}`}
+                      <button
+                        onClick={() => {
+                          router.push(`/notes/${note.id}`);
+                        }}
                         className={cn(
                           "bg-transparent rounded-md p-1 px-2 flex items-center ml-2 hover:text-blue-400  "
                         )}
                       >
                         <ExternalLink size={14} />
-                      </Link>
+                      </button>
                       <button
                         className={cn(
                           "bg-transparent rounded-md p-1 px-2 flex items-center ml-2 hover:text-red-400  "

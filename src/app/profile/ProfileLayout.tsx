@@ -12,7 +12,6 @@ import UserProfile from "@/features/profile/presentation/views/UserProfile";
 import { isLeft } from "fp-ts/lib/Either";
 import { redirect } from "next/navigation";
 import LoadingSkeleton from "@/core/components/common/LoadingSkeleton";
-import Layout from "@/core/components/layout/Layout";
 async function ProfileLayout() {
   const authUser = await authUseCases.getUserAuth();
   if (isLeft(authUser)) {
