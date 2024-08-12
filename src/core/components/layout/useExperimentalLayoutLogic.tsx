@@ -36,7 +36,7 @@ export default function useExperimentalLayoutLogic(userId: string) {
     }
     if (sequencesError || isError || evaluationsError) {
       setError(true);
-    } 
+    }
     if (!sequencesLoading && !isLoading && !evaluationsLoading) {
       setLoading(false);
     }
@@ -84,6 +84,18 @@ export default function useExperimentalLayoutLogic(userId: string) {
           href: `/classes/class/${classe.id}`,
           color: "text-orange-500",
         }));
+        classesNavItems.push({
+          title: "Show All Classes",
+          icon: CopyClipboard(),
+          href: "/classes",
+          color: "text-orange-500",
+        });
+        classesNavItems.push({
+          title: "Add Class",
+          icon: CopyClipboard(),
+          href: "/classes/add",
+          color: "text-orange-500",
+        });
         setNavItems((prev) => [
           {
             title: "Dashboard",
