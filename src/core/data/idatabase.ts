@@ -35,6 +35,7 @@ import {
   CreateClasseOptions,
   DeleteClasseOptions,
 } from "@/features/classe/domain/classe-types";
+import { SaveUserOptions } from "@/features/user/domain/types/types";
 
 export default abstract class IDatabase {
   abstract getUser({
@@ -46,10 +47,7 @@ export default abstract class IDatabase {
   abstract saveUser({
     userId,
     user,
-  }: {
-    userId: string;
-    user: UserType;
-  }): Promise<Either<Failure<string>, void>>;
+  }: SaveUserOptions): Promise<Either<Failure<string>, void>>;
 
   abstract getCategories({
     userId,
