@@ -5,6 +5,7 @@ export const userSchema = defineTable({
   userId: v.string(),
   image: v.optional(v.string()),
   schoolSubject: v.optional(v.string()),
+  country: v.optional(v.string()),
   name: v.optional(v.string()),
   onboarding: v.optional(v.boolean()),
   hostname: v.optional(v.string()),
