@@ -5,9 +5,12 @@ import { profileUseCases } from "../../usecases/profile-usecases";
 import { useRouter } from "next/navigation";
 import { isLeft } from "fp-ts/lib/Either";
 import { toast } from "sonner";
+import { UserType } from "@/features/user/domain/entities/user-schema";
 
 export interface SaveUserOptions {
-  schoolSubject?: string;
+  schoolSubject: UserType["schoolSubject"];
+  country: UserType["country"];
+  educationSystem: UserType["educationSystem"];
   name?: string;
   userId: string;
 }

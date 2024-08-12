@@ -23,6 +23,9 @@ export const onboarding = mutation({
         schoolSubject: args.schoolSubject,
         name: args.name,
         onboarding: true,
+        country: "USA",
+        educationSystem: "USA",
+        
       });
       return { userId, error: false };
     }
@@ -62,6 +65,9 @@ export const saveUserMutation = mutation({
     userId: v.string(),
     schoolSubject: v.optional(v.string()),
     name: v.optional(v.string()),
+    country: v.optional(v.string()),
+    educationSystem: v.optional(v.string()),
+
   },
   handler: async (ctx, args) => {
     const user = await ctx.db
@@ -74,6 +80,8 @@ export const saveUserMutation = mutation({
         schoolSubject: args.schoolSubject,
         name: args.name,
         onboarding: true,
+        country: args.country,
+        educationSystem: args.educationSystem,
       });
       return user;
     } else {
@@ -146,6 +154,9 @@ export const createUser = internalMutation({
       credits: FREE_CREDITS,
       name: args.name,
       image: args.image,
+      country: "USA",
+      educationSystem: "USA",
+      schoolSubject: "Arts",
     });
   },
 });

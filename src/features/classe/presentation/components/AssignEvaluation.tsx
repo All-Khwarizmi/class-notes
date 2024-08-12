@@ -97,7 +97,7 @@ function AssignEvaluation(props: { userId: string; classeId: string }) {
         <section className="flex gap-4 justify-center py-4 w-full">
           <Select onValueChange={handleChange}>
             <SelectTrigger>
-              <SelectValue placeholder="Select an evaluation" />
+              <SelectValue placeholder="Select an evaluation" />  <SelectValue placeholder="Select an evaluation" />
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>

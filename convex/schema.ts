@@ -2,22 +2,9 @@ import { defineSchema, defineTable } from "convex/server";
 import { v } from "convex/values";
 import { EvaluationWithGrade } from "./tables/evaluations_with_grades_convex_schema";
 import { EvaluationBase } from "./tables/evaluation_base_convex_schema";
-
+import { userSchema } from "./fields/users";
 export default defineSchema({
-  Users: defineTable({
-    userId: v.string(),
-    image: v.optional(v.string()),
-    schoolSubject: v.optional(v.string()),
-    name: v.optional(v.string()),
-    onboarding: v.optional(v.boolean()),
-    hostname: v.optional(v.string()),
-    email: v.optional(v.string()),
-    subscriptionId: v.optional(v.string()),
-    endsOn: v.optional(v.number()),
-    credits: v.optional(v.number()),
-  })
-    .index("by_userId", ["userId"])
-    .index("by_subscriptionId", ["subscriptionId"]),
+  Users: userSchema,
   VisibilityTable: defineTable({
     userId: v.string(),
     classe: v.array(

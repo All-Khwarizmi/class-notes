@@ -38,6 +38,7 @@ import {
   CreateClasseOptions,
   DeleteClasseOptions,
 } from "@/features/classe/domain/classe-types";
+import { SaveUserOptions } from "@/features/user/domain/types/types";
 
 export interface ConvexDatabaseOptions {
   db: typeof api;
@@ -72,16 +73,14 @@ export default class ConvexDatabase extends IDatabase {
   async saveUser({
     userId,
     user,
-  }: {
-    userId: string;
-    user: UserType;
-  }): Promise<Either<Failure<string>, void>> {
+  }: SaveUserOptions): Promise<Either<Failure<string>, void>> {
     try {
-     
       const result = await fetchMutation(this._db.users.saveUserMutation, {
         userId,
         name: user.name,
         schoolSubject: user.schoolSubject,
+        country: user.country,
+        educationSystem: user.educationSystem,
       });
       if (!result) {
         return left(
