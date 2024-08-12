@@ -183,7 +183,7 @@ export default function UserProfile({ user }: { user: UserType }) {
             render={({ field }) => {
               return (
                 <FormItem>
-                  <FormLabel htmlFor={field.name}>Subjects</FormLabel>
+                  <FormLabel htmlFor={field.name}>Subject</FormLabel>
                   <FormControl>
                     <Select onValueChange={field.onChange} value={field.value}>
                       <SelectTrigger>
