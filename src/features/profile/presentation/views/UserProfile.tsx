@@ -60,7 +60,6 @@ export default function UserProfile({ user }: { user: UserType }) {
 
   const selectedSystem = form.watch("educationSystem");
   const subjectsOptions = getEducationSystemOptions(selectedSystem);
-  console.log({ subjectsOptions });
   return (
     <div data-testid="user-form" className="py-8 px-6 pt-12 space-y-8">
       <div className="h-full flex justify-center gap-4 pb-4">
