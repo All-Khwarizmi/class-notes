@@ -15,7 +15,7 @@ export type CountryType = z.infer<typeof CountrySchema>;
 export const userSchema = z.object({
   _id: z.string(),
   schoolSubject: GlobalEducationSubjectsSchema.default("Arts"),
-  country: CountrySchema,
+  country: CountrySchema.default("USA"),
   name: z.string().optional(),
   onboarding: z.boolean().optional(),
   image: z.string().optional(),
