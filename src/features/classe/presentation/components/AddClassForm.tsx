@@ -18,9 +18,7 @@ const BASE_IMAGE_URL = "https://source.unsplash.com/random/800x600";
 import useAddClasse from "../../application/adapters/services/useAddClasse";
 
 export default function AddClassForm(props: {
-  setOpen: (value: boolean) => void;
   userId: string;
-  refetchClasses: () => void;
 }) {
   const { mutate: setClasse } = useAddClasse();
   const form = useForm<Pick<ClassType, "description" | "name" | "imageUrl">>({
@@ -45,14 +43,13 @@ export default function AddClassForm(props: {
       },
       {
         onSuccess: () => {
-          props.refetchClasses();
-          props.setOpen(false);
         },
       }
     );
   }
   return (
-    <>
+    <div className="px-4">
+      <h1 className="text-2xl font-semibold py-8">Ajouter une classe</h1>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <FormField
@@ -131,6 +128,6 @@ export default function AddClassForm(props: {
           </div>
         </form>
       </Form>
-    </>
+    </div>
   );
 }
