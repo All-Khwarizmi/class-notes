@@ -23,6 +23,9 @@ export const onboarding = mutation({
         schoolSubject: args.schoolSubject,
         name: args.name,
         onboarding: true,
+        country: "USA",
+        educationSystem: "USA",
+        
       });
       return { userId, error: false };
     }
