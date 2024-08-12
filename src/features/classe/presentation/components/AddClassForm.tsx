@@ -16,10 +16,10 @@ import { Textarea } from "../../../../core/components/ui/textarea";
 import classSchema, { ClassType } from "@/features/classe/domain/class-schema";
 const BASE_IMAGE_URL = "https://source.unsplash.com/random/800x600";
 import useAddClasse from "../../application/adapters/services/useAddClasse";
+import { useRouter } from "next/navigation";
 
-export default function AddClassForm(props: {
-  userId: string;
-}) {
+export default function AddClassForm(props: { userId: string }) {
+  const router = useRouter();
   const { mutate: setClasse } = useAddClasse();
   const form = useForm<Pick<ClassType, "description" | "name" | "imageUrl">>({
     resolver: zodResolver(classSchema),
@@ -43,6 +43,7 @@ export default function AddClassForm(props: {
       },
       {
         onSuccess: () => {
+          router.push("/classes");
         },
       }
     );
