@@ -15,6 +15,7 @@ import Layout from "./ExperimentalLayout";
 import { Loader } from "lucide-react";
 import { coursUsecases } from "@/features/cours-sequence/application/usecases/cours-usecases";
 import getEvaluations from "@/features/evaluation/application/adapters/actions/get-evaluations";
+import LoaderPage from "./LoaderPage";
 async function LayoutServerLayer({ children }: { children: React.ReactNode }) {
   const authUser = await authUseCases.getUserAuth();
   if (isLeft(authUser)) {
@@ -49,7 +50,7 @@ async function LayoutServerLayer({ children }: { children: React.ReactNode }) {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <Suspense fallback={<Loader className="animate-spin" />}>
+      <Suspense fallback={<LoaderPage />}>
         <Layout userId={authUser.right.userId}>{children}</Layout>
       </Suspense>
     </HydrationBoundary>
