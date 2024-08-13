@@ -31,6 +31,7 @@ import {
   SelectValue,
 } from "@/core/components/ui/select";
 import { getEducationSystemOptions } from "@/features/user/domain/entities/education-systems/global";
+import { educationSystemOptions } from "@/features/user/domain/entities/education-systems/education-system";
 
 export default function UserProfile({ user }: { user: UserType }) {
   const { setSaveUserOptions, loading, error } = useSaveUser();
@@ -135,7 +136,7 @@ export default function UserProfile({ user }: { user: UserType }) {
                       </SelectTrigger>
                       <SelectContent>
                         <SelectGroup>
-                          {countryOptions.map((option) => (
+                          {educationSystemOptions.map((option) => (
                             <SelectItem key={option.value} value={option.value}>
                               {option.label}
                             </SelectItem>

@@ -30,6 +30,16 @@ export const EducationLevelsEnumSchema = z.enum([
   ...USEducationLevels.options,
 ]);
 
+export const EducationLevelsUnionSchema = z.union([
+  ChineseEducationLevels,
+  FrenchEducationLevels,
+  GermanEducationLevels,
+  IndianEducationLevels,
+  SpanishEducationLevels,
+  UKEducationLevels,
+  USEducationLevels,
+]);
+
 export type EducationLevelsType = z.infer<typeof EducationLevelsSchema>;
 export type EducationLevelsTypeUnion =
   EducationLevelsType[keyof EducationLevelsType];
@@ -83,5 +93,29 @@ export function getHumanReadableGrade(
         return getHumanReadableUSGrade(isSafeUS.data);
       }
       throw new Error("Grade level not found in the US education system.");
+  }
+
+
+}
+
+// Function to get the education level options for a specific education system.
+export function getEducationLevelOptions(
+  educationSystem: keyof EducationLevelsType
+) {
+  switch (educationSystem) {
+    case "Chinese":
+      return ChineseEducationLevels.options;
+    case "French":
+      return FrenchEducationLevels.options;
+    case "German":
+      return GermanEducationLevels.options;
+    case "Indian":
+      return IndianEducationLevels.options;
+    case "Spanish":
+      return SpanishEducationLevels.options;
+    case "UK":
+      return UKEducationLevels.options;
+    case "US":
+      return USEducationLevels.options;
   }
 }

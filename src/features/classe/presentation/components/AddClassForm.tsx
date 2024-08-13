@@ -9,6 +9,14 @@ import {
   FormLabel,
   FormMessage,
 } from "@/core/components/ui/form";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/core/components/ui/select";
 import { Input } from "@/core/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -17,11 +25,26 @@ import classSchema, { ClassType } from "@/features/classe/domain/class-schema";
 const BASE_IMAGE_URL = "https://source.unsplash.com/random/800x600";
 import useAddClasse from "../../application/adapters/services/useAddClasse";
 import { useRouter } from "next/navigation";
+import { getEducationSystemOptions } from "@/features/user/domain/entities/education-systems/global";
+import {
+  EducationsSystemsEnum,
+  educationSystemOptions,
+} from "@/features/user/domain/entities/education-systems/education-system";
+import {
+  getEducationLevelOptions,
+  getHumanReadableGrade,
+} from "@/features/user/domain/entities/education-systems/niveaux/niveaux";
+import { Option } from "lucide-react";
 
 export default function AddClassForm(props: { userId: string }) {
   const router = useRouter();
   const { mutate: setClasse } = useAddClasse();
-  const form = useForm<Pick<ClassType, "description" | "name" | "imageUrl">>({
+  const form = useForm<
+    Pick<
+      ClassType,
+      "description" | "name" | "imageUrl" | "educationLevel" | "educationSystem"
+    >
+  >({
     resolver: zodResolver(classSchema),
     defaultValues: {
       name: "",
@@ -29,17 +52,27 @@ export default function AddClassForm(props: { userId: string }) {
         new Date().getFullYear() + 1
       }`,
       imageUrl: BASE_IMAGE_URL,
+      educationLevel: "Cinquieme",
+      educationSystem: "French",
     },
   });
 
+  const selectedSystem = form.watch("educationSystem");
+  const educationLevelOptions = getEducationLevelOptions(selectedSystem);
+
   async function onSubmit(
-    values: Pick<ClassType, "description" | "name" | "imageUrl">
+    values: Pick<
+      ClassType,
+      "description" | "name" | "imageUrl" | "educationLevel" | "educationSystem"
+    >
   ) {
-    const {} = values;
+    const { description, name, imageUrl, educationLevel, educationSystem } =
+      values;
+
     setClasse(
       {
-        ...values,
         userId: props.userId,
+        ...values,
       },
       {
         onSuccess: () => {
@@ -52,7 +85,7 @@ export default function AddClassForm(props: { userId: string }) {
     <div className="px-4">
       <h1 className="text-2xl font-semibold py-8">Ajouter une classe</h1>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
           <FormField
             control={form.control}
             name="name"
@@ -71,6 +104,71 @@ export default function AddClassForm(props: { userId: string }) {
               </FormItem>
             )}
           />
+          <div className="md:grid grid-cols-2 gap-4 md:space-y-0 space-y-4">
+            <FormField
+              control={form.control}
+              name="educationSystem"
+              render={({ field }) => {
+                return (
+                  <FormItem>
+                    <FormLabel htmlFor={field.name}>Education System</FormLabel>
+                    <FormControl>
+                      <Select
+                        onValueChange={field.onChange}
+                        value={field.value}
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select your education system" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectGroup>
+                            {educationSystemOptions.map((option) => (
+                              <SelectItem
+                                key={option.value}
+                                value={option.value}
+                              >
+                                {option.label}
+                              </SelectItem>
+                            ))}
+                          </SelectGroup>
+                        </SelectContent>
+                      </Select>
+                    </FormControl>
+                  </FormItem>
+                );
+              }}
+            />
+            <FormField
+              control={form.control}
+              name="educationLevel"
+              render={({ field }) => {
+                return (
+                  <FormItem>
+                    <FormLabel htmlFor={field.name}>Education Level</FormLabel>
+                    <FormControl>
+                      <Select
+                        onValueChange={field.onChange}
+                        value={field.value}
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select your education level" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectGroup>
+                            {educationLevelOptions.map((option) => (
+                              <SelectItem key={option} value={option}>
+                                {getHumanReadableGrade(selectedSystem, option)}
+                              </SelectItem>
+                            ))}
+                          </SelectGroup>
+                        </SelectContent>
+                      </Select>
+                    </FormControl>
+                  </FormItem>
+                );
+              }}
+            />
+          </div>
           <div className="py-2"></div>
           <FormField
             control={form.control}

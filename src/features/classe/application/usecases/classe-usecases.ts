@@ -68,6 +68,8 @@ export default class ClasseUseCases {
         imageUrl: c.imageUrl,
         students: c.students,
         publish: c.publish,
+        educationLevel: c.educationLevel,
+        educationSystem: c.educationSystem,
       };
     });
 

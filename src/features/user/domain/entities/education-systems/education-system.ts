@@ -19,6 +19,19 @@ export const EducationsSystemsEnum = z.enum([
   "Spanish",
 ]);
 
+export const educationSystemOptions = EducationsSystemsEnum.options.map(
+  (option) => ({ value: option, label: option })
+);
+export const EducationSystemUnionSchema = z.union([
+  z.literal("French"),
+  z.literal("US"),
+  z.literal("German"),
+  z.literal("Chinese"),
+  z.literal("Indian"),
+  z.literal("UK"),
+  z.literal("Spanish"),
+]);
+
 export type EducationsSystemsType = z.infer<typeof EducationsSystemsEnum>;
 
 // Schéma pour les langues
