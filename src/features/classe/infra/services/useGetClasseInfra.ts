@@ -15,7 +15,11 @@ export default function useGetClasseInfra(id: { id: string }) {
 
   useEffect(() => {
     if (classeInfra) {
-      const eitherClasse = ClasseEntityDto.toDomain(classeInfra);
+      const eitherClasse = ClasseEntityDto.toDomain({
+        ...classeInfra,
+        educationLevel: classeInfra.educationLevel as any,
+        educationSystem: classeInfra.educationSystem as any,
+      });
       if (isRight(eitherClasse)) {
         const classe = eitherClasse.right;
         setGetClassePayloadInfra({ classe, error: false });

@@ -3,6 +3,7 @@ import { Either, right } from "fp-ts/lib/Either";
 import ClasseEntity from "@/features/classe/domain/class-entity";
 import { Id } from "../../../../../convex/_generated/dataModel";
 import { left } from "fp-ts/lib/Either";
+import { CreateClasseOptions } from "../../domain/classe-types";
 
 export class ClasseEntityDto {
   static toDomain(props: ClasseInfra): Either<Failure<string>, ClasseEntity> {
@@ -19,6 +20,8 @@ export class ClasseEntityDto {
       name: props.name,
       description: props.description,
       imageUrl: props.imageUrl,
+      educationLevel: props.educationLevel,
+      educationSystem: props.educationSystem,
     });
     if (classeEntity.values._tag === "Left") {
       return left(
@@ -41,5 +44,7 @@ type ClasseInfra =
       students?: any[] | undefined;
       name: string;
       userId: string;
+      educationLevel: CreateClasseOptions["educationLevel"];
+      educationSystem: CreateClasseOptions["educationSystem"];
     }
   | undefined;
