@@ -10,7 +10,7 @@ import {
 import { getHumanReadableUKGrade, UKEducationLevels } from "./uk";
 import { getHumanReadableUSGrade, USEducationLevels } from "./us";
 
-export const EducationLevels = z.object({
+export const EducationLevelsSchema = z.object({
   Chinese: ChineseEducationLevels,
   French: FrenchEducationLevels,
   German: GermanEducationLevels,
@@ -20,12 +20,24 @@ export const EducationLevels = z.object({
   US: USEducationLevels,
 });
 
-export type EducationLevelsType = z.infer<typeof EducationLevels>;
+export const EducationLevelsEnumSchema = z.enum([
+  ...ChineseEducationLevels.options,
+  ...FrenchEducationLevels.options,
+  ...GermanEducationLevels.options,
+  ...IndianEducationLevels.options,
+  ...SpanishEducationLevels.options,
+  ...UKEducationLevels.options,
+  ...USEducationLevels.options,
+]);
+
+export type EducationLevelsType = z.infer<typeof EducationLevelsSchema>;
+export type EducationLevelsTypeUnion =
+  EducationLevelsType[keyof EducationLevelsType];
 
 // A mapping function that takes the education system and the grade level and returns the human-readable grade level.
 export function getHumanReadableGrade(
   educationSystem: keyof EducationLevelsType,
-  gradeLevel: EducationLevelsType[keyof EducationLevelsType]
+  gradeLevel: EducationLevelsTypeUnion
 ): string {
   switch (educationSystem) {
     case "Chinese":
