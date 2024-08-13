@@ -4,7 +4,6 @@ import { redirect } from "next/navigation";
 import React from "react";
 import ClassesTable from "@/features/classe/presentation/components/ClassesTable";
 import { classeUsecases } from "@/features/classe/application/usecases/classe-usecases";
-import LayoutWithProps from "@/core/components/layout/LayoutWithProps";
 import {
   dehydrate,
   HydrationBoundary,
@@ -29,9 +28,7 @@ async function ClassesServerLayer(props: { slug: string }) {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <LayoutServerLayer>
         <ClassesTable userId={authUser.right.userId} />
-      </LayoutServerLayer>
     </HydrationBoundary>
   );
 }

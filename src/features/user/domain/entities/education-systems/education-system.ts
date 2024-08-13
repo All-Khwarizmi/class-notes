@@ -9,6 +9,31 @@ export const BasicSubjectsEnum = z.enum([
   "Arts",
 ]);
 
+export const EducationsSystemsEnum = z.enum([
+  "French",
+  "US",
+  "German",
+  "Chinese",
+  "Indian",
+  "UK",
+  "Spanish",
+]);
+
+export const educationSystemOptions = EducationsSystemsEnum.options.map(
+  (option) => ({ value: option, label: option })
+);
+export const EducationSystemUnionSchema = z.union([
+  z.literal("French"),
+  z.literal("US"),
+  z.literal("German"),
+  z.literal("Chinese"),
+  z.literal("Indian"),
+  z.literal("UK"),
+  z.literal("Spanish"),
+]);
+
+export type EducationsSystemsType = z.infer<typeof EducationsSystemsEnum>;
+
 // Schéma pour les langues
 export const LanguageSchema = z.enum([
   "English",

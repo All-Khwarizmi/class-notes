@@ -7,6 +7,8 @@ export const createClass = mutation({
     name: v.string(),
     description: v.optional(v.string()),
     imageUrl: v.optional(v.string()),
+    educationLevel: v.string(),
+    educationSystem: v.string(),
   },
   handler: async (ctx, args) => {
     const existingUser = await ctx.db
@@ -22,6 +24,8 @@ export const createClass = mutation({
         imageUrl: args.imageUrl,
         observations: [],
         evaluationsTemplatesId: [],
+        educationSystem: args.educationSystem,
+        educationLevel: args.educationLevel,
       });
 
       // Add the classe to the visibility table
