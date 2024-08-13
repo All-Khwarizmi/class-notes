@@ -193,8 +193,8 @@ export default defineSchema({
     studentsId: v.optional(v.array(v.id("Students"))),
     evaluationsTemplatesId: v.array(v.id("EvaluationTemplates")),
     publish: v.optional(v.boolean()),
-    educationSystem: v.string(),
-    educationLevel: v.string(),
+    educationSystem:v.optional( v.string()),
+    educationLevel:v.optional( v.string()),
   }),
   EvaluationBase,
 

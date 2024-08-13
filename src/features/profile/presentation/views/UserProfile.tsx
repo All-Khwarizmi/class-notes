@@ -192,7 +192,6 @@ export default function UserProfile({ user }: { user: UserType }) {
                       <SelectContent>
                         <SelectGroup>
                           {subjectsOptions.map((option) => {
-                            console.log({ option });
                             return (
                               <SelectItem value={option} key={option}>
                                 {option}

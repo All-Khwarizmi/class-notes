@@ -22,7 +22,7 @@ export default class UserDto {
     } else if (userInfra) {
       return right({
         _id: userInfra._id,
-        schoolSubject: userInfra.schoolSubject,
+        schoolSubject: userInfra.schoolSubject ?? "",
         name: userInfra.name,
         onboarding: userInfra.onboarding,
         userId: userInfra.userId,
@@ -33,8 +33,9 @@ export default class UserDto {
         email: userInfra.email,
         hostname: userInfra.hostname,
         educationSystem:
-          userInfra.educationSystem as UserType["educationSystem"],
-        country: userInfra.country as UserType["country"],
+          (userInfra.educationSystem as UserType["educationSystem"]) ??
+          "French",
+        country: (userInfra.country as UserType["country"]) ?? "France",
       });
     }
     return left(

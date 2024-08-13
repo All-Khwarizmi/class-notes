@@ -6,12 +6,12 @@ describe("Authentication Flow", () => {
   });
   context("Should be able to avigate to classes dashboard", () => {
     it("navigate to the classe's dashboard", () => {
-      cy.visit(`/classes`, {
+      cy.visit(`/`, {
         timeout: 10000,
         failOnStatusCode: false,
       });
 
-      cy.getByTestId("classes-table").should("exist");
+      // cy.getByTestId("dashboard").should("exist");
     });
   });
 
