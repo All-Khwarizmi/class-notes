@@ -32,11 +32,11 @@ export default class ProfileUseCases {
       return eitherUser;
     }
     const user = userSchema.safeParse(eitherUser.right);
-
+    console.log("eroor");
     if (!user.success) {
       return left(
         Failure.invalidValue({
-          invalidValue: eitherUser.right,
+          invalidValue: user.error.errors.toString(),
           message: "User data is invalid",
         })
       );

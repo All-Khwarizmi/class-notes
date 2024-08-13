@@ -19,8 +19,6 @@ export default function Hero() {
               <div className="pt-4 text-3xl  font-bold tracking-tighter sm:text-5xl xl:text-6xl/none">
                 <Balancer>Transform Your Teaching Experience</Balancer>
               </div>
-
-              
             </div>
           </div>
 
@@ -31,11 +29,13 @@ export default function Hero() {
           <div className="flex flex-col  z-10 mt-8 gap-2 min-[400px]:flex-row text-primary  ">
             <SignedOut>
               <div
-                className="flex flex-col items-center justify-center gap-2  pt-4 rounded-lg shadow-lg dark:bg-gray-800 dark:text-white p-4 w-full"
+                className="flex flex-col items-center justify-center gap-2  pt-4 "
                 data-testid="hero-cta"
               >
                 <SignInButton redirectUrl="/dashboard">
-                  Get Started
+                  <div className="rounded-lg shadow-lg cursor-pointer dark:bg-gray-800 dark:text-white p-4 w-full">
+                    Get Started
+                  </div>
                 </SignInButton>
               </div>
             </SignedOut>

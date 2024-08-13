@@ -13,6 +13,7 @@ export default function useGetClasses(options: GetClasseListOptions) {
         id: options.userId,
       });
       if (isLeft(operationResult)) {
+        console.log("An error occurred while fetching classes");
         toastWrapper.error("An error occurred while fetching classes");
         throw new Error(operationResult.left.message);
       }

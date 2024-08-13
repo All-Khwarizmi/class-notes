@@ -119,15 +119,27 @@ export default function ClassesTable(props: { userId: string }) {
           </Table>
         </>
       ) : (
-        <div className="flex justify-center items-center pt-12 ">
-          <p className="text-gray-400 text-lg font-bold ">
-            Vous n&apos;avez pas encore de classes
-          </p>
-        </div>
+        <>
+          {/* Display empty table with test attribute only and the message of emptyness */}
+          <Table data-testid="classes-table" className="">
+            <TableCaption>
+              Vous n&apos;avez pas encore ajouté de classe. Ajoutez une classe
+            </TableCaption>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Name</TableHead>
+                <TableHead>Description</TableHead>
+                <TableHead>Actions</TableHead>
+                <TableHead>Show</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody></TableBody>
+          </Table>
+        </>
       )}
       <article className="flex flex-col py-4 items-center">
         <div>
-          <Link href={`/classes/add`}>
+          <Link data-testid="add-class" href={`/classes/add`}>
             <Button className="w-full">
               <Plus size={16} />
             </Button>

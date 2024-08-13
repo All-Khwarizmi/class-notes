@@ -4,8 +4,8 @@ import { v } from "convex/values";
 export const userSchema = defineTable({
   userId: v.string(),
   image: v.optional(v.string()),
-  schoolSubject: v.string(),
-  educationSystem: v.string(),
+  schoolSubject: v.optional(v.string()),
+  educationSystem: v.optional(v.string()),
   country: v.optional(v.string()),
   name: v.optional(v.string()),
   onboarding: v.optional(v.boolean()),
