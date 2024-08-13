@@ -1,26 +1,30 @@
 
-export type UKEducationLevelsType =
-  | "Nursery"
-  | "Reception"
-  | "Year1"
-  | "Year2"
-  | "Year3"
-  | "Year4"
-  | "Year5"
-  | "Year6"
-  | "Year7"
-  | "Year8"
-  | "Year9"
-  | "Year10"
-  | "Year11"
-  | "Year12"
-  | "Year13"
-  | "UniversityYear1"
-  | "UniversityYear2"
-  | "UniversityYear3"
-  | "PostgraduateYear1"
-  | "PostgraduateYear2";
+import {z} from "zod";
 
+export const UKEducationLevels = z.enum([
+  "Nursery",
+  "Reception",
+  "Year1",
+  "Year2",
+  "Year3",
+  "Year4",
+  "Year5",
+  "Year6",
+  "Year7",
+  "Year8",
+  "Year9",
+  "Year10",
+  "Year11",
+  "Year12",
+  "Year13",
+  "UniversityYear1",
+  "UniversityYear2",
+  "UniversityYear3",
+  "PostgraduateYear1",
+  "PostgraduateYear2",
+]);
+
+export type UKEducationLevelsType = z.infer<typeof UKEducationLevels>;
 
 
 const UKEducationLevelsMapping = {
