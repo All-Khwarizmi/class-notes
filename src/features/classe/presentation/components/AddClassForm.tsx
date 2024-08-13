@@ -35,6 +35,7 @@ import {
   getHumanReadableGrade,
 } from "@/features/user/domain/entities/education-systems/niveaux/niveaux";
 import { Option } from "lucide-react";
+import { toastWrapper } from "@/core/utils/toast-wrapper";
 
 export default function AddClassForm(props: { userId: string }) {
   const router = useRouter();
@@ -68,6 +69,10 @@ export default function AddClassForm(props: { userId: string }) {
   ) {
     const { description, name, imageUrl, educationLevel, educationSystem } =
       values;
+      // Check every field 
+      if (!description || !name || !imageUrl || !educationLevel || !educationSystem) {
+        return toastWrapper.error("All fields are required");
+      }
 
     setClasse(
       {

@@ -19,7 +19,10 @@ interface ChartProps extends React.HTMLAttributes<HTMLDivElement> {}
 // Component definition with typing
 function DashboardContainer() {
   return (
-    <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+    <div
+      data-testid="dashboard"
+      className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3"
+    >
       <Card className="col-span-1 md:col-span-2 lg:col-span-2">
         <CardHeader>
           <CardTitle>Class Insights</CardTitle>
