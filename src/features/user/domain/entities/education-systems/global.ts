@@ -40,13 +40,13 @@ export type GlobalEducationSubjectsType = z.infer<
 
 // Créez un objet central qui stocke les options de matières pour chaque système éducatif, similaire à une table de correspondance.
 export const educationSystemOptions = {
-  France: FrenchEducationSubjectsSchema.options,
-  USA: AmericanEducationSubjectsSchema.options,
-  Germany: GermanEducationSubjectsSchema.options,
-  India: IndianEducationSubjectsSchema.options,
-  China: ChineseEducationSubjectsSchema.options,
+  French: FrenchEducationSubjectsSchema.options,
+  US: AmericanEducationSubjectsSchema.options,
+  German: GermanEducationSubjectsSchema.options,
+  Indian: IndianEducationSubjectsSchema.options,
+  Chinese: ChineseEducationSubjectsSchema.options,
   UK: UKEducationSubjectsSchema.options,
-  Spain: SpanishEducationSubjectsSchema.options,
+  Spanish: SpanishEducationSubjectsSchema.options,
 };
 
 export function getEducationSystemOptions(

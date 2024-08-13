@@ -1,8 +1,11 @@
 import { EvaluationWithGradeSchema } from "@/features/evaluation/domain/entities/evaluation-with-grades-schema";
 import { z } from "zod";
-import { EvaluationBase } from "../../../../convex/tables/evaluation_base_convex_schema";
 import { EvaluationBaseSchema } from "@/features/evaluation/domain/entities/evaluation-schema";
 import { StudentSchema } from "../../student/domain/entities/student-schema";
+import { EducationsSystemsEnum } from "@/features/user/domain/entities/education-systems/education-system";
+import {
+  EducationLevelsEnumSchema,
+} from "@/features/user/domain/entities/education-systems/niveaux/niveaux";
 
 const classSchema = z.object({
   id: z.string(),
@@ -13,6 +16,8 @@ const classSchema = z.object({
   imageUrl: z.string().optional(),
   students: z.array(z.string()).optional(),
   publish: z.boolean().optional(),
+  educationSystem: EducationsSystemsEnum,
+  educationLevel: EducationLevelsEnumSchema,
 });
 export default classSchema;
 

@@ -20,7 +20,11 @@ export default function useGetClassesInfra({ id }: { id: string }) {
     if (rawClasses) {
       //!TODO: refactor this. -Now we are using the Either monad to handle the error by filtering the invalid values. But we should do something about the fault classes if any
       const classeEntities = rawClasses.map((c) => {
-        const classEntity = ClasseEntityDto.toDomain(c);
+        const classEntity = ClasseEntityDto.toDomain({
+          ...c,
+          educationLevel: c.educationLevel as any,
+          educationSystem: c.educationSystem as any,
+        });
         if (isRight(classEntity)) {
           return classEntity.right;
         }
@@ -29,10 +33,12 @@ export default function useGetClassesInfra({ id }: { id: string }) {
           name: "Invalid",
           description: "Invalid",
           imageUrl: "Invalid",
+          educationLevel: "Bachillerato1",
+          educationSystem: "Chinese",
         });
       });
       setGetClassesPayloadInfra({ classes: classeEntities, error: false });
-    } 
+    }
   }, [rawClasses]);
 
   return {

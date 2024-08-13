@@ -31,12 +31,13 @@ export default function useCreateClasseInfra() {
       dataForClasseCreationInfra?.classe &&
       dataForClasseCreationInfra?.userId
     ) {
-
       addClass({
         name: dataForClasseCreationInfra.classe.name,
         description: dataForClasseCreationInfra.classe.description,
         imageUrl: dataForClasseCreationInfra.classe.imageUrl,
         userId: dataForClasseCreationInfra.userId,
+        educationLevel: dataForClasseCreationInfra.classe.educationLevel,
+        educationSystem: dataForClasseCreationInfra.classe.educationSystem,
       })
         .then((data) => {
           setCreateClasseInfraPayload({ ...data });
@@ -49,7 +50,7 @@ export default function useCreateClasseInfra() {
   }, [dataForClasseCreationInfra]);
 
   return {
- createClasseInfraPayload,
+    createClasseInfraPayload,
     setDataForclasseCreationInfra,
   };
 }

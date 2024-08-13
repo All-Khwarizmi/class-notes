@@ -18,6 +18,7 @@ import LayoutWithProps from "@/core/components/layout/LayoutWithProps";
 import { useClassesTableLogic } from "../services/hooks/useClassesTableLogic";
 import Layout from "@/core/components/layout/Layout";
 import { cn } from "@/lib/utils";
+import { Button } from "@/core/components/ui/button";
 
 export default function ClassesTable(props: { userId: string }) {
   const {
@@ -118,29 +119,20 @@ export default function ClassesTable(props: { userId: string }) {
           </Table>
         </>
       ) : (
-        <div className="flex justify-center items-center ">
+        <div className="flex justify-center items-center pt-12 ">
           <p className="text-gray-400 text-lg font-bold ">
             Vous n&apos;avez pas encore de classes
           </p>
         </div>
       )}
-      <article className="flex flex-col py-4">
-        <CustomDialog
-          open={open}
-          setOpen={setOpen}
-          icon={<Plus size={16} />}
-          title="Ajouter une classe"
-          description="Ajouter une classe pour commencer à ajouter des étudiants"
-          testId="add-class"
-          buttonVariant="outline"
-          buttonContainerClassName="justify-center"
-        >
-          <AddClassForm
-            setOpen={setOpen}
-            userId={props.userId}
-            refetchClasses={refetchClasses}
-          />
-        </CustomDialog>
+      <article className="flex flex-col py-4 items-center">
+        <div>
+          <Link href={`/classes/add`}>
+            <Button className="w-full">
+              <Plus size={16} />
+            </Button>
+          </Link>
+        </div>
       </article>
     </section>
   );
