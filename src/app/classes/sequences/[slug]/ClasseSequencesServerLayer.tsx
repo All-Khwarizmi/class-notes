@@ -19,31 +19,29 @@ async function ClasseSequencesServerLayer(props: { slug: string }) {
   });
   if (isLeft(eitherSequences)) {
     return (
-        <ErrorDialog
-          message="An error occurred"
-          description="An error occurred while fetching sequences"
-          code={eitherSequences.left.code}
-        />
+      <ErrorDialog
+        message="An error occurred"
+        description="An error occurred while fetching sequences"
+        code={eitherSequences.left.code}
+      />
     );
   }
 
   if (isLeft(eitherClasseSequences)) {
     return (
-        <ErrorDialog
-          message="An error occurred"
-          description="An error occurred while fetching classe sequences"
-          code={eitherClasseSequences.left.code}
-        />
+      <ErrorDialog
+        message="An error occurred"
+        description="An error occurred while fetching classe sequences"
+        code={eitherClasseSequences.left.code}
+      />
     );
   }
 
   return (
-      <ClasseSequencesTableView
+    <ClasseSequencesTableView
       userId={authUser.right.userId}
-        sequences={eitherSequences.right}
-        classeId={props.slug}
-        classeSequences={eitherClasseSequences.right}
-      />
+      classeId={props.slug}
+    />
   );
 }
 
