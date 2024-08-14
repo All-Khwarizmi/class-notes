@@ -12,7 +12,6 @@ import {
   CollapsibleTrigger,
 } from "@/core/components/ui/collapsible";
 import { Switch } from "@/core/components/ui/switch";
-import { toggleVisibility } from "@/features/classe/domain/visibility-schema";
 import { BookOpen, Building, CheckSquare, List } from "lucide-react";
 import { useVisibilityLogic } from "../../application/adapters/services/useVisibilityLogic";
 import LoadingSkeleton from "@/core/components/common/LoadingSkeleton";
@@ -21,7 +20,7 @@ import ErrorDialog from "@/core/components/common/ErrorDialog";
 export default function VisibilityManagementComponent(props: {
   userId: string;
 }) {
-  const { visibilityState, isLoading, isError, error, setVisibilityState } =
+  const { visibilityState, isLoading, isError, error, toggleStateVisibility } =
     useVisibilityLogic({
       userId: props.userId,
     });
@@ -36,20 +35,6 @@ export default function VisibilityManagementComponent(props: {
       />
     );
   } else if (visibilityState) {
-    const toggleStateVisibility = (args: {
-      type: "classe" | "sequence" | "cours" | "complement";
-      typeId: string;
-      publish: boolean;
-    }) => {
-      setVisibilityState(
-        toggleVisibility(visibilityState, {
-          type: args.type,
-          typeId: args.typeId,
-          publish: args.publish,
-        })
-      );
-    };
-
     return (
       <Card className="w-full">
         <CardHeader>
