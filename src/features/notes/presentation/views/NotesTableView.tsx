@@ -35,6 +35,7 @@ import { toast } from "sonner";
 import AddTableButton from "@/core/components/common/AddTableButton";
 import { Button } from "@/core/components/ui/button";
 import { useRouter } from "next/navigation";
+import DeleteTableButton from "@/core/components/common/DeleteTableButton";
 function NotesTableView(props: { notes: Note[]; parentId: string }) {
   const [localNotes, setLocalNotes] = useState<Note[]>(props.notes);
   const [isFileFormVisible, setIsFileFormVisible] = useState(false);
@@ -76,7 +77,7 @@ function NotesTableView(props: { notes: Note[]; parentId: string }) {
             <TableRow>
               <TableHead className="w-[200px]">Name</TableHead>
               <TableHead className="w-[200px]">Description</TableHead>
-              <TableHead className="w-[200px]">Type</TableHead>
+              {/* <TableHead className="w-[200px]">Type</TableHead> */}
               <TableHead className="w-[200px]"> Last Modified </TableHead>
 
               <TableHead className="w-[200px]">Actions</TableHead>
@@ -86,37 +87,29 @@ function NotesTableView(props: { notes: Note[]; parentId: string }) {
             {/* Add a row to display a note */}
             {localNotes.map((note) => {
               return (
-                <TableRow key={note.id}>
+                <TableRow
+                  key={note.id}
+                  onClick={() => {
+                    router.push(`/notes/${note.id}`);
+                  }}
+                >
                   <TableCell className="w-[200px]">{note.name}</TableCell>
                   <TableCell className="w-[200px]">
                     {note.description}
                   </TableCell>
-                  <TableCell className="w-[200px]">
+                  {/* <TableCell className="w-[200px]">
                     {note.type === "Folder" ? (
                       <Folder size={12} />
                     ) : (
                       <File size={12} />
                     )}
-                  </TableCell>
+                  </TableCell> */}
                   <TableCell className="w-[200px]">
                     {new Date(note.lastModified ?? Date.now()).toDateString()}
                   </TableCell>
                   <TableCell className="w-[200px] ">
                     <div className="flex items-center justify-center w-full h-full">
-                      <button
-                        onClick={() => {
-                          router.push(`/notes/${note.id}`);
-                        }}
-                        className={cn(
-                          "bg-transparent rounded-md p-1 px-2 flex items-center ml-2 hover:text-blue-400  "
-                        )}
-                      >
-                        <ExternalLink size={14} />
-                      </button>
-                      <button
-                        className={cn(
-                          "bg-transparent rounded-md p-1 px-2 flex items-center ml-2 hover:text-red-400  "
-                        )}
+                      <DeleteTableButton
                         onClick={() => {
                           confirm(
                             "Are you sure you want to delete this note?"
@@ -126,9 +119,7 @@ function NotesTableView(props: { notes: Note[]; parentId: string }) {
                               pathToRevalidate: `/profile/notes/${note.id}`,
                             });
                         }}
-                      >
-                        <Delete size={14} />
-                      </button>
+                      />
                     </div>
                   </TableCell>
                 </TableRow>
