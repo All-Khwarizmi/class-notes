@@ -559,7 +559,7 @@ export default class ConvexDatabase extends IDatabase {
         classId: classeId,
         sequenceId,
       });
-      if (result.error) {
+      if (!result) {
         return left(
           Failure.invalidValue({
             invalidValue: sequenceId,
@@ -568,7 +568,7 @@ export default class ConvexDatabase extends IDatabase {
           })
         );
       }
-      return right(result.id);
+      return right(result);
     } catch (error) {
       return left(
         Failure.invalidValue({
@@ -1174,41 +1174,41 @@ export default class ConvexDatabase extends IDatabase {
     }
   }
 
-  async updateClassVisibility({
-    id,
-    visibility,
-  }: {
-    id: string;
-    visibility: boolean;
-  }): Promise<Either<Failure<string>, void>> {
-    try {
-      const result = await fetchMutation(
-        this._db.classes.updateClassVisibility,
-        {
-          id,
-          visibility,
-        }
-      );
-      if (!result.success) {
-        return left(
-          Failure.invalidValue({
-            invalidValue: id,
-            message: "Error updating class visibility",
-            code: "INF103",
-          })
-        );
-      }
-      return right(undefined);
-    } catch (error) {
-      return left(
-        Failure.invalidValue({
-          invalidValue: id,
-          message: "Error updating class visibility",
-          code: "INF101",
-        })
-      );
-    }
-  }
+  // async updateClassVisibility({
+  //   id,
+  //   visibility,
+  // }: {
+  //   id: string;
+  //   visibility: boolean;
+  // }): Promise<Either<Failure<string>, void>> {
+  //   try {
+  //     const result = await fetchMutation(
+  //       this._db.classes.updateClassVisibility,
+  //       {
+  //         id,
+  //         visibility,
+  //       }
+  //     );
+  //     if (!result.success) {
+  //       return left(
+  //         Failure.invalidValue({
+  //           invalidValue: id,
+  //           message: "Error updating class visibility",
+  //           code: "INF103",
+  //         })
+  //       );
+  //     }
+  //     return right(undefined);
+  //   } catch (error) {
+  //     return left(
+  //       Failure.invalidValue({
+  //         invalidValue: id,
+  //         message: "Error updating class visibility",
+  //         code: "INF101",
+  //       })
+  //     );
+  //   }
+  // }
 
   async addClasseToVisibility(
     options: AddClasseToVisibilityOptions
