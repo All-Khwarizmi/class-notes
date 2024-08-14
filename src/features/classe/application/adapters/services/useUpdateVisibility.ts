@@ -1,9 +1,9 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { classeUsecases } from "../../usecases";
+import { QUERY_KEYS } from "@/core/query/ query-keys";
 export default function useUpdateVisibility() {
-  const queryCLient = useQueryClient();
   return useMutation({
-    mutationKey: ["updateVisibility"],
+    mutationKey: [QUERY_KEYS.VISIBILITY.UPDATE()],
 
     mutationFn: async (options: {
       userId: string;
@@ -18,10 +18,5 @@ export default function useUpdateVisibility() {
         publish: options.publish,
       });
     },
-    onSuccess: () => {
-      // queryCLient.refetchQueries({ queryKey: ["getVisibility"] });
-        queryCLient.invalidateQueries({ queryKey: ["getVisibility"] });
-    },
-    
   });
 }
