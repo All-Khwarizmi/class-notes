@@ -1,14 +1,24 @@
-import { convexDatabase } from "@/core/data/convex/convex-impl";
 import IDatabase from "@/core/data/idatabase";
 import { Cours, Sequence } from "../../domain/entities/cours-schemas";
-import { deleteSequence } from "../../../../../convex/sequence";
 import { getAppDataBase } from "@/core/data/get-app-db";
+import VisibilityRepository, {
+  visibilityRepository,
+} from "@/features/visibility/application/repositories/visibility-repository";
+import { isLeft } from "fp-ts/lib/Either";
 
 export default class CoursRepository {
   private readonly _db: IDatabase;
+  private readonly _visibilityRepository: VisibilityRepository;
 
-  constructor({ db }: { db: IDatabase }) {
+  constructor({
+    db,
+    visibilityRepository,
+  }: {
+    db: IDatabase;
+    visibilityRepository: VisibilityRepository;
+  }) {
     this._db = db;
+    this._visibilityRepository = visibilityRepository;
   }
 
   async getAllCours({ userId }: { userId: string }) {
@@ -106,11 +116,22 @@ export default class CoursRepository {
   async deleteSequence({
     sequenceId,
     type,
+    userId,
   }: {
     sequenceId: string;
     type: "template" | "sequence";
+    userId: string;
   }) {
-    return this._db.deleteSequence({ sequenceId, type });
+    if (type === "sequence") {
+      await this._visibilityRepository.deleteClasseFromVisibility({
+        userId,
+        typeId: sequenceId,
+        type,
+      });
+    }
+    const operationResult = await this._db.deleteSequence({ sequenceId, type });
+
+    return operationResult;
   }
 
   async getAllCoursFromSequence({
@@ -141,15 +162,56 @@ export default class CoursRepository {
   async addClassSequence({
     sequenceId,
     classeId,
+    userId,
   }: {
     sequenceId: string;
     classeId: string;
+    userId: string;
   }) {
-    return this._db.addClasseSequence({ sequenceId, classeId });
+    const operationResult = await this._db.addClasseSequence({
+      sequenceId,
+      classeId,
+    });
+    if (isLeft(operationResult)) {
+      return operationResult;
+    }
+    const id = operationResult.right;
+
+    const sequence = await this.getSingleSequence({
+      userId,
+      sequenceId,
+      type: "template",
+    });
+
+    if (isLeft(sequence)) {
+      return sequence;
+    }
+
+    const visibilityOperationResult =
+      await this._visibilityRepository.addSequenceToVisibility({
+        userId,
+        entity: {
+          id,
+          name: sequence.right.name,
+          description: sequence.right.description ?? "",
+          publish: false,
+          classeId,
+          classe: false,
+        },
+      });
+
+    if (isLeft(visibilityOperationResult)) {
+      return visibilityOperationResult;
+    }
+
+    return operationResult;
   }
   async getClasseSequences({ classeId }: { classeId: string }) {
     return this._db.getClasseSequences({ classeId });
   }
 }
 
-export const coursRepository = new CoursRepository({ db: getAppDataBase() });
+export const coursRepository = new CoursRepository({
+  db: getAppDataBase(),
+  visibilityRepository,
+});
