@@ -3,7 +3,6 @@ import { v } from "convex/values";
 import { EvaluationWithGrade } from "./tables/evaluations_with_grades_convex_schema";
 import { EvaluationBase } from "./tables/evaluation_base_convex_schema";
 import { userSchema } from "./fields/users";
-import { last } from "lodash";
 export default defineSchema({
   Users: userSchema,
   VisibilityTable: defineTable({
@@ -12,6 +11,8 @@ export default defineSchema({
       v.object({
         id: v.string(),
         publish: v.boolean(),
+        name: v.string(),
+        description: v.string(),
       })
     ),
     sequences: v.array(
@@ -20,6 +21,8 @@ export default defineSchema({
         publish: v.boolean(),
         classe: v.boolean(),
         classeId: v.string(),
+        name: v.string(),
+        description: v.string(),
       })
     ),
     cours: v.array(
@@ -30,6 +33,8 @@ export default defineSchema({
         sequenceId: v.string(),
         classe: v.boolean(),
         classeId: v.string(),
+        name: v.string(),
+        description: v.string(),
       })
     ),
     complement: v.array(
@@ -42,6 +47,8 @@ export default defineSchema({
         coursId: v.string(),
         classe: v.boolean(),
         classeId: v.string(),
+        name: v.string(),
+        description: v.string(),
       })
     ),
   }).index("by_userId", ["userId"]),
