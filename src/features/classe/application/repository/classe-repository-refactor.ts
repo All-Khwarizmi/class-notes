@@ -1,8 +1,5 @@
 import IDatabase from "@/core/data/idatabase";
-import { isLeft, left } from "fp-ts/lib/Either";
-import { ClassType } from "../../domain/class-schema";
-import Failure from "@/core/failures/failures";
-import { right } from "fp-ts/lib/Either";
+import { isLeft } from "fp-ts/lib/Either";
 import { getAppDataBase } from "@/core/data/get-app-db";
 import {
   CreateClasseOptions,
