@@ -27,7 +27,7 @@ function RessourceLinksCard(props: { userId: string }) {
           Spaces
         </Link>
         <Link
-          href="#"
+          href="/classes"
           className="inline-flex items-center justify-between gap-2 rounded-md bg-background px-4 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
           prefetch={false}
         >

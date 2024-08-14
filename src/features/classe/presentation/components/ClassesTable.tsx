@@ -50,15 +50,15 @@ export default function ClassesTable(props: { userId: string }) {
   }
 
   return (
-    <section
-      className={cn(
-        `${
-          !classes
-            ? "flex flex-col justify-center items-center h-[50vh] gap-4"
-            : ""
-        }`
-      )}
-    >
+    <section className={cn(`space-y-8 pt-8 px-4`)}>
+      <h1
+        className={cn(
+          "text-3xl font-bold ",
+          !classes ? "text-muted-foreground" : ""
+        )}
+      >
+        Mes classes{" "}
+      </h1>
       {classes && classes.right.length > 0 ? (
         <>
           <Table data-testid="classes-table" className="">
