@@ -1,5 +1,5 @@
 "use client";
-import { Plus, Delete, Link2, Link as LucideLink } from "lucide-react";
+import { Link as LucideLink } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { TableCaption, TableHeader } from "@/core/components/ui/table";
 import {
@@ -9,18 +9,13 @@ import {
   TableBody,
   TableCell,
 } from "@/core/components/ui/table";
-
-import { ClasseSequence, Sequence } from "../../domain/entities/cours-schemas";
-import useAddClasseSequence from "../../application/adapters/services/useAddClasseSequence";
-import { useState } from "react";
-import { toast } from "sonner";
-import useDeleteSequence from "@/features/complement/application/adapters/services/useDeleteSequence";
 import Link from "next/link";
 import DeleteTableButton from "@/core/components/common/DeleteTableButton";
 import AddTableButton from "@/core/components/common/AddTableButton";
 import { useClasseSequencesLogic } from "../hooks/useClasseSequencesLogic";
 import { isRight } from "fp-ts/lib/Either";
 import LoadingSkeleton from "@/core/components/common/LoadingSkeleton";
+import { useRouter } from "next/navigation";
 
 function ClasseSequencesTableView(props: { classeId: string; userId: string }) {
   const {
@@ -33,6 +28,7 @@ function ClasseSequencesTableView(props: { classeId: string; userId: string }) {
     classeId: props.classeId,
     userId: props.userId,
   });
+  const router = useRouter();
   if (loading) {
     return <LoadingSkeleton />;
   }
@@ -65,7 +61,17 @@ function ClasseSequencesTableView(props: { classeId: string; userId: string }) {
                   classeSequence.originalSequenceId === sequence._id
               );
               return (
-                <TableRow key={sequence._id}>
+                <TableRow
+                  key={sequence._id}
+                  className="cursor-pointer"
+                  onClick={() => {
+                    if (classeSequence) {
+                      router.push(
+                        `/sequences/${classeSequence._id}?type=sequence`
+                      );
+                    }
+                  }}
+                >
                   <TableCell className="w-[200px]">{sequence.name}</TableCell>
 
                   <TableCell className="w-[200px]">
@@ -77,18 +83,9 @@ function ClasseSequencesTableView(props: { classeId: string; userId: string }) {
                   <TableCell className="w-[200px]">
                     <div className={cn("flex items-center gap-4")}>
                       {classeSequence ? (
-                        <>
-                          <Link
-                            className="cursor-pointer "
-                            href={`/sequences/${classeSequence._id}?type=sequence`}
-                            legacyBehavior
-                          >
-                            <LucideLink size={12} />
-                          </Link>
-                          <DeleteTableButton
-                            onClick={() => handleDelete(classeSequence._id)}
-                          />
-                        </>
+                        <DeleteTableButton
+                          onClick={() => handleDelete(classeSequence._id)}
+                        />
                       ) : (
                         <AddTableButton
                           onClick={() => {
@@ -107,51 +104,6 @@ function ClasseSequencesTableView(props: { classeId: string; userId: string }) {
             })}
           </TableBody>
         </Table>
-        {/* <div className="flex justify-center py-4 gap-4">
-        <CustomDialog
-          title="Add a new sequence"
-          description="Add a new sequence to the class"
-          buttonClassName="bg-green-500 hover:bg-green-600"
-        >
-          <Select
-            onValueChange={(value) => {
-              setSelectedSequence((value) => {
-                const name = props.sequences.find(
-                  (sequence) => sequence._id === value
-                )!._id;
-
-                return name;
-              });
-            }}
-            value={selectedSequence}
-          >
-            <SelectTrigger>
-              <SelectValue>Select a sequence</SelectValue>
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                {props.sequences.map((sequence) => {
-                  const isAlreadyAdded = props.classeSequences.find(
-                    (classeSequence) =>
-                      classeSequence.originalSequenceId === sequence._id
-                  );
-                  if (isAlreadyAdded) {
-                    return null;
-                  }
-                  return (
-                    <SelectItem key={sequence._id} value={sequence._id}>
-                      {sequence.name}
-                    </SelectItem>
-                  );
-                })}
-              </SelectGroup>
-            </SelectContent>
-          </Select>
-          <div>
-            <Button onClick={handleSubmit}>Assign sequence</Button>
-          </div>
-        </CustomDialog>
-      </div> */}
       </>
     );
   }
