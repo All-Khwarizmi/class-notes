@@ -1,4 +1,9 @@
-import { mutation, query, internalQuery, internalMutation } from "./_generated/server";
+import {
+  mutation,
+  query,
+  internalQuery,
+  internalMutation,
+} from "./_generated/server";
 import { v } from "convex/values";
 
 export const isVisibilityTable = internalQuery({
@@ -114,14 +119,17 @@ export const addClasseToVisibilityTable = mutation({
       .query("VisibilityTable")
       .filter((q) => q.eq(q.field("userId"), args.userId))
       .first();
+    console.log(visibility);
     if (visibility) {
-      const newVisibility = structuredClone(visibility);
+      const newVisibility = { ...visibility };
       newVisibility.classe.push({
         id: args.entity.id,
         publish: args.entity.publish,
         name: args.entity.name,
         description: args.entity.description,
       });
+
+      await ctx.db.patch(visibility._id, newVisibility);
     }
   },
 });
@@ -140,12 +148,14 @@ export const addSequenceToVisibilityTable = mutation({
     }),
   },
   handler: async (ctx, args) => {
+    console.log(args);
     const visibility = await ctx.db
       .query("VisibilityTable")
       .filter((q) => q.eq(q.field("userId"), args.userId))
       .first();
+    console.log(visibility);
     if (visibility) {
-      const newVisibility = structuredClone(visibility);
+      const newVisibility = { ...visibility };
       newVisibility.sequences.push({
         id: args.entity.id,
         publish: args.entity.publish,
@@ -155,6 +165,57 @@ export const addSequenceToVisibilityTable = mutation({
 
         classe: args.entity.classe,
       });
+      const classe = await ctx.db
+        .query("Classes")
+        .filter((q) => q.eq(q.field("_id"), args.entity.classeId))
+        .first();
+
+      if (!classe) {
+        throw new Error("Classe not found");
+      }
+
+      const courses = await ctx.db
+        .query("Cours")
+        .filter((q) => q.eq(q.field("sequenceId"), args.entity.id))
+        .collect();
+
+      console.log(
+        `${courses.length} courses found for sequence ${args.entity.id}`
+      );
+      for (const course of courses) {
+        newVisibility.cours.push({
+          id: course._id,
+          publish: args.entity.publish,
+          name: course.name,
+          description: course.description,
+          classeId: args.entity.classeId,
+          sequenceId: args.entity.id,
+          classe: args.entity.classe,
+          sequence: args.entity.publish,
+        });
+
+        const complements = await ctx.db
+          .query("Complement")
+          .filter((q) => q.eq(q.field("coursId"), course._id))
+          .collect();
+
+        for (const complement of complements) {
+          newVisibility.complement.push({
+            id: complement._id,
+            publish: args.entity.publish,
+            name: complement.name,
+            description: complement.description ?? "",
+            classeId: args.entity.classeId,
+            sequenceId: args.entity.id,
+            coursId: course._id,
+            classe: args.entity.classe,
+            sequence: args.entity.publish,
+            cours: args.entity.publish,
+          });
+        }
+      }
+      console.log({ newVisibility });
+      await ctx.db.patch(visibility._id, newVisibility);
     }
   },
 });
@@ -180,7 +241,7 @@ export const addCoursToVisibilityTable = mutation({
       .filter((q) => q.eq(q.field("userId"), args.userId))
       .first();
     if (visibility) {
-      const newVisibility = structuredClone(visibility);
+      const newVisibility = { ...visibility };
       newVisibility.cours.push({
         id: args.entity.id,
         publish: args.entity.publish,
@@ -218,7 +279,7 @@ export const addComplementToVisibilityTable = mutation({
       .filter((q) => q.eq(q.field("userId"), args.userId))
       .first();
     if (visibility) {
-      const newVisibility = structuredClone(visibility);
+      const newVisibility = { ...visibility };
       newVisibility.complement.push({
         id: args.entity.id,
         publish: args.entity.publish,
@@ -253,7 +314,7 @@ export const updateVisibility = mutation({
       .filter((q) => q.eq(q.field("userId"), args.userId))
       .first();
     if (visibility) {
-      const newVisibility = structuredClone(visibility);
+      const newVisibility = { ...visibility };
       if (args.type === "classe") {
         const classe = visibility.classe.find((c) => c.id === args.typeId);
 
@@ -361,7 +422,7 @@ export const deleteEntityFromVisibilityTable = mutation({
       .filter((q) => q.eq(q.field("userId"), args.userId))
       .first();
     if (visibility) {
-      const newVisibility = structuredClone(visibility);
+      const newVisibility = { ...visibility };
       if (args.type === "classe") {
         newVisibility.classe = visibility.classe.filter(
           (c) => c.id !== args.typeId
