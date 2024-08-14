@@ -64,7 +64,7 @@ export default function CoursSequenceView({
                 </Link>
               </AfterMenuButton>
             </div>
-            <VisibilitySwitch userId={userId} type="cours" typeId={cours._id} />
+            {/* <VisibilitySwitch userId={userId} type="cours" typeId={cours._id} /> */}
           </div>
         </FloatingEditor>
       </>
@@ -113,11 +113,11 @@ export default function CoursSequenceView({
                 </Link>
               </AfterMenuButton>
             </div>
-            <VisibilitySwitch
+            {/* <VisibilitySwitch
               userId={userId}
               type="sequence"
               typeId={sequence._id}
-            />
+            /> */}
           </div>
         </FloatingEditor>
       </>

@@ -34,11 +34,11 @@ function ComplementView(props: {
               </Link>
             </AfterMenuButton>
           </div>
-          <VisibilitySwitch
+          {/* <VisibilitySwitch
             userId={props.userId}
             type="complement"
             typeId={props.complement.id}
-          />
+          /> */}
         </div>
       </FloatingEditor>
     </div>
