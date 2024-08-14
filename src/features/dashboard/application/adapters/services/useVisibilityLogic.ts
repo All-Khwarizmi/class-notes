@@ -29,24 +29,34 @@ export function useVisibilityLogic(options: { userId: string }) {
     publish: boolean;
   }) => {
     setVisibilityState(
-      toggleVisibility(visibilityState!, {
-        type: args.type,
-        typeId: args.typeId,
-        publish: args.publish,
-      })
-    );
-    updateVisibility(
-      {
-        userId: options.userId,
-        type: args.type,
-        typeId: args.typeId,
-        publish: args.publish,
-      },
-      {
-        onSuccess: () => {
-          refetch();
-        },
-      }
+      toggleVisibility(
+        visibilityState!,
+        options.userId,
+        (
+          userId: string,
+          type: "classe" | "sequence" | "cours" | "complement",
+          typeId: string,
+          publish: boolean
+        ) =>
+          updateVisibility(
+            {
+              userId,
+              type,
+              typeId,
+              publish,
+            },
+            {
+              onSuccess: () => {
+                refetch();
+              },
+            }
+          ),
+        {
+          type: args.type,
+          typeId: args.typeId,
+          publish: args.publish,
+        }
+      )
     );
   };
   return {
