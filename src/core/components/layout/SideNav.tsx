@@ -65,7 +65,7 @@ export function SideNav({ items, setOpen, className }: SideNavProps) {
     return liveHref.split("/")[1] === path.split("/")[1];
   }
   return (
-    <nav className="space-y-2">
+    <nav className="space-y-2 ">
       {localItems?.map((item) =>
         item.isChidren ? (
           <Accordion
