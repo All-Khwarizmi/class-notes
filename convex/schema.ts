@@ -134,7 +134,7 @@ export default defineSchema({
     keywords: v.array(v.string()),
     content: v.string(),
     type: v.union(v.literal("Folder"), v.literal("Item")),
-    lastModified: v.float64(),
+    lastModified: v.optional(v.float64()),
     contentType: v.union(
       v.literal("Diagram"),
       v.literal("Flowchart"),

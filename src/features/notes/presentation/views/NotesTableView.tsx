@@ -99,7 +99,7 @@ function NotesTableView(props: { notes: Note[]; parentId: string }) {
                     )}
                   </TableCell>
                   <TableCell className="w-[200px]">
-                    {new Date(note.createdAt).toDateString()}
+                    {new Date(note.lastModified ?? Date.now()).toDateString()}
                   </TableCell>
                   <TableCell className="w-[200px] ">
                     <div className="flex items-center justify-center w-full h-full">
@@ -174,6 +174,7 @@ function NoteItemFormRow(props: {
     pathDictionary: [],
     folders: [],
     keywords: [],
+    lastModified: Date.now(),
   });
   function onChangeNoteName(event: React.ChangeEvent<HTMLInputElement>) {
     setLocalNotes({ ...localNotes, name: event.target.value });
@@ -268,6 +269,7 @@ function NoteFolderFormRow(props: {
     pathDictionary: [],
     folders: [],
     keywords: [],
+    lastModified: Date.now(),
   });
 
   function onChangeNoteName(event: React.ChangeEvent<HTMLInputElement>) {
