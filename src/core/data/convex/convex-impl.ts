@@ -44,6 +44,7 @@ import {
   AddSequenceToVisibilityOptions,
   AddCoursToVisibilityOptions,
   AddComplementToVisibilityOptions,
+  DeleteEntityFromVisibilityOptions,
 } from "@/features/visibility/domain/types";
 
 export interface ConvexDatabaseOptions {
@@ -1281,6 +1282,27 @@ export default class ConvexDatabase extends IDatabase {
         Failure.invalidValue({
           invalidValue: options,
           message: "Error adding complement to visibility",
+          code: "INF101",
+        })
+      );
+    }
+  }
+
+  async deleteEntityFromVisibilityTable(
+    options: DeleteEntityFromVisibilityOptions
+  ): Promise<Either<Failure<string>, void>> {
+    try {
+      await fetchMutation(
+        this._db.visibility.deleteEntityFromVisibilityTable,
+        options
+      );
+
+      return right(undefined);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: options,
+          message: "Error deleting entity from visibility",
           code: "INF101",
         })
       );

@@ -35,7 +35,13 @@ import {
   DeleteClasseOptions,
 } from "@/features/classe/domain/classe-types";
 import { SaveUserOptions } from "@/features/user/domain/types/types";
-import { AddClasseToVisibilityOptions, AddComplementToVisibilityOptions, AddCoursToVisibilityOptions, AddSequenceToVisibilityOptions } from "@/features/visibility/domain/types";
+import {
+  AddClasseToVisibilityOptions,
+  AddComplementToVisibilityOptions,
+  AddCoursToVisibilityOptions,
+  AddSequenceToVisibilityOptions,
+  DeleteEntityFromVisibilityOptions,
+} from "@/features/visibility/domain/types";
 
 export default abstract class IDatabase {
   abstract getUser({
@@ -436,5 +442,7 @@ export default abstract class IDatabase {
     options: AddComplementToVisibilityOptions
   ): Promise<Either<Failure<string>, void>>;
 
-
+  abstract deleteEntityFromVisibilityTable(
+    options: DeleteEntityFromVisibilityOptions
+  ): Promise<Either<Failure<string>, void>>;
 }

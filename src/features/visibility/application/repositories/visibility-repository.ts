@@ -1,7 +1,15 @@
 import { getAppDataBase } from "@/core/data/get-app-db";
 import IDatabase from "@/core/data/idatabase";
 import { Update } from "next/dist/build/swc";
-import { GetVisibilityOptions, UpdateVisibilityOptions } from "../../domain/types";
+import {
+  AddClasseToVisibilityOptions,
+  AddComplementToVisibilityOptions,
+  AddCoursToVisibilityOptions,
+  AddSequenceToVisibilityOptions,
+  DeleteEntityFromVisibilityOptions,
+  GetVisibilityOptions,
+  UpdateVisibilityOptions,
+} from "../../domain/types";
 
 export default class VisibilityRepository {
   private readonly _db: IDatabase;
@@ -23,8 +31,24 @@ export default class VisibilityRepository {
     return this._db.updateVisibility({ userId, publish, type, typeId });
   }
 
-    async addClasseToVisibility({ userId, entity }: any) {
-        return this._db.addClasseToVisibility({ userId, entity });
+  async addClasseToVisibility(options: AddClasseToVisibilityOptions) {
+    return this._db.addClasseToVisibility(options);
+  }
+
+  async addSequenceToVisibility(options: AddSequenceToVisibilityOptions) {
+    return this._db.addSequenceToVisibility(options);
+  }
+
+  async addCoursToVisibility(options: AddCoursToVisibilityOptions) {
+    return this._db.addCoursToVisibility(options);
+  }
+
+  async addComplementToVisibility(options: AddComplementToVisibilityOptions) {
+    return this._db.addComplementToVisibility(options);
+  }
+
+    async deleteClasseFromVisibility(options: DeleteEntityFromVisibilityOptions) {
+        return this._db.deleteEntityFromVisibilityTable(options);
     }
 }
 
