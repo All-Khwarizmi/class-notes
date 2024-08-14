@@ -1,5 +1,4 @@
 "use client";
-import { Link as LucideLink } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { TableCaption, TableHeader } from "@/core/components/ui/table";
 import {
@@ -9,7 +8,6 @@ import {
   TableBody,
   TableCell,
 } from "@/core/components/ui/table";
-import Link from "next/link";
 import DeleteTableButton from "@/core/components/common/DeleteTableButton";
 import AddTableButton from "@/core/components/common/AddTableButton";
 import { useClasseSequencesLogic } from "../hooks/useClasseSequencesLogic";
