@@ -93,7 +93,7 @@ export default function useExperimentalLayoutLogic(userId: string) {
         sequencesNavItems.unshift({
           title: "Show All Sequences",
           icon: <Presentation size={16} />,
-          href: "/sequences",
+          href: "/sequences?type=template",
           color: "text-orange-500",
         });
         sequencesNavItems.unshift({
