@@ -18,100 +18,96 @@ import useDeleteSequence from "@/features/complement/application/adapters/servic
 import Link from "next/link";
 import DeleteTableButton from "@/core/components/common/DeleteTableButton";
 import AddTableButton from "@/core/components/common/AddTableButton";
+import { useClasseSequencesLogic } from "../hooks/useClasseSequencesLogic";
+import { isRight } from "fp-ts/lib/Either";
+import LoadingSkeleton from "@/core/components/common/LoadingSkeleton";
 
-function ClasseSequencesTableView(props: {
-  sequences: Sequence[];
-  classeSequences: ClasseSequence[];
-  classeId: string;
-  userId: string;
-}) {
-  const { setClasseSequenceOptions } = useAddClasseSequence();
-  const [selectedSequence, setSelectedSequence] = useState<string>("");
-  const { mutate: deleteSequence } = useDeleteSequence();
-  const handleDelete = async (sequenceId: string) => {
-    await deleteSequence({
-      sequenceId,
-      type: "sequence",
-      userId: props.userId,
-    });
-  };
-  function handleSubmit() {
-    if (!selectedSequence) {
-      toast.error("Please select a sequence");
-      return;
-    }
-    setClasseSequenceOptions({
-      classeId: props.classeId,
-      sequenceId: selectedSequence,
-      userId: props.userId,
-    });
+function ClasseSequencesTableView(props: { classeId: string; userId: string }) {
+  const {
+    loading,
+    handleDelete,
+    addClasseSequence,
+    baseSequences: sequences,
+    classeSequences,
+  } = useClasseSequencesLogic({
+    classeId: props.classeId,
+    userId: props.userId,
+  });
+  if (loading) {
+    return <LoadingSkeleton />;
   }
-  return (
-    <>
-      <Table className="w-full">
-        <TableCaption>
-          Add a note or a folder to the profile, or click on the note to view
-          it.
-        </TableCaption>
-        <TableHeader>
-          <TableRow>
-            <TableHead className="w-[200px]">Name</TableHead>
-            <TableHead className="w-[200px]">Nbr of Cours</TableHead>
-            <TableHead className="w-[200px]"> Last Modified </TableHead>
+  if (
+    sequences &&
+    isRight(sequences) &&
+    classeSequences &&
+    isRight(classeSequences)
+  ) {
+    return (
+      <>
+        <Table className="w-full">
+          <TableCaption>
+            Add a note or a folder to the profile, or click on the note to view
+            it.
+          </TableCaption>
+          <TableHeader>
+            <TableRow>
+              <TableHead className="w-[200px]">Name</TableHead>
+              <TableHead className="w-[200px]">Nbr of Cours</TableHead>
+              <TableHead className="w-[200px]"> Last Modified </TableHead>
 
-            <TableHead className="w-[200px]">Actions</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {props.sequences.map((sequence) => {
-            const classeSequence = props.classeSequences.find(
-              (classeSequence) =>
-                classeSequence.originalSequenceId === sequence._id
-            );
-            return (
-              <TableRow key={sequence._id}>
-                <TableCell className="w-[200px]">{sequence.name}</TableCell>
+              <TableHead className="w-[200px]">Actions</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {sequences.right.map((sequence) => {
+              const classeSequence = classeSequences.right.find(
+                (classeSequence) =>
+                  classeSequence.originalSequenceId === sequence._id
+              );
+              return (
+                <TableRow key={sequence._id}>
+                  <TableCell className="w-[200px]">{sequence.name}</TableCell>
 
-                <TableCell className="w-[200px]">
-                  {sequence.coursIds.length}
-                </TableCell>
-                <TableCell className="w-[200px]">
-                  {new Date(sequence.createdAt).toDateString()}
-                </TableCell>
-                <TableCell className="w-[200px]">
-                  <div className={cn("flex items-center gap-4")}>
-                    {classeSequence ? (
-                      <>
-                        <Link
-                          className="cursor-pointer "
-                          href={`/sequences/${classeSequence._id}?type=sequence`}
-                          legacyBehavior
-                        >
-                          <LucideLink size={12} />
-                        </Link>
-                        <DeleteTableButton
-                          onClick={() => handleDelete(classeSequence._id)}
+                  <TableCell className="w-[200px]">
+                    {sequence.coursIds.length}
+                  </TableCell>
+                  <TableCell className="w-[200px]">
+                    {new Date(sequence.createdAt).toDateString()}
+                  </TableCell>
+                  <TableCell className="w-[200px]">
+                    <div className={cn("flex items-center gap-4")}>
+                      {classeSequence ? (
+                        <>
+                          <Link
+                            className="cursor-pointer "
+                            href={`/sequences/${classeSequence._id}?type=sequence`}
+                            legacyBehavior
+                          >
+                            <LucideLink size={12} />
+                          </Link>
+                          <DeleteTableButton
+                            onClick={() => handleDelete(classeSequence._id)}
+                          />
+                        </>
+                      ) : (
+                        <AddTableButton
+                          onClick={() => {
+                            addClasseSequence({
+                              classeId: props.classeId,
+                              sequenceId: sequence._id,
+                              userId: props.userId,
+                            });
+                          }}
                         />
-                      </>
-                    ) : (
-                      <AddTableButton
-                        onClick={() => {
-                          setClasseSequenceOptions({
-                            classeId: props.classeId,
-                            sequenceId: sequence._id,
-                            userId: props.userId,
-                          });
-                        }}
-                      />
-                    )}
-                  </div>
-                </TableCell>
-              </TableRow>
-            );
-          })}
-        </TableBody>
-      </Table>
-      {/* <div className="flex justify-center py-4 gap-4">
+                      )}
+                    </div>
+                  </TableCell>
+                </TableRow>
+              );
+            })}
+          </TableBody>
+        </Table>
+        {/* <div className="flex justify-center py-4 gap-4">
         <CustomDialog
           title="Add a new sequence"
           description="Add a new sequence to the class"
@@ -156,8 +152,9 @@ function ClasseSequencesTableView(props: {
           </div>
         </CustomDialog>
       </div> */}
-    </>
-  );
+      </>
+    );
+  }
 }
 
 export default ClasseSequencesTableView;
