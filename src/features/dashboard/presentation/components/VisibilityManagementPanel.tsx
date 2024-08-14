@@ -20,6 +20,7 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/core/components/ui/collapsible";
+import { Switch } from "@/core/components/ui/switch";
 import { toggleVisibility } from "@/features/classe/domain/visibility-schema";
 const visibility = {
   _creationTime: 1717962138879.966,
@@ -128,32 +129,31 @@ export default function VisibilityManagementComponent() {
       </CardHeader>
       <CardContent>
         {visibilityState.classes.map((item) => (
-          <Collapsible key={item.id} className="w-full h-full">
+          <Collapsible key={item.id} className="w-full h-full pt-4">
             <div className="flex justify-between items-center">
-              <CollapsibleTrigger className="flex  w-full justify-between items-center p-4 cursor-pointer gap-2 mt-2">
+              <CollapsibleTrigger className="flex  w-full justify-between items-center pt-2 cursor-pointer gap-2 mt-2">
                 <div className="flex flex-col items-start ">
                   <h2>{item.name} </h2>
                   <h4 className="text-sm text-gray-400">{item.description}</h4>
                 </div>
               </CollapsibleTrigger>
-              <Button
-                onClick={() => {
+              <Switch
+                checked={item.publish}
+                onCheckedChange={() => {
                   toggleStateVisibility({
                     type: "classe",
                     typeId: item.id,
                     publish: !item.publish,
                   });
                 }}
-              >
-                {item.publish ? "Visible" : "Hidden"}
-              </Button>
+              />
             </div>
-            <CollapsibleContent className="flex flex-col gap-2 ml-8">
+            <CollapsibleContent className="flex flex-col ml-4">
               {item.sequences.map((sequence) => {
                 return (
                   <Collapsible key={sequence.id} className="w-full h-full">
                     <div className="flex justify-between items-center">
-                      <CollapsibleTrigger className="flex  w-full justify-between items-center p-4 cursor-pointer gap-2 ">
+                      <CollapsibleTrigger className="flex  w-full justify-between items-center pt-2 cursor-pointer gap-2 ">
                         <div className="flex flex-col items-start ">
                           <h2>{sequence.name} </h2>
                           <h4 className="text-sm text-gray-400">
@@ -161,23 +161,23 @@ export default function VisibilityManagementComponent() {
                           </h4>
                         </div>
                       </CollapsibleTrigger>
-                      <Button
-                        onClick={() => {
+
+                      <Switch
+                        checked={sequence.publish}
+                        onCheckedChange={() => {
                           toggleStateVisibility({
                             type: "sequence",
                             typeId: sequence.id,
                             publish: !sequence.publish,
                           });
                         }}
-                      >
-                        {sequence.publish === true ? "Visible" : "Hidden"}
-                      </Button>
+                      />
                     </div>
-                    <CollapsibleContent className="flex flex-col gap-2 ml-8 ">
+                    <CollapsibleContent className="flex flex-col gap-2 ml-4  ">
                       {sequence.courses.map((course) => (
                         <Collapsible key={course.id} className="w-full h-full ">
                           <div className="flex justify-between items-center">
-                            <CollapsibleTrigger className="flex  w-full justify-between items-center p-4 cursor-pointer gap-2 ">
+                            <CollapsibleTrigger className="flex  w-full justify-between items-center pt-2 cursor-pointer gap-2 ">
                               <div className="flex flex-col items-start ">
                                 <h2>{course.name} </h2>
                                 <h4 className="text-sm text-gray-400">
@@ -185,23 +185,22 @@ export default function VisibilityManagementComponent() {
                                 </h4>
                               </div>
                             </CollapsibleTrigger>
-                            <Button
-                              onClick={() => {
+                            <Switch
+                              checked={course.publish}
+                              onCheckedChange={() => {
                                 toggleStateVisibility({
                                   type: "cours",
                                   typeId: course.id,
                                   publish: !course.publish,
                                 });
                               }}
-                            >
-                              {course.publish === true ? "Visible" : "Hidden"}
-                            </Button>
+                            />
                           </div>
-                          <CollapsibleContent className="flex flex-col gap-2 ml-8 ">
+                          <CollapsibleContent className="flex flex-col gap-2 ml-4 ">
                             {course.complements.map((complement) => (
                               <div
                                 key={complement.id}
-                                className="flex  w-full justify-between items-center p-4 cursor-pointer gap-2 "
+                                className="flex justify-between items-center  cursor-pointer gap-2 pt-2"
                               >
                                 <div>
                                   <h2>{complement.name} </h2>
@@ -209,19 +208,16 @@ export default function VisibilityManagementComponent() {
                                     {complement.description}
                                   </h4>
                                 </div>
-                                <Button
-                                  onClick={() => {
+                                <Switch
+                                  checked={complement.publish}
+                                  onCheckedChange={() => {
                                     toggleStateVisibility({
                                       type: "complement",
                                       typeId: complement.id,
                                       publish: !complement.publish,
                                     });
                                   }}
-                                >
-                                  {complement.publish === true
-                                    ? "Visible"
-                                    : "Hidden"}
-                                </Button>
+                                />
                               </div>
                             ))}
                           </CollapsibleContent>
