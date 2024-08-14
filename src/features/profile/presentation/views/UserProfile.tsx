@@ -45,6 +45,8 @@ export default function UserProfile({ user }: { user: UserType }) {
     defaultValues: user,
   });
 
+  console.log({ values: form.getValues() });
+
   function onSubmit(data: Omit<UserType, "_id" | "userId">) {
     setSaveUserOptions({
       userId: user.userId,
@@ -61,6 +63,7 @@ export default function UserProfile({ user }: { user: UserType }) {
 
   const selectedSystem = form.watch("educationSystem");
   const subjectsOptions = getEducationSystemOptions(selectedSystem);
+  console.log({ subjectsOptions });
   return (
     <div data-testid="user-form" className="py-8 px-6 pt-12 space-y-8">
       <div className="h-full flex justify-center gap-4 pb-4">
@@ -116,7 +119,6 @@ export default function UserProfile({ user }: { user: UserType }) {
                       placeholder="John Doe"
                     />
                   </FormControl>
-                  <FormDescription>Enter your full name</FormDescription>
                 </FormItem>
               );
             }}
@@ -136,7 +138,7 @@ export default function UserProfile({ user }: { user: UserType }) {
                       </SelectTrigger>
                       <SelectContent>
                         <SelectGroup>
-                          {educationSystemOptions.map((option) => (
+                          {countryOptions.map((option) => (
                             <SelectItem key={option.value} value={option.value}>
                               {option.label}
                             </SelectItem>
@@ -163,7 +165,7 @@ export default function UserProfile({ user }: { user: UserType }) {
                       </SelectTrigger>
                       <SelectContent>
                         <SelectGroup>
-                          {countryOptions.map((option) => (
+                          {educationSystemOptions.map((option) => (
                             <SelectItem key={option.value} value={option.value}>
                               {option.label}
                             </SelectItem>
@@ -191,7 +193,7 @@ export default function UserProfile({ user }: { user: UserType }) {
                       </SelectTrigger>
                       <SelectContent>
                         <SelectGroup>
-                          {subjectsOptions.map((option) => {
+                          {subjectsOptions?.map((option) => {
                             return (
                               <SelectItem value={option} key={option}>
                                 {option}
