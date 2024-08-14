@@ -21,28 +21,28 @@ async function ProfileLayout() {
     userId: authUser.right.userId,
   });
   if (isLeft(user)) {
-    redirect("/login");
+    return <div>{user.left.message}</div>;
   }
 
   return (
-      <Tabs defaultValue="profile">
-        <div className="w-full flex justify-center">
-          <TabsList>
-            <TabsTrigger value="profile">Profile</TabsTrigger>
-            <TabsTrigger value="notes">Notes</TabsTrigger>
-          </TabsList>
-        </div>
-        <TabsContent value="profile">
-          <Suspense fallback={<LoadingSkeleton />}>
-            <UserProfile user={user.right} />
-          </Suspense>
-        </TabsContent>
-        <TabsContent value="notes">
-          <Suspense fallback={<LoadingSkeleton />}>
-            <NotesServerLayer type="profile" slug={authUser.right.userId} />
-          </Suspense>
-        </TabsContent>
-      </Tabs>
+    <Tabs defaultValue="profile">
+      <div className="w-full flex justify-center">
+        <TabsList>
+          <TabsTrigger value="profile">Profile</TabsTrigger>
+          <TabsTrigger value="notes">Notes</TabsTrigger>
+        </TabsList>
+      </div>
+      <TabsContent value="profile">
+        <Suspense fallback={<LoadingSkeleton />}>
+          <UserProfile user={user.right} />
+        </Suspense>
+      </TabsContent>
+      <TabsContent value="notes">
+        <Suspense fallback={<LoadingSkeleton />}>
+          <NotesServerLayer type="profile" slug={authUser.right.userId} />
+        </Suspense>
+      </TabsContent>
+    </Tabs>
   );
 }
 
