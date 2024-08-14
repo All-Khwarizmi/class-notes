@@ -267,7 +267,7 @@ export default class CoursUsecases {
     const sequenceDeletionResult = await this._repository.deleteSequence({
       sequenceId,
       type,
-      userId
+      userId,
     });
 
     return sequenceDeletionResult;
