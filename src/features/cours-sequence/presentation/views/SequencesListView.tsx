@@ -80,6 +80,7 @@ function SequencesListView({
                         deleteSequence({
                           sequenceId: sequence._id,
                           type: sequenceType,
+                          userId,
                         })
                       }
                       className={cn(

@@ -7,6 +7,7 @@ function useAddClasseSequence() {
   const [classeSequenceOptions, setClasseSequenceOptions] = React.useState<{
     classeId: string;
     sequenceId: string;
+    userId: string;
   } | null>(null);
   useEffect(() => {
     if (classeSequenceOptions) {
@@ -17,6 +18,7 @@ function useAddClasseSequence() {
         .addClassSequence(classeSequenceOptions)
         .then((eitherId) => {
           if (isLeft(eitherId)) {
+            console.error(eitherId.left);
             return toast.error("Failed to add sequence", {
               position: "top-center",
               id: loadingToast,

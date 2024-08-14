@@ -23,6 +23,7 @@ function ClasseSequencesTableView(props: {
   sequences: Sequence[];
   classeSequences: ClasseSequence[];
   classeId: string;
+  userId: string;
 }) {
   const { setClasseSequenceOptions } = useAddClasseSequence();
   const [selectedSequence, setSelectedSequence] = useState<string>("");
@@ -31,6 +32,7 @@ function ClasseSequencesTableView(props: {
     await deleteSequence({
       sequenceId,
       type: "sequence",
+      userId: props.userId,
     });
   };
   function handleSubmit() {
@@ -41,6 +43,7 @@ function ClasseSequencesTableView(props: {
     setClasseSequenceOptions({
       classeId: props.classeId,
       sequenceId: selectedSequence,
+      userId: props.userId,
     });
   }
   return (
@@ -77,7 +80,6 @@ function ClasseSequencesTableView(props: {
                 </TableCell>
                 <TableCell className="w-[200px]">
                   <div className={cn("flex items-center gap-4")}>
-                
                     {classeSequence ? (
                       <>
                         <Link
@@ -97,6 +99,7 @@ function ClasseSequencesTableView(props: {
                           setClasseSequenceOptions({
                             classeId: props.classeId,
                             sequenceId: sequence._id,
+                            userId: props.userId,
                           });
                         }}
                       />

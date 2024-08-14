@@ -39,6 +39,7 @@ async function ClasseSequencesServerLayer(props: { slug: string }) {
 
   return (
       <ClasseSequencesTableView
+      userId={authUser.right.userId}
         sequences={eitherSequences.right}
         classeId={props.slug}
         classeSequences={eitherClasseSequences.right}
