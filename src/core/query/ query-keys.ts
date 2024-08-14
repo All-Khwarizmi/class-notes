@@ -45,5 +45,6 @@ export const QUERY_KEYS = {
   },
   VISIBILITY: {
     GET_ALL: (options: string[] = []) => ["GET_ALL_VISIBILITY", ...options],
+    UPDATE: (options: string[] = []) => ["UPDATE_VISIBILITY", ...options],
   },
 };
