@@ -46,7 +46,7 @@ export default function useSaveSequenceMetadata() {
         toast.success("Sequence metadata saved", {
           id: loadingToast,
         });
-        router.push(`/sequences/${eitherSequence.right}`);
+        router.push(`/sequences/${eitherSequence.right}?type=template`);
       });
   }, [saveSequenceMetadata]);
 

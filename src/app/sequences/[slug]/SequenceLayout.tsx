@@ -14,6 +14,7 @@ import CoursSequenceView from "@/features/cours-sequence/presentation/views/Cour
 import { authUseCases } from "@/features/auth/application/usecases/auth-usecases";
 import NotesServerLayer from "@/app/profile/notes/[slug]/NotesServerLayer";
 import CoursesServerLayer from "@/app/cours/all/[slug]/CoursesServerLayer";
+import ErrorDialog from "@/core/components/common/ErrorDialog";
 
 async function SequenceLayout(props: {
   slug: string;
@@ -25,12 +26,10 @@ async function SequenceLayout(props: {
     (props.type !== "template" && props.type !== "sequence")
   ) {
     return (
-      <LayoutWithProps
-        isError={{
-          message: "Invalid params",
-          code: "PRE301",
-          description: "Invalid params",
-        }}
+      <ErrorDialog
+        message="Invalid params"
+        code="PRE301"
+        description="Invalid params"
       />
     );
   }
@@ -46,12 +45,12 @@ async function SequenceLayout(props: {
   });
   if (isLeft(eitherSequence)) {
     return (
-      <LayoutWithProps
-        isError={{
-          message: "Sequence not found",
-          code: "PRE404",
-          description: "Sequence not found",
-        }}
+      <ErrorDialog
+        message={`
+      An error occurred while fetching sequence. 
+    `}
+        code={eitherSequence.left.code}
+        description={eitherSequence.left.message}
       />
     );
   }
