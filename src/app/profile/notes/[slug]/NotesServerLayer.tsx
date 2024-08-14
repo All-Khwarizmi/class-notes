@@ -14,7 +14,7 @@ async function NotesServerLayer(props: {
   type: "profile" | "sequence" | "cours" | "class" | "student";
 }) {
   if (!props.slug) {
-      <NotFound />
+    <NotFound />;
   }
   const authUser = await authUseCases.getUserAuth();
   if (isLeft(authUser)) {
@@ -27,22 +27,22 @@ async function NotesServerLayer(props: {
   });
   if (isLeft(eitherNotes)) {
     return (
-        <ErrorDialog
-          message={`
+      <ErrorDialog
+        message={`
         There was an error while fetching your notes.
         Please try again later.
         ${eitherNotes.left}
         Code: ${eitherNotes.left.code}
         `}
-        />
+      />
     );
   }
 
   return (
-      <NotesTableView
-        notes={eitherNotes.right}
-        parentId={props.type === "profile" ? authUser.right.userId : props.slug}
-      />
+    <NotesTableView
+      notes={eitherNotes.right}
+      parentId={props.type === "profile" ? authUser.right.userId : props.slug}
+    />
   );
 }
 

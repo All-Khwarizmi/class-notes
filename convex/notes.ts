@@ -14,7 +14,7 @@ export const createNote = mutation({
       })
     ),
     folders: v.array(
-      v.object({ 
+      v.object({
         id: v.string(),
         name: v.string(),
         contentType: v.union(
@@ -48,6 +48,7 @@ export const createNote = mutation({
       keywords: args.keywords,
       type: args.type,
       contentType: args.contentType,
+      lastModified: Date.now(),
     });
     return categoryId;
   },
@@ -124,6 +125,7 @@ export const updateNote = mutation({
         pathDictionary: args.pathDictionary,
         folders: args.folders,
         keywords: args.keywords,
+        lastModified: Date.now(),
       });
       return true;
     } else {

@@ -19,8 +19,9 @@ export default class NotesUsecases {
   }): Promise<Either<Failure<string>, Note[]>> {
     const eitherNotes = await this._repository.getNotes({ parentId });
     if (isLeft(eitherNotes)) {
+      console.log("eitherNotes", eitherNotes);
       return eitherNotes;
-    }
+    } 
     const validatedNotes: Note[] = [];
     for (const note of eitherNotes.right) {
       const parsedNote = {
@@ -32,7 +33,7 @@ export default class NotesUsecases {
       if (!validatesNotes.success) {
         return left(
           Failure.invalidValue({
-            invalidValue: note,
+            invalidValue: parsedNote,
             message: "Invalid notes",
             code: "APP203",
           })
