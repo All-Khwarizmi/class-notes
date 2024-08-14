@@ -8,13 +8,9 @@ import {
   TableHeader,
   TableRow,
 } from "@/core/components/ui/table";
-import CustomDialog from "../../../../core/components/common/CustomDialog";
-import AddClassForm from "./AddClassForm";
-import AddIcon from "../../../../core/components/icons/AddIcon";
 import Link from "next/link";
 import { Delete, Pen, Plus } from "lucide-react";
 import VisibilitySwitch from "@/features/cours-sequence/presentation/components/VisibilitySwitch";
-import LayoutWithProps from "@/core/components/layout/LayoutWithProps";
 import { useClassesTableLogic } from "../services/hooks/useClassesTableLogic";
 import Layout from "@/core/components/layout/Layout";
 import { cn } from "@/lib/utils";
