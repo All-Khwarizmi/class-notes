@@ -1,7 +1,6 @@
 import { Either } from "fp-ts/lib/Either";
 import { DocumentData } from "./database-types";
 import Failure from "../failures/failures";
-import { UserType } from "@/features/user/domain/entities/user-schema";
 import {
   Category,
   Competence,
@@ -36,6 +35,7 @@ import {
   DeleteClasseOptions,
 } from "@/features/classe/domain/classe-types";
 import { SaveUserOptions } from "@/features/user/domain/types/types";
+import { AddClasseToVisibilityOptions, AddComplementToVisibilityOptions, AddCoursToVisibilityOptions, AddSequenceToVisibilityOptions } from "@/features/visibility/domain/types";
 
 export default abstract class IDatabase {
   abstract getUser({
@@ -419,4 +419,22 @@ export default abstract class IDatabase {
   abstract deleteStudentsFromClasseId(
     options: DeleteClasseOptions
   ): Promise<Either<Failure<string>, void>>;
+
+  abstract addClasseToVisibility(
+    options: AddClasseToVisibilityOptions
+  ): Promise<Either<Failure<string>, void>>;
+
+  abstract addSequenceToVisibility(
+    options: AddSequenceToVisibilityOptions
+  ): Promise<Either<Failure<string>, void>>;
+
+  abstract addCoursToVisibility(
+    options: AddCoursToVisibilityOptions
+  ): Promise<Either<Failure<string>, void>>;
+
+  abstract addComplementToVisibility(
+    options: AddComplementToVisibilityOptions
+  ): Promise<Either<Failure<string>, void>>;
+
+
 }

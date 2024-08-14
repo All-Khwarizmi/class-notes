@@ -39,6 +39,12 @@ import {
   DeleteClasseOptions,
 } from "@/features/classe/domain/classe-types";
 import { SaveUserOptions } from "@/features/user/domain/types/types";
+import {
+  AddClasseToVisibilityOptions,
+  AddSequenceToVisibilityOptions,
+  AddCoursToVisibilityOptions,
+  AddComplementToVisibilityOptions,
+} from "@/features/visibility/domain/types";
 
 export interface ConvexDatabaseOptions {
   db: typeof api;
@@ -1197,6 +1203,84 @@ export default class ConvexDatabase extends IDatabase {
         Failure.invalidValue({
           invalidValue: id,
           message: "Error updating class visibility",
+          code: "INF101",
+        })
+      );
+    }
+  }
+
+  async addClasseToVisibility(
+    options: AddClasseToVisibilityOptions
+  ): Promise<Either<Failure<string>, void>> {
+    try {
+      await fetchMutation(
+        this._db.visibility.addClasseToVisibilityTable,
+        options
+      );
+      return right(undefined);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: options,
+          message: "Error adding class to visibility",
+          code: "INF101",
+        })
+      );
+    }
+  }
+
+  async addSequenceToVisibility(
+    options: AddSequenceToVisibilityOptions
+  ): Promise<Either<Failure<string>, void>> {
+    try {
+      await fetchMutation(
+        this._db.visibility.addSequenceToVisibilityTable,
+        options
+      );
+      return right(undefined);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: options,
+          message: "Error adding sequence to visibility",
+          code: "INF101",
+        })
+      );
+    }
+  }
+  async addCoursToVisibility(
+    options: AddCoursToVisibilityOptions
+  ): Promise<Either<Failure<string>, void>> {
+    try {
+      await fetchMutation(
+        this._db.visibility.addCoursToVisibilityTable,
+        options
+      );
+      return right(undefined);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: options,
+          message: "Error adding cours to visibility",
+          code: "INF101",
+        })
+      );
+    }
+  }
+  async addComplementToVisibility(
+    options: AddComplementToVisibilityOptions
+  ): Promise<Either<Failure<string>, void>> {
+    try {
+      await fetchMutation(
+        this._db.visibility.addComplementToVisibilityTable,
+        options
+      );
+      return right(undefined);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: options,
+          message: "Error adding complement to visibility",
           code: "INF101",
         })
       );
