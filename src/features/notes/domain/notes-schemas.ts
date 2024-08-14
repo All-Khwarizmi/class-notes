@@ -1,8 +1,10 @@
+import { last } from "lodash";
 import { z } from "zod";
 
 export const NoteSchema = z.object({
   id: z.string(),
   createdAt: z.number(),
+  lastModified: z.number().optional(),
   name: z.string(),
   description: z.string(),
   parentId: z.string(),

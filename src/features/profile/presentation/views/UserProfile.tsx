@@ -116,7 +116,6 @@ export default function UserProfile({ user }: { user: UserType }) {
                       placeholder="John Doe"
                     />
                   </FormControl>
-                  <FormDescription>Enter your full name</FormDescription>
                 </FormItem>
               );
             }}
@@ -136,7 +135,7 @@ export default function UserProfile({ user }: { user: UserType }) {
                       </SelectTrigger>
                       <SelectContent>
                         <SelectGroup>
-                          {educationSystemOptions.map((option) => (
+                          {countryOptions.map((option) => (
                             <SelectItem key={option.value} value={option.value}>
                               {option.label}
                             </SelectItem>
@@ -163,7 +162,7 @@ export default function UserProfile({ user }: { user: UserType }) {
                       </SelectTrigger>
                       <SelectContent>
                         <SelectGroup>
-                          {countryOptions.map((option) => (
+                          {educationSystemOptions.map((option) => (
                             <SelectItem key={option.value} value={option.value}>
                               {option.label}
                             </SelectItem>
@@ -191,7 +190,7 @@ export default function UserProfile({ user }: { user: UserType }) {
                       </SelectTrigger>
                       <SelectContent>
                         <SelectGroup>
-                          {subjectsOptions.map((option) => {
+                          {subjectsOptions?.map((option) => {
                             return (
                               <SelectItem value={option} key={option}>
                                 {option}

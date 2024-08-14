@@ -3,6 +3,7 @@ import { v } from "convex/values";
 import { EvaluationWithGrade } from "./tables/evaluations_with_grades_convex_schema";
 import { EvaluationBase } from "./tables/evaluation_base_convex_schema";
 import { userSchema } from "./fields/users";
+import { last } from "lodash";
 export default defineSchema({
   Users: userSchema,
   VisibilityTable: defineTable({
@@ -133,6 +134,7 @@ export default defineSchema({
     keywords: v.array(v.string()),
     content: v.string(),
     type: v.union(v.literal("Folder"), v.literal("Item")),
+    lastModified: v.optional(v.float64()),
     contentType: v.union(
       v.literal("Diagram"),
       v.literal("Flowchart"),
@@ -193,8 +195,8 @@ export default defineSchema({
     studentsId: v.optional(v.array(v.id("Students"))),
     evaluationsTemplatesId: v.array(v.id("EvaluationTemplates")),
     publish: v.optional(v.boolean()),
-    educationSystem:v.optional( v.string()),
-    educationLevel:v.optional( v.string()),
+    educationSystem: v.optional(v.string()),
+    educationLevel: v.optional(v.string()),
   }),
   EvaluationBase,
 
