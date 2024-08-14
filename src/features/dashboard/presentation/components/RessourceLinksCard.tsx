@@ -35,12 +35,12 @@ function RessourceLinksCard(props: { userId: string }) {
           Classes
         </Link>
         <Link
-          href="#"
+          href="/evaluations"
           className="inline-flex items-center justify-between gap-2 rounded-md bg-background px-4 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
           prefetch={false}
         >
           <div className="h-4 w-4" />
-          Resources
+          Evaluations
         </Link>
       </CardContent>
     </Card>
