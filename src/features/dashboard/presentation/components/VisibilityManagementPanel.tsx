@@ -82,29 +82,7 @@ export default function VisibilityManagementComponent() {
   const [visibilityState, setVisibilityState] = React.useState(() =>
     flatVisibilityType(visibility)
   );
-  const renderBadge = (publish: boolean) => (
-    <TooltipProvider>
-      <Badge
-        className={
-          publish ? "bg-green-500 text-green-50" : "bg-red-500 text-red-50"
-        }
-      >
-        {publish ? "Visible" : "Hidden"}
-      </Badge>
-      <Tooltip>
-        <TooltipTrigger>
-          <Button className="p-1">
-            <InfoIcon />
-          </Button>
-        </TooltipTrigger>
-        <TooltipContent>
-          {publish
-            ? "This entity and all its descendants are visible."
-            : "This entity and all its descendants are hidden."}
-        </TooltipContent>
-      </Tooltip>
-    </TooltipProvider>
-  );
+
   const toggleStateVisibility = (args: {
     type: "classe" | "sequence" | "cours" | "complement";
     typeId: string;
@@ -232,25 +210,5 @@ export default function VisibilityManagementComponent() {
         ))}
       </CardContent>
     </Card>
-  );
-}
-
-function InfoIcon() {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <circle cx="12" cy="12" r="10" />
-      <path d="M12 16v-4" />
-      <path d="M12 8h.01" />
-    </svg>
   );
 }
