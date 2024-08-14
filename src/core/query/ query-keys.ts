@@ -16,6 +16,10 @@ export const QUERY_KEYS = {
       "GET_ALL_CLASSE_SEQUENCES",
       ...options,
     ],
+    CLASSE_SEQUENCE_ADD: (options: string[] = []) => [
+      "ADD_CLASSE_SEQUENCE",
+      ...options,
+    ],
   },
   SEQUENCE: {
     DELETE: (options: string[] = []) => ["DELETE_SEQUENCE", ...options],
