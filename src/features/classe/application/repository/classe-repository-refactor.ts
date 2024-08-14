@@ -1,7 +1,6 @@
 import IDatabase from "@/core/data/idatabase";
 import { isLeft, left } from "fp-ts/lib/Either";
 import { ClassType } from "../../domain/class-schema";
-import ClassEntity from "../../domain/class-entity";
 import Failure from "@/core/failures/failures";
 import { right } from "fp-ts/lib/Either";
 import { getAppDataBase } from "@/core/data/get-app-db";
@@ -9,16 +8,45 @@ import {
   CreateClasseOptions,
   DeleteClasseOptions,
 } from "../../domain/classe-types";
+import {
+  GetVisibilityOptions,
+  UpdateVisibilityOptions,
+} from "@/features/visibility/domain/types";
+import VisibilityRepository, {
+  visibilityRepository,
+} from "@/features/visibility/application/repositories/visibility-repository";
 
 export default class ClasseRepository {
   private readonly _db: IDatabase;
+  private readonly _visibilityRepository: VisibilityRepository;
 
-  constructor(db: IDatabase) {
+  constructor(
+    db: IDatabase,
+
+    { visibilityRepository }: { visibilityRepository: VisibilityRepository }
+  ) {
     this._db = db;
+    this._visibilityRepository = visibilityRepository;
   }
 
   async createClasse(options: CreateClasseOptions) {
-    return await this._db.createClass(options);
+    const operationResult = await this._db.createClass(options);
+    if (isLeft(operationResult)) {
+      return operationResult;
+    }
+    const id = operationResult.right;
+
+    await this._visibilityRepository.addClasseToVisibility({
+      userId: options.userId,
+      entity: {
+        id,
+        name: options.name,
+        description: options.description ?? "",
+        publish: false,
+      },
+    });
+
+    return operationResult;
   }
 
   async deleteClasse({ id }: { id: string }) {
@@ -33,17 +61,17 @@ export default class ClasseRepository {
     return await this._db.getClasses({ id });
   }
 
-  async updateClasseVisibility({
-    id,
-    visibility,
-  }: {
-    id: string;
-    visibility: boolean;
-  }) {
-    return this._db.updateClassVisibility({ id, visibility });
-  }
+  // async updateClasseVisibility({
+  //   id,
+  //   visibility,
+  // }: {
+  //   id: string;
+  //   visibility: boolean;
+  // }) {
+  //   return this._db.updateClassVisibility({ id, visibility });
+  // }
 
-  async getVisibility({ userId }: { userId: string }) {
+  async getVisibility({ userId }: GetVisibilityOptions) {
     return this._db.getVisibility({ id: userId });
   }
 
@@ -52,12 +80,7 @@ export default class ClasseRepository {
     publish,
     type,
     typeId,
-  }: {
-    userId: string;
-    publish: boolean;
-    type: "classe" | "sequence" | "cours" | "complement";
-    typeId: string;
-  }) {
+  }: UpdateVisibilityOptions) {
     return this._db.updateVisibility({ userId, publish, type, typeId });
   }
 
@@ -74,4 +97,6 @@ export default class ClasseRepository {
   }
 }
 
-export const classeRepository = new ClasseRepository(getAppDataBase());
+export const classeRepository = new ClasseRepository(getAppDataBase(), {
+  visibilityRepository,
+});
