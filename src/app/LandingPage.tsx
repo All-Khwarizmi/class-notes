@@ -1,9 +1,19 @@
+"use client";
+
 import Link from "next/link";
 import Hero from "./HeroSection";
 import ContactCTO from "@/core/components/layout/ContactCTO";
 import Features from "@/core/components/layout/Features";
+import { useLayoutContext } from "@/core/components/layout/ExperimentalLayoutCtx";
+import { useEffect } from "react";
 
 export default function Component() {
+  const { setIsLandingPage } = useLayoutContext();
+  useEffect(() => {
+    if (setIsLandingPage) {
+      setIsLandingPage(true);
+    }
+  }, []);
   return (
     <div className="flex flex-col min-h-[100dvh]">
       <main className="flex-1">

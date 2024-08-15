@@ -11,6 +11,8 @@ export type LayoutWithPropsProps = PropsWithChildren & {
   readonly isLoading?: boolean;
   readonly experimentalItems?: boolean;
   readonly userId: string;
+  readonly isLandingPage?: boolean;
+  setIsLandingPage?: (isLandingPage: boolean) => void;
   spacesNavItems?: NavItem[];
   setSpacesNavItems?: (navItems: NavItem[]) => void;
   isSpaces?: boolean;
