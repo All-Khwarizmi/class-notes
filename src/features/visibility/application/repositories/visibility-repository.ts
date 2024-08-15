@@ -21,14 +21,8 @@ export default class VisibilityRepository {
   async getVisibility({ userId }: GetVisibilityOptions) {
     return this._db.getVisibility({ id: userId });
   }
-
-  async updateVisibility({
-    userId,
-    publish,
-    type,
-    typeId,
-  }: UpdateVisibilityOptions) {
-    return this._db.updateVisibility({ userId, publish, type, typeId });
+  async updateVisibility(options: UpdateVisibilityOptions) {
+    return this._db.updateVisibility(options);
   }
 
   async addClasseToVisibility(options: AddClasseToVisibilityOptions) {
@@ -47,9 +41,9 @@ export default class VisibilityRepository {
     return this._db.addComplementToVisibility(options);
   }
 
-    async deleteClasseFromVisibility(options: DeleteEntityFromVisibilityOptions) {
-        return this._db.deleteEntityFromVisibilityTable(options);
-    }
+  async deleteClasseFromVisibility(options: DeleteEntityFromVisibilityOptions) {
+    return this._db.deleteEntityFromVisibilityTable(options);
+  }
 }
 
 export const visibilityRepository = new VisibilityRepository(getAppDataBase());

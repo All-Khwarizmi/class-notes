@@ -10,7 +10,6 @@ import {
 } from "@/core/components/ui/table";
 import Link from "next/link";
 import { Delete, Pen, Plus } from "lucide-react";
-import VisibilitySwitch from "@/features/cours-sequence/presentation/components/VisibilitySwitch";
 import { useClassesTableLogic } from "../services/hooks/useClassesTableLogic";
 import Layout from "@/core/components/layout/Layout";
 import { cn } from "@/lib/utils";
@@ -100,13 +99,6 @@ export default function ClassesTable(props: { userId: string }) {
                       <Link href={`/classes/class/${classe.id}`}>
                         <Pen size={16} />
                       </Link>
-                    </TableCell>
-                    <TableCell>
-                      <VisibilitySwitch
-                        userId={props.userId}
-                        type="classe"
-                        typeId={classe.id}
-                      />
                     </TableCell>
                   </TableRow>
                 );

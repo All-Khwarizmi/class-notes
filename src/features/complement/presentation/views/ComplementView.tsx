@@ -5,7 +5,6 @@ import UpdateComplement from "../components/UpdateComplement";
 import { Eye } from "lucide-react";
 import Link from "next/link";
 import AfterMenuButton from "@/core/components/common/editor/AfterMenuButton";
-import VisibilitySwitch from "@/features/cours-sequence/presentation/components/VisibilitySwitch";
 import useUpdateComplement from "../../application/adapters/services/useUpdateComplement";
 import FloatingEditor from "@/core/components/common/editor/FloatingEditor";
 

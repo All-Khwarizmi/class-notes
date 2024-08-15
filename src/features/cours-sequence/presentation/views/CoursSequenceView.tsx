@@ -6,7 +6,6 @@ import Link from "next/link";
 import { Eye, Settings } from "lucide-react";
 import AfterMenuButton from "@/core/components/common/editor/AfterMenuButton";
 import { Complement } from "@/features/complement/domain/complement-schemas";
-import VisibilitySwitch from "../components/VisibilitySwitch";
 import useUpdateSequenceBody from "../../application/adapters/services/useUpdateSequenceBody";
 import useUpdateCoursBody from "../../application/adapters/services/useUpdateCoursBody";
 import FloatingEditor from "@/core/components/common/editor/FloatingEditor";
