@@ -1,8 +1,5 @@
 import ErrorDialog from "@/core/components/common/ErrorDialog";
 import NothingToShow from "@/core/components/common/editor/NothingToShow";
-import LayoutWithProps from "@/core/components/layout/LayoutWithProps";
-import Sidebar from "@/core/components/layout/Sidebar";
-import SpacesHeader from "@/core/components/layout/SpacesHeader";
 import getVisibility from "@/features/classe/application/adapters/actions/get-visibility";
 import { complementUsecases } from "@/features/complement/application/usecases/complement-usecases";
 import { Complement } from "@/features/complement/domain/complement-schemas";
