@@ -98,11 +98,11 @@ export function flatVisibilityType(vt: VisibilityType): FlatVisibilityType {
 
 // A Function from the flat version to the structured version
 export function structuredVisibilityType(
+  userId: string,
   vt: FlatVisibilityType
-): VisibilityType {
-  const visibility: VisibilityType = {
-    _id: vt.id,
-    userId: vt.id,
+): Omit<VisibilityType, "_id"> {
+  const visibility: Omit<VisibilityType, "_id"> = {
+    userId,
     classe: [],
     sequences: [],
     cours: [],
@@ -209,7 +209,6 @@ export function toggleVisibility(
                     }
                   : c
               );
-            
             });
             s.courses.forEach((c) => {
               c.complements = c.complements.map((c) =>
@@ -261,7 +260,6 @@ export function toggleVisibility(
                     }
                   : c
               );
-
 
               s.courses.forEach((c) => {
                 c.complements = c.complements.map((c) =>
