@@ -38,7 +38,6 @@ export function SideNav({ setOpen, className }: SideNavProps) {
       console.log("Setting items to navItems", navItems);
       setItems(navItems);
     }
-  
   }, [isSpaces, spacesNavItems, navItems]);
 
   const path = usePathname();
@@ -58,7 +57,6 @@ export function SideNav({ setOpen, className }: SideNavProps) {
   useEffect(() => {
     setLiveHref(path);
   }, [path]);
-
 
   function pathIsActive(props: { path: string; liveHref: string }) {
     let { path, liveHref } = props;
@@ -90,6 +88,7 @@ export function SideNav({ setOpen, className }: SideNavProps) {
                 className={cn(
                   buttonVariants({ variant: "ghost" }),
                   pathIsActive({ path: item.href, liveHref }) && "bg-muted",
+                  `${item.color} hover:bg-muted`,
                   "group relative flex h-12 justify-between px-4 py-2 text-base duration-200 hover:bg-muted hover:no-underline"
                 )}
               >
@@ -109,28 +108,6 @@ export function SideNav({ setOpen, className }: SideNavProps) {
               </AccordionTrigger>
               <AccordionContent className="mt-2 space-y-4 pb-1">
                 {" "}
-                {/* <Link
-                  href={item.href}
-                  onClick={() => {
-                    if (setOpen) setOpen(false);
-                  }}
-                  className={cn(
-                    buttonVariants({ variant: "ghost" }),
-                    "group relative flex h-12 justify-start gap-x-3",
-                    pathIsActive({ path: item.href, liveHref }) &&
-                      "bg-muted font-bold hover:bg-muted"
-                  )}
-                >
-                  {item.icon}
-                  <div
-                    className={cn(
-                      "absolute left-12 text-base duration-200",
-                      !isOpen && className
-                    )}
-                  >
-                    {item.title}
-                  </div>
-                </Link> */}
                 {item.children?.map((child) => (
                   <Link
                     key={child.title}
@@ -141,6 +118,7 @@ export function SideNav({ setOpen, className }: SideNavProps) {
                     className={cn(
                       buttonVariants({ variant: "ghost" }),
                       "group relative flex h-12 justify-start gap-x-3 ml-4",
+                      `${child.color} hover:bg-muted`,
                       pathIsActive({ path: child.href, liveHref }) &&
                         "bg-muted font-bold hover:bg-muted"
                     )}
@@ -169,6 +147,7 @@ export function SideNav({ setOpen, className }: SideNavProps) {
             className={cn(
               buttonVariants({ variant: "ghost" }),
               "group relative flex h-12 justify-start",
+              `${item.color} hover:bg-muted`,
 
               pathIsActive({ path: item.href, liveHref: liveHref }) &&
                 "bg-secondary font-bold hover:bg-muted"
@@ -177,7 +156,7 @@ export function SideNav({ setOpen, className }: SideNavProps) {
             {item.icon}
             <span
               className={cn(
-                "absolute left-12 text-base duration-200",
+                "absolute left-12 text-base duration-200 ",
                 !isOpen && className
               )}
             >
