@@ -39,7 +39,7 @@ export default function Sidebar() {
     >
       <ArrowLeft
         className={cn(
-          "absolute -right-3 top-20 cursor-pointer rounded-full border bg-background text-3xl text-foreground",
+          "absolute right-3 top-20 cursor-pointer rounded-full border bg-background text-3xl text-foreground",
           !isOpen && "rotate-180"
         )}
         onClick={handleToggle}

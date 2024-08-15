@@ -37,7 +37,7 @@ export function SideNav({ setOpen, className }: SideNavProps) {
   }, [isSpaces, spacesNavItems, navItems]);
 
   const path = usePathname();
-  const { isOpen } = useSidebar();
+  const { isOpen, toggle } = useSidebar();
   const [openItem, setOpenItem] = useState("");
   const [lastOpenItem, setLastOpenItem] = useState("");
   const [liveHref, setLiveHref] = useState(path);
@@ -53,6 +53,15 @@ export function SideNav({ setOpen, className }: SideNavProps) {
   useEffect(() => {
     setLiveHref(path);
   }, [path]);
+
+  function handleOpenItem(value: string) {
+    if (!isOpen) {
+      toggle(true);
+    }
+    setTimeout(() => {
+      setOpenItem(value);
+    }, 250);
+  }
 
   function pathIsActive(props: { path: string; liveHref: string }) {
     let { path, liveHref } = props;
@@ -77,7 +86,7 @@ export function SideNav({ setOpen, className }: SideNavProps) {
             className="space-y-2"
             key={item.title}
             value={openItem}
-            onValueChange={setOpenItem}
+            onValueChange={handleOpenItem}
           >
             <AccordionItem value={item.title} className="border-none ">
               <AccordionTrigger
@@ -88,7 +97,13 @@ export function SideNav({ setOpen, className }: SideNavProps) {
                   "group relative flex h-12 justify-between px-4 py-2 text-base duration-200 hover:bg-muted hover:no-underline"
                 )}
               >
-                <div>{item.icon}</div>
+                <div
+                  className={cn(
+                    !isOpen && "flex w-full justify-center items-center"
+                  )}
+                >
+                  {item.icon}
+                </div>
                 <div
                   className={cn(
                     "absolute left-12 text-base duration-200 ",
@@ -149,7 +164,13 @@ export function SideNav({ setOpen, className }: SideNavProps) {
                 "bg-secondary font-bold hover:bg-muted"
             )}
           >
-            {item.icon}
+            <div
+              className={cn(
+                !isOpen && "flex w-full justify-center items-center"
+              )}
+            >
+              {item.icon}
+            </div>
             <span
               className={cn(
                 "absolute left-12 text-base duration-200 ",
