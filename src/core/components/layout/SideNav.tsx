@@ -1,12 +1,9 @@
 "use client";
 import Link from "next/link";
-
-import { type NavItem } from "@/lib/types";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { useSidebar } from "@/core/application/common/useSidebar";
 import { buttonVariants } from "@/core/components/ui/button";
-
 import {
   Accordion,
   AccordionContent,
@@ -35,7 +32,6 @@ export function SideNav({ setOpen, className }: SideNavProps) {
     if (isSpaces === true && spacesNavItems) {
       setItems(spacesNavItems);
     } else {
-      console.log("Setting items to navItems", navItems);
       setItems(navItems);
     }
   }, [isSpaces, spacesNavItems, navItems]);
