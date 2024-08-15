@@ -36,7 +36,7 @@ export default function VisibilityManagementComponent(props: {
     );
   } else if (visibilityState) {
     return (
-      <Card className="w-full">
+      <Card className="w-full pb-4">
         <CardHeader>
           <CardTitle>Visibility Management</CardTitle>
           <CardDescription>
@@ -45,9 +45,9 @@ export default function VisibilityManagementComponent(props: {
         </CardHeader>
         <CardContent>
           {visibilityState.classes.map((item) => (
-            <Collapsible key={item.id} className="w-full h-full pt-4">
+            <Collapsible key={item.id} className="w-full h-full ">
               <div className="flex justify-between items-center">
-                <CollapsibleTrigger className="flex  w-full justify-between items-center pt-2 cursor-pointer gap-2 mt-2">
+                <CollapsibleTrigger className="flex  w-full justify-between items-center pt-2 cursor-pointer gap-2 ">
                   <div className="flex items-center gap-2">
                     <div className="flex flex-col items-start ">
                       <h2 className="flex gap-2 items-center">
@@ -83,7 +83,7 @@ export default function VisibilityManagementComponent(props: {
                                 size={16}
                                 className="text-green-500 inline"
                               />
-                              <span > {sequence.name}</span>
+                              <span> {sequence.name}</span>
                             </h2>
                             <h4 className="text-sm text-gray-400">
                               {sequence.description}
