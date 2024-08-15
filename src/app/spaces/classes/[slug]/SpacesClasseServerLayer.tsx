@@ -50,6 +50,7 @@ async function SpacesClasseServerLayer(props: {
     <>
       {sequences.length > 0 ? (
         <SequencesListViewSpaces
+          navItems={sequenceNavItems}
           sequences={sequences}
           spacesMode={true}
           userId={props.searchParams.user}
