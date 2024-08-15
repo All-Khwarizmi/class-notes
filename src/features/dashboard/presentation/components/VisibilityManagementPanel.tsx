@@ -12,10 +12,10 @@ import {
   CollapsibleTrigger,
 } from "@/core/components/ui/collapsible";
 import { Switch } from "@/core/components/ui/switch";
-import { BookOpen, Building, CheckSquare, List } from "lucide-react";
+import { BookOpen, BookText, Building, CheckSquare, List } from "lucide-react";
 import { useVisibilityLogic } from "../../application/adapters/services/useVisibilityLogic";
-import LoadingSkeleton from "@/core/components/common/LoadingSkeleton";
 import ErrorDialog from "@/core/components/common/ErrorDialog";
+import LoaderPage from "@/core/components/layout/LoaderPage";
 
 export default function VisibilityManagementComponent(props: {
   userId: string;
@@ -26,7 +26,7 @@ export default function VisibilityManagementComponent(props: {
     });
 
   if (isLoading) {
-    return <LoadingSkeleton />;
+    return <LoaderPage />;
   } else if (isError && error) {
     return (
       <ErrorDialog
@@ -50,7 +50,7 @@ export default function VisibilityManagementComponent(props: {
                 <CollapsibleTrigger className="flex  w-full justify-between items-center pt-2 cursor-pointer gap-2 mt-2">
                   <div className="flex items-center gap-2">
                     <div className="flex flex-col items-start ">
-                      <h2>
+                      <h2 className="flex gap-2 items-center">
                         <Building size={16} className="text-blue-500 inline" />
                         <span> {item.name}</span>
                       </h2>
@@ -78,12 +78,12 @@ export default function VisibilityManagementComponent(props: {
                       <CollapsibleTrigger className="flex  w-full justify-between items-center pt-2 cursor-pointer gap-2 ">
                         <div className="flex items-center gap-2">
                           <div className="flex flex-col items-start ">
-                            <h2>
-                              <List
+                            <h2 className="flex gap-2 items-center">
+                              <BookText
                                 size={16}
                                 className="text-green-500 inline"
                               />
-                              <span> {sequence.name}</span>
+                              <span > {sequence.name}</span>
                             </h2>
                             <h4 className="text-sm text-gray-400">
                               {sequence.description}
@@ -109,7 +109,7 @@ export default function VisibilityManagementComponent(props: {
                             <CollapsibleTrigger className="flex  w-full justify-between items-center pt-2 cursor-pointer gap-2">
                               <div className="flex items-center gap-2">
                                 <div className="flex flex-col items-start ">
-                                  <h2>
+                                  <h2 className="flex gap-2 items-center">
                                     <BookOpen
                                       size={16}
                                       className="text-orange-500 inline mr-1"
@@ -141,7 +141,7 @@ export default function VisibilityManagementComponent(props: {
                               >
                                 <div className="flex items-center gap-2">
                                   <div>
-                                    <h2>
+                                    <h2 className="flex gap-2 items-center">
                                       <CheckSquare
                                         size={16}
                                         className="text-red-500 inline mr-1"
