@@ -3,6 +3,7 @@ import useUpdateVisibility from "@/features/classe/application/adapters/services
 import {
   FlatVisibilityType,
   flatVisibilityType,
+  structuredVisibilityType,
   toggleVisibility,
 } from "@/features/classe/domain/visibility-schema";
 import { isRight } from "fp-ts/lib/Either";
@@ -28,36 +29,15 @@ export function useVisibilityLogic(options: { userId: string }) {
     typeId: string;
     publish: boolean;
   }) => {
-    setVisibilityState(
-      toggleVisibility(
-        visibilityState!,
-        options.userId,
-        (
-          userId: string,
-          type: "classe" | "sequence" | "cours" | "complement",
-          typeId: string,
-          publish: boolean
-        ) =>
-          updateVisibility(
-            {
-              userId,
-              type,
-              typeId,
-              publish,
-            },
-            {
-              onSuccess: () => {
-                refetch();
-              },
-            }
-          ),
-        {
-          type: args.type,
-          typeId: args.typeId,
-          publish: args.publish,
-        }
-      )
-    );
+    const newVisibility = toggleVisibility(visibilityState!, {
+      type: args.type,
+      typeId: args.typeId,
+      publish: args.publish,
+    });
+    updateVisibility({
+      userId: options.userId,
+      visibilityTable: structuredVisibilityType(newVisibility),
+    });
   };
   return {
     visibilityState,
