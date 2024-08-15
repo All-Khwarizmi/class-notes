@@ -80,7 +80,12 @@ async function SpacesSequenceServerLayer(props: {
       children: coursesNavItems,
     },
   ];
-  return <ContentViewer content={eitherSequence.right.body} />;
+  return (
+    <ContentViewer
+      content={eitherSequence.right.body}
+      navItems={sequenceNavItems}
+    />
+  );
 }
 
 export default SpacesSequenceServerLayer;
