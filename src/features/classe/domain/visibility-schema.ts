@@ -96,18 +96,70 @@ export function flatVisibilityType(vt: VisibilityType): FlatVisibilityType {
   return flatVisibility;
 }
 
+// A Function from the flat version to the structured version
+export function structuredVisibilityType(
+  vt: FlatVisibilityType
+): VisibilityType {
+  const visibility: VisibilityType = {
+    _id: vt.id,
+    userId: vt.id,
+    classe: [],
+    sequences: [],
+    cours: [],
+    complement: [],
+  };
+  for (const classe of vt.classes) {
+    visibility.classe.push({
+      id: classe.id,
+      publish: classe.publish,
+      name: classe.name,
+      description: classe.description,
+    });
+    for (const sequence of classe.sequences) {
+      visibility.sequences.push({
+        id: sequence.id,
+        publish: sequence.publish,
+        classe: sequence.classe,
+        classeId: sequence.classeId,
+        name: sequence.name,
+        description: sequence.description,
+      });
+      for (const course of sequence.courses) {
+        visibility.cours.push({
+          id: course.id,
+          publish: course.publish,
+          sequence: course.sequence,
+          sequenceId: course.sequenceId,
+          classe: course.classe,
+          classeId: course.classeId,
+          name: course.name,
+          description: course.description,
+        });
+        for (const complement of course.complements) {
+          visibility.complement.push({
+            id: complement.id,
+            publish: complement.publish,
+            sequence: complement.sequence,
+            sequenceId: complement.sequenceId,
+            cours: complement.cours,
+            coursId: complement.coursId,
+            classe: complement.classe,
+            classeId: complement.classeId,
+            name: complement.name,
+            description: complement.description,
+          });
+        }
+      }
+    }
+  }
+  return visibility;
+}
+
 // A Function to toggle the visibility of an entity. We work with the flat version.The behavior is the following:
 // When an entity is toggled off all its descendants are also toggled off.
 // When an entity is toggled we leave the descendants as they are. This is to allow for a more granular control.
 export function toggleVisibility(
   visibility: FlatVisibilityType,
-  userId: string,
-  updateVisibility: (
-    userId: string,
-    type: "classe" | "sequence" | "cours" | "complement",
-    typeId: string,
-    publish: boolean
-  ) => void,
   args: {
     type: "classe" | "sequence" | "cours" | "complement";
     typeId: string;
@@ -122,7 +174,6 @@ export function toggleVisibility(
       newVisibility.classes = visibility.classes.map((c) =>
         c.id === args.typeId ? classe : c
       );
-      updateVisibility(userId, "classe", classe.id, classe.publish);
       if (!args.publish) {
         newVisibility.classes.forEach((c) => {
           c.sequences = c.sequences.map((s) =>
@@ -146,7 +197,6 @@ export function toggleVisibility(
                   }
                 : c
             );
-            updateVisibility(userId, "sequence", s.id, s.publish);
             s.courses.forEach((c) => {
               c.complements = c.complements.map((c) =>
                 c.classeId === args.typeId
@@ -159,10 +209,7 @@ export function toggleVisibility(
                     }
                   : c
               );
-              updateVisibility(userId, "cours", c.id, c.publish);
-              c.complements.forEach((c) =>
-                updateVisibility(userId, "complement", c.id, c.publish)
-              );
+            
             });
             s.courses.forEach((c) => {
               c.complements = c.complements.map((c) =>
@@ -183,7 +230,6 @@ export function toggleVisibility(
     }
   } else if (args.type === "sequence") {
     // Get the classe that contains the sequence
-    console.log(" // Get the classe that contains the sequence");
     const classe = newVisibility.classes.find((c) =>
       c.sequences.some((s) => s.id === args.typeId)
     );
@@ -202,8 +248,6 @@ export function toggleVisibility(
             s.id === args.typeId ? sequence : s
           ),
         }));
-        // Update the visibility over the network
-        updateVisibility(userId, "sequence", sequence.id, sequence.publish);
         // Update the visibility of the sequence in the courses if the sequence is toggled off
         if (!args.publish) {
           newVisibility.classes.forEach((c) => {
@@ -218,8 +262,6 @@ export function toggleVisibility(
                   : c
               );
 
-              // Update over the network
-              updateVisibility(userId, "cours", s.id, s.publish);
 
               s.courses.forEach((c) => {
                 c.complements = c.complements.map((c) =>
@@ -231,10 +273,6 @@ export function toggleVisibility(
                         cours: sequence.publish,
                       }
                     : c
-                );
-                // Update over the network
-                c.complements.forEach((c) =>
-                  updateVisibility(userId, "complement", c.id, c.publish)
                 );
               });
             });
@@ -273,8 +311,6 @@ export function toggleVisibility(
               ),
             })),
           }));
-          // Update over the network
-          updateVisibility(userId, "cours", course.id, course.publish);
           // Update the visibility of the course in the complements if the course is toggled off
           if (!args.publish) {
             newVisibility.classes.forEach((c) => {
@@ -288,10 +324,6 @@ export function toggleVisibility(
                           publish: course.publish,
                         }
                       : c
-                  );
-                  // Update over the network
-                  c.complements.forEach((c) =>
-                    updateVisibility(userId, "complement", c.id, c.publish)
                   );
                 });
               });
@@ -342,13 +374,6 @@ export function toggleVisibility(
                 })),
               })),
             }));
-            // Update over the network
-            updateVisibility(
-              userId,
-              "complement",
-              complement.id,
-              complement.publish
-            );
           }
         }
       }
