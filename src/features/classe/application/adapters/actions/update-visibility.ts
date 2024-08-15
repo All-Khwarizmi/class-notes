@@ -10,10 +10,11 @@ export default async function updateVisibility(options: {
   typeId: string;
   publish: boolean;
 }): Promise<Either<Failure<string>, void>> {
-  return classeUsecases.updateVisibility({
-    userId: options.userId,
-    type: options.type,
-    typeId: options.typeId,
-    publish: options.publish,
-  });
+  throw new Error("Not implemented");
+  // return classeUsecases.updateVisibility({
+  //   userId: options.userId,
+  //   type: options.type,
+  //   typeId: options.typeId,
+  //   publish: options.publish,
+  // });
 }
