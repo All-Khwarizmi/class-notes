@@ -1,11 +1,13 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { SideNav } from "@/core/components/layout/SideNav";
 import { cn } from "@/lib/utils";
-import { useSidebar } from "@/core/application/common/useSidebar";
+import {
+  useSidebar,
+  useSidebarPreference,
+} from "@/core/application/common/useSidebar";
 import ArrowLeft from "../icons/ArrowLeft";
 import { NavItem } from "@/lib/types";
-import { useLayoutContext } from "./ExperimentalLayoutCtx";
 
 export type SidebarProps = {
   navItems?: NavItem[];
@@ -14,11 +16,16 @@ export type SidebarProps = {
 export default function Sidebar() {
   const { isOpen, toggle } = useSidebar();
   const [status, setStatus] = useState(false);
-  const { navItems, spacesNavItems, isSpaces } = useLayoutContext();
+  const { get, set } = useSidebarPreference();
+
+  useEffect(() => {
+    toggle(get());
+  }, []);
 
   const handleToggle = () => {
-    setStatus(true);
-    toggle();
+    setStatus(false);
+    toggle(!isOpen);
+    set(!isOpen ? "true" : "false");
     setTimeout(() => setStatus(false), 500);
   };
 
