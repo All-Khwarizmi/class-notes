@@ -57,10 +57,12 @@ export function SideNav({ setOpen, className }: SideNavProps) {
   function handleOpenItem(value: string) {
     if (!isOpen) {
       toggle(true);
-    }
-    setTimeout(() => {
+      setTimeout(() => {
+        setOpenItem(value);
+      }, 250);
+    } else {
       setOpenItem(value);
-    }, 250);
+    }
   }
 
   function pathIsActive(props: { path: string; liveHref: string }) {
