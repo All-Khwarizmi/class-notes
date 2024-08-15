@@ -5,7 +5,7 @@ import { coursUsecases } from "@/features/cours-sequence/application/usecases/co
 import ContentViewer from "@/features/cours-sequence/presentation/views/ContentViewer";
 import { NavItem } from "@/lib/types";
 import { isLeft } from "fp-ts/lib/Either";
-import { BookA, BookCheck } from "lucide-react";
+import { BookA, BookCheck, BookCopy, BookOpen } from "lucide-react";
 import React from "react";
 
 async function SpacesSequenceServerLayer(props: {
@@ -66,7 +66,8 @@ async function SpacesSequenceServerLayer(props: {
       coursesNavItems.push({
         title: cours.name,
         href: `/spaces/cours/${cours._id}?user=${userId}`,
-        icon: <BookA size={16} />,
+        icon: <BookOpen size={16} className="text-orange-500" />,
+        color: "text-blue-300",
       });
     }
   });
@@ -75,7 +76,8 @@ async function SpacesSequenceServerLayer(props: {
     {
       title: "Courses",
       href: `#`,
-      icon: <BookCheck size={16} />,
+      icon: <BookCopy size={16} className="text-orange-500" />,
+      color: "text-blue-300",
       isChidren: true,
       children: coursesNavItems,
     },
