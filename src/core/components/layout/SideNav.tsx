@@ -15,15 +15,32 @@ import {
 } from "@/core/components/layout/SubNavAccordion";
 import { useEffect, useState } from "react";
 import { ChevronDownIcon } from "@radix-ui/react-icons";
+import { useLayoutContext } from "./ExperimentalLayoutCtx";
 
 interface SideNavProps {
-  items?: NavItem[];
   setOpen?: (open: boolean) => void;
   className?: string;
 }
 
-export function SideNav({ items, setOpen, className }: SideNavProps) {
-  const [localItems, setLocalItems] = useState(items);
+export function SideNav({ setOpen, className }: SideNavProps) {
+  const { navItems, spacesNavItems, isSpaces } = useLayoutContext();
+  const [items, setItems] = useState(() => {
+    if (isSpaces === true && spacesNavItems) {
+      return spacesNavItems;
+    } else {
+      return navItems;
+    }
+  });
+  useEffect(() => {
+    if (isSpaces === true && spacesNavItems) {
+      setItems(spacesNavItems);
+    } else {
+      console.log("Setting items to navItems", navItems);
+      setItems(navItems);
+    }
+  
+  }, [isSpaces, spacesNavItems, navItems]);
+
   const path = usePathname();
   const { isOpen } = useSidebar();
   const [openItem, setOpenItem] = useState("");
@@ -42,14 +59,6 @@ export function SideNav({ items, setOpen, className }: SideNavProps) {
     setLiveHref(path);
   }, [path]);
 
-  useEffect(() => {
-    // Check if the path contains a key word and remove the item if it does
-    const filteredItems = items?.filter((item) => {
-      const regex = /spaces/i;
-      return !regex.test(path);
-    });
-    setLocalItems(filteredItems);
-  }, [path, items]);
 
   function pathIsActive(props: { path: string; liveHref: string }) {
     let { path, liveHref } = props;
@@ -66,7 +75,7 @@ export function SideNav({ items, setOpen, className }: SideNavProps) {
   }
   return (
     <nav className="space-y-2 ">
-      {localItems?.map((item) =>
+      {items.map((item) =>
         item.isChidren ? (
           <Accordion
             type="single"
