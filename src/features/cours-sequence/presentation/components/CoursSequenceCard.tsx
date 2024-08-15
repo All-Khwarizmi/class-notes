@@ -4,9 +4,10 @@
  * Documentation: https://v0.dev/docs#integrating-generated-code-into-your-nextjs-app
  */
 import { CardContent, CardFooter, Card } from "@/core/components/ui/card";
-import Link from "next/link";
 import { Eye, PenIcon } from "lucide-react";
 import AfterMenuButton from "@/core/components/common/editor/AfterMenuButton";
+import { Button } from "@/core/components/ui/button";
+import Link from "next/link";
 
 export default function CoursSequenceCard({
   title,
@@ -51,7 +52,7 @@ export default function CoursSequenceCard({
         </div>
       </CardContent>
       <CardFooter className="p-4">
-        <div className="flex gap-2">
+        <div className="flex gap-2 w-full">
           {!spacesMode && (
             <AfterMenuButton
               addButton={true}
@@ -60,11 +61,11 @@ export default function CoursSequenceCard({
             />
           )}
           {showViewButton && (
-            <AfterMenuButton
-              addButton={true}
-              path={pathToView ?? "/sequences"}
-              icon={<Eye size={12} />}
-            />
+            <div className="flex justify-center w-full h-full">
+              <Button variant="outline" className="">
+                <Link href={pathToView ?? "/sequences"}>View Sequence</Link>
+              </Button>
+            </div>
           )}
         </div>
       </CardFooter>
