@@ -1,3 +1,5 @@
+import { VisibilityType } from "@/features/classe/domain/visibility-schema";
+
 export type GetVisibilityOptions = {
   userId: string;
 };
@@ -10,9 +12,7 @@ export type VisibilityEntityTypes =
 
 export type UpdateVisibilityOptions = {
   userId: string;
-  type: VisibilityEntityTypes;
-  typeId: string;
-  publish: boolean;
+  visibilityTable: Omit<VisibilityType, "_id">;
 };
 
 export type AddClasseToVisibilityOptions = {

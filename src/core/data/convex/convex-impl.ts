@@ -45,6 +45,7 @@ import {
   AddCoursToVisibilityOptions,
   AddComplementToVisibilityOptions,
   DeleteEntityFromVisibilityOptions,
+  UpdateVisibilityOptions,
 } from "@/features/visibility/domain/types";
 
 export interface ConvexDatabaseOptions {
@@ -1339,30 +1340,20 @@ export default class ConvexDatabase extends IDatabase {
     }
   }
 
-  async updateVisibility({
-    userId,
-    publish,
-    type,
-    typeId,
-  }: {
-    userId: string;
-    publish: boolean;
-    type: "classe" | "sequence" | "cours" | "complement";
-    typeId: string;
-  }): Promise<Either<Failure<string>, void>> {
+  async updateVisibility(
+    options: UpdateVisibilityOptions
+  ): Promise<Either<Failure<string>, void>> {
     try {
-      await fetchMutation(this._db.visibility.updateVisibility, {
-        userId,
-        publish,
-        type,
-        typeId,
-      });
+      await fetchMutation(
+        this._db.visibility.updateAllVisibilityTable,
+        options.visibilityTable
+      );
 
       return right(undefined);
     } catch (error) {
       return left(
         Failure.invalidValue({
-          invalidValue: userId,
+          invalidValue: options.userId,
           message: "Error updating visibility",
           code: "INF101",
         })

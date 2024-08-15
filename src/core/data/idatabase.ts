@@ -41,6 +41,7 @@ import {
   AddCoursToVisibilityOptions,
   AddSequenceToVisibilityOptions,
   DeleteEntityFromVisibilityOptions,
+  UpdateVisibilityOptions,
 } from "@/features/visibility/domain/types";
 
 export default abstract class IDatabase {
@@ -333,17 +334,9 @@ export default abstract class IDatabase {
     id: string;
   }): Promise<Either<Failure<string>, DocumentData>>;
 
-  abstract updateVisibility({
-    userId,
-    publish,
-    type,
-    typeId,
-  }: {
-    userId: string;
-    publish: boolean;
-    type: "classe" | "sequence" | "cours" | "complement";
-    typeId: string;
-  }): Promise<Either<Failure<string>, void>>;
+  abstract updateVisibility(
+    options: UpdateVisibilityOptions
+  ): Promise<Either<Failure<string>, void>>;
 
   abstract createEvaluationBase(
     options: CreateEvaluationOptions

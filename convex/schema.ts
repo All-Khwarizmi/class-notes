@@ -3,55 +3,10 @@ import { v } from "convex/values";
 import { EvaluationWithGrade } from "./tables/evaluations_with_grades_convex_schema";
 import { EvaluationBase } from "./tables/evaluation_base_convex_schema";
 import { userSchema } from "./fields/users";
+import { visibilityTable } from "./fields/visibility";
 export default defineSchema({
   Users: userSchema,
-  VisibilityTable: defineTable({
-    userId: v.string(),
-    classe: v.array(
-      v.object({
-        id: v.string(),
-        publish: v.boolean(),
-        name: v.string(),
-        description: v.string(),
-      })
-    ),
-    sequences: v.array(
-      v.object({
-        id: v.string(),
-        publish: v.boolean(),
-        classe: v.boolean(),
-        classeId: v.string(),
-        name: v.string(),
-        description: v.string(),
-      })
-    ),
-    cours: v.array(
-      v.object({
-        id: v.string(),
-        publish: v.boolean(),
-        sequence: v.boolean(),
-        sequenceId: v.string(),
-        classe: v.boolean(),
-        classeId: v.string(),
-        name: v.string(),
-        description: v.string(),
-      })
-    ),
-    complement: v.array(
-      v.object({
-        id: v.string(),
-        publish: v.boolean(),
-        sequence: v.boolean(),
-        sequenceId: v.string(),
-        cours: v.boolean(),
-        coursId: v.string(),
-        classe: v.boolean(),
-        classeId: v.string(),
-        name: v.string(),
-        description: v.string(),
-      })
-    ),
-  }).index("by_userId", ["userId"]),
+  VisibilityTable: visibilityTable,
   Category: defineTable({
     name: v.string(),
     description: v.string(),

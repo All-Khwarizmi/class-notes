@@ -10,6 +10,7 @@ import {
   VisibilityType,
 } from "../../domain/visibility-schema";
 import { CreateClasseOptions } from "../../domain/classe-types";
+import { UpdateVisibilityOptions } from "@/features/visibility/domain/types";
 
 export default class ClasseUseCases {
   private readonly _repository: ClasseRepository;
@@ -134,18 +135,8 @@ export default class ClasseUseCases {
     }
   }
 
-  async updateVisibility({
-    userId,
-    publish,
-    type,
-    typeId,
-  }: {
-    userId: string;
-    publish: boolean;
-    type: "classe" | "sequence" | "cours" | "complement";
-    typeId: string;
-  }) {
-    return this._repository.updateVisibility({ userId, publish, type, typeId });
+  async updateVisibility(options: UpdateVisibilityOptions) {
+    return this._repository.updateVisibility(options);
   }
 }
 

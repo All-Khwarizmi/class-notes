@@ -72,13 +72,8 @@ export default class ClasseRepository {
     return this._db.getVisibility({ id: userId });
   }
 
-  async updateVisibility({
-    userId,
-    publish,
-    type,
-    typeId,
-  }: UpdateVisibilityOptions) {
-    return this._db.updateVisibility({ userId, publish, type, typeId });
+  async updateVisibility(options: UpdateVisibilityOptions) {
+    return this._db.updateVisibility(options);
   }
 
   async deleteClasseSequencesFromClasseId(options: DeleteClasseOptions) {

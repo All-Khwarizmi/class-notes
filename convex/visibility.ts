@@ -5,6 +5,7 @@ import {
   internalMutation,
 } from "./_generated/server";
 import { v } from "convex/values";
+import { visibilityTableConvexSchema } from "./fields/visibility";
 
 export const isVisibilityTable = internalQuery({
   args: {
@@ -404,7 +405,18 @@ export const updateVisibility = mutation({
     }
   },
 });
-
+export const updateAllVisibilityTable = mutation({
+  args: visibilityTableConvexSchema,
+  handler: async (ctx, args) => {
+    const visibility = await ctx.db
+      .query("VisibilityTable")
+      .filter((q) => q.eq(q.field("userId"), args.userId))
+      .first();
+    if (visibility) {
+      await ctx.db.patch(visibility._id, args);
+    }
+  },
+});
 export const deleteEntityFromVisibilityTable = mutation({
   args: {
     userId: v.string(),
