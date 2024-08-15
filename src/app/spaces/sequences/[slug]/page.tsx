@@ -1,6 +1,8 @@
 import LoadingSkeleton from "@/core/components/common/LoadingSkeleton";
 import React, { Suspense } from "react";
 import SpacesSequenceServerLayer from "./SpacesSequenceServerLayer";
+export const dynamic = "force-dynamic";
+
 
 function Page({
   params,

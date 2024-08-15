@@ -1,6 +1,7 @@
 import React, { Suspense } from "react";
 import UserSpaceServerLayer from "./UserSpaceServerLayer";
 import LoadingSkeleton from "@/core/components/common/LoadingSkeleton";
+export const dynamic = "force-dynamic";
 
 async function Page({
   params,
