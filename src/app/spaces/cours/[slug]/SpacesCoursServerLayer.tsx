@@ -6,7 +6,7 @@ import { Complement } from "@/features/complement/domain/complement-schemas";
 import { coursUsecases } from "@/features/cours-sequence/application/usecases/cours-usecases";
 import ContentViewer from "@/features/cours-sequence/presentation/views/ContentViewer";
 import { isLeft } from "fp-ts/lib/Either";
-import { ClipboardType, ScrollText } from "lucide-react";
+import { CheckSquare, ClipboardType, ScrollText } from "lucide-react";
 import React from "react";
 
 async function SpacesCoursServerLayer(props: {
@@ -96,12 +96,8 @@ async function SpacesCoursServerLayer(props: {
   const complementNavItems = complements.map((complement) => ({
     title: complement.name,
     href: `/spaces/complement/${complement.id}?user=${userId}`,
-    icon:
-      complement.type === "Lesson" ? (
-        <ScrollText size={16} />
-      ) : (
-        <ClipboardType size={16} />
-      ),
+    icon: <CheckSquare size={16} className="text-red-500 inline mr-1" />,
+    color: "text-blue-300",
   }));
 
   return (
