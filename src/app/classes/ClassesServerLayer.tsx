@@ -10,7 +10,6 @@ import {
   QueryClient,
 } from "@tanstack/react-query";
 import { QUERY_KEYS } from "@/core/query/ query-keys";
-import LayoutServerLayer from "@/core/components/layout/LayoutServerLayer";
 async function ClassesServerLayer(props: { slug: string }) {
   const authUser = await authUseCases.getUserAuth();
   if (isLeft(authUser)) {

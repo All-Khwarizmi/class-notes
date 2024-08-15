@@ -69,30 +69,6 @@ export const createCours = mutation({
         coursIds: [...existingClasseSequence.coursIds, categoryId],
       });
 
-      // Add the cours to the visibility table
-      const visibilityTable = await ctx.db
-        .query("VisibilityTable")
-        .filter((q) => q.eq(q.field("userId"), existingUser!._id))
-        .first();
-
-      if (visibilityTable) {
-        const newTable = {
-          ...visibilityTable,
-          cours: [
-            ...visibilityTable.cours,
-            {
-              id: categoryId,
-              publish: false,
-              classe: true,
-              classeId: existingClasseSequence._id,
-              sequenceId: existingClasseSequence.originalSequenceId,
-              sequence: existingClasseSequence.publish ?? false,
-            },
-          ],
-        };
-        await ctx.db.patch(visibilityTable._id, newTable);
-      }
-
       return categoryId;
     }
 
@@ -123,30 +99,6 @@ export const createCours = mutation({
     await ctx.db.patch(existingSequence._id, {
       coursIds: [...existingSequence.coursIds, categoryId],
     });
-
-    // Add the cours to the visibility table
-    const visibilityTable = await ctx.db
-      .query("VisibilityTable")
-      .filter((q) => q.eq(q.field("userId"), existingUser!._id))
-      .first();
-
-    if (visibilityTable) {
-      const newTable = {
-        ...visibilityTable,
-        cours: [
-          ...visibilityTable.cours,
-          {
-            id: categoryId,
-            publish: false,
-            classe: true,
-            classeId: "",
-            sequenceId: existingSequence._id,
-            sequence: existingSequence.publish ?? false,
-          },
-        ],
-      };
-      await ctx.db.patch(visibilityTable._id, newTable);
-    }
 
     return categoryId;
   },
@@ -296,7 +248,6 @@ export const deleteCours = mutation({
   },
   handler: async (ctx, args) => {
     try {
-     
       const cours = await ctx.db
         .query("Cours")
         .filter((q) => q.eq(q.field("_id"), args.coursId))

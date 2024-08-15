@@ -8,14 +8,13 @@ import { NavItem } from "@/lib/types";
 import { Presentation } from "lucide-react";
 import getVisibility from "@/features/classe/application/adapters/actions/get-visibility";
 import NothingToShow from "@/core/components/common/editor/NothingToShow";
-import LayoutWithProps from "@/core/components/layout/LayoutWithProps";
 
 async function UserSpaceServerLayer(props: {
   slug: string;
   searchParams: { [key: string]: string | undefined };
 }) {
   if (!props.searchParams.user) {
-    return <LayoutWithProps notFound isEmpty></LayoutWithProps>;
+    return <NotFound />;
   }
   const userId = props.searchParams.user;
 
@@ -24,15 +23,14 @@ async function UserSpaceServerLayer(props: {
   });
   if (isLeft(eitherVisibility)) {
     return (
-      <LayoutWithProps
-        isError={{
-          message: "An error occured while fetching the visibility",
-          code: eitherVisibility.left.code,
-          description:
-            process.env.NODE_ENV === "development"
-              ? eitherVisibility.left.message
-              : "",
-        }}
+      <ErrorDialog
+        message="An error occured while fetching the visibility of the classes"
+        code={eitherVisibility.left.code}
+        description={
+          process.env.NODE_ENV === "development"
+            ? eitherVisibility.left.message
+            : ""
+        }
       />
     );
   }
@@ -41,15 +39,14 @@ async function UserSpaceServerLayer(props: {
   });
   if (isLeft(eitherClasses)) {
     return (
-      <LayoutWithProps
-        isError={{
-          message: "An error occured while fetching the classes",
-          code: eitherClasses.left.code,
-          description:
-            process.env.NODE_ENV === "development"
-              ? eitherClasses.left.message
-              : "",
-        }}
+      <ErrorDialog
+        message="An error occured while fetching the classes"
+        code={eitherClasses.left.code}
+        description={
+          process.env.NODE_ENV === "development"
+            ? eitherClasses.left.message
+            : ""
+        }
       />
     );
   }

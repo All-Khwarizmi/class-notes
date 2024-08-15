@@ -65,7 +65,7 @@ async function SpacesCoursServerLayer(props: {
     coursVisibility.classe &&
     coursVisibility.sequence;
   if (!isCoursVisible) {
-    return <LayoutWithProps isEmpty nothingToShow></LayoutWithProps>;
+    return <NothingToShow />;
   }
   const eitherComplements = await complementUsecases.getAllCoursComplement({
     coursId: props.slug,
@@ -73,17 +73,15 @@ async function SpacesCoursServerLayer(props: {
 
   if (isLeft(eitherComplements)) {
     return (
-      <LayoutWithProps
-        isEmpty
-        isError={{
-          message: "An error occured while fetching the complements",
-          code: eitherComplements.left.code,
-          description:
+        <ErrorDialog
+          message="An error occured while fetching the complements"
+          code={eitherComplements.left.code}
+          description={
             process.env.NODE_ENV === "development"
               ? eitherComplements.left.message
-              : "",
-        }}
-      ></LayoutWithProps>
+              : ""
+          }
+        />
     );
   }
   const complements: Complement[] = [];

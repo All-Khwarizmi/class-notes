@@ -22,7 +22,7 @@ function UserSpaceClasseCard(props: { classe: ClassType; userId: string }) {
         className="w-full h-48 object-cover"
       />
       <div className="p-4">
-        <h3 className="text-lg font-semibold mb-2">{props.classe.name}</h3>
+        <h3 className="text-lg font-semibold ">{props.classe.name}</h3>
         <p className="text-gray-500 dark:text-gray-400 mb-4">
           {props.classe.description}
         </p>

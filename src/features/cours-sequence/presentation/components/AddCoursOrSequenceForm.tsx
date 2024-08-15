@@ -49,8 +49,8 @@ export default function AddCoursOrSequenceForm({
     imageUrl ?? "/images/mos-design-jzFbbG2WXv0-unsplash.jpg"
   );
   return (
-    <>
-      <h1 className="text-2xl font-bold pb-4 ">{title}</h1>
+    <div className="px-4 pt-8">
+      <h1 className="text-2xl font-bold pb-8 ">{title}</h1>
       <Form {...form}>
         <form className="space-y-4">
           <div className="flex justify-between items-center">
@@ -151,6 +151,6 @@ export default function AddCoursOrSequenceForm({
           </Button>
         </form>
       </Form>
-    </>
+    </div>
   );
 }

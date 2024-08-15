@@ -1,7 +1,6 @@
 import { Either } from "fp-ts/lib/Either";
 import { DocumentData } from "./database-types";
 import Failure from "../failures/failures";
-import { UserType } from "@/features/user/domain/entities/user-schema";
 import {
   Category,
   Competence,
@@ -36,6 +35,14 @@ import {
   DeleteClasseOptions,
 } from "@/features/classe/domain/classe-types";
 import { SaveUserOptions } from "@/features/user/domain/types/types";
+import {
+  AddClasseToVisibilityOptions,
+  AddComplementToVisibilityOptions,
+  AddCoursToVisibilityOptions,
+  AddSequenceToVisibilityOptions,
+  DeleteEntityFromVisibilityOptions,
+  UpdateVisibilityOptions,
+} from "@/features/visibility/domain/types";
 
 export default abstract class IDatabase {
   abstract getUser({
@@ -313,13 +320,13 @@ export default abstract class IDatabase {
     id: string;
   }): Promise<Either<Failure<string>, DocumentData>>;
 
-  abstract updateClassVisibility({
-    id,
-    visibility,
-  }: {
-    id: string;
-    visibility: boolean;
-  }): Promise<Either<Failure<string>, void>>;
+  // abstract updateClassVisibility({
+  //   id,
+  //   visibility,
+  // }: {
+  //   id: string;
+  //   visibility: boolean;
+  // }): Promise<Either<Failure<string>, void>>;
 
   abstract getVisibility({
     id,
@@ -327,17 +334,9 @@ export default abstract class IDatabase {
     id: string;
   }): Promise<Either<Failure<string>, DocumentData>>;
 
-  abstract updateVisibility({
-    userId,
-    publish,
-    type,
-    typeId,
-  }: {
-    userId: string;
-    publish: boolean;
-    type: "classe" | "sequence" | "cours" | "complement";
-    typeId: string;
-  }): Promise<Either<Failure<string>, void>>;
+  abstract updateVisibility(
+    options: UpdateVisibilityOptions
+  ): Promise<Either<Failure<string>, void>>;
 
   abstract createEvaluationBase(
     options: CreateEvaluationOptions
@@ -418,5 +417,25 @@ export default abstract class IDatabase {
 
   abstract deleteStudentsFromClasseId(
     options: DeleteClasseOptions
+  ): Promise<Either<Failure<string>, void>>;
+
+  abstract addClasseToVisibility(
+    options: AddClasseToVisibilityOptions
+  ): Promise<Either<Failure<string>, void>>;
+
+  abstract addSequenceToVisibility(
+    options: AddSequenceToVisibilityOptions
+  ): Promise<Either<Failure<string>, void>>;
+
+  abstract addCoursToVisibility(
+    options: AddCoursToVisibilityOptions
+  ): Promise<Either<Failure<string>, void>>;
+
+  abstract addComplementToVisibility(
+    options: AddComplementToVisibilityOptions
+  ): Promise<Either<Failure<string>, void>>;
+
+  abstract deleteEntityFromVisibilityTable(
+    options: DeleteEntityFromVisibilityOptions
   ): Promise<Either<Failure<string>, void>>;
 }

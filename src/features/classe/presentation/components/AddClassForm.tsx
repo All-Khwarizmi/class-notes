@@ -22,20 +22,15 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Textarea } from "../../../../core/components/ui/textarea";
 import classSchema, { ClassType } from "@/features/classe/domain/class-schema";
-const BASE_IMAGE_URL = "https://source.unsplash.com/random/800x600";
 import useAddClasse from "../../application/adapters/services/useAddClasse";
 import { useRouter } from "next/navigation";
-import { getEducationSystemOptions } from "@/features/user/domain/entities/education-systems/global";
-import {
-  EducationsSystemsEnum,
-  educationSystemOptions,
-} from "@/features/user/domain/entities/education-systems/education-system";
+import { educationSystemOptions } from "@/features/user/domain/entities/education-systems/education-system";
 import {
   getEducationLevelOptions,
   getHumanReadableGrade,
 } from "@/features/user/domain/entities/education-systems/niveaux/niveaux";
-import { Option } from "lucide-react";
 import { toastWrapper } from "@/core/utils/toast-wrapper";
+const BASE_IMAGE_URL = "/images/chaklboard-icon.jpeg";
 
 export default function AddClassForm(props: { userId: string }) {
   const router = useRouter();
@@ -69,10 +64,16 @@ export default function AddClassForm(props: { userId: string }) {
   ) {
     const { description, name, imageUrl, educationLevel, educationSystem } =
       values;
-      // Check every field 
-      if (!description || !name || !imageUrl || !educationLevel || !educationSystem) {
-        return toastWrapper.error("All fields are required");
-      }
+    // Check every field
+    if (
+      !description ||
+      !name ||
+      !imageUrl ||
+      !educationLevel ||
+      !educationSystem
+    ) {
+      return toastWrapper.error("All fields are required");
+    }
 
     setClasse(
       {

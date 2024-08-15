@@ -4,6 +4,7 @@ export const QUERY_KEYS = {
     UPDATE: (options: string[] = []) => ["UPDATE_STUDENT", ...options],
     ADD: (options: string[] = []) => ["ADD_STUDENT", ...options],
     ADD_MANY: (options: string[] = []) => ["ADD_MANY_STUDENTS", ...options],
+    GET_ALL: (options: string[] = []) => ["GET_ALL_STUDENTS", ...options],
   },
   CLASSE: {
     DELETE: (options: string[] = []) => ["DELETE_CLASSE", ...options],
@@ -11,6 +12,14 @@ export const QUERY_KEYS = {
     // GET: (options: string[] = []) => ["GET_CLASSE", ...options],
     GET_ALL: (options: string[] = []) => ["GET_ALL_CLASSES", ...options],
     CREATE: (options: string[] = []) => ["CREATE_CLASSE", ...options],
+    CLASSE_SEQUENCES_GET_ALL: (options: string[] = []) => [
+      "GET_ALL_CLASSE_SEQUENCES",
+      ...options,
+    ],
+    CLASSE_SEQUENCE_ADD: (options: string[] = []) => [
+      "ADD_CLASSE_SEQUENCE",
+      ...options,
+    ],
   },
   SEQUENCE: {
     DELETE: (options: string[] = []) => ["DELETE_SEQUENCE", ...options],
@@ -22,6 +31,10 @@ export const QUERY_KEYS = {
       "GET_ALL_EVALUATIONS_BASE",
       ...options,
     ],
+    COMPOUND_GET_ALL: (options: string[] = []) => [
+      "GET_ALL_EVALUATIONS_COMPOUND",
+      ...options,
+    ],
     // CREATE: (options: string[] = []) => ["CREATE_EVALUATION", ...options],
     // DELETE: (options: string[] = []) => ["DELETE_EVALUATION", ...options],
   },
@@ -29,5 +42,9 @@ export const QUERY_KEYS = {
     GET_ALL: (options: string[] = []) => ["GET_ALL_NOTES", ...options],
     DELETE: (options: string[] = []) => ["DELETE_NOTE", ...options],
     CREATE: (options: string[] = []) => ["CREATE_NOTE", ...options],
+  },
+  VISIBILITY: {
+    GET_ALL: (options: string[] = []) => ["GET_ALL_VISIBILITY", ...options],
+    UPDATE: (options: string[] = []) => ["UPDATE_VISIBILITY", ...options],
   },
 };

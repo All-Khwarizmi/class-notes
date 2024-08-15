@@ -6,7 +6,6 @@ import Link from "next/link";
 import { Eye, Settings } from "lucide-react";
 import AfterMenuButton from "@/core/components/common/editor/AfterMenuButton";
 import { Complement } from "@/features/complement/domain/complement-schemas";
-import VisibilitySwitch from "../components/VisibilitySwitch";
 import useUpdateSequenceBody from "../../application/adapters/services/useUpdateSequenceBody";
 import useUpdateCoursBody from "../../application/adapters/services/useUpdateCoursBody";
 import FloatingEditor from "@/core/components/common/editor/FloatingEditor";
@@ -64,7 +63,7 @@ export default function CoursSequenceView({
                 </Link>
               </AfterMenuButton>
             </div>
-            <VisibilitySwitch userId={userId} type="cours" typeId={cours._id} />
+            {/* <VisibilitySwitch userId={userId} type="cours" typeId={cours._id} /> */}
           </div>
         </FloatingEditor>
       </>
@@ -113,11 +112,11 @@ export default function CoursSequenceView({
                 </Link>
               </AfterMenuButton>
             </div>
-            <VisibilitySwitch
+            {/* <VisibilitySwitch
               userId={userId}
               type="sequence"
               typeId={sequence._id}
-            />
+            /> */}
           </div>
         </FloatingEditor>
       </>

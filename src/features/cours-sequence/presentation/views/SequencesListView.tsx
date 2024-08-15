@@ -11,7 +11,6 @@ import {
   TableCell,
 } from "@/core/components/ui/table";
 import { Button } from "@/core/components/ui/button";
-import VisibilitySwitch from "../components/VisibilitySwitch";
 import useDeleteSequence from "@/features/complement/application/adapters/services/useDeleteSequence";
 import { Sequence } from "../../domain/entities/cours-schemas";
 function SequencesListView({
@@ -53,13 +52,7 @@ function SequencesListView({
                 <TableCell className="w-[200px]">
                   {sequence.description}
                 </TableCell>
-                <TableCell className="w-[200px]">
-                  <VisibilitySwitch
-                    userId={userId}
-                    type="sequence"
-                    typeId={sequence._id}
-                  />
-                </TableCell>
+
                 <TableCell className="w-[200px]">
                   {sequence.createdAt
                     ? new Date(sequence.createdAt).toDateString()
@@ -80,6 +73,7 @@ function SequencesListView({
                         deleteSequence({
                           sequenceId: sequence._id,
                           type: sequenceType,
+                          userId,
                         })
                       }
                       className={cn(

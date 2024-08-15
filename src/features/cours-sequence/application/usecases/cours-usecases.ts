@@ -231,9 +231,11 @@ export default class CoursUsecases {
   async deleteSequence({
     sequenceId,
     type,
+    userId,
   }: {
     sequenceId: string;
     type: "template" | "sequence";
+    userId: string;
   }) {
     const coursFromSequence = await this.getAllCoursFromSequence({
       userId: "",
@@ -265,6 +267,7 @@ export default class CoursUsecases {
     const sequenceDeletionResult = await this._repository.deleteSequence({
       sequenceId,
       type,
+      userId,
     });
 
     return sequenceDeletionResult;
@@ -313,11 +316,13 @@ export default class CoursUsecases {
   async addClassSequence({
     sequenceId,
     classeId,
+    userId,
   }: {
     sequenceId: string;
     classeId: string;
+    userId: string;
   }) {
-    return this._repository.addClassSequence({ sequenceId, classeId });
+    return this._repository.addClassSequence({ sequenceId, classeId, userId });
   }
 
   async getClasseSequences({

@@ -1,13 +1,9 @@
 import ErrorDialog from "@/core/components/common/ErrorDialog";
 import NothingToShow from "@/core/components/common/editor/NothingToShow";
-import LayoutWithProps from "@/core/components/layout/LayoutWithProps";
-import Sidebar from "@/core/components/layout/Sidebar";
-import SpacesHeader from "@/core/components/layout/SpacesHeader";
 import getVisibility from "@/features/classe/application/adapters/actions/get-visibility";
 import { complementUsecases } from "@/features/complement/application/usecases/complement-usecases";
 import ContentViewer from "@/features/cours-sequence/presentation/views/ContentViewer";
 import { isLeft } from "fp-ts/lib/Either";
-import { Layout } from "lucide-react";
 import React from "react";
 
 async function SpacesComplementServerLayer(props: {
@@ -16,12 +12,10 @@ async function SpacesComplementServerLayer(props: {
 }) {
   if (!props.slug || !props.searchParams.user) {
     return (
-      <LayoutWithProps
-        isError={{
-          message: `
-          The user id or the course id is missing
-          `,
-        }}
+      <ErrorDialog
+        message={`
+        The user id or the course id is missing
+        `}
       />
     );
   }
@@ -29,15 +23,14 @@ async function SpacesComplementServerLayer(props: {
   const eitherVibility = await getVisibility({ userId });
   if (isLeft(eitherVibility)) {
     return (
-      <LayoutWithProps
-        isError={{
-          message: "An error occured while fetching the visibility",
-          code: eitherVibility.left.code,
-          description:
-            process.env.NODE_ENV === "development"
-              ? eitherVibility.left.message
-              : "",
-        }}
+      <ErrorDialog
+        message="An error occured while fetching the visibility"
+        code={eitherVibility.left.code}
+        description={
+          process.env.NODE_ENV === "development"
+            ? eitherVibility.left.message
+            : ""
+        }
       />
     );
   }
@@ -46,15 +39,14 @@ async function SpacesComplementServerLayer(props: {
   });
   if (isLeft(eitherComplement)) {
     return (
-      <LayoutWithProps
-        isError={{
-          message: "An error occured while fetching the complement",
-          code: eitherComplement.left.code,
-          description:
-            process.env.NODE_ENV === "development"
-              ? eitherComplement.left.message
-              : "",
-        }}
+      <ErrorDialog
+        message="An error occured while fetching the complement"
+        code={eitherComplement.left.code}
+        description={
+          process.env.NODE_ENV === "development"
+            ? eitherComplement.left.message
+            : ""
+        }
       />
     );
   }
@@ -67,11 +59,9 @@ async function SpacesComplementServerLayer(props: {
     visibilityComplement.sequence &&
     visibilityComplement.cours;
   if (isVisible === false) {
-    return <LayoutWithProps nothingToShow />;
+    return <NothingToShow />;
   }
-  return (
-      <ContentViewer content={eitherComplement.right.body} />
-  );
+  return <ContentViewer content={eitherComplement.right.body} />;
 }
 
 export default SpacesComplementServerLayer;

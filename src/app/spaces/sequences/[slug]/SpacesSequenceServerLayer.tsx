@@ -1,5 +1,5 @@
-import NotFound from "@/app/not-found";
-import LayoutWithProps from "@/core/components/layout/LayoutWithProps";
+import NothingToShow from "@/core/components/common/editor/NothingToShow";
+import Layout from "@/core/components/layout/ExperimentalLayout";
 import getVisibility from "@/features/classe/application/adapters/actions/get-visibility";
 import { coursUsecases } from "@/features/cours-sequence/application/usecases/cours-usecases";
 import ContentViewer from "@/features/cours-sequence/presentation/views/ContentViewer";
@@ -25,14 +25,14 @@ async function SpacesSequenceServerLayer(props: {
     type: sequenceType,
   });
   if (isLeft(eitherSequence) || !props.searchParams.user) {
-    return <LayoutWithProps isEmpty notFound />;
+    return <Layout.NotFound />;
   }
   const userId = props.searchParams.user;
   const eitherVisibility = await getVisibility({
     userId,
   });
   if (isLeft(eitherVisibility)) {
-    return <LayoutWithProps isEmpty notFound />;
+    return <Layout.NotFound />;
   }
   const sequenceVisibility = eitherVisibility.right.sequences.find(
     (visibility) => visibility.id === props.slug
@@ -41,7 +41,7 @@ async function SpacesSequenceServerLayer(props: {
     sequenceVisibility?.publish === true && sequenceVisibility.classe; // Check if the sequence is visible
 
   if (!isSequenceVisible) {
-    return <LayoutWithProps isEmpty nothingToShow />;
+    return <NothingToShow />;
   }
   // Get all cours from the sequence
   const eitherCours = await coursUsecases.getAllCoursFromSequence({
@@ -50,7 +50,7 @@ async function SpacesSequenceServerLayer(props: {
     type: "sequence",
   });
   if (isLeft(eitherCours) || isLeft(eitherVisibility)) {
-    return <NotFound />;
+    return <Layout.NotFound />;
   }
 
   const coursesNavItems: NavItem[] = [];
@@ -80,9 +80,7 @@ async function SpacesSequenceServerLayer(props: {
       children: coursesNavItems,
     },
   ];
-  return (
-      <ContentViewer content={eitherSequence.right.body} />
-  );
+  return <ContentViewer content={eitherSequence.right.body} />;
 }
 
 export default SpacesSequenceServerLayer;
