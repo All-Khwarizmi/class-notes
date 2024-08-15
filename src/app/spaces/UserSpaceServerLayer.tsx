@@ -68,7 +68,11 @@ async function UserSpaceServerLayer(props: {
   return (
     <>
       {classes.length > 0 ? (
-        <UserSpaceClassesGridView userId={userId} classes={classes} />
+        <UserSpaceClassesGridView
+          navItems={userSpaceNavItems}
+          userId={userId}
+          classes={classes}
+        />
       ) : (
         <NothingToShow />
       )}
