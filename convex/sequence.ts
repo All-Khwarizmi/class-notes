@@ -1,3 +1,4 @@
+import { de } from "@faker-js/faker";
 import { Id } from "./_generated/dataModel";
 import { mutation, query } from "./_generated/server";
 import { v } from "convex/values";
@@ -59,6 +60,8 @@ export const createSequence = mutation({
               publish: args.publish ?? false,
               classe: true,
               classeId: "",
+              name: args.name,
+              description: args.description,
             },
           ],
         };
@@ -161,46 +164,46 @@ export const updateSequence = mutation({
           .collect();
 
         // Check the publish status
-        if (args.publish !== undefined) {
-          const visibilityTable = await ctx.db
-            .query("VisibilityTable")
-            .filter((q) => q.eq(q.field("userId"), classeSequence.createdBy))
-            .first();
+        // if (args.publish !== undefined) {
+        //   const visibilityTable = await ctx.db
+        //     .query("VisibilityTable")
+        //     .filter((q) => q.eq(q.field("userId"), classeSequence.createdBy))
+        //     .first();
 
-          if (visibilityTable) {
-            const classeSequenceExist = visibilityTable.sequences.find(
-              (sequence) => sequence.id === classeSequence._id
-            );
-            if (!classeSequenceExist) {
-              visibilityTable.sequences.push({
-                id: classeSequence._id,
-                publish: args.publish,
-                classe: true,
-                classeId: classeSequence.classeId,
-              });
-              // Update the classe sequence
-            } else {
-              const sequenceIdx = visibilityTable.sequences.findIndex(
-                (sequence) => sequence.id === classeSequence._id
-              );
-              visibilityTable.sequences[sequenceIdx].publish = args.publish;
-            }
-            await ctx.db.patch(classeSequence._id, {
-              name: args.name,
-              body: args.body,
-              competencesIds: userComptences
-                .filter((c) => args.competencesIds.includes(c._id))
-                .map((c) => c._id),
-              description: args.description,
-              category: args.category,
-              imageUrl: args.imageUrl,
-              publish: args.publish,
-            });
-            await ctx.db.patch(visibilityTable._id, {
-              sequences: visibilityTable.sequences,
-            });
-          }
-        }
+        //   if (visibilityTable) {
+        //     const classeSequenceExist = visibilityTable.sequences.find(
+        //       (sequence) => sequence.id === classeSequence._id
+        //     );
+        //     if (!classeSequenceExist) {
+        //       visibilityTable.sequences.push({
+        //         id: classeSequence._id,
+        //         publish: args.publish,
+        //         classe: true,
+        //         classeId: classeSequence.classeId,
+        //       });
+        //       // Update the classe sequence
+        //     } else {
+        //       const sequenceIdx = visibilityTable.sequences.findIndex(
+        //         (sequence) => sequence.id === classeSequence._id
+        //       );
+        //       visibilityTable.sequences[sequenceIdx].publish = args.publish;
+        //     }
+        //     await ctx.db.patch(classeSequence._id, {
+        //       name: args.name,
+        //       body: args.body,
+        //       competencesIds: userComptences
+        //         .filter((c) => args.competencesIds.includes(c._id))
+        //         .map((c) => c._id),
+        //       description: args.description,
+        //       category: args.category,
+        //       imageUrl: args.imageUrl,
+        //       publish: args.publish,
+        //     });
+        //     await ctx.db.patch(visibilityTable._id, {
+        //       sequences: visibilityTable.sequences,
+        //     });
+        //   }
+        // }
 
         await ctx.db.patch(classeSequence._id, {
           name: args.name,

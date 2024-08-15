@@ -9,6 +9,7 @@ export default function useDeleteSequence() {
     mutationFn: async (options: {
       sequenceId: string;
       type: "template" | "sequence";
+      userId: string;
     }) => {
       const deletionResult = await coursUsecases.deleteSequence(options);
       if (isLeft(deletionResult)) {

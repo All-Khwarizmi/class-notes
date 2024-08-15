@@ -21,6 +21,8 @@ import Layout from "@/core/components/layout/Layout";
 import LoadingSkeleton from "@/core/components/common/LoadingSkeleton";
 import ClasseSequencesServerLayer from "../../sequences/[slug]/ClasseSequencesServerLayer";
 import NotesServerLayer from "@/app/profile/notes/[slug]/NotesServerLayer";
+import { QUERY_KEYS } from "@/core/query/ query-keys";
+import ClasseSequencesTableView from "@/features/cours-sequence/presentation/views/ClasseSequencesTableView";
 async function ClasseLayout(props: { slug: string }) {
   const authUser = await authUseCases.getUserAuth();
   if (isLeft(authUser)) {
@@ -31,7 +33,14 @@ async function ClasseLayout(props: { slug: string }) {
 
   const queriesBulk = [
     queryClient.prefetchQuery({
-      queryKey: ["classe-sequences", props.slug],
+      queryKey: [QUERY_KEYS.SEQUENCE.GET_ALL()],
+      queryFn: () =>
+        coursUsecases.getAllSequences({
+          userId: authUser.right.userId,
+        }),
+    }),
+    queryClient.prefetchQuery({
+      queryKey: [QUERY_KEYS.CLASSE.CLASSE_SEQUENCES_GET_ALL()],
       queryFn: () =>
         coursUsecases.getClasseSequences({
           classeId: props.slug,
@@ -39,14 +48,14 @@ async function ClasseLayout(props: { slug: string }) {
     }),
 
     queryClient.prefetchQuery({
-      queryKey: ["compound-evaluations"],
+      queryKey: [QUERY_KEYS.EVALUATIONS.COMPOUND_GET_ALL()],
       queryFn: () =>
         getEvaluationCompoundList({
           classeId: props.slug,
         }),
     }),
     queryClient.prefetchQuery({
-      queryKey: ["students"],
+      queryKey: [QUERY_KEYS.STUDENT.GET_ALL()],
       queryFn: () =>
         getStudents({
           classeId: props.slug,
@@ -57,39 +66,43 @@ async function ClasseLayout(props: { slug: string }) {
   await Promise.allSettled(queriesBulk);
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-        <Tabs defaultValue="classe">
-          <div className="w-full flex justify-center py-4">
-            <TabsList>
-              <TabsTrigger value="classe">Classe</TabsTrigger>
-              <TabsTrigger value="sequences">Sequences</TabsTrigger>
-              <TabsTrigger value="notes">Notes</TabsTrigger>
-            </TabsList>
+      <Tabs defaultValue="classe">
+        <div className="w-full flex justify-center py-4">
+          <TabsList>
+            <TabsTrigger value="classe">Classe</TabsTrigger>
+            <TabsTrigger value="sequences">Sequences</TabsTrigger>
+            <TabsTrigger value="notes">Notes</TabsTrigger>
+          </TabsList>
+        </div>
+        <TabsContent value="classe">
+          <div>
+            <Suspense fallback={<LoadingSkeleton />}>
+              <StudentsEvaluationTableView
+                classeId={props.slug}
+                userId={authUser.right.userId}
+              />
+            </Suspense>
           </div>
-          <TabsContent value="classe">
-            <div>
-              <Suspense fallback={<LoadingSkeleton />}>
-                <StudentsEvaluationTableView
-                  classeId={props.slug}
-                  userId={authUser.right.userId}
-                />
-              </Suspense>
-            </div>
-          </TabsContent>
-          <TabsContent value="sequences">
-            <div>
-              <Suspense fallback={<LoadingSkeleton />}>
-                <ClasseSequencesServerLayer slug={props.slug} />
-              </Suspense>
-            </div>
-          </TabsContent>
-          <TabsContent value="notes">
-            <div>
-              <Suspense fallback={<LoadingSkeleton />}>
-                <NotesServerLayer type="class" slug={props.slug} />
-              </Suspense>
-            </div>
-          </TabsContent>
-        </Tabs>
+        </TabsContent>
+        <TabsContent value="sequences">
+          <div>
+            <Suspense fallback={<LoadingSkeleton />}>
+              {/* <ClasseSequencesServerLayer slug={props.slug} /> */}
+              <ClasseSequencesTableView
+                userId={authUser.right.userId}
+                classeId={props.slug}
+              />
+            </Suspense>
+          </div>
+        </TabsContent>
+        <TabsContent value="notes">
+          <div>
+            <Suspense fallback={<LoadingSkeleton />}>
+              <NotesServerLayer type="class" slug={props.slug} />
+            </Suspense>
+          </div>
+        </TabsContent>
+      </Tabs>
     </HydrationBoundary>
   );
 }

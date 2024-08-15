@@ -92,127 +92,137 @@ function ComplementAddBaseForm(props: { slug: string }) {
     });
   }
   return (
-    <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(onSubmit)}
-        className="space-y-4 w-full max-w-lg mx-auto"
-      >
-        <FormField
-          control={form.control}
-          name="name"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel htmlFor={field.name}>Name</FormLabel>
-              <FormControl>
-                <Input placeholder="Complement name" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="description"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel htmlFor={field.name}>Description</FormLabel>
-              <FormControl>
-                <Input placeholder="Complement description" {...field} />
-              </FormControl>
+    <div className="px-4 space-y-8 pt-8">
+      <h1 className="text-xl font-bold">Add a ressource to the course</h1>
+      <Form {...form}>
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="space-y-4 w-full max-w-lg "
+        >
+          <FormField
+            control={form.control}
+            name="name"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel htmlFor={field.name}>Name</FormLabel>
+                <FormControl>
+                  <Input placeholder="Complement name" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="description"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel htmlFor={field.name}>Description</FormLabel>
+                <FormControl>
+                  <Input placeholder="Complement description" {...field} />
+                </FormControl>
 
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <div className="flex gap-4 justify-between">
-          <div className="space-y-4 w-full max-w-lg mx-auto">
-            <FormField
-              control={form.control}
-              name="type"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel htmlFor={field.name}>Type</FormLabel>
-                  <FormControl>
-                    <Select onValueChange={field.onChange} value={field.value}>
-                      <SelectTrigger className="w-[180px]">
-                        <SelectValue
-                          placeholder="Select a type"
-                          defaultValue={field.value}
-                        />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectGroup>
-                          <SelectItem value="Lesson">Lesson</SelectItem>
-                          <SelectItem value="Exercise">Exercise</SelectItem>
-                          <SelectItem value="Additional">Additional</SelectItem>
-                        </SelectGroup>
-                      </SelectContent>
-                    </Select>
-                  </FormControl>
-                  <FormDescription>The type of the complement</FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="contentType"
-              render={({ field }) => {
-                return (
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <div className="flex gap-4 justify-between">
+            <div className="space-y-4 w-full max-w-lg mx-auto">
+              <FormField
+                control={form.control}
+                name="type"
+                render={({ field }) => (
                   <FormItem>
-                    <FormLabel htmlFor={field.name}>Content Type</FormLabel>
+                    <FormLabel htmlFor={field.name}>Type</FormLabel>
                     <FormControl>
                       <Select
                         onValueChange={field.onChange}
                         value={field.value}
                       >
                         <SelectTrigger className="w-[180px]">
-                          <SelectValue placeholder="Select a content type" />
+                          <SelectValue
+                            placeholder="Select a type"
+                            defaultValue={field.value}
+                          />
                         </SelectTrigger>
                         <SelectContent>
                           <SelectGroup>
-                            {/* <SelectItem value="Diagram">Diagram</SelectItem>
-                            <SelectItem value="Flowchart">Flowchart</SelectItem> */}
-                            <SelectItem value="Markup">Markup</SelectItem>
+                            <SelectItem value="Lesson">Lesson</SelectItem>
+                            <SelectItem value="Exercise">Exercise</SelectItem>
+                            <SelectItem value="Additional">
+                              Additional
+                            </SelectItem>
                           </SelectGroup>
                         </SelectContent>
                       </Select>
                     </FormControl>
                     <FormDescription>
-                      The content type of the complement
+                      The type of the complement
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
-                );
-              }}
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="contentType"
+                render={({ field }) => {
+                  return (
+                    <FormItem>
+                      <FormLabel htmlFor={field.name}>Content Type</FormLabel>
+                      <FormControl>
+                        <Select
+                          onValueChange={field.onChange}
+                          value={field.value}
+                        >
+                          <SelectTrigger className="w-[180px]">
+                            <SelectValue placeholder="Select a content type" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectGroup>
+                              {/* <SelectItem value="Diagram">Diagram</SelectItem>
+                            <SelectItem value="Flowchart">Flowchart</SelectItem> */}
+                              <SelectItem value="Markup">Markup</SelectItem>
+                            </SelectGroup>
+                          </SelectContent>
+                        </Select>
+                      </FormControl>
+                      <FormDescription>
+                        The content type of the complement
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  );
+                }}
+              />
+            </div>
+
+            <FormField
+              control={form.control}
+              name="publish"
+              render={({ field }) => (
+                <FormItem className="flex flex-col ">
+                  <div className="flex flex-col gap-4">
+                    <FormLabel htmlFor={field.name}>Publish</FormLabel>
+                    <FormControl>
+                      <Switch
+                        onCheckedChange={field.onChange}
+                        checked={field.value}
+                      />
+                    </FormControl>
+                  </div>
+                  <FormDescription>
+                    Should the complement be published
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
           </div>
-
-          <FormField
-            control={form.control}
-            name="publish"
-            render={({ field }) => (
-              <FormItem className="flex flex-col ">
-                <div className="flex flex-col gap-4">
-                  <FormLabel htmlFor={field.name}>Publish</FormLabel>
-                  <FormControl>
-                    <Switch
-                      onCheckedChange={field.onChange}
-                      checked={field.value}
-                    />
-                  </FormControl>
-                </div>
-                <FormDescription>
-                  Should the complement be published
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
-        <Button type="submit">Submit</Button>
-      </form>
-    </Form>
+          <Button type="submit">Submit</Button>
+        </form>
+      </Form>
+    </div>
   );
 }
 

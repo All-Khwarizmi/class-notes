@@ -32,6 +32,9 @@ http.route({
             image: result.data.image_url,
             email: result.data.email_addresses[0].email_address,
           });
+          await ctx.runMutation(internal.visibility.createVisibilityTable, {
+            userId: result.data.id,
+          });
           break;
         case "user.updated":
           await ctx.runMutation(internal.users.updateUser, {

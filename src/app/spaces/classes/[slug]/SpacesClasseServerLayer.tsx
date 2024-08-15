@@ -1,9 +1,8 @@
-import LayoutWithProps from "@/core/components/layout/LayoutWithProps";
+import NothingToShow from "@/core/components/common/editor/NothingToShow";
 import getVisibility from "@/features/classe/application/adapters/actions/get-visibility";
 import { coursUsecases } from "@/features/cours-sequence/application/usecases/cours-usecases";
 import { Sequence } from "@/features/cours-sequence/domain/entities/cours-schemas";
 import SequencesListViewSpaces from "@/features/cours-sequence/presentation/views/SeqquenceListViewSpaces";
-import SequencesListView from "@/features/cours-sequence/presentation/views/SequencesListView";
 import { NavItem } from "@/lib/types";
 import { isLeft } from "fp-ts/lib/Either";
 import { Presentation } from "lucide-react";
@@ -18,20 +17,25 @@ async function SpacesClasseServerLayer(props: {
   });
 
   if (isLeft(eitherSequences) || !props.searchParams.user) {
-    return <LayoutWithProps nothingToShow />;
+    return <NothingToShow />;
   }
   const eitherVisibility = await getVisibility({
     userId: props.searchParams.user,
   });
 
   if (isLeft(eitherVisibility)) {
-    return <LayoutWithProps nothingToShow />;
+    return <NothingToShow />;
   }
   const sequences: Sequence[] = [];
   for (const sequence of eitherSequences.right) {
-    const isVisible = eitherVisibility.right.sequences.find(
+    const sequenceVisibility = eitherVisibility.right.sequences.find(
       (visibility) => visibility.id === sequence._id
-    )?.publish;
+    );
+    const isVisible =
+      (sequenceVisibility?.classe === true &&
+        sequenceVisibility?.publish === true) ??
+      false;
+
     if (isVisible) {
       sequences.push(sequence);
     }
@@ -51,7 +55,7 @@ async function SpacesClasseServerLayer(props: {
           userId={props.searchParams.user}
         />
       ) : (
-        <LayoutWithProps nothingToShow />
+        <NothingToShow />
       )}
     </>
   );

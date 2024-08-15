@@ -17,24 +17,20 @@ async function SequencesServerLayer({
   const { type } = searchParams;
   if (!type || (type !== "template" && type !== "sequence")) {
     return (
-      <LayoutWithProps
-        isError={{
-          message: "Invalid params",
-          code: "PRE301",
-          description: "Invalid params",
-        }}
+      <ErrorDialog
+        message="Invalid params"
+        code="PRE301"
+        description="Invalid params"
       />
     );
   }
 
   if (type === "sequence" && !params.slug) {
     return (
-      <LayoutWithProps
-        isError={{
-          message: "Invalid params",
-          code: "PRE301",
-          description: "Type sequence requires slug param",
-        }}
+      <ErrorDialog
+        message="Invalid params"
+        code="PRE301"
+        description="Invalid params"
       />
     );
   }
@@ -48,26 +44,22 @@ async function SequencesServerLayer({
   });
   if (isLeft(eitherSequences)) {
     return (
-      <LayoutWithProps isEmpty>
-        <ErrorDialog
-          message={`
+      <ErrorDialog
+        message={`
       An error occurred while fetching sequences. 
     `}
-          code={eitherSequences.left.code}
-          description={eitherSequences.left.message}
-        />
-      </LayoutWithProps>
+        code={eitherSequences.left.code}
+        description={eitherSequences.left.message}
+      />
     );
   }
   return (
-    <LayoutWithProps>
-      <SequencesListView
-        sequences={eitherSequences.right}
-        userId={authUser.right.userId}
-        sequenceType={type as "template" | "sequence"}
-        sequenceId={params.slug}
-      />
-    </LayoutWithProps>
+    <SequencesListView
+      sequences={eitherSequences.right}
+      userId={authUser.right.userId}
+      sequenceType={type as "template" | "sequence"}
+      sequenceId={params.slug}
+    />
   );
 }
 

@@ -9,7 +9,6 @@ import {
   TableBody,
   TableCell,
 } from "@/core/components/ui/table";
-import VisibilitySwitch from "./VisibilitySwitch";
 import { Cours } from "../../domain/entities/cours-schemas";
 import useDeleteCourse from "../../application/adapters/services/useDeleteCourse";
 import { Button } from "@/core/components/ui/button";
@@ -51,13 +50,7 @@ function CoursesTable(props: {
                 <TableCell className="w-[200px]">
                   {course.description}
                 </TableCell>
-                <TableCell className="w-[200px]">
-                  <VisibilitySwitch
-                    userId={props.userId}
-                    type="cours"
-                    typeId={course._id}
-                  />
-                </TableCell>
+                
 
                 <TableCell className="w-[200px] ">
                   <div className="flex items-center  w-full h-full">

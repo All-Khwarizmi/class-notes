@@ -92,6 +92,7 @@ function NotesTableView(props: { notes: Note[]; parentId: string }) {
                   onClick={() => {
                     router.push(`/notes/${note.id}`);
                   }}
+                  className="cursor-pointer"
                 >
                   <TableCell className="w-[200px]">{note.name}</TableCell>
                   <TableCell className="w-[200px]">

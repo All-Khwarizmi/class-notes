@@ -71,6 +71,18 @@ export default function useExperimentalLayoutLogic(userId: string) {
           href: `/evaluations/${evaluation.id}`,
           color: "text-orange-500",
         }));
+        evaluationsNavItems.unshift({
+          title: "Show All Evaluations",
+          icon: <CandlestickChart size={16} />,
+          href: "/evaluations",
+          color: "text-orange-500",
+        });
+        evaluationsNavItems.unshift({
+          title: "Add Evaluation",
+          icon: <CandlestickChart size={16} />,
+          href: "/evaluations/add",
+          color: "text-orange-500",
+        });
 
         const sequencesNavItems = sequences.right.map((sequence) => ({
           title: sequence.name,
@@ -78,6 +90,18 @@ export default function useExperimentalLayoutLogic(userId: string) {
           href: `/sequences/${sequence._id}?type=template`,
           color: "text-orange-500",
         }));
+        sequencesNavItems.unshift({
+          title: "Show All Sequences",
+          icon: <Presentation size={16} />,
+          href: "/sequences?type=template",
+          color: "text-orange-500",
+        });
+        sequencesNavItems.unshift({
+          title: "Add Sequence",
+          icon: <Presentation size={16} />,
+          href: "/sequences/add",
+          color: "text-orange-500",
+        });
         const classesNavItems = classes.right.map((classe) => ({
           title: classe.name,
           icon: CopyClipboard(),

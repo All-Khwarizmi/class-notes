@@ -8,13 +8,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/core/components/ui/table";
-import CustomDialog from "../../../../core/components/common/CustomDialog";
-import AddClassForm from "./AddClassForm";
-import AddIcon from "../../../../core/components/icons/AddIcon";
 import Link from "next/link";
 import { Delete, Pen, Plus } from "lucide-react";
-import VisibilitySwitch from "@/features/cours-sequence/presentation/components/VisibilitySwitch";
-import LayoutWithProps from "@/core/components/layout/LayoutWithProps";
 import { useClassesTableLogic } from "../services/hooks/useClassesTableLogic";
 import Layout from "@/core/components/layout/Layout";
 import { cn } from "@/lib/utils";
@@ -50,15 +45,15 @@ export default function ClassesTable(props: { userId: string }) {
   }
 
   return (
-    <section
-      className={cn(
-        `${
-          !classes
-            ? "flex flex-col justify-center items-center h-[50vh] gap-4"
-            : ""
-        }`
-      )}
-    >
+    <section className={cn(`space-y-8 pt-8 px-4`)}>
+      <h1
+        className={cn(
+          "text-3xl font-bold ",
+          !classes ? "text-muted-foreground" : ""
+        )}
+      >
+        Mes classes{" "}
+      </h1>
       {classes && classes.right.length > 0 ? (
         <>
           <Table data-testid="classes-table" className="">
@@ -104,13 +99,6 @@ export default function ClassesTable(props: { userId: string }) {
                       <Link href={`/classes/class/${classe.id}`}>
                         <Pen size={16} />
                       </Link>
-                    </TableCell>
-                    <TableCell>
-                      <VisibilitySwitch
-                        userId={props.userId}
-                        type="classe"
-                        typeId={classe.id}
-                      />
                     </TableCell>
                   </TableRow>
                 );

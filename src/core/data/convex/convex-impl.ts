@@ -39,6 +39,14 @@ import {
   DeleteClasseOptions,
 } from "@/features/classe/domain/classe-types";
 import { SaveUserOptions } from "@/features/user/domain/types/types";
+import {
+  AddClasseToVisibilityOptions,
+  AddSequenceToVisibilityOptions,
+  AddCoursToVisibilityOptions,
+  AddComplementToVisibilityOptions,
+  DeleteEntityFromVisibilityOptions,
+  UpdateVisibilityOptions,
+} from "@/features/visibility/domain/types";
 
 export interface ConvexDatabaseOptions {
   db: typeof api;
@@ -552,7 +560,7 @@ export default class ConvexDatabase extends IDatabase {
         classId: classeId,
         sequenceId,
       });
-      if (result.error) {
+      if (!result) {
         return left(
           Failure.invalidValue({
             invalidValue: sequenceId,
@@ -561,7 +569,7 @@ export default class ConvexDatabase extends IDatabase {
           })
         );
       }
-      return right(result.id);
+      return right(result);
     } catch (error) {
       return left(
         Failure.invalidValue({
@@ -1167,36 +1175,135 @@ export default class ConvexDatabase extends IDatabase {
     }
   }
 
-  async updateClassVisibility({
-    id,
-    visibility,
-  }: {
-    id: string;
-    visibility: boolean;
-  }): Promise<Either<Failure<string>, void>> {
+  // async updateClassVisibility({
+  //   id,
+  //   visibility,
+  // }: {
+  //   id: string;
+  //   visibility: boolean;
+  // }): Promise<Either<Failure<string>, void>> {
+  //   try {
+  //     const result = await fetchMutation(
+  //       this._db.classes.updateClassVisibility,
+  //       {
+  //         id,
+  //         visibility,
+  //       }
+  //     );
+  //     if (!result.success) {
+  //       return left(
+  //         Failure.invalidValue({
+  //           invalidValue: id,
+  //           message: "Error updating class visibility",
+  //           code: "INF103",
+  //         })
+  //       );
+  //     }
+  //     return right(undefined);
+  //   } catch (error) {
+  //     return left(
+  //       Failure.invalidValue({
+  //         invalidValue: id,
+  //         message: "Error updating class visibility",
+  //         code: "INF101",
+  //       })
+  //     );
+  //   }
+  // }
+
+  async addClasseToVisibility(
+    options: AddClasseToVisibilityOptions
+  ): Promise<Either<Failure<string>, void>> {
     try {
-      const result = await fetchMutation(
-        this._db.classes.updateClassVisibility,
-        {
-          id,
-          visibility,
-        }
+      await fetchMutation(
+        this._db.visibility.addClasseToVisibilityTable,
+        options
       );
-      if (!result.success) {
-        return left(
-          Failure.invalidValue({
-            invalidValue: id,
-            message: "Error updating class visibility",
-            code: "INF103",
-          })
-        );
-      }
       return right(undefined);
     } catch (error) {
       return left(
         Failure.invalidValue({
-          invalidValue: id,
-          message: "Error updating class visibility",
+          invalidValue: options,
+          message: "Error adding class to visibility",
+          code: "INF101",
+        })
+      );
+    }
+  }
+
+  async addSequenceToVisibility(
+    options: AddSequenceToVisibilityOptions
+  ): Promise<Either<Failure<string>, void>> {
+    try {
+      await fetchMutation(
+        this._db.visibility.addSequenceToVisibilityTable,
+        options
+      );
+      return right(undefined);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: options,
+          message: "Error adding sequence to visibility",
+          code: "INF101",
+        })
+      );
+    }
+  }
+  async addCoursToVisibility(
+    options: AddCoursToVisibilityOptions
+  ): Promise<Either<Failure<string>, void>> {
+    try {
+      await fetchMutation(
+        this._db.visibility.addCoursToVisibilityTable,
+        options
+      );
+      return right(undefined);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: options,
+          message: "Error adding cours to visibility",
+          code: "INF101",
+        })
+      );
+    }
+  }
+  async addComplementToVisibility(
+    options: AddComplementToVisibilityOptions
+  ): Promise<Either<Failure<string>, void>> {
+    try {
+      await fetchMutation(
+        this._db.visibility.addComplementToVisibilityTable,
+        options
+      );
+      return right(undefined);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: options,
+          message: "Error adding complement to visibility",
+          code: "INF101",
+        })
+      );
+    }
+  }
+
+  async deleteEntityFromVisibilityTable(
+    options: DeleteEntityFromVisibilityOptions
+  ): Promise<Either<Failure<string>, void>> {
+    try {
+      await fetchMutation(
+        this._db.visibility.deleteEntityFromVisibilityTable,
+        options
+      );
+
+      return right(undefined);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: options,
+          message: "Error deleting entity from visibility",
           code: "INF101",
         })
       );
@@ -1233,30 +1340,20 @@ export default class ConvexDatabase extends IDatabase {
     }
   }
 
-  async updateVisibility({
-    userId,
-    publish,
-    type,
-    typeId,
-  }: {
-    userId: string;
-    publish: boolean;
-    type: "classe" | "sequence" | "cours" | "complement";
-    typeId: string;
-  }): Promise<Either<Failure<string>, void>> {
+  async updateVisibility(
+    options: UpdateVisibilityOptions
+  ): Promise<Either<Failure<string>, void>> {
     try {
-      await fetchMutation(this._db.visibility.updateVisibility, {
-        userId,
-        publish,
-        type,
-        typeId,
-      });
+      await fetchMutation(
+        this._db.visibility.updateAllVisibilityTable,
+        options.visibilityTable
+      );
 
       return right(undefined);
     } catch (error) {
       return left(
         Failure.invalidValue({
-          invalidValue: userId,
+          invalidValue: options.userId,
           message: "Error updating visibility",
           code: "INF101",
         })

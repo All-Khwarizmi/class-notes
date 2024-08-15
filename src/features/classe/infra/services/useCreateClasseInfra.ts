@@ -40,7 +40,7 @@ export default function useCreateClasseInfra() {
         educationSystem: dataForClasseCreationInfra.classe.educationSystem,
       })
         .then((data) => {
-          setCreateClasseInfraPayload({ ...data });
+          setCreateClasseInfraPayload({ id: true, error: false });
         })
         .catch((error) => {
           console.error("error", error);

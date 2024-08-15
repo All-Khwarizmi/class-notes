@@ -11,7 +11,6 @@ import {
   TableBody,
   TableCell,
 } from "@/core/components/ui/table";
-import VisibilitySwitch from "./VisibilitySwitch";
 import useDeleteComplement from "@/features/complement/application/adapters/services/useDeleteComplement";
 import { Button } from "@/core/components/ui/button";
 import { useRouter } from "next/navigation";
@@ -55,20 +54,11 @@ function ComplementsTable(props: {
                   {complement.description}
                 </TableCell>
                 <TableCell className="w-[200px]">{complement.type}</TableCell>
-                <TableCell className="w-[200px]">
-                  <VisibilitySwitch
-                    userId={props.userId}
-                    type="complement"
-                    typeId={complement.id}
-                  />
-                </TableCell>
 
                 <TableCell className="w-[200px] ">
                   <div className="flex items-center w-full h-full">
                     {" "}
-                    
                     <DeleteTableButton
-                   
                       onClick={() => {
                         confirm(
                           "Are you sure you want to delete this complement?"
@@ -77,8 +67,7 @@ function ComplementsTable(props: {
                             id: complement.id,
                           });
                       }}
-                    >
-                    </DeleteTableButton>
+                    ></DeleteTableButton>
                   </div>
                 </TableCell>
               </TableRow>

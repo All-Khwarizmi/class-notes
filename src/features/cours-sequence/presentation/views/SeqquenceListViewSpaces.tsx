@@ -15,7 +15,7 @@ function SequencesListViewSpaces({
 }) {
   return (
     <>
-      <div className=" h-full w-full flex flex-col gap-4 justify-between pb-12">
+      <div className=" h-full w-full flex flex-col gap-4 justify-between pb-12 px-4">
         <div className="grid grid-cols-1  gap-4 sm:grid-cols-3  lg:grid-cols-5">
           {sequences.map((sequence) => (
             <CoursSequenceCard
