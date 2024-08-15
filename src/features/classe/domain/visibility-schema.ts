@@ -225,6 +225,38 @@ export function toggleVisibility(
             });
           });
         });
+      } else {
+        // We only update the visibility of the classe in the sequences, courses and complements
+        newVisibility.classes.forEach((c) => {
+          c.sequences = c.sequences.map((s) =>
+            s.classeId === args.typeId
+              ? {
+                  ...s,
+                  classe: classe.publish,
+                }
+              : s
+          );
+          c.sequences.forEach((s) => {
+            s.courses = s.courses.map((c) =>
+              c.classeId === args.typeId
+                ? {
+                    ...c,
+                    classe: classe.publish,
+                  }
+                : c
+            );
+            s.courses.forEach((c) => {
+              c.complements = c.complements.map((c) =>
+                c.classeId === args.typeId
+                  ? {
+                      ...c,
+                      classe: classe.publish,
+                    }
+                  : c
+              );
+            });
+          });
+        });
       }
     }
   } else if (args.type === "sequence") {
@@ -269,6 +301,30 @@ export function toggleVisibility(
                         sequence: sequence.publish,
                         publish: sequence.publish,
                         cours: sequence.publish,
+                      }
+                    : c
+                );
+              });
+            });
+          });
+        } else {
+          // We only update the visibility of the sequence in the courses and complements
+          newVisibility.classes.forEach((c) => {
+            c.sequences.forEach((s) => {
+              s.courses = s.courses.map((c) =>
+                c.sequenceId === args.typeId
+                  ? {
+                      ...c,
+                      sequence: sequence.publish,
+                    }
+                  : c
+              );
+              s.courses.forEach((c) => {
+                c.complements = c.complements.map((c) =>
+                  c.sequenceId === args.typeId
+                    ? {
+                        ...c,
+                        sequence: sequence.publish,
                       }
                     : c
                 );
@@ -320,6 +376,22 @@ export function toggleVisibility(
                           ...c,
                           cours: course.publish,
                           publish: course.publish,
+                        }
+                      : c
+                  );
+                });
+              });
+            });
+          } else {
+            // We only update the visibility of the course in the complements
+            newVisibility.classes.forEach((c) => {
+              c.sequences.forEach((s) => {
+                s.courses.forEach((c) => {
+                  c.complements = c.complements.map((c) =>
+                    c.coursId === args.typeId
+                      ? {
+                          ...c,
+                          cours: course.publish,
                         }
                       : c
                   );
