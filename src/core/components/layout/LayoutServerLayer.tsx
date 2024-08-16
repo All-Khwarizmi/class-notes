@@ -4,18 +4,14 @@ import {
   HydrationBoundary,
   QueryClient,
 } from "@tanstack/react-query";
-import { redirect } from "next/navigation";
-
 import { authUseCases } from "@/features/auth/application/usecases/auth-usecases";
 import { isLeft } from "fp-ts/lib/Either";
 import { classeUsecases } from "@/features/classe/application/usecases/classe-usecases";
-
 import { QUERY_KEYS } from "@/core/query/ query-keys";
 import Layout from "./ExperimentalLayout";
-import { Loader } from "lucide-react";
 import { coursUsecases } from "@/features/cours-sequence/application/usecases/cours-usecases";
-import getEvaluations from "@/features/evaluation/application/adapters/actions/get-evaluations";
 import LoaderPage from "./LoaderPage";
+import { evaluationUsecases } from "@/features/evaluation/application/usecases/evaluation-usecases";
 async function LayoutServerLayer({ children }: { children: React.ReactNode }) {
   const authUser = await authUseCases.getUserAuth();
   if (isLeft(authUser)) {
@@ -40,13 +36,13 @@ async function LayoutServerLayer({ children }: { children: React.ReactNode }) {
     queryClient.prefetchQuery({
       queryKey: QUERY_KEYS.EVALUATIONS.BASE_GET_ALL(),
       queryFn: () =>
-        getEvaluations({
-          userId: authUser.right.userId,
+        evaluationUsecases.getEvaluationBaseList({
+          createdBy: authUser.right.userId,
         }),
     }),
   ];
   // Since the prefetchQuery method does not throw an error, we no need to handle it here by using allSettled or try/catch
-  await Promise.all(batch);
+  const result = await Promise.allSettled(batch);
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
