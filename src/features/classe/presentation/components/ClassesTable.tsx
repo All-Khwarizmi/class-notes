@@ -14,6 +14,7 @@ import { useClassesTableLogic } from "../services/hooks/useClassesTableLogic";
 import Layout from "@/core/components/layout/Layout";
 import { cn } from "@/lib/utils";
 import { Button } from "@/core/components/ui/button";
+import { TypographyH1 } from "@/core/components/common/Typography";
 
 export default function ClassesTable(props: { userId: string }) {
   const {
@@ -45,15 +46,10 @@ export default function ClassesTable(props: { userId: string }) {
   }
 
   return (
-    <section className={cn(`space-y-8 pt-8 px-4`)}>
-      <h1
-        className={cn(
-          "text-3xl font-bold ",
-          !classes ? "text-muted-foreground" : ""
-        )}
-      >
-        Mes classes{" "}
-      </h1>
+    <section className={cn(`py-8 px-4`)}>
+      <header className="pb-12">
+        <TypographyH1 text="Mes Classes" />
+      </header>
       {classes && classes.right.length > 0 ? (
         <>
           <Table data-testid="classes-table" className="">
@@ -63,7 +59,6 @@ export default function ClassesTable(props: { userId: string }) {
                 <TableHead>Name</TableHead>
                 <TableHead>Description</TableHead>
                 <TableHead>Actions</TableHead>
-                <TableHead>Show</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -81,7 +76,7 @@ export default function ClassesTable(props: { userId: string }) {
                       <TableCell>{classe.description}</TableCell>
                     </Link>
 
-                    <TableCell className="flex justify-center items-center gap-4">
+                    <TableCell className="flex gap-4">
                       {/* Delete */}
                       <Delete
                         className="cursor-pointer text-red-500"
@@ -125,7 +120,7 @@ export default function ClassesTable(props: { userId: string }) {
           </Table>
         </>
       )}
-      <article className="flex flex-col py-4 items-center">
+      <article className="flex flex-col py-8 items-center">
         <div>
           <Link data-testid="add-class" href={`/classes/add`}>
             <Button className="w-full">
