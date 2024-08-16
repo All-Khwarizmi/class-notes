@@ -149,7 +149,7 @@ export function StudentsEvaluationTableView(props: {
             ))}
           </TableBody>
         </Table>
-        <div className="flex justify-center mt-4 gap-2">
+        <div className="flex justify-center mt-8 gap-2">
           <CustomDialog
             title="Evaluations Settings"
             icon={<Settings />}
