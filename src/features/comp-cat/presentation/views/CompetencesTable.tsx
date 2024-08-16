@@ -84,7 +84,7 @@ export default function CompetencesTable({
                                   {competence.description}
                                 </CardDescription>
                               </CardContent>
-                              <CardFooter>
+                              <CardFooter className="flex justify-end">
                                 <Link href={`/competences/${competence._id}`}>
                                   <Button>Edit</Button>
                                 </Link>
