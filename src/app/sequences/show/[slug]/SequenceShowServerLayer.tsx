@@ -34,7 +34,9 @@ async function SequenceShowServerLayer(props: { slug: string }) {
       .map((c) => c.body)
       .join(" ")
       .toString();
-  return <ContentViewer content={content} />;
+  return <ContentViewer
+    navItems={[]}
+  content={content} />;
 }
 
 export default SequenceShowServerLayer;
