@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import {  Plus } from "lucide-react";
+import { Plus } from "lucide-react";
 import { TableCaption, TableHeader } from "@/core/components/ui/table";
 import {
   Table,
@@ -31,7 +31,6 @@ function CoursesTable(props: {
             <TableHead className="w-[200px]">Name</TableHead>
 
             <TableHead className="w-[200px]">Description</TableHead>
-            <TableHead className="w-[200px]"> Publish </TableHead>
 
             <TableHead className="w-[200px]">Actions</TableHead>
           </TableRow>
@@ -40,7 +39,7 @@ function CoursesTable(props: {
           {props.courses.map((course) => {
             return (
               <TableRow
-               className="cursor-pointer"
+                className="cursor-pointer"
                 key={course._id}
                 onClick={() => {
                   router.push(`/cours/${course._id}`);
@@ -50,12 +49,10 @@ function CoursesTable(props: {
                 <TableCell className="w-[200px]">
                   {course.description}
                 </TableCell>
-                
 
                 <TableCell className="w-[200px] ">
                   <div className="flex items-center  w-full h-full">
                     {" "}
-                   
                     <DeleteTableButton
                       onClick={() => {
                         confirm(
