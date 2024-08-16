@@ -26,13 +26,13 @@ export class Failure<T> {
     invalidValue,
     message,
     code,
-  }: FailureProps<T>): Failure<string> {
+  }: FailureProps<T>): FailureProps<string> {
     const str = JSON.stringify(invalidValue);
-    return new Failure({
+    return {
       invalidValue: str,
       message,
       code: `${code ?? `Error(${invalidValue})`}`,
-    });
+    };
   }
 }
 
