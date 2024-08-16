@@ -75,8 +75,8 @@ async function ClasseLayout(props: { slug: string }) {
   await Promise.allSettled(queriesBulk);
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <Tabs defaultValue="classe">
-        <div className="w-full items-center flex flex-col gap-8 justify-center py-8">
+      <Tabs defaultValue="classe" className="px-4">
+        <div className="w-full  items-center flex flex-col gap-8 justify-center py-8">
           <TypographyH1 text={classe.right.name} />
           <TabsList>
             <TabsTrigger value="classe">Classe</TabsTrigger>

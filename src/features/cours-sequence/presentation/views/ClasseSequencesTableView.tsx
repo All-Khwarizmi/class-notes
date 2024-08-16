@@ -38,11 +38,8 @@ function ClasseSequencesTableView(props: { classeId: string; userId: string }) {
   ) {
     return (
       <>
-        <Table className="w-full">
-          <TableCaption>
-            Add a note or a folder to the profile, or click on the note to view
-            it.
-          </TableCaption>
+        <Table className="w-full ">
+         
           <TableHeader>
             <TableRow>
               <TableHead className="w-[200px]">Name</TableHead>
