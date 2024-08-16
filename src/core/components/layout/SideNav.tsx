@@ -1,12 +1,9 @@
 "use client";
 import Link from "next/link";
-
-import { type NavItem } from "@/lib/types";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { useSidebar } from "@/core/application/common/useSidebar";
 import { buttonVariants } from "@/core/components/ui/button";
-
 import {
   Accordion,
   AccordionContent,
@@ -15,17 +12,32 @@ import {
 } from "@/core/components/layout/SubNavAccordion";
 import { useEffect, useState } from "react";
 import { ChevronDownIcon } from "@radix-ui/react-icons";
+import { useLayoutContext } from "./ExperimentalLayoutCtx";
 
 interface SideNavProps {
-  items?: NavItem[];
   setOpen?: (open: boolean) => void;
   className?: string;
 }
 
-export function SideNav({ items, setOpen, className }: SideNavProps) {
-  const [localItems, setLocalItems] = useState(items);
+export function SideNav({ setOpen, className }: SideNavProps) {
+  const { navItems, spacesNavItems, isSpaces } = useLayoutContext();
+  const [items, setItems] = useState(() => {
+    if (isSpaces === true && spacesNavItems) {
+      return spacesNavItems;
+    } else {
+      return navItems;
+    }
+  });
+  useEffect(() => {
+    if (isSpaces === true && spacesNavItems) {
+      setItems(spacesNavItems);
+    } else {
+      setItems(navItems);
+    }
+  }, [isSpaces, spacesNavItems, navItems]);
+
   const path = usePathname();
-  const { isOpen } = useSidebar();
+  const { isOpen, toggle } = useSidebar();
   const [openItem, setOpenItem] = useState("");
   const [lastOpenItem, setLastOpenItem] = useState("");
   const [liveHref, setLiveHref] = useState(path);
@@ -42,14 +54,16 @@ export function SideNav({ items, setOpen, className }: SideNavProps) {
     setLiveHref(path);
   }, [path]);
 
-  useEffect(() => {
-    // Check if the path contains a key word and remove the item if it does
-    const filteredItems = items?.filter((item) => {
-      const regex = /spaces/i;
-      return !regex.test(path);
-    });
-    setLocalItems(filteredItems);
-  }, [path, items]);
+  function handleOpenItem(value: string) {
+    if (!isOpen) {
+      toggle(true);
+      setTimeout(() => {
+        setOpenItem(value);
+      }, 250);
+    } else {
+      setOpenItem(value);
+    }
+  }
 
   function pathIsActive(props: { path: string; liveHref: string }) {
     let { path, liveHref } = props;
@@ -66,7 +80,7 @@ export function SideNav({ items, setOpen, className }: SideNavProps) {
   }
   return (
     <nav className="space-y-2 ">
-      {localItems?.map((item) =>
+      {items.map((item) =>
         item.isChidren ? (
           <Accordion
             type="single"
@@ -74,17 +88,24 @@ export function SideNav({ items, setOpen, className }: SideNavProps) {
             className="space-y-2"
             key={item.title}
             value={openItem}
-            onValueChange={setOpenItem}
+            onValueChange={handleOpenItem}
           >
             <AccordionItem value={item.title} className="border-none ">
               <AccordionTrigger
                 className={cn(
                   buttonVariants({ variant: "ghost" }),
                   pathIsActive({ path: item.href, liveHref }) && "bg-muted",
+                  `${item.color} hover:bg-muted`,
                   "group relative flex h-12 justify-between px-4 py-2 text-base duration-200 hover:bg-muted hover:no-underline"
                 )}
               >
-                <div>{item.icon}</div>
+                <div
+                  className={cn(
+                    !isOpen && "flex w-full justify-center items-center"
+                  )}
+                >
+                  {item.icon}
+                </div>
                 <div
                   className={cn(
                     "absolute left-12 text-base duration-200 ",
@@ -100,28 +121,6 @@ export function SideNav({ items, setOpen, className }: SideNavProps) {
               </AccordionTrigger>
               <AccordionContent className="mt-2 space-y-4 pb-1">
                 {" "}
-                {/* <Link
-                  href={item.href}
-                  onClick={() => {
-                    if (setOpen) setOpen(false);
-                  }}
-                  className={cn(
-                    buttonVariants({ variant: "ghost" }),
-                    "group relative flex h-12 justify-start gap-x-3",
-                    pathIsActive({ path: item.href, liveHref }) &&
-                      "bg-muted font-bold hover:bg-muted"
-                  )}
-                >
-                  {item.icon}
-                  <div
-                    className={cn(
-                      "absolute left-12 text-base duration-200",
-                      !isOpen && className
-                    )}
-                  >
-                    {item.title}
-                  </div>
-                </Link> */}
                 {item.children?.map((child) => (
                   <Link
                     key={child.title}
@@ -132,6 +131,7 @@ export function SideNav({ items, setOpen, className }: SideNavProps) {
                     className={cn(
                       buttonVariants({ variant: "ghost" }),
                       "group relative flex h-12 justify-start gap-x-3 ml-4",
+                      `${child.color} hover:bg-muted`,
                       pathIsActive({ path: child.href, liveHref }) &&
                         "bg-muted font-bold hover:bg-muted"
                     )}
@@ -160,15 +160,22 @@ export function SideNav({ items, setOpen, className }: SideNavProps) {
             className={cn(
               buttonVariants({ variant: "ghost" }),
               "group relative flex h-12 justify-start",
+              `${item.color} hover:bg-muted`,
 
               pathIsActive({ path: item.href, liveHref: liveHref }) &&
                 "bg-secondary font-bold hover:bg-muted"
             )}
           >
-            {item.icon}
+            <div
+              className={cn(
+                !isOpen && "flex w-full justify-center items-center"
+              )}
+            >
+              {item.icon}
+            </div>
             <span
               className={cn(
-                "absolute left-12 text-base duration-200",
+                "absolute left-12 text-base duration-200 ",
                 !isOpen && className
               )}
             >

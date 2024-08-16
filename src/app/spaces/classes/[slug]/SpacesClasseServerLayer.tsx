@@ -5,7 +5,7 @@ import { Sequence } from "@/features/cours-sequence/domain/entities/cours-schema
 import SequencesListViewSpaces from "@/features/cours-sequence/presentation/views/SeqquenceListViewSpaces";
 import { NavItem } from "@/lib/types";
 import { isLeft } from "fp-ts/lib/Either";
-import { Presentation } from "lucide-react";
+import { Book, Presentation } from "lucide-react";
 import React from "react";
 
 async function SpacesClasseServerLayer(props: {
@@ -44,12 +44,14 @@ async function SpacesClasseServerLayer(props: {
   const sequenceNavItems: NavItem[] = sequences.map((sequence) => ({
     title: sequence.name,
     href: `/spaces/sequences/${sequence._id}?user=${props.searchParams.user}`,
-    icon: <Presentation size={16} />,
+    icon: <Book size={16} className="text-green-500" />,
+    color: "text-blue-300",
   }));
   return (
     <>
       {sequences.length > 0 ? (
         <SequencesListViewSpaces
+          navItems={sequenceNavItems}
           sequences={sequences}
           spacesMode={true}
           userId={props.searchParams.user}

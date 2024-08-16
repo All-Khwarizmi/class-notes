@@ -1,10 +1,24 @@
+import { useLayoutContext } from "@/core/components/layout/ExperimentalLayoutCtx";
 import { Button } from "@/core/components/ui/button";
 import { ClassType } from "@/features/classe/domain/class-schema";
+import { NavItem } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect } from "react";
 
-function UserSpaceClasseCard(props: { classe: ClassType; userId: string }) {
+function UserSpaceClasseCard(props: {
+  classe: ClassType;
+  userId: string;
+  navItems: NavItem[];
+}) {
+  const { setSpacesNavItems, setIsSpaces } = useLayoutContext();
+  useEffect(() => {
+    if (setSpacesNavItems && setIsSpaces) {
+      setSpacesNavItems(props.navItems);
+      setIsSpaces(true);
+    }
+  }, [props.navItems, setSpacesNavItems, setIsSpaces]);
+
   return (
     <div
       className={cn(

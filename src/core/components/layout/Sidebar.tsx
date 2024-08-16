@@ -29,10 +29,10 @@ export default function Sidebar({ className, navItems }: SidebarProps) {
     });
     return tempCopy;
   }, []);
-  
+
   const handleToggle = () => {
     setStatus(true);
-    toggle();
+    toggle(!isOpen);
     setTimeout(() => setStatus(false), 500);
   };
   return (
@@ -54,10 +54,7 @@ export default function Sidebar({ className, navItems }: SidebarProps) {
       <div className="space-y-4 py-4">
         <div className="px-3 py-2">
           <div className="mt-3 space-y-1">
-            <SideNav
-              className="text-background opacity-0 transition-all duration-300 group-hover:z-50 group-hover:ml-4 group-hover:rounded group-hover:bg-foreground group-hover:p-2 group-hover:opacity-100"
-              items={navItemsCopy}
-            />
+            <SideNav className="text-background opacity-0 transition-all duration-300 group-hover:z-50 group-hover:ml-4 group-hover:rounded group-hover:bg-foreground group-hover:p-2 group-hover:opacity-100" />
           </div>
         </div>
       </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import NotFound from "@/app/not-found";
 import NothingToShow from "../common/editor/NothingToShow";
 import ErrorDialog from "../common/ErrorDialog";
@@ -13,6 +13,7 @@ import LayoutContext, {
   useLayoutContext,
 } from "./ExperimentalLayoutCtx";
 import { Loader } from "lucide-react";
+import { NavItem } from "@/lib/types";
 
 /**
  * Renders the layout component with the provided props.
@@ -35,13 +36,23 @@ function Layout({
   isError,
   isLoading,
   userId,
-}: LayoutWithPropsProps) {
+}: Omit<LayoutWithPropsProps, "navItems">) {
   const { navItems: experimentalNavItems, loading } =
     useExperimentalLayoutLogic(userId);
+  const [spacesNavItems, setSpacesNavItems] = useState<NavItem[]>([]);
+  const [isLandingPage, setIsLandingPage] = useState(false);
+  const [isSpaces, setIsSpaces] = useState(false);
+
   return (
     <LayoutContext.Provider
       value={{
         navItems: experimentalNavItems,
+        isLandingPage,
+        setIsLandingPage,
+        spacesNavItems,
+        setSpacesNavItems,
+        isSpaces,
+        setIsSpaces,
         isEmpty,
         notFound,
         nothingToShow,
@@ -55,7 +66,7 @@ function Layout({
           <Layout.Loader />
         </div>
       ) : (
-        <Header />
+        <>{!isLandingPage && <Header />}</>
       )}
       <section className="flex h-full w-full border-collapse overflow-hidden">
         {loading ? (
@@ -63,7 +74,7 @@ function Layout({
             <Layout.Loader />
           </div>
         ) : (
-          <Sidebar />
+          <>{!isLandingPage && <Sidebar />}</>
         )}
         <section className="h-full flex-1  pt-4 px-4 overflow-x-hidden">
           {children}
@@ -107,9 +118,7 @@ Layout.Children = function LayoutChildren() {
 };
 
 Layout.Loader = function LayoutLoader() {
-  return (
-      <Loader className="animate-spin" />
-  );
+  return <Loader className="animate-spin" />;
 };
 
 export default Layout;

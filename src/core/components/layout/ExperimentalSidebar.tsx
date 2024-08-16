@@ -1,27 +1,34 @@
 "use client";
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { SideNav } from "@/core/components/layout/SideNav";
 import { cn } from "@/lib/utils";
-import { useSidebar } from "@/core/application/common/useSidebar";
+import {
+  useSidebar,
+  useSidebarPreference,
+} from "@/core/application/common/useSidebar";
 import ArrowLeft from "../icons/ArrowLeft";
 import { NavItem } from "@/lib/types";
-import { useLayoutContext } from "./ExperimentalLayoutCtx";
 
-export interface SidebarProps {
-  className?: string;
+export type SidebarProps = {
   navItems?: NavItem[];
-}
+};
 
 export default function Sidebar() {
   const { isOpen, toggle } = useSidebar();
   const [status, setStatus] = useState(false);
-  const { navItems } = useLayoutContext();
+  const { get, set } = useSidebarPreference();
+
+  useEffect(() => {
+    toggle(get());
+  }, []);
 
   const handleToggle = () => {
-    setStatus(true);
-    toggle();
+    setStatus(false);
+    toggle(!isOpen);
+    set(!isOpen ? "true" : "false");
     setTimeout(() => setStatus(false), 500);
   };
+
   return (
     <nav
       className={cn(
@@ -32,7 +39,7 @@ export default function Sidebar() {
     >
       <ArrowLeft
         className={cn(
-          "absolute -right-3 top-20 cursor-pointer rounded-full border bg-background text-3xl text-foreground",
+          "absolute right-3 top-20 cursor-pointer rounded-full border bg-background text-3xl text-foreground",
           !isOpen && "rotate-180"
         )}
         onClick={handleToggle}
@@ -40,10 +47,7 @@ export default function Sidebar() {
       <div className="space-y-4 py-4 ">
         <div className="px-3 py-2">
           <div className="mt-3 space-y-1">
-            <SideNav
-              className="text-background overflow-scroll opacity-0 transition-all duration-300 group-hover:z-50 group-hover:ml-4 group-hover:rounded group-hover:bg-foreground group-hover:p-2 group-hover:opacity-100"
-              items={navItems}
-            />
+            <SideNav className="text-background overflow-scroll opacity-0 transition-all duration-300 group-hover:z-50 group-hover:ml-4 group-hover:rounded group-hover:bg-foreground group-hover:p-2 group-hover:opacity-100" />
           </div>
         </div>
       </div>
