@@ -61,7 +61,7 @@ async function SpacesComplementServerLayer(props: {
   if (isVisible === false) {
     return <NothingToShow />;
   }
-  return <ContentViewer content={eitherComplement.right.body} />;
+  return <ContentViewer navItems={[]} content={eitherComplement.right.body} />;
 }
 
 export default SpacesComplementServerLayer;

@@ -6,9 +6,20 @@ import CopyClipboard from "../icons/CopyClipboard";
 import useGetAllSequences from "@/features/cours-sequence/application/adapters/services/useGetAllSequences";
 import { isRight } from "fp-ts/lib/Either";
 import {
+  AArrowDown,
+  Airplay,
+  AppWindow,
+  Book,
   BookmarkCheck,
+  BookText,
+  Building,
   CandlestickChart,
+  FileSliders,
+  FlaskConical,
+  GraduationCap,
+  Plus,
   Presentation,
+  TestTubeDiagonal,
   User,
 } from "lucide-react";
 import useGetEvaluationsBaseList from "@/features/evaluation/application/adapters/services/useGetEvaluationsBaseList";
@@ -67,109 +78,109 @@ export default function useExperimentalLayoutLogic(userId: string) {
       if (isRight(classes) && isRight(sequences) && isRight(evaluations)) {
         const evaluationsNavItems = evaluations.right.map((evaluation) => ({
           title: evaluation.name,
-          icon: <CandlestickChart size={16} />,
+          icon: <TestTubeDiagonal size={16} className="text-red-500" />,
           href: `/evaluations/${evaluation.id}`,
-          color: "text-orange-500",
+          color: "text-blue-300",
         }));
         evaluationsNavItems.unshift({
-          title: "Show All Evaluations",
-          icon: <CandlestickChart size={16} />,
+          title: "Show All",
+          icon: <AArrowDown size={16} />,
           href: "/evaluations",
-          color: "text-orange-500",
+          color: "text-blue-300",
         });
         evaluationsNavItems.unshift({
           title: "Add Evaluation",
-          icon: <CandlestickChart size={16} />,
+          icon: <Plus size={16} />,
           href: "/evaluations/add",
-          color: "text-orange-500",
+          color: "text-blue-300",
         });
 
         const sequencesNavItems = sequences.right.map((sequence) => ({
           title: sequence.name,
-          icon: <Presentation size={16} />,
+          icon: <Book size={16} className="text-green-500" />,
           href: `/sequences/${sequence._id}?type=template`,
-          color: "text-orange-500",
+          color: "text-blue-300",
         }));
         sequencesNavItems.unshift({
-          title: "Show All Sequences",
-          icon: <Presentation size={16} />,
+          title: "Show All",
+          icon: <AArrowDown size={16} />,
           href: "/sequences?type=template",
-          color: "text-orange-500",
+          color: "text-blue-300",
         });
         sequencesNavItems.unshift({
           title: "Add Sequence",
-          icon: <Presentation size={16} />,
+          icon: <Plus size={16} />,
           href: "/sequences/add",
-          color: "text-orange-500",
+          color: "text-blue-300",
         });
         const classesNavItems = classes.right.map((classe) => ({
           title: classe.name,
-          icon: CopyClipboard(),
+          icon: <GraduationCap size={16} className="text-blue-500" />,
           href: `/classes/class/${classe.id}`,
-          color: "text-orange-500",
+          color: "text-blue-300",
         }));
-        classesNavItems.push({
+        classesNavItems.unshift({
           title: "Show All Classes",
-          icon: CopyClipboard(),
+          icon: <AArrowDown size={16} />,
           href: "/classes",
-          color: "text-orange-500",
+          color: "text-blue-300",
         });
-        classesNavItems.push({
+        classesNavItems.unshift({
           title: "Add Class",
-          icon: CopyClipboard(),
+          icon: <Plus size={16} />,
           href: "/classes/add",
-          color: "text-orange-500",
+          color: "text-blue-300",
         });
         setNavItems((prev) => [
           {
             title: "Dashboard",
-            icon: Dashboard(),
+            icon: <AppWindow size={16} className="text-pink-500" />,
             href: "/dashboard",
-            color: "text-sky-500",
+            color: "text-blue-300",
           },
           {
             title: "Classes",
-            icon: Dashboard(),
+            icon: <Building size={16} className="text-blue-500" />,
             href: "/classes",
-            color: "text-sky-500",
+            color: "text-blue-300",
             isChidren: true,
             children: classesNavItems,
           },
           {
             title: "Sequences",
-            icon: <Presentation size={16} />,
+            icon: <BookText size={16} className="text-green-500" />,
             href: "/sequences",
-            color: "text-sky-500",
+            color: "text-blue-300",
             isChidren: true,
             children: sequencesNavItems,
           },
           {
             title: "Evaluations",
-            icon: <CandlestickChart size={16} />,
+            icon: <FlaskConical size={16} className="text-red-500" />,
             href: "/evaluations",
-            color: "text-sky-500",
+            color: "text-blue-300",
             isChidren: true,
             children: evaluationsNavItems,
           },
           {
             title: "Competences",
-            icon: <BookmarkCheck size={16} />,
+            icon: <BookmarkCheck size={16} className="text-amber-500" />,
             href: "/competences",
-            color: "text-sky-500",
+            color: "text-blue-300",
           },
 
           {
             title: "Profile",
-            icon: <User size={16} />,
+            icon: <User size={16} className="text-stone-500" />,
             href: "/profile",
-            color: "text-sky-500",
+            color: "text-blue-300",
           },
 
           {
             title: "My Space",
-            icon: <User size={16} />,
+            icon: <Airplay size={16} className="text-lime-100" />,
             href: `/spaces?user=${userId}`,
-            color: "text-orange-500",
+            color: "text-blue-300",
           },
         ]);
       }

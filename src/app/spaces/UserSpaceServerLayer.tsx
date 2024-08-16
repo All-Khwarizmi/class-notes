@@ -5,7 +5,7 @@ import { ClassType } from "@/features/classe/domain/class-schema";
 import ErrorDialog from "@/core/components/common/ErrorDialog";
 import UserSpaceClassesGridView from "@/features/spaces/presentation/views/UserSpaceClassesGridView";
 import { NavItem } from "@/lib/types";
-import { Presentation } from "lucide-react";
+import { GraduationCap, Presentation } from "lucide-react";
 import getVisibility from "@/features/classe/application/adapters/actions/get-visibility";
 import NothingToShow from "@/core/components/common/editor/NothingToShow";
 
@@ -63,12 +63,17 @@ async function UserSpaceServerLayer(props: {
   const userSpaceNavItems: NavItem[] = classes.map((classe) => ({
     title: classe.name,
     href: `/spaces/classes/${classe.id}`,
-    icon: <Presentation size={16} />,
+    icon: <GraduationCap size={16} className="text-blue-500" />,
+    color: "text-blue-300",
   }));
   return (
     <>
       {classes.length > 0 ? (
-        <UserSpaceClassesGridView userId={userId} classes={classes} />
+        <UserSpaceClassesGridView
+          navItems={userSpaceNavItems}
+          userId={userId}
+          classes={classes}
+        />
       ) : (
         <NothingToShow />
       )}

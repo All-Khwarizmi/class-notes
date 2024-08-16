@@ -28,7 +28,7 @@ export const MobileSidebar = (props: { navItems?: NavItem[] }) => {
         </SheetTrigger>
         <SheetContent side="left" className="w-72">
           <div className="px-1 py-6 pt-16">
-            <SideNav items={props.navItems} setOpen={setOpen} />
+            <SideNav setOpen={setOpen} />
           </div>
         </SheetContent>
       </Sheet>

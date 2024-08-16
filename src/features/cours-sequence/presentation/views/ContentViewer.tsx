@@ -1,8 +1,25 @@
 "use client";
 import { EditorContent, useEditor } from "@tiptap/react";
 import { EXTENSIONS } from "@/core/components/constants/editor-extenstions";
+import { NavItem } from "@/lib/types";
+import { useLayoutContext } from "@/core/components/layout/ExperimentalLayoutCtx";
+import { useEffect } from "react";
 
-function ContentViewer({ content }: { content: string }) {
+function ContentViewer({
+  content,
+  navItems,
+}: {
+  content: string;
+  navItems: NavItem[];
+}) {
+  const { setSpacesNavItems, setIsSpaces } = useLayoutContext();
+  useEffect(() => {
+    if (setSpacesNavItems && setIsSpaces) {
+      setSpacesNavItems(navItems);
+      setIsSpaces(true);
+    }
+  }, [navItems, setSpacesNavItems, setIsSpaces]);
+
   const editor = useEditor({
     editable: false,
     content:
