@@ -13,6 +13,8 @@ import {
 import { Button } from "@/core/components/ui/button";
 import useDeleteSequence from "@/features/complement/application/adapters/services/useDeleteSequence";
 import { Sequence } from "../../domain/entities/cours-schemas";
+import { TypographyH1 } from "@/core/components/common/Typography";
+import { useRouter } from "next/navigation";
 function SequencesListView({
   sequences,
   spacesMode = false,
@@ -26,9 +28,13 @@ function SequencesListView({
   sequenceType: "template" | "sequence";
   sequenceId?: string;
 }) {
+  const router = useRouter();
   const { mutate: deleteSequence } = useDeleteSequence();
   return (
-    <div className="w-full h-full py-4">
+    <div className="w-full h-full py-8 px-4">
+      <header className="pb-8">
+        <TypographyH1 text="Sequences" />
+      </header>
       <Table className="w-full">
         <TableCaption>
           {sequenceType === "sequence"
@@ -39,50 +45,37 @@ function SequencesListView({
           <TableRow>
             <TableHead className="w-[200px]">Name</TableHead>
             <TableHead className="w-[200px]">Description</TableHead>
-            <TableHead className="w-[200px]"> Publish </TableHead>
-            <TableHead className="w-[200px]">Publish Date</TableHead>
             <TableHead className="w-[200px]">Actions</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {sequences.map((sequence) => {
             return (
-              <TableRow key={sequence._id}>
+              <TableRow
+                className="cursor-pointer"
+                key={sequence._id}
+                onClick={() => {
+                  router.push(
+                    `/sequences/${sequence._id}?type=${sequenceType}`
+                  );
+                }}
+              >
                 <TableCell className="w-[200px]">{sequence.name}</TableCell>
                 <TableCell className="w-[200px]">
                   {sequence.description}
                 </TableCell>
 
-                <TableCell className="w-[200px]">
-                  {sequence.createdAt
-                    ? new Date(sequence.createdAt).toDateString()
-                    : "Not published"}
-                </TableCell>
                 <TableCell className="w-[200px] ">
-                  <div className="flex items-center justify-center w-full h-full">
-                    <Link
-                      href={`/sequences/${sequence._id}?type=${sequenceType}`}
-                      className={cn(
-                        "bg-transparent rounded-md p-1 px-2 flex items-center ml-2 hover:text-blue-400  "
-                      )}
-                    >
-                      <ExternalLink size={16} />
-                    </Link>
-                    <button
-                      onClick={() =>
-                        deleteSequence({
-                          sequenceId: sequence._id,
-                          type: sequenceType,
-                          userId,
-                        })
-                      }
-                      className={cn(
-                        "bg-transparent rounded-md p-1 px-2 flex items-center ml-2 hover:text-red-400  "
-                      )}
-                    >
-                      <Delete size={16} />
-                    </button>
-                  </div>
+                  <Delete
+                    className="cursor-pointer text-red-500"
+                    onClick={() =>
+                      deleteSequence({
+                        sequenceId: sequence._id,
+                        type: sequenceType,
+                        userId,
+                      })
+                    }
+                  />
                 </TableCell>
               </TableRow>
             );
@@ -99,9 +92,9 @@ function SequencesListView({
           </Link>
         </div>
       ) : (
-        <div className="flex  justify-center w-full mt-4">
+        <div className="flex  justify-center w-full mt-8">
           <Link href={`/sequences/add`}>
-            <Button variant={"outline"}>
+            <Button>
               <Plus size={16} />
             </Button>
           </Link>
