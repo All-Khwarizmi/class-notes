@@ -76,15 +76,13 @@ async function ClasseLayout(props: { slug: string }) {
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <Tabs defaultValue="classe">
-        <div className="w-full items-center flex flex-col gap-4 justify-center py-4">
+        <div className="w-full items-center flex flex-col gap-8 justify-center py-8">
+          <TypographyH1 text={classe.right.name} />
           <TabsList>
             <TabsTrigger value="classe">Classe</TabsTrigger>
             <TabsTrigger value="sequences">Sequences</TabsTrigger>
             <TabsTrigger value="notes">Notes</TabsTrigger>
           </TabsList>
-          <TypographyH1 text={
-            classe.right.name
-          } />
         </div>
         <TabsContent value="classe">
           <div>
@@ -99,7 +97,6 @@ async function ClasseLayout(props: { slug: string }) {
         <TabsContent value="sequences">
           <div>
             <Suspense fallback={<LoadingSkeleton />}>
-              {/* <ClasseSequencesServerLayer slug={props.slug} /> */}
               <ClasseSequencesTableView
                 userId={authUser.right.userId}
                 classeId={props.slug}
