@@ -62,9 +62,8 @@ export default function CompetencesTable({
           {
             // Loop through the groupedCompetences
             groupedCompetences.map((group) => (
-              <TableRow key={group.category}>
+              <TableRow key={group.category} className="border-none">
                 <TableCell colSpan={4} className="font-bold">
-                  {/* Make it an accordion that when open displays an indented list of competences cards  */}
                   <Accordion type="multiple">
                     <AccordionItem value={group.category}>
                       <AccordionTrigger>
