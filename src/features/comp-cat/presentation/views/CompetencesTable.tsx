@@ -31,7 +31,14 @@ import {
   CardHeader,
   CardTitle,
 } from "@/core/components/ui/card";
-import { TypographyH4 } from "@/core/components/common/Typography";
+import {
+  TypographyH1,
+  TypographyH4,
+  TypographyLarge,
+  TypographyLead,
+  TypographyMuted,
+  TypographySmall,
+} from "@/core/components/common/Typography";
 
 export default function CompetencesTable({
   competences,
@@ -48,19 +55,20 @@ export default function CompetencesTable({
   );
   return (
     <main className="  rounded-md p-4 ">
-      <h1 className="text-3xl font-bold pb-8 ">
-        <span>Competences</span>
-      </h1>
+      <header className="flex justify-between items-center py-8">
+        <TypographyH1 text="Competences" />
+      </header>
       <Table>
         <TableCaption>Add competences or category</TableCaption>
         <TableHeader>
           <TableRow>
-            <TableHead>Category</TableHead>
+            <TableHead>
+              <TypographySmall text="Category" />
+            </TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {
-            // Loop through the groupedCompetences
             groupedCompetences.map((group) => (
               <TableRow key={group.category} className="border-none">
                 <TableCell colSpan={4} className="font-bold">
@@ -77,11 +85,15 @@ export default function CompetencesTable({
                               className="bg-background shadow-inner shadow-slate-900 "
                             >
                               <CardHeader>
-                                <CardTitle>{competence.name}</CardTitle>
+                                <CardTitle>
+                                  <TypographyLead text={competence.name} />
+                                </CardTitle>
                               </CardHeader>
                               <CardContent>
                                 <CardDescription>
-                                  {competence.description}
+                                  <TypographyMuted
+                                    text={competence.description}
+                                  />
                                 </CardDescription>
                               </CardContent>
                               <CardFooter className="flex justify-end">
@@ -101,7 +113,6 @@ export default function CompetencesTable({
           }
         </TableBody>
       </Table>
-      {/* Add Competence button */}
       <div className="flex justify-center py-4">
         <Link href={"/competences/add"}>
           <Button>
