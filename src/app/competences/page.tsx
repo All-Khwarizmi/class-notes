@@ -1,3 +1,4 @@
+import ErrorDialog from "@/core/components/common/ErrorDialog";
 import { authUseCases } from "@/features/auth/application/usecases/auth-usecases";
 import { compCatUsecases } from "@/features/comp-cat/application/usecases/comp-cat-usecases";
 import CompetencesTable from "@/features/comp-cat/presentation/views/CompetencesTable";
@@ -14,7 +15,9 @@ export default async function Page() {
   });
   if (isLeft(compAndCat)) {
     console.error(compAndCat.left);
-    return <div>Something went wrong</div>;
+    return (
+      <ErrorDialog message="An error occurred while fetching competences" />
+    );
   }
 
   return (

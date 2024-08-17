@@ -39,6 +39,7 @@ import {
   TypographyMuted,
   TypographySmall,
 } from "@/core/components/common/Typography";
+import UpdateCompetenceForm from "../components/UpdateCompetenceForm";
 
 export default function CompetencesTable({
   competences,
@@ -68,49 +69,50 @@ export default function CompetencesTable({
           </TableRow>
         </TableHeader>
         <TableBody>
-          {
-            groupedCompetences.map((group) => (
-              <TableRow key={group.category} className="border-none">
-                <TableCell colSpan={4} className="font-bold">
-                  <Accordion type="multiple">
-                    <AccordionItem value={group.category}>
-                      <AccordionTrigger>
-                        <TypographyH4 text={group.category} />
-                      </AccordionTrigger>
-                      <AccordionContent>
-                        <div className="pl-4 space-y-4">
-                          {group.competences.map((competence) => (
-                            <Card
-                              key={competence._id}
-                              className="bg-background shadow-inner shadow-slate-900 "
-                            >
-                              <CardHeader>
-                                <CardTitle>
-                                  <TypographyLead text={competence.name} />
-                                </CardTitle>
-                              </CardHeader>
-                              <CardContent>
-                                <CardDescription>
-                                  <TypographyMuted
-                                    text={competence.description}
-                                  />
-                                </CardDescription>
-                              </CardContent>
-                              <CardFooter className="flex justify-end">
-                                <Link href={`/competences/${competence._id}`}>
-                                  <Button>Edit</Button>
-                                </Link>
-                              </CardFooter>
-                            </Card>
-                          ))}
-                        </div>
-                      </AccordionContent>
-                    </AccordionItem>
-                  </Accordion>
-                </TableCell>
-              </TableRow>
-            ))
-          }
+          {groupedCompetences.map((group) => (
+            <TableRow key={group.category} className="border-none">
+              <TableCell colSpan={4} className="font-bold">
+                <Accordion type="multiple">
+                  <AccordionItem value={group.category}>
+                    <AccordionTrigger>
+                      <TypographyH4 text={group.category} />
+                    </AccordionTrigger>
+                    <AccordionContent>
+                      <div className="pl-4 space-y-4">
+                        {group.competences.map((competence) => (
+                          <Card
+                            key={competence._id}
+                            className="bg-background shadow-inner shadow-slate-900 "
+                          >
+                            <CardHeader>
+                              <CardTitle>
+                                <TypographyLead text={competence.name} />
+                              </CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                              <CardDescription>
+                                <TypographyMuted
+                                  text={competence.description}
+                                />
+                              </CardDescription>
+                            </CardContent>
+                            <CardFooter className="flex justify-end">
+                              <UpdateCompetenceForm
+                                name={competence.name}
+                                description={competence.description}
+                                entityName="Competence"
+                           
+                              />
+                            </CardFooter>
+                          </Card>
+                        ))}
+                      </div>
+                    </AccordionContent>
+                  </AccordionItem>
+                </Accordion>
+              </TableCell>
+            </TableRow>
+          ))}
         </TableBody>
       </Table>
       <div className="flex justify-center py-4">
