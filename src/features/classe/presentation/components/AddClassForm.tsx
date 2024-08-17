@@ -30,7 +30,7 @@ import {
   getHumanReadableGrade,
 } from "@/features/user/domain/entities/education-systems/niveaux/niveaux";
 import { toastWrapper } from "@/core/utils/toast-wrapper";
-const BASE_IMAGE_URL = "/images/chaklboard-icon.jpeg";
+const BASE_IMAGE_URL = "/images/chaklboard-icon.webp";
 
 export default function AddClassForm(props: { userId: string }) {
   const router = useRouter();
