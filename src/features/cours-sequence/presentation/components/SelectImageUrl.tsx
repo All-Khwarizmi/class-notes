@@ -51,8 +51,8 @@ export default function SelectImageUrl({
 
       <CustomDialog
         title="Select Image"
-        displayButton={false}
-        text="Select Image"
+        displayButton={true}
+        buttonText="Select Image"
         open={open}
         setOpen={setOpen}
       >
@@ -89,7 +89,6 @@ export default function SelectImageUrl({
             <Input
               id="file"
               disabled
-              
               onClick={() => {
                 alert("This feature is not yet implemented");
               }}

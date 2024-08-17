@@ -16,7 +16,6 @@ import { CoursSequenceForm } from "../views/AddCoursView";
 import SelectImageUrl from "./SelectImageUrl";
 import { useState } from "react";
 import { TypographyH1 } from "@/core/components/common/Typography";
-import useDeleteSequence from "@/features/complement/application/adapters/services/useDeleteSequence";
 
 export default function AddCoursOrSequenceForm({
   form,
@@ -117,10 +116,10 @@ export default function AddCoursOrSequenceForm({
             setOpen={setOpen}
           />
 
-          <SelectImageUrl
-            imageUrl={localImageUrl}
-            setImageUrl={setLocalImageUrl}
-          />
+            <SelectImageUrl
+              imageUrl={localImageUrl}
+              setImageUrl={setLocalImageUrl}
+            />
 
           <section className="flex justify-end">
             <Button
