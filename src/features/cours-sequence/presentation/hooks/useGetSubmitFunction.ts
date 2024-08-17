@@ -17,8 +17,8 @@ function useGetSubmitFunction(options: {
   authUser: UserAuth;
   sequenceType: "template" | "sequence";
 }) {
-  const { setSaveCoursMetadata } = useSaveCoursMetadata();
-  const { setSaveSequenceMetadata } = useSaveSequenceMetadata();
+  const { mutate: setSaveCoursMetadata } = useSaveCoursMetadata();
+  const { mutate: setSaveSequenceMetadata } = useSaveSequenceMetadata();
   const { setUpdateCoursMetadata } = useUpdateCoursMetadata();
   const { setUpdateSequenceMetadata } = useUpdateSequenceMetadata();
 
