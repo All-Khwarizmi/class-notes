@@ -43,7 +43,10 @@ import {
   DeleteEntityFromVisibilityOptions,
   UpdateVisibilityOptions,
 } from "@/features/visibility/domain/types";
-import { GetCompetenceOptions } from "@/features/comp-cat/domain/types";
+import {
+  GetCompetenceOptions,
+  UpdateCompCatOptions,
+} from "@/features/comp-cat/domain/types";
 
 export default abstract class IDatabase {
   abstract getUser({
@@ -90,6 +93,10 @@ export default abstract class IDatabase {
     category: string;
     competence: Competence;
   }): Promise<Either<Failure<string>, void>>;
+
+  abstract updateCategoryCompetence(
+    options: UpdateCompCatOptions
+  ): Promise<Either<Failure<string>, void>>;
 
   abstract getAllCours({
     userId,

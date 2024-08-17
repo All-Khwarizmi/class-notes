@@ -59,3 +59,24 @@ export const getCompetence = query({
     return competence;
   },
 });
+
+export const updateCompetence = mutation({
+  args: {
+    competenceId: v.string(),
+    name: v.string(),
+    description: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const competence = await ctx.db
+      .query("Competences")
+      .filter((q) => q.eq(q.field("_id"), args.competenceId))
+      .first();
+    if (competence) {
+      await ctx.db.patch(competence._id, {
+        name: args.name,
+        description: args.description,
+      });
+      return competence._id;
+    }
+  },
+});

@@ -47,7 +47,10 @@ import {
   DeleteEntityFromVisibilityOptions,
   UpdateVisibilityOptions,
 } from "@/features/visibility/domain/types";
-import { GetCompetenceOptions } from "@/features/comp-cat/domain/types";
+import {
+  GetCompetenceOptions,
+  UpdateCompCatOptions,
+} from "@/features/comp-cat/domain/types";
 
 export interface ConvexDatabaseOptions {
   db: typeof api;
@@ -181,6 +184,51 @@ export default class ConvexDatabase extends IDatabase {
     }
     return right(docs);
   }
+  async updateCategoryCompetence(
+    options: UpdateCompCatOptions
+  ): Promise<Either<Failure<string>, void>> {
+    try {
+      let result;
+      if (options.type === "Category") {
+        result = await fetchMutation(this._db.category.updateCategory, {
+          categoryId: options.id,
+          name: options.name,
+          description: options.description,
+        });
+        if (!result) {
+          return left(
+            Failure.invalidValue({
+              invalidValue: options,
+              message: "Error updating category",
+            })
+          );
+        }
+        return right(undefined);
+      }
+      result = await fetchMutation(this._db.competences.updateCompetence, {
+        competenceId: options.id,
+        name: options.name,
+        description: options.description,
+      });
+      if (!result) {
+        return left(
+          Failure.invalidValue({
+            invalidValue: options,
+            message: "Error updating category competence",
+          })
+        );
+      }
+      return right(undefined);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: options,
+          message: "Error updating category competence",
+        })
+      );
+    }
+  }
+
   async getCompetence(
     options: GetCompetenceOptions
   ): Promise<Either<Failure<string>, DocumentData>> {

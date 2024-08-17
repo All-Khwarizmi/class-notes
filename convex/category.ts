@@ -44,3 +44,25 @@ export const getCategories = query({
     }
   },
 });
+
+export const updateCategory = mutation({
+  args: {
+    categoryId: v.string(),
+    name: v.string(),
+    description: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const category = await ctx.db
+      .query("Category")
+      .filter((q) => q.eq(q.field("_id"), args.categoryId))
+      .first();
+
+    if (category) {
+      await ctx.db.patch(category._id, {
+        name: args.name,
+        description: args.description,
+      });
+      return category._id;
+    }
+  },
+});
