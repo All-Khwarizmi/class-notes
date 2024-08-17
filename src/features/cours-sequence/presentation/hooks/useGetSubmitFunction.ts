@@ -19,8 +19,8 @@ function useGetSubmitFunction(options: {
 }) {
   const { mutate: setSaveCoursMetadata } = useSaveCoursMetadata();
   const { mutate: setSaveSequenceMetadata } = useSaveSequenceMetadata();
-  const { setUpdateCoursMetadata } = useUpdateCoursMetadata();
-  const { setUpdateSequenceMetadata } = useUpdateSequenceMetadata();
+  const { mutate: setUpdateCoursMetadata } = useUpdateCoursMetadata();
+  const { mutate: setUpdateSequenceMetadata } = useUpdateSequenceMetadata();
 
   function onSubmitCours(data: CoursSequenceForm) {
     const newData = {
