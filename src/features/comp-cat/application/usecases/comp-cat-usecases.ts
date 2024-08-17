@@ -9,6 +9,7 @@ import CompCatRepository, {
   compCatRepository,
 } from "../repositories/comp-cat-repository";
 import Failure from "@/core/failures/failures";
+import { GetCompetenceOptions } from "../../domain/types";
 
 export default class CompCatUsecases {
   private readonly _repository: CompCatRepository;
@@ -177,6 +178,10 @@ export default class CompCatUsecases {
     }
 
     return right({ categories, competences });
+  }
+
+  async getCompetence(options: GetCompetenceOptions) {
+    return this._repository.getCompetence(options);
   }
 }
 

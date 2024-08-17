@@ -47,6 +47,7 @@ import {
   DeleteEntityFromVisibilityOptions,
   UpdateVisibilityOptions,
 } from "@/features/visibility/domain/types";
+import { GetCompetenceOptions } from "@/features/comp-cat/domain/types";
 
 export interface ConvexDatabaseOptions {
   db: typeof api;
@@ -179,6 +180,32 @@ export default class ConvexDatabase extends IDatabase {
       );
     }
     return right(docs);
+  }
+  async getCompetence(
+    options: GetCompetenceOptions
+  ): Promise<Either<Failure<string>, DocumentData>> {
+    try {
+      const operationResult = await fetchQuery(
+        this._db.competences.getCompetence,
+        options
+      );
+      if (!operationResult) {
+        return left(
+          Failure.invalidValue({
+            invalidValue: options,
+            message: "Error getting competence",
+          })
+        );
+      }
+      return right(operationResult);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: options,
+          message: "Error getting competence",
+        })
+      );
+    }
   }
 
   async addCompetence({

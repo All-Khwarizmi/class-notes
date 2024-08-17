@@ -46,3 +46,16 @@ export const getCompetences = query({
     }
   },
 });
+
+export const getCompetence = query({
+  args: {
+    competenceId: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const competence = await ctx.db
+      .query("Competences")
+      .filter((q) => q.eq(q.field("_id"), args.competenceId))
+      .first();
+    return competence;
+  },
+});

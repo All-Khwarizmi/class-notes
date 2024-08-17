@@ -43,6 +43,7 @@ import {
   DeleteEntityFromVisibilityOptions,
   UpdateVisibilityOptions,
 } from "@/features/visibility/domain/types";
+import { GetCompetenceOptions } from "@/features/comp-cat/domain/types";
 
 export default abstract class IDatabase {
   abstract getUser({
@@ -75,6 +76,10 @@ export default abstract class IDatabase {
   }: {
     userId: string;
   }): Promise<Either<Failure<string>, DocumentData[]>>;
+
+  abstract getCompetence(
+    options: GetCompetenceOptions
+  ): Promise<Either<Failure<string>, DocumentData>>;
 
   abstract addCompetence({
     userId,

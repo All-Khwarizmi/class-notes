@@ -2,6 +2,7 @@ import IDatabase from "@/core/data/idatabase";
 import { Category } from "../../domain/entities/schemas";
 import { convexDatabase } from "@/core/data/convex/convex-impl";
 import { getAppDataBase } from "@/core/data/get-app-db";
+import { GetCompetenceOptions } from "../../domain/types";
 
 export default class CompCatRepository {
   private readonly _db: IDatabase;
@@ -38,6 +39,12 @@ export default class CompCatRepository {
   }) {
     return this._db.addCompetence({ userId, category, competence });
   }
+
+  async getCompetence(options: GetCompetenceOptions) {
+    return this._db.getCompetence(options);
+  }
 }
 
-export const compCatRepository = new CompCatRepository({ db: getAppDataBase() });
+export const compCatRepository = new CompCatRepository({
+  db: getAppDataBase(),
+});
