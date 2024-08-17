@@ -68,24 +68,7 @@ export default function AddCoursOrSequenceForm({
                 );
               }}
             />
-            {/* Add a switch to controll visibility */}
-            <FormField
-              control={form.control}
-              name="publish"
-              render={({ field }) => {
-                return (
-                  <FormItem className="flex flex-col gap-2  justify-center">
-                    <FormLabel htmlFor={field.name}>Publish</FormLabel>
-                    <FormControl>
-                      <Switch
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
-                      />
-                    </FormControl>
-                  </FormItem>
-                );
-              }}
-            />
+         
           </div>
           <FormField
             control={form.control}
