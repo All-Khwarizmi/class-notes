@@ -39,21 +39,19 @@ export default function UpdateCompetenceForm(props: {
     if (props.name === name && props.description === description) {
       return toastWrapper.info("No changes made");
     }
-    if (props.entityName === "Competence") {
-      updateCompCat(
-        {
-          id: props.id,
-          name: data.name,
-          description: data.description,
-          type: props.entityName === "Competence" ? "Competences" : "Category",
+    updateCompCat(
+      {
+        id: props.id,
+        name: data.name,
+        description: data.description,
+        type: props.entityName === "Competence" ? "Competences" : "Category",
+      },
+      {
+        onSuccess: () => {
+          setOpen(false);
         },
-        {
-          onSuccess: () => {
-            setOpen(false);
-          },
-        }
-      );
-    }
+      }
+    );
   });
 
   return (
