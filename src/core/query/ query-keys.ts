@@ -52,4 +52,15 @@ export const QUERY_KEYS = {
     CREATE: (options: string[] = []) => ["CREATE_COURS", ...options],
     UPDATE: (options: string[] = []) => ["UPDATE_COURS", ...options],
   },
+  COMPETENCES: {
+    GET_ALL: (options: string[] = []) => ["GET_ALL_COMPETENCES", ...options],
+    CREATE: (options: string[] = []) => ["CREATE_COMPETENCE", ...options],
+    UPDATE: (options: string[] = []) => ["UPDATE_COMPETENCE", ...options],
+  },
+  COMP_CAT: {
+    UPDATE: (options: string[] = []) => [
+      "UPDATE_COMPETENCE_CATEGORY",
+      ...options,
+    ],
+  },
 };
