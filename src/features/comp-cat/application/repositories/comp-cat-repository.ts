@@ -47,6 +47,9 @@ export default class CompCatRepository {
   async updateCompCat(options: UpdateCompCatOptions) {
     return this._db.updateCategoryCompetence(options);
   }
+  async deleteCompCat(options: UpdateCompCatOptions) {
+    return this._db.deleteCompCat(options);
+  }
 }
 
 export const compCatRepository = new CompCatRepository({

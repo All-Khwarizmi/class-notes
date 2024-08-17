@@ -66,3 +66,21 @@ export const updateCategory = mutation({
     }
   },
 });
+
+export const deleteCategory = mutation({
+  args: {
+    categoryId: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const category = await ctx.db
+      .query("Category")
+      .filter((q) => q.eq(q.field("_id"), args.categoryId))
+      .first();
+
+    if (category) {
+      await ctx.db.delete(category._id);
+      return category._id;
+    }
+  },
+});
+

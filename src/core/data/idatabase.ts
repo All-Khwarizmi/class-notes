@@ -44,6 +44,7 @@ import {
   UpdateVisibilityOptions,
 } from "@/features/visibility/domain/types";
 import {
+  DeleteCompCatOptions,
   GetCompetenceOptions,
   UpdateCompCatOptions,
 } from "@/features/comp-cat/domain/types";
@@ -98,6 +99,9 @@ export default abstract class IDatabase {
     options: UpdateCompCatOptions
   ): Promise<Either<Failure<string>, void>>;
 
+  abstract deleteCompCat(
+    options: DeleteCompCatOptions
+  ): Promise<Either<Failure<string>, void>>;
   abstract getAllCours({
     userId,
   }: {

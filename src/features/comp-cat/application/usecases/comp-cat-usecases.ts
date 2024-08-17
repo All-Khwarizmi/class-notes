@@ -187,6 +187,9 @@ export default class CompCatUsecases {
   async updateCompCat(options: UpdateCompCatOptions) {
     return this._repository.updateCompCat(options);
   }
+  async deleteCompCat(options: UpdateCompCatOptions) {
+    return this._repository.deleteCompCat(options);
+  }
 }
 
 export const compCatUsecases = new CompCatUsecases({

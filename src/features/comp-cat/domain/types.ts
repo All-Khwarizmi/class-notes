@@ -8,3 +8,8 @@ export type UpdateCompCatOptions = {
   description: string;
   type: "Competences" | "Category";
 };
+
+export type DeleteCompCatOptions = {
+  id: string;
+  type: "Competences" | "Category";
+};

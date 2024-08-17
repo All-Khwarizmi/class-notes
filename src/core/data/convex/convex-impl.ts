@@ -48,6 +48,7 @@ import {
   UpdateVisibilityOptions,
 } from "@/features/visibility/domain/types";
 import {
+  DeleteCompCatOptions,
   GetCompetenceOptions,
   UpdateCompCatOptions,
 } from "@/features/comp-cat/domain/types";
@@ -224,6 +225,44 @@ export default class ConvexDatabase extends IDatabase {
         Failure.invalidValue({
           invalidValue: options,
           message: "Error updating category competence",
+        })
+      );
+    }
+  }
+  async deleteCompCat(options: DeleteCompCatOptions) {
+    try {
+      let result;
+      if (options.type === "Category") {
+        result = await fetchMutation(this._db.category.deleteCategory, {
+          categoryId: options.id,
+        });
+        if (!result) {
+          return left(
+            Failure.invalidValue({
+              invalidValue: options,
+              message: "Error deleting category",
+            })
+          );
+        }
+        return right(undefined);
+      }
+      result = await fetchMutation(this._db.competences.deleteCompetence, {
+        competenceId: options.id,
+      });
+      if (!result) {
+        return left(
+          Failure.invalidValue({
+            invalidValue: options,
+            message: "Error deleting category competence",
+          })
+        );
+      }
+      return right(undefined);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: options,
+          message: "Error deleting category competence",
         })
       );
     }
