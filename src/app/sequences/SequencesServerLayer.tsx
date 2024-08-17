@@ -5,7 +5,11 @@ import { isLeft } from "fp-ts/lib/Either";
 import { redirect } from "next/navigation";
 import SequencesListView from "@/features/cours-sequence/presentation/views/SequencesListView";
 import ErrorDialog from "@/core/components/common/ErrorDialog";
-import { QueryClient } from "@tanstack/react-query";
+import {
+  dehydrate,
+  HydrationBoundary,
+  QueryClient,
+} from "@tanstack/react-query";
 import { QUERY_KEYS } from "@/core/query/ query-keys";
 
 async function SequencesServerLayer({
@@ -50,11 +54,13 @@ async function SequencesServerLayer({
   });
 
   return (
-    <SequencesListView
-      userId={authUser.right.userId}
-      sequenceType={type as "template" | "sequence"}
-      sequenceId={params.slug}
-    />
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <SequencesListView
+        userId={authUser.right.userId}
+        sequenceType={type as "template" | "sequence"}
+        sequenceId={params.slug}
+      />
+    </HydrationBoundary>
   );
 }
 

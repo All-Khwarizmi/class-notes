@@ -9,7 +9,7 @@ import {
   Card,
   CardHeader,
 } from "@/core/components/ui/card";
-import {  Settings, Trash } from "lucide-react";
+import { Settings, Trash } from "lucide-react";
 import { Button } from "@/core/components/ui/button";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
@@ -63,12 +63,12 @@ export default function CoursSequenceCard({
         </div>
       </CardContent>
       <CardFooter className="p-4">
-        <div className="flex gap-2 w-full">
+        <div className="flex gap-2 w-full py-4">
           {showViewButton && (
-            <div className="flex justify-center w-full h-full">
-              <Button variant="outline" className="">
-                <Link href={pathToView ?? "/sequences"}>View Sequence</Link>
-              </Button>
+            <div className="w-full flex justify-center">
+              <Link href={pathToView ?? "/sequences"}>
+                <Button>View</Button>
+              </Link>
             </div>
           )}
           {!spacesMode && (
