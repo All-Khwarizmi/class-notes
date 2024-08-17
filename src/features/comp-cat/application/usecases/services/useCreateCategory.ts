@@ -1,49 +1,33 @@
-import { Category } from "@/features/comp-cat/domain/entities/schemas";
-import { useEffect, useState } from "react";
 import { compCatUsecases } from "../comp-cat-usecases";
 import { isLeft } from "fp-ts/lib/Either";
-import { toast } from "sonner";
-import { useRouter } from "next/navigation";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { QUERY_KEYS } from "@/core/query/ query-keys";
+import { CreateCategoryOptions } from "@/features/comp-cat/domain/types";
+import { toastWrapper } from "@/core/utils/toast-wrapper";
 
 export default function useCreateCategory() {
-  const [createCategoryOptions, setCreateCategoryOptions] = useState<Omit<
-    Category,
-    "_id"
-  > | null>(null);
-  const router = useRouter();
-
-  useEffect(() => {
-    if (!createCategoryOptions) return;
-    const loadingToast = toast.loading("Adding category", {
-      position: "top-center",
-    });
-    compCatUsecases
-      .addCategory({
-        userId: createCategoryOptions.createdBy,
-        category: createCategoryOptions,
-      })
-      .then((result) => {
-        if (isLeft(result)) {
-          toast.error("Failed to add category", {
-            position: "top-center",
-            duration: 3000,
-          });
-          return;
-        }
-        toast.dismiss(loadingToast);
-        toast.success("Category added", {
-          position: "top-center",
-          duration: 3000,
-        });
-        router.refresh();
-      })
-      .finally(() => {
-        setCreateCategoryOptions(null);
-        toast.dismiss(loadingToast);
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationKey: QUERY_KEYS.CATEGORY.CREATE(),
+    mutationFn: async (options: CreateCategoryOptions) => {
+      return compCatUsecases.addCategory({
+        userId: options.createdBy,
+        category: {
+          name: options.name,
+          description: options.description,
+          createdBy: options.createdBy,
+        },
       });
-  }, [createCategoryOptions]);
-
-  return {
-    setCreateCategoryOptions,
-  };
+    },
+    onSuccess: async (either) => {
+      if (isLeft(either)) {
+        toastWrapper.error("Failed to add category");
+        return;
+      }
+      toastWrapper.success("Category added");
+      await queryClient.invalidateQueries({
+        queryKey: QUERY_KEYS.COMP_CAT.GET_ALL(),
+      });
+    },
+  });
 }
