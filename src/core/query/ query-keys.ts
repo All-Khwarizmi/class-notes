@@ -62,5 +62,9 @@ export const QUERY_KEYS = {
       "UPDATE_COMPETENCE_CATEGORY",
       ...options,
     ],
+    GET_ALL: (options: string[] = []) => [
+      "GET_ALL_COMPETENCE_CATEGORY",
+      ...options,
+    ],
   },
 };

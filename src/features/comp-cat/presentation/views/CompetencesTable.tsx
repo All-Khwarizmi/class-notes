@@ -41,15 +41,7 @@ import {
 } from "@/core/components/common/Typography";
 import UpdateCompetenceForm from "../components/UpdateCompetenceForm";
 
-export default function CompetencesTable({
-  competences,
-  categories,
-  userId,
-}: {
-  competences: Competence[];
-  categories: Category[];
-  userId: string;
-}) {
+export default function CompetencesTable() {
   const groupedCompetences = useMemo(
     () => groupCompetencesByCategory(competences),
     [competences]
@@ -96,6 +88,7 @@ export default function CompetencesTable({
                             </CardContent>
                             <CardFooter className="flex justify-end">
                               <UpdateCompetenceForm
+                                id={competence._id}
                                 name={competence.name}
                                 description={competence.description}
                                 entityName="Competence"
