@@ -2,6 +2,7 @@ import LoadingSkeleton from "@/core/components/common/LoadingSkeleton";
 import React, { Suspense } from "react";
 import LayoutWithProps from "@/core/components/layout/LayoutWithProps";
 import SequenceLayout from "./SequenceLayout";
+import ErrorDialog from "@/core/components/common/ErrorDialog";
 
 async function Page({
   params,
@@ -18,12 +19,8 @@ async function Page({
     (searchParams.type !== "template" && searchParams.type !== "sequence")
   ) {
     return (
-      <LayoutWithProps
-        isError={{
-          message: "Invalid params",
-          code: "PRE301",
-          description: "Invalid params",
-        }}
+      <ErrorDialog
+        message="Invalid URL. Please check the URL and try again."
       />
     );
   }
