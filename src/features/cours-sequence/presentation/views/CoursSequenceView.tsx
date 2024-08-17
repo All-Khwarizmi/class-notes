@@ -34,10 +34,7 @@ export default function CoursSequenceView({
   if (type === "cours" && cours) {
     return (
       <>
-        <h1 className="text-2xl font-bold pb-4 dark:text-slate-300 text-slate-500 ">
-          {cours.name}
-        </h1>
-
+      
         <FloatingEditor
           content={cours.body}
           debounceUpdateFn={
@@ -76,9 +73,7 @@ export default function CoursSequenceView({
         : `/spaces/sequences/${sequence._id}?user=${userId}&type=template`;
     return (
       <>
-        <h1 className="text-2xl font-bold pb-4 dark:text-slate-300 text-slate-500 ">
-          {sequence.name}
-        </h1>
+      
         <FloatingEditor
           content={sequence.body}
           debounceUpdateFn={debounceUpdateSequenceBody({

@@ -1,14 +1,5 @@
 "use client";
-import Link from "next/link";
-import {
-  ExternalLink,
-  Folder,
-  Plus,
-  File,
-  X,
-  Delete,
-  Check,
-} from "lucide-react";
+import { Plus, X, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { TableCaption, TableHeader } from "@/core/components/ui/table";
 import {
@@ -32,10 +23,10 @@ import {
 import useAddNote from "../../application/adapters/services/useAddProfileNote";
 import useDeleteNote from "../../application/adapters/services/useDeleteNote";
 import { toast } from "sonner";
-import AddTableButton from "@/core/components/common/AddTableButton";
 import { Button } from "@/core/components/ui/button";
 import { useRouter } from "next/navigation";
 import DeleteTableButton from "@/core/components/common/DeleteTableButton";
+
 function NotesTableView(props: { notes: Note[]; parentId: string }) {
   const [localNotes, setLocalNotes] = useState<Note[]>(props.notes);
   const [isFileFormVisible, setIsFileFormVisible] = useState(false);
@@ -70,8 +61,7 @@ function NotesTableView(props: { notes: Note[]; parentId: string }) {
       <div className="w-full h-full py-4">
         <Table className="w-full">
           <TableCaption>
-            Add a note or a folder to the profile, or click on the note to view
-            it.
+            Add a note to the classe, or click on a note to view it.
           </TableCaption>
           <TableHeader>
             <TableRow>
@@ -134,7 +124,7 @@ function NotesTableView(props: { notes: Note[]; parentId: string }) {
             )}
           </TableBody>
         </Table>
-        <div className="flex justify-center py-4 gap-4">
+        <div className="flex justify-center py-8 gap-4">
           <Button
             onClick={() => {
               setIsFileFormVisible(true);

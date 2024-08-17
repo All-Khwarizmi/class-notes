@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import NotFound from "@/app/not-found";
 import NothingToShow from "../common/editor/NothingToShow";
 import ErrorDialog from "../common/ErrorDialog";
@@ -14,6 +14,7 @@ import LayoutContext, {
 } from "./ExperimentalLayoutCtx";
 import { Loader } from "lucide-react";
 import { NavItem } from "@/lib/types";
+import { usePathname } from "next/navigation";
 
 /**
  * Renders the layout component with the provided props.
@@ -39,14 +40,19 @@ function Layout({
 }: Omit<LayoutWithPropsProps, "navItems">) {
   const { navItems: experimentalNavItems, loading } =
     useExperimentalLayoutLogic(userId);
+  const [navItems, setNavItems] = useState<NavItem[]>(experimentalNavItems);
   const [spacesNavItems, setSpacesNavItems] = useState<NavItem[]>([]);
   const [isLandingPage, setIsLandingPage] = useState(false);
   const [isSpaces, setIsSpaces] = useState(false);
-
+  const path = usePathname();
+  useEffect(() => {
+    setNavItems(experimentalNavItems);
+    setIsLandingPage(path === "/");
+  }, [experimentalNavItems, path]);
   return (
     <LayoutContext.Provider
       value={{
-        navItems: experimentalNavItems,
+        navItems,
         isLandingPage,
         setIsLandingPage,
         spacesNavItems,

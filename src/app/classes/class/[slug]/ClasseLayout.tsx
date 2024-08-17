@@ -23,6 +23,9 @@ import ClasseSequencesServerLayer from "../../sequences/[slug]/ClasseSequencesSe
 import NotesServerLayer from "@/app/profile/notes/[slug]/NotesServerLayer";
 import { QUERY_KEYS } from "@/core/query/ query-keys";
 import ClasseSequencesTableView from "@/features/cours-sequence/presentation/views/ClasseSequencesTableView";
+import { classeUsecases } from "@/features/classe/application";
+import ErrorDialog from "@/core/components/common/ErrorDialog";
+import { TypographyH1 } from "@/core/components/common/Typography";
 async function ClasseLayout(props: { slug: string }) {
   const authUser = await authUseCases.getUserAuth();
   if (isLeft(authUser)) {
@@ -62,12 +65,19 @@ async function ClasseLayout(props: { slug: string }) {
         }),
     }),
   ];
+  const classe = await classeUsecases.getClasse({ id: props.slug });
+  if (isLeft(classe)) {
+    return (
+      <ErrorDialog message="Une erreur s'est produite lors de la récupération des informations de la classe. Veuillez réessayer plus tard." />
+    );
+  }
 
   await Promise.allSettled(queriesBulk);
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <Tabs defaultValue="classe">
-        <div className="w-full flex justify-center py-4">
+      <Tabs defaultValue="classe" className="px-4">
+        <div className="w-full  items-center flex flex-col gap-8 justify-center py-8">
+          <TypographyH1 text={classe.right.name} />
           <TabsList>
             <TabsTrigger value="classe">Classe</TabsTrigger>
             <TabsTrigger value="sequences">Sequences</TabsTrigger>
@@ -87,7 +97,6 @@ async function ClasseLayout(props: { slug: string }) {
         <TabsContent value="sequences">
           <div>
             <Suspense fallback={<LoadingSkeleton />}>
-              {/* <ClasseSequencesServerLayer slug={props.slug} /> */}
               <ClasseSequencesTableView
                 userId={authUser.right.userId}
                 classeId={props.slug}
