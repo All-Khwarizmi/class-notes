@@ -47,4 +47,7 @@ export const QUERY_KEYS = {
     GET_ALL: (options: string[] = []) => ["GET_ALL_VISIBILITY", ...options],
     UPDATE: (options: string[] = []) => ["UPDATE_VISIBILITY", ...options],
   },
+  COURS: {
+    CREATE: (options: string[] = []) => ["CREATE_COURS", ...options],
+  },
 };
