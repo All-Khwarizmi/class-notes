@@ -11,12 +11,12 @@ export const useUpdateCompCat = () => {
     mutationKey: [QUERY_KEYS.COMP_CAT.UPDATE()],
     mutationFn: async (options: UpdateCompCatOptions) =>
       compCatUsecases.updateCompCat(options),
-    onSuccess: (either, variables) => {
+    onSuccess: async (either, variables) => {
       if (isLeft(either)) {
         return toastWrapper.error("An error occurred");
       }
       toastWrapper.success(`${variables.type} updated successfully`);
-      queryClient.invalidateQueries({
+      await queryClient.invalidateQueries({
         queryKey: QUERY_KEYS.COMP_CAT.GET_ALL(),
       });
     },
