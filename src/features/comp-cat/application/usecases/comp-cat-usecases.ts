@@ -9,7 +9,7 @@ import CompCatRepository, {
   compCatRepository,
 } from "../repositories/comp-cat-repository";
 import Failure from "@/core/failures/failures";
-import { GetCompetenceOptions, UpdateCompCatOptions } from "../../domain/types";
+import { DeleteCompCatOptions, GetCompetenceOptions, UpdateCompCatOptions } from "../../domain/types";
 
 export default class CompCatUsecases {
   private readonly _repository: CompCatRepository;
@@ -187,7 +187,7 @@ export default class CompCatUsecases {
   async updateCompCat(options: UpdateCompCatOptions) {
     return this._repository.updateCompCat(options);
   }
-  async deleteCompCat(options: UpdateCompCatOptions) {
+  async deleteCompCat(options: DeleteCompCatOptions) {
     return this._repository.deleteCompCat(options);
   }
 }

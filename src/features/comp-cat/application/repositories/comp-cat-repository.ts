@@ -2,7 +2,7 @@ import IDatabase from "@/core/data/idatabase";
 import { Category } from "../../domain/entities/schemas";
 import { convexDatabase } from "@/core/data/convex/convex-impl";
 import { getAppDataBase } from "@/core/data/get-app-db";
-import { GetCompetenceOptions, UpdateCompCatOptions } from "../../domain/types";
+import { DeleteCompCatOptions, GetCompetenceOptions, UpdateCompCatOptions } from "../../domain/types";
 
 export default class CompCatRepository {
   private readonly _db: IDatabase;
@@ -47,7 +47,7 @@ export default class CompCatRepository {
   async updateCompCat(options: UpdateCompCatOptions) {
     return this._db.updateCategoryCompetence(options);
   }
-  async deleteCompCat(options: UpdateCompCatOptions) {
+  async deleteCompCat(options: DeleteCompCatOptions) {
     return this._db.deleteCompCat(options);
   }
 }

@@ -18,7 +18,7 @@ import {
 import { groupCompetencesByCategory } from "../../domain/entities/schemas";
 import { Button } from "@/core/components/ui/button";
 import Link from "next/link";
-import { Plus } from "lucide-react";
+import { Plus, Trash } from "lucide-react";
 import { useMemo } from "react";
 import {
   Card,
@@ -38,10 +38,11 @@ import {
 import UpdateCompetenceForm from "../components/UpdateCompetenceForm";
 import { useGetCompCat } from "../../application/adapters/services/useGetCompCat";
 import { isLeft } from "fp-ts/lib/Either";
+import { useDeleteCompCat } from "@/features/complement/application/adapters/services/useDeleteCompCat";
 
 export default function CompetencesTable({ userId }: { userId: string }) {
   const { data: compCat } = useGetCompCat({ userId });
-
+  const { mutate: deleteCompCat } = useDeleteCompCat();
   const groupedCompetences = useMemo(() => {
     if (!compCat || isLeft(compCat)) return [];
     const competences = compCat.right.competences;
@@ -81,13 +82,25 @@ export default function CompetencesTable({ userId }: { userId: string }) {
 
                       <AccordionContent className="flex flex-col gap-4">
                         {category && (
-                          <div className="pl-4">
+                          <div className="pl-4 flex gap-4">
                             <UpdateCompetenceForm
                               id={category._id}
                               name={category.name}
                               description={category.description}
                               entityName="Category"
                             />
+                            <Button
+                              variant={"destructive"}
+                              onClick={() =>
+                                confirm("Are you sure you want to delete") &&
+                                deleteCompCat({
+                                  type: "Category",
+                                  id: category._id,
+                                })
+                              }
+                            >
+                              <Trash size={16} />
+                            </Button>
                           </div>
                         )}
                         <div className="pl-4 space-y-4">
@@ -106,13 +119,27 @@ export default function CompetencesTable({ userId }: { userId: string }) {
                                   {competence.description}
                                 </CardDescription>
                               </CardContent>
-                              <CardFooter className="flex justify-end">
+                              <CardFooter className="flex justify-end gap-4">
                                 <UpdateCompetenceForm
                                   id={competence._id}
                                   name={competence.name}
                                   description={competence.description}
                                   entityName="Competence"
                                 />
+                                <Button
+                                  variant={"destructive"}
+                                  onClick={() =>
+                                    confirm(
+                                      "Are you sure you want to delete"
+                                    ) &&
+                                    deleteCompCat({
+                                      type: "Competences",
+                                      id: competence._id,
+                                    })
+                                  }
+                                >
+                                  <Trash size={16} />
+                                </Button>
                               </CardFooter>
                             </Card>
                           ))}

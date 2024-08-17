@@ -66,5 +66,9 @@ export const QUERY_KEYS = {
       "GET_ALL_COMPETENCE_CATEGORY",
       ...options,
     ],
+    DELETE: (options: string[] = []) => [
+      "DELETE_COMPETENCE_CATEGORY",
+      ...options,
+    ],
   },
 };
