@@ -15,8 +15,8 @@ import { UseFormReturn } from "react-hook-form";
 import { CoursSequenceForm } from "../views/AddCoursView";
 import SelectImageUrl from "./SelectImageUrl";
 import { useState } from "react";
-import { Switch } from "@/core/components/ui/switch";
 import { TypographyH1 } from "@/core/components/common/Typography";
+import useDeleteSequence from "@/features/complement/application/adapters/services/useDeleteSequence";
 
 export default function AddCoursOrSequenceForm({
   form,
@@ -49,6 +49,7 @@ export default function AddCoursOrSequenceForm({
   const [localImageUrl, setLocalImageUrl] = useState<string>(
     imageUrl ?? "/images/mos-design-jzFbbG2WXv0-unsplash.jpg"
   );
+
   return (
     <div className="px-4 pt-8">
       <header className="px-8 pb-8">
@@ -121,20 +122,22 @@ export default function AddCoursOrSequenceForm({
             setImageUrl={setLocalImageUrl}
           />
 
-          <Button
-            onClick={(event) => {
-              event.preventDefault();
+          <section className="flex justify-end">
+            <Button
+              onClick={(event) => {
+                event.preventDefault();
 
-              onSubmit({
-                ...form.getValues(),
-                competences: selectedCompetences.map((c) => c._id),
-                imageUrl: localImageUrl,
-              });
-            }}
-            type="submit"
-          >
-            Submit
-          </Button>
+                onSubmit({
+                  ...form.getValues(),
+                  competences: selectedCompetences.map((c) => c._id),
+                  imageUrl: localImageUrl,
+                });
+              }}
+              type="submit"
+            >
+              Submit
+            </Button>
+          </section>
         </form>
       </Form>
     </div>
