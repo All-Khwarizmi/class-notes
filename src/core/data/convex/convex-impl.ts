@@ -48,6 +48,7 @@ import {
   UpdateVisibilityOptions,
 } from "@/features/visibility/domain/types";
 import {
+  CreateCompetenceOptions,
   DeleteCompCatOptions,
   GetCompetenceOptions,
   UpdateCompCatOptions,
@@ -295,27 +296,23 @@ export default class ConvexDatabase extends IDatabase {
     }
   }
 
-  async addCompetence({
-    userId,
-    competence,
-  }: {
-    userId: string;
-    competence: Competence;
-  }): Promise<Either<Failure<string>, void>> {
+  async addCompetence(
+    options: CreateCompetenceOptions
+  ): Promise<Either<Failure<string>, void>> {
     try {
       const result = await fetchMutation(
         this._db.competences.createCompetence,
         {
-          userId,
-          name: competence.name,
-          description: competence.description,
-          category: competence.category,
+          userId: options.createdBy,
+          name: options.name,
+          description: options.description,
+          category: options.category,
         }
       );
       if (!result) {
         return left(
           Failure.invalidValue({
-            invalidValue: competence,
+            invalidValue: options,
             message: "Error adding competence",
           })
         );
@@ -324,7 +321,7 @@ export default class ConvexDatabase extends IDatabase {
     } catch (error) {
       return left(
         Failure.invalidValue({
-          invalidValue: competence,
+          invalidValue: options,
           message: "Error adding competence",
         })
       );

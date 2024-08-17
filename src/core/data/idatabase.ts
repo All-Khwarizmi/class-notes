@@ -44,6 +44,7 @@ import {
   UpdateVisibilityOptions,
 } from "@/features/visibility/domain/types";
 import {
+  CreateCompetenceOptions,
   DeleteCompCatOptions,
   GetCompetenceOptions,
   UpdateCompCatOptions,
@@ -85,15 +86,7 @@ export default abstract class IDatabase {
     options: GetCompetenceOptions
   ): Promise<Either<Failure<string>, DocumentData>>;
 
-  abstract addCompetence({
-    userId,
-    category,
-    competence,
-  }: {
-    userId: string;
-    category: string;
-    competence: Competence;
-  }): Promise<Either<Failure<string>, void>>;
+  abstract addCompetence(options: CreateCompetenceOptions): Promise<Either<Failure<string>, void>>;
 
   abstract updateCategoryCompetence(
     options: UpdateCompCatOptions
