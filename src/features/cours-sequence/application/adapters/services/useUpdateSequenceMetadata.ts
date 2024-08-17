@@ -43,7 +43,7 @@ function useUpdateSequenceMetadata() {
         const redirectPath =
           updateSequenceMetadata.type === "sequence"
             ? `/sequences/${updateSequenceMetadata.sequence._id}?type=sequence`
-            : `/sequences/${updateSequenceMetadata.sequence._id}`;
+            : `/sequences/${updateSequenceMetadata.sequence._id}?type=template`;
         router.push(redirectPath);
       });
   }, [updateSequenceMetadata]);
