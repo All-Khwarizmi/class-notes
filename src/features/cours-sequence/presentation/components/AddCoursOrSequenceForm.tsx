@@ -133,7 +133,7 @@ export default function AddCoursOrSequenceForm({
             }}
             type="submit"
           >
-            Next
+            Submit
           </Button>
         </form>
       </Form>
