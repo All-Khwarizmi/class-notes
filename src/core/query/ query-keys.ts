@@ -25,6 +25,7 @@ export const QUERY_KEYS = {
     DELETE: (options: string[] = []) => ["DELETE_SEQUENCE", ...options],
     GET_ALL: (options: string[] = []) => ["GET_ALL_SEQUENCES", ...options],
     CREATE: (options: string[] = []) => ["CREATE_SEQUENCE", ...options],
+    UPDATE: (options: string[] = []) => ["UPDATE_SEQUENCE", ...options],
   },
   EVALUATIONS: {
     BASE_GET_ALL: (options: string[] = []) => [
@@ -49,5 +50,6 @@ export const QUERY_KEYS = {
   },
   COURS: {
     CREATE: (options: string[] = []) => ["CREATE_COURS", ...options],
+    UPDATE: (options: string[] = []) => ["UPDATE_COURS", ...options],
   },
 };
