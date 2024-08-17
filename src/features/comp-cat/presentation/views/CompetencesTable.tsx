@@ -1,9 +1,10 @@
+"use client";
+
 import {
   Table,
   TableBody,
   TableCaption,
   TableCell,
-  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
@@ -15,8 +16,6 @@ import {
   AccordionTrigger,
 } from "@/core/components/ui/accordion";
 import {
-  Category,
-  Competence,
   groupCompetencesByCategory,
 } from "../../domain/entities/schemas";
 import { Button } from "@/core/components/ui/button";
@@ -34,18 +33,23 @@ import {
 import {
   TypographyH1,
   TypographyH4,
-  TypographyLarge,
   TypographyLead,
-  TypographyMuted,
   TypographySmall,
 } from "@/core/components/common/Typography";
 import UpdateCompetenceForm from "../components/UpdateCompetenceForm";
+import { useGetCompCat } from "../../application/adapters/services/useGetCompCat";
+import { isLeft } from "fp-ts/lib/Either";
 
-export default function CompetencesTable() {
-  const groupedCompetences = useMemo(
-    () => groupCompetencesByCategory(competences),
-    [competences]
-  );
+export default function CompetencesTable({ userId }: { userId: string }) {
+  const { data: compCat } = useGetCompCat({ userId });
+
+  const groupedCompetences = useMemo(() => {
+    if (!compCat || isLeft(compCat)) return [];
+    const competences = compCat.right.competences;
+    return groupCompetencesByCategory(competences);
+  }, [compCat]);
+
+  if (!compCat || isLeft(compCat)) return null;
   return (
     <main className="  rounded-md p-4 ">
       <header className="flex justify-between items-center py-8">

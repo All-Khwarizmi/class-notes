@@ -4,7 +4,7 @@ import { compCatUsecases } from "../../usecases/comp-cat-usecases";
 
 export const useGetCompCat = ({ userId }: { userId: string }) => {
   return useQuery({
-    queryKey: [QUERY_KEYS.COMP_CAT.GET_ALL()],
+    queryKey: QUERY_KEYS.COMP_CAT.GET_ALL(),
     queryFn: () =>
       compCatUsecases.getCategoriesAndCompetences({
         userId,

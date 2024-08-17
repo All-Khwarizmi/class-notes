@@ -12,7 +12,6 @@ import { z } from "zod";
 import { useUpdateCompCat } from "../../application/adapters/services/useUpdateCompCat";
 import { toastWrapper } from "@/core/utils/toast-wrapper";
 import { useState } from "react";
-import { set } from "lodash";
 
 export default function UpdateCompetenceForm(props: {
   id: string;

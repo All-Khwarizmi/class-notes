@@ -17,7 +17,7 @@ export const useUpdateCompCat = () => {
       }
       toastWrapper.success(`${variables.type} updated successfully`);
       queryClient.invalidateQueries({
-        queryKey: QUERY_KEYS.COMPETENCES.GET_ALL(),
+        queryKey: QUERY_KEYS.COMP_CAT.GET_ALL(),
       });
     },
   });
