@@ -3,13 +3,15 @@ import { Ban, Plus } from "lucide-react";
 import Link from "next/link";
 import React, { ButtonHTMLAttributes } from "react";
 
-function AfterMenuButton(props: {
-  children?: React.ReactNode;
-  props?: ButtonHTMLAttributes<HTMLButtonElement>;
-  addButton?: boolean;
-  path?: string;
-  icon?: React.ReactNode;
-}) {
+function AfterMenuButton(
+  props: {
+    children?: React.ReactNode;
+    props?: ButtonHTMLAttributes<HTMLButtonElement>;
+    addButton?: boolean;
+    path?: string;
+    icon?: React.ReactNode;
+  } & ButtonHTMLAttributes<HTMLButtonElement>
+) {
   if (props.addButton && props.path) {
     return (
       <button
