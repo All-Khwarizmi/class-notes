@@ -24,42 +24,62 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/core/components/ui/select";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import useCreateCompetence from "../../application/usecases/services/useCreateCompetence";
 import CustomDialog from "@/core/components/common/CustomDialog";
 import CategoryForm from "../components/CategoryForm";
 import { Check } from "lucide-react";
+import { toastWrapper } from "@/core/utils/toast-wrapper";
+import { useGetCategories } from "../../application/usecases/services/useGetCategories";
+import { isRight } from "fp-ts/lib/Either";
 
-export default function CompetenceForm({
-  categories,
-  userId,
-}: {
-  categories: Category[];
-  userId: string;
-}) {
-  const [category, setCategory] = useState<string>(
-    categories.length > 0 ? categories[0].name : ""
-  );
+export default function CompetenceForm({ userId }: { userId: string }) {
+  const { data: eitherCategories, refetch } = useGetCategories({ userId });
+  const [category, setCategory] = useState<string>("");
   const [open, setOpen] = useState(false);
-  const { setCreateCompetenceOptions } = useCreateCompetence();
+  const { mutate: setCreateCompetenceOptions } = useCreateCompetence();
   const form = useForm<Competence>({
     resolver: zodResolver(competenceSchema),
     defaultValues: {
       name: "",
       description: "",
-      category: categories.length > 0 ? categories[0].name : "",
+      category,
     },
   });
 
-  function onSubmit(data: Competence) {
-    setCreateCompetenceOptions({
-      competence: {
-        ...data,
-        createdBy: userId,
-      },
-    });
-  }
+  useEffect(() => {
+    if (
+      eitherCategories &&
+      isRight(eitherCategories) &&
+      eitherCategories.right.length > 0
+    ) {
+      setCategory(eitherCategories.right[0].name);
+      form.setValue("category", category);
+    }
+  }, [eitherCategories]);
+  const categories = useMemo(() => {
+    if (!eitherCategories || !isRight(eitherCategories)) return [];
+    return eitherCategories.right;
+  }, [eitherCategories]);
 
+  function onSubmit(data: Competence) {
+    if (data.name === "" || data.description === "") {
+      return toastWrapper.info("Please fill all fields");
+    }
+
+    setCreateCompetenceOptions(
+      {
+        category: data.category,
+        createdBy: userId,
+        description: data.description,
+        name: data.name,
+      },
+      {
+        onSuccess: () => {},
+      }
+    );
+  }
+  if (!eitherCategories || !isRight(eitherCategories)) return null;
   return (
     <div className="w-full max-w-2xl mx-auto  shadow-slate-800 shadow-inner rounded-md p-4">
       <Form {...form}>
@@ -124,7 +144,7 @@ export default function CompetenceForm({
                   setOpen={setOpen}
                   title="Add new category"
                 >
-                  <CategoryForm userId={userId} />
+                  <CategoryForm userId={userId} refetch={() => refetch()} />
                 </CustomDialog>
               </div>
               <FormDescription>

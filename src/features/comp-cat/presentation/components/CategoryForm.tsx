@@ -13,7 +13,13 @@ import { Input } from "@/core/components/ui/input";
 import { Button } from "@/core/components/ui/button";
 import useCreateCategory from "../../application/usecases/services/useCreateCategory";
 
-export default function CategoryForm({ userId }: { userId: string }) {
+export default function CategoryForm({
+  userId,
+  refetch,
+}: {
+  userId: string;
+  refetch: () => Promise<any>;
+}) {
   const { mutate: setCreateCategoryOptions } = useCreateCategory();
   const form = useForm<Pick<Category, "name" | "description">>({
     resolver: zodResolver(categorySchema),
@@ -24,10 +30,17 @@ export default function CategoryForm({ userId }: { userId: string }) {
   });
 
   function onSubmit(data: Pick<Category, "name" | "description">) {
-    setCreateCategoryOptions({
-      ...data,
-      createdBy: userId,
-    });
+    setCreateCategoryOptions(
+      {
+        ...data,
+        createdBy: userId,
+      },
+      {
+        onSuccess: async () => {
+          await refetch();
+        },
+      }
+    );
   }
   return (
     <Form {...form}>

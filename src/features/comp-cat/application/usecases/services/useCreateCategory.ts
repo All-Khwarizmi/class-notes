@@ -26,7 +26,11 @@ export default function useCreateCategory() {
       }
       toastWrapper.success("Category added");
       await queryClient.invalidateQueries({
-        queryKey: QUERY_KEYS.COMP_CAT.GET_ALL(),
+        queryKey: [
+          QUERY_KEYS.COMP_CAT.GET_ALL(),
+          QUERY_KEYS.CATEGORY.GET_ALL(),
+        ],
+        type: "all",
       });
     },
   });
