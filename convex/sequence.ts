@@ -21,18 +21,12 @@ export const createSequence = mutation({
       .first();
 
     if (existingUser) {
-      // get all competences
-      const competences = await ctx.db
-        .query("Competences")
-        .filter((q) => q.eq(q.field("createdBy"), existingUser!._id))
-        .collect();
-
       const categoryId = await ctx.db.insert("Sequences", {
         imageUrl: args.imageUrl,
         name: args.name,
         body: args.body,
         coursIds: [],
-        competencesIds: competences.map((c) => c._id),
+        competencesIds: args.competencesIds as Id<"Competences">[],
         description: args.description,
         createdBy: existingUser!._id,
         createdAt: Date.now(),
