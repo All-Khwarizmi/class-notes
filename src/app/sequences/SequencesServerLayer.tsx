@@ -5,7 +5,8 @@ import { isLeft } from "fp-ts/lib/Either";
 import { redirect } from "next/navigation";
 import SequencesListView from "@/features/cours-sequence/presentation/views/SequencesListView";
 import ErrorDialog from "@/core/components/common/ErrorDialog";
-import LayoutWithProps from "@/core/components/layout/LayoutWithProps";
+import { QueryClient } from "@tanstack/react-query";
+import { QUERY_KEYS } from "@/core/query/ query-keys";
 
 async function SequencesServerLayer({
   params,
@@ -24,7 +25,7 @@ async function SequencesServerLayer({
       />
     );
   }
-
+  const queryClient = new QueryClient();
   if (type === "sequence" && !params.slug) {
     return (
       <ErrorDialog
@@ -39,23 +40,17 @@ async function SequencesServerLayer({
   if (isLeft(authUser)) {
     redirect("/login");
   }
-  const eitherSequences = await coursUsecases.getAllSequences({
-    userId: authUser.right.userId,
+  await queryClient.prefetchQuery({
+    queryKey: [QUERY_KEYS.SEQUENCE.GET_ALL()],
+    queryFn: async () => {
+      return coursUsecases.getAllSequences({
+        userId: authUser.right.userId,
+      });
+    },
   });
-  if (isLeft(eitherSequences)) {
-    return (
-      <ErrorDialog
-        message={`
-      An error occurred while fetching sequences. 
-    `}
-        code={eitherSequences.left.code}
-        description={eitherSequences.left.message}
-      />
-    );
-  }
+
   return (
     <SequencesListView
-      sequences={eitherSequences.right}
       userId={authUser.right.userId}
       sequenceType={type as "template" | "sequence"}
       sequenceId={params.slug}

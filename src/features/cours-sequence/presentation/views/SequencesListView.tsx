@@ -1,107 +1,80 @@
 "use client";
 import Link from "next/link";
-import { Delete, ExternalLink, Plus } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { TableCaption, TableHeader } from "@/core/components/ui/table";
-import {
-  Table,
-  TableRow,
-  TableHead,
-  TableBody,
-  TableCell,
-} from "@/core/components/ui/table";
+import { Plus } from "lucide-react";
 import { Button } from "@/core/components/ui/button";
 import useDeleteSequence from "@/features/complement/application/adapters/services/useDeleteSequence";
-import { Sequence } from "../../domain/entities/cours-schemas";
 import { TypographyH1 } from "@/core/components/common/Typography";
-import { useRouter } from "next/navigation";
+import CoursSequenceCard from "../components/CoursSequenceCard";
+import useGetAllSequences from "../../application/adapters/services/useGetAllSequences";
+import { isRight } from "fp-ts/lib/Either";
 function SequencesListView({
-  sequences,
   spacesMode = false,
   userId,
   sequenceType,
   sequenceId,
 }: {
-  sequences: Sequence[];
   spacesMode?: boolean;
   userId: string;
   sequenceType: "template" | "sequence";
   sequenceId?: string;
 }) {
-  const router = useRouter();
+  const { data: sequences } = useGetAllSequences(userId);
   const { mutate: deleteSequence } = useDeleteSequence();
-  return (
-    <div className="w-full h-full py-8 px-4">
-      <header className="pb-8">
-        <TypographyH1 text="Sequences" />
-      </header>
-      <Table className="w-full">
-        <TableCaption>
-          {sequenceType === "sequence"
-            ? "Add a sequence to your classe"
-            : "Add  a sequence"}
-        </TableCaption>
-        <TableHeader>
-          <TableRow>
-            <TableHead className="w-[200px]">Name</TableHead>
-            <TableHead className="w-[200px]">Description</TableHead>
-            <TableHead className="w-[200px]">Actions</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {sequences.map((sequence) => {
-            return (
-              <TableRow
-                className="cursor-pointer"
-                key={sequence._id}
-                onClick={() => {
-                  router.push(
-                    `/sequences/${sequence._id}?type=${sequenceType}`
-                  );
-                }}
-              >
-                <TableCell className="w-[200px]">{sequence.name}</TableCell>
-                <TableCell className="w-[200px]">
-                  {sequence.description}
-                </TableCell>
+  if (sequences && isRight(sequences)) {
+    return (
+      <div className="w-full h-full py-8 px-4">
+        <header className="pb-12 px-8 underline">
+          <TypographyH1 text="Sequences" />
+        </header>
+        <section className="grid grid-cols-1  gap-4 sm:grid-cols-2   lg:grid-cols-4">
+          {sequences.right.map((sequence) => (
+            <CoursSequenceCard
+              deleteOption={true}
+              deleteSequence={() => {
+                const confirmation = window.confirm(
+                  "Are you sure you want to delete this sequence?"
+                );
+                if (confirmation) {
+                  deleteSequence({
+                    sequenceId: sequence._id,
+                    userId,
+                    type: sequenceType,
+                  });
+                }
+              }}
+              key={sequence._id}
+              title={sequence.name}
+              description={sequence.description}
+              imageUrl={sequence.imageUrl}
+              tags={sequence.category}
+              showViewButton={true}
+              pathToView={`/sequences/${sequence._id}?type=${sequenceType}`}
+              path={`/sequences/edit/${sequence._id}`}
+              spacesMode={spacesMode}
+            />
+          ))}
+        </section>
 
-                <TableCell className="w-[200px] ">
-                  <Delete
-                    className="cursor-pointer text-red-500"
-                    onClick={() =>
-                      deleteSequence({
-                        sequenceId: sequence._id,
-                        type: sequenceType,
-                        userId,
-                      })
-                    }
-                  />
-                </TableCell>
-              </TableRow>
-            );
-          })}
-        </TableBody>
-      </Table>
-
-      {sequenceType === "sequence" ? (
-        <div className="flex  justify-center w-full mt-4">
-          <Link href={`/classes/sequences/${sequenceId}`}>
-            <Button variant={"outline"}>
-              <Plus size={16} />
-            </Button>
-          </Link>
-        </div>
-      ) : (
-        <div className="flex  justify-center w-full mt-8">
-          <Link href={`/sequences/add`}>
-            <Button>
-              <Plus size={16} />
-            </Button>
-          </Link>
-        </div>
-      )}
-    </div>
-  );
+        {sequenceType === "sequence" ? (
+          <div className="flex  justify-center w-full mt-4">
+            <Link href={`/classes/sequences/${sequenceId}`}>
+              <Button variant={"outline"}>
+                <Plus size={16} />
+              </Button>
+            </Link>
+          </div>
+        ) : (
+          <div className="flex  justify-center w-full mt-8">
+            <Link href={`/sequences/add`}>
+              <Button>
+                <Plus size={16} />
+              </Button>
+            </Link>
+          </div>
+        )}
+      </div>
+    );
+  } 
 }
 
 export default SequencesListView;
