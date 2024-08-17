@@ -5,7 +5,7 @@ import { Sequence } from "@/features/cours-sequence/domain/entities/cours-schema
 import SequencesListViewSpaces from "@/features/cours-sequence/presentation/views/SeqquenceListViewSpaces";
 import { NavItem } from "@/lib/types";
 import { isLeft } from "fp-ts/lib/Either";
-import { Book, Presentation } from "lucide-react";
+import { Book } from "lucide-react";
 import React from "react";
 
 async function SpacesClasseServerLayer(props: {
