@@ -91,9 +91,7 @@ export default function CompetencesTable({
                             </CardHeader>
                             <CardContent>
                               <CardDescription>
-                                <TypographyMuted
-                                  text={competence.description}
-                                />
+                                {competence.description}
                               </CardDescription>
                             </CardContent>
                             <CardFooter className="flex justify-end">
@@ -101,7 +99,6 @@ export default function CompetencesTable({
                                 name={competence.name}
                                 description={competence.description}
                                 entityName="Competence"
-                           
                               />
                             </CardFooter>
                           </Card>
