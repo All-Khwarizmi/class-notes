@@ -16,7 +16,7 @@ export function HeaderTypographyH1({
   className?: string;
 }) {
   return (
-    <header className={cn("p-8 underline", className)}>
+    <header className={cn("p-8 pb-12 underline", className)}>
       <TypographyH1 text={text} />
     </header>
   );

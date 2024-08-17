@@ -3,7 +3,10 @@ import Link from "next/link";
 import { Plus } from "lucide-react";
 import { Button } from "@/core/components/ui/button";
 import useDeleteSequence from "@/features/complement/application/adapters/services/useDeleteSequence";
-import { TypographyH1 } from "@/core/components/common/Typography";
+import {
+  HeaderTypographyH1,
+  TypographyH1,
+} from "@/core/components/common/Typography";
 import CoursSequenceCard from "../components/CoursSequenceCard";
 import useGetAllSequences from "../../application/adapters/services/useGetAllSequences";
 import { isRight } from "fp-ts/lib/Either";
@@ -23,10 +26,8 @@ function SequencesListView({
   if (sequences && isRight(sequences)) {
     return (
       <div className="w-full h-full py-8 px-4">
-        <header className="pb-12 px-8 underline">
-          <TypographyH1 text="Sequences" />
-        </header>
-        <section className="grid grid-cols-1  gap-4 sm:grid-cols-2   lg:grid-cols-4">
+        <HeaderTypographyH1 text="Sequences" />
+        <section className="grid grid-cols-1  gap-4 sm:grid-cols-3   lg:grid-cols-5">
           {sequences.right.map((sequence) => (
             <CoursSequenceCard
               deleteOption={true}
@@ -74,7 +75,7 @@ function SequencesListView({
         )}
       </div>
     );
-  } 
+  }
 }
 
 export default SequencesListView;
