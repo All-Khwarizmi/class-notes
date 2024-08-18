@@ -17,7 +17,9 @@ export default function Header() {
       </div>
       {pathName === "/" ? null : <Title />}
 
-      <div className="flex flex-row gap-4 items-center"></div>
+      <div className="flex flex-row gap-4 items-center">
+        <ModeToggle />
+      </div>
     </header>
   );
 }
