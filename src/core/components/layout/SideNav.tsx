@@ -28,14 +28,7 @@ export function SideNav({ setOpen, className }: SideNavProps) {
       return navItems;
     }
   }, [isSpaces, spacesNavItems, navItems]);
-  // useEffect(() => {
-  //   if (isSpaces === true && spacesNavItems) {
-  //     setItems(spacesNavItems);
-  //   } else {
-  //     setItems(navItems);
-  //   }
-  // }, [isSpaces, spacesNavItems, navItems]);
-
+ 
   const path = usePathname();
   const { isOpen, toggle } = useSidebar();
   const [openItem, setOpenItem] = useState("");
