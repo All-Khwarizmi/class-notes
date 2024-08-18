@@ -7,6 +7,7 @@ import { Button } from "@/core/components/ui/button";
 import Link from "next/link";
 import { NavItem } from "@/lib/types";
 import { useLayoutContext } from "@/core/components/layout/ExperimentalLayoutCtx";
+import { TypographyH1 } from "@/core/components/common/Typography";
 
 function SequencesListViewSpaces({
   sequences,
@@ -27,32 +28,33 @@ function SequencesListViewSpaces({
     }
   }, [navItems, setSpacesNavItems, setIsSpaces]);
   return (
-    <>
-      <div className=" h-full w-full flex flex-col gap-4 justify-between pb-12 px-4">
-        <div className="grid grid-cols-1  gap-4 sm:grid-cols-2   lg:grid-cols-4">
-          {sequences.map((sequence) => (
-            <CoursSequenceCard
-              key={sequence._id}
-              title={sequence.name}
-              description={sequence.description}
-              imageUrl={sequence.imageUrl}
-              tags={sequence.category}
-              showViewButton={true}
-              pathToView={`/spaces/sequences/${sequence._id}?user=${userId}`}
-              path={`/sequences/${sequence._id}`}
-              spacesMode={spacesMode}
-            />
-          ))}
-        </div>
-        {!spacesMode && (
-          <div className="flex justify-center pb-8">
-            <Button className="" variant={"default"}>
-              <Link href="/sequences/add">Add Sequence</Link>
-            </Button>
-          </div>
-        )}
+    <div className=" h-full w-full justify-between py-8 px-4">
+      <header className="pb-12">
+        <TypographyH1 text="Sequences" />
+      </header>
+      <div className="grid grid-cols-1  gap-4 sm:grid-cols-2   lg:grid-cols-4">
+        {sequences.map((sequence) => (
+          <CoursSequenceCard
+            key={sequence._id}
+            title={sequence.name}
+            description={sequence.description}
+            imageUrl={sequence.imageUrl}
+            tags={sequence.category}
+            showViewButton={true}
+            pathToView={`/spaces/sequences/${sequence._id}?user=${userId}`}
+            path={`/sequences/${sequence._id}`}
+            spacesMode={spacesMode}
+          />
+        ))}
       </div>
-    </>
+      {!spacesMode && (
+        <div className="flex justify-center pb-8">
+          <Button className="" variant={"default"}>
+            <Link href="/sequences/add">Add Sequence</Link>
+          </Button>
+        </div>
+      )}
+    </div>
   );
 }
 

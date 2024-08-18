@@ -9,7 +9,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/core/components/ui/dialog";
-import { Button } from "../ui/button";
+import { Button, buttonVariants } from "../ui/button";
+import { TypographyP } from "./Typography";
 
 /**
  * CustomDialog component displays a dialog with a title, description, and optional button.
@@ -35,6 +36,7 @@ export default function CustomDialog({
   buttonContainerClassName,
   setOpen,
   text,
+  textClassName,
 }: {
   /**
    * The text to be displayed instead of the button. If not provided, the icon will be used.
@@ -91,6 +93,7 @@ export default function CustomDialog({
    */
   buttonClassName?: string;
   buttonContainerClassName?: string;
+  textClassName?: string;
   /**
    * Callback function to set the open state of the dialog.
    */
@@ -107,20 +110,21 @@ export default function CustomDialog({
                 ` ${buttonContainerClassName}`
               )}
             >
-              <Button
-                variant={buttonVariant}
-                onClick={() => setOpen?.(true)}
+              <div
                 className={cn(
-                  `${buttonClassName} `
+                  "py-1 px-2 gap-2 inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50",
+                  "border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground",
+                  ` ${buttonClassName}`
                 )}
                 data-testid={testId}
               >
-                {buttonText ?? icon}
-              </Button>
+                {icon && !buttonText && icon}
+                {buttonText && <TypographyP text={buttonText} />}
+              </div>
             </div>
           ) : (
-            <div className="">
-              {text}
+            <div className={textClassName}>
+              <TypographyP text={text!} />
             </div>
           )}
         </DialogTrigger>

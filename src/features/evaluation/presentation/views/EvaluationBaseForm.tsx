@@ -25,6 +25,7 @@ import GradeTypeSelectGroup from "../components/GradeTypeSelectGroup";
 import { Loader } from "lucide-react";
 import { cn } from "@/lib/utils";
 import useCreateEvaluationBaseFormLogic from "../hooks/useCreateEvaluationBaseFormLogic";
+import { TypographyH1 } from "@/core/components/common/Typography";
 
 export default function EvaluationBaseForm(props: {
   userId: string;
@@ -54,8 +55,10 @@ export default function EvaluationBaseForm(props: {
     }
   }, [isSuccess, isUpdateSuccess]);
   return (
-    <div className="space-y-8 py-8 px-4  rounded-lg shadow-md">
-      <h1 className="text-2xl font-bold">Create Evaluation</h1>
+    <div className=" py-8 px-4  rounded-lg shadow-slate-800 shadow-inner">
+      <header className="pb-12">
+        <TypographyH1 text="Create an Evaluation" />
+      </header>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}

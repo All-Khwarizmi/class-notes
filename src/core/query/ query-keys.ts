@@ -25,6 +25,7 @@ export const QUERY_KEYS = {
     DELETE: (options: string[] = []) => ["DELETE_SEQUENCE", ...options],
     GET_ALL: (options: string[] = []) => ["GET_ALL_SEQUENCES", ...options],
     CREATE: (options: string[] = []) => ["CREATE_SEQUENCE", ...options],
+    UPDATE: (options: string[] = []) => ["UPDATE_SEQUENCE", ...options],
   },
   EVALUATIONS: {
     BASE_GET_ALL: (options: string[] = []) => [
@@ -46,5 +47,33 @@ export const QUERY_KEYS = {
   VISIBILITY: {
     GET_ALL: (options: string[] = []) => ["GET_ALL_VISIBILITY", ...options],
     UPDATE: (options: string[] = []) => ["UPDATE_VISIBILITY", ...options],
+  },
+  COURS: {
+    CREATE: (options: string[] = []) => ["CREATE_COURS", ...options],
+    UPDATE: (options: string[] = []) => ["UPDATE_COURS", ...options],
+  },
+  COMPETENCES: {
+    GET_ALL: (options: string[] = []) => ["GET_ALL_COMPETENCES", ...options],
+    CREATE: (options: string[] = []) => ["CREATE_COMPETENCE", ...options],
+    UPDATE: (options: string[] = []) => ["UPDATE_COMPETENCE", ...options],
+  },
+  CATEGORY: {
+    GET_ALL: (options: string[] = []) => ["GET_ALL_CATEGORIES", ...options],
+    CREATE: (options: string[] = []) => ["CREATE_CATEGORY", ...options],
+    UPDATE: (options: string[] = []) => ["UPDATE_CATEGORY", ...options],
+  },
+  COMP_CAT: {
+    UPDATE: (options: string[] = []) => [
+      "UPDATE_COMPETENCE_CATEGORY",
+      ...options,
+    ],
+    GET_ALL: (options: string[] = []) => [
+      "GET_ALL_COMPETENCE_CATEGORY",
+      ...options,
+    ],
+    DELETE: (options: string[] = []) => [
+      "DELETE_COMPETENCE_CATEGORY",
+      ...options,
+    ],
   },
 };

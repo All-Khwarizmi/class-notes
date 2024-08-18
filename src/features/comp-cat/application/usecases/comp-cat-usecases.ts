@@ -9,6 +9,12 @@ import CompCatRepository, {
   compCatRepository,
 } from "../repositories/comp-cat-repository";
 import Failure from "@/core/failures/failures";
+import {
+  CreateCompetenceOptions,
+  DeleteCompCatOptions,
+  GetCompetenceOptions,
+  UpdateCompCatOptions,
+} from "../../domain/types";
 
 export default class CompCatUsecases {
   private readonly _repository: CompCatRepository;
@@ -91,16 +97,8 @@ export default class CompCatUsecases {
     return right(competences);
   }
 
-  async addCompetence({
-    userId,
-    category,
-    competence,
-  }: {
-    userId: string;
-    category: string;
-    competence: any;
-  }) {
-    return this._repository.addCompetence({ userId, category, competence });
+  async addCompetence(options: CreateCompetenceOptions) {
+    return this._repository.addCompetence(options);
   }
 
   async getCategoriesAndCompetences({
@@ -177,6 +175,17 @@ export default class CompCatUsecases {
     }
 
     return right({ categories, competences });
+  }
+
+  async getCompetence(options: GetCompetenceOptions) {
+    return this._repository.getCompetence(options);
+  }
+
+  async updateCompCat(options: UpdateCompCatOptions) {
+    return this._repository.updateCompCat(options);
+  }
+  async deleteCompCat(options: DeleteCompCatOptions) {
+    return this._repository.deleteCompCat(options);
   }
 }
 

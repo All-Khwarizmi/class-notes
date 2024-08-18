@@ -8,13 +8,13 @@ import {
 import { isLeft } from "fp-ts/lib/Either";
 import { redirect } from "next/navigation";
 import LoadingSkeleton from "@/core/components/common/LoadingSkeleton";
-import LayoutWithProps from "@/core/components/layout/LayoutWithProps";
 import { coursUsecases } from "@/features/cours-sequence/application/usecases/cours-usecases";
 import CoursSequenceView from "@/features/cours-sequence/presentation/views/CoursSequenceView";
 import { authUseCases } from "@/features/auth/application/usecases/auth-usecases";
 import NotesServerLayer from "@/app/profile/notes/[slug]/NotesServerLayer";
 import CoursesServerLayer from "@/app/cours/all/[slug]/CoursesServerLayer";
 import ErrorDialog from "@/core/components/common/ErrorDialog";
+import { HeaderTypographyH1 } from "@/core/components/common/Typography";
 
 async function SequenceLayout(props: {
   slug: string;
@@ -55,8 +55,9 @@ async function SequenceLayout(props: {
     );
   }
   return (
-    <Tabs defaultValue="sequence">
-      <div className="w-full flex justify-center">
+    <Tabs defaultValue="sequence" className="py-8 px-4 ">
+      <div className="w-full flex flex-col items-center gap-8 pb-8">
+        <HeaderTypographyH1 text={eitherSequence.right.name} />
         <TabsList>
           <TabsTrigger value="sequence">Sequence</TabsTrigger>
           <TabsTrigger value="courses">Courses</TabsTrigger>

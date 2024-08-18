@@ -44,3 +44,52 @@ export const getCategories = query({
     }
   },
 });
+
+export const updateCategory = mutation({
+  args: {
+    categoryId: v.string(),
+    name: v.string(),
+    description: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const category = await ctx.db
+      .query("Category")
+      .filter((q) => q.eq(q.field("_id"), args.categoryId))
+      .first();
+
+    if (category) {
+      await ctx.db.patch(category._id, {
+        name: args.name,
+        description: args.description,
+      });
+      return category._id;
+    }
+  },
+});
+
+export const deleteCategory = mutation({
+  args: {
+    categoryId: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const category = await ctx.db
+      .query("Category")
+      .filter((q) => q.eq(q.field("_id"), args.categoryId))
+      .first();
+
+    if (category) {
+      // Cascade delete all the competences in the category
+      const competences = await ctx.db
+        .query("Competences")
+        .filter((q) => q.eq(q.field("category"), category.name))
+        .collect();
+
+      for (const competence of competences) {
+        await ctx.db.delete(competence._id);
+      }
+
+      await ctx.db.delete(category._id);
+      return category._id;
+    }
+  },
+});

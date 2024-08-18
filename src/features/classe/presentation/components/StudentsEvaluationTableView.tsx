@@ -19,6 +19,7 @@ import { Settings } from "lucide-react";
 import useGetStudentTableData from "@/features/evaluation/application/adapters/services/useGetStudentTableData";
 import CSVReader from "./StudentCsvLoader";
 import StudentUpdateForm from "@/features/student/presentation/components/StudentUpdateForm";
+import LoadingSkeleton from "@/core/components/common/LoadingSkeleton";
 
 export function StudentsEvaluationTableView(props: {
   classeId: string;
@@ -34,7 +35,7 @@ export function StudentsEvaluationTableView(props: {
     refetchStudents,
   } = useGetStudentTableData({ classeId: props.classeId });
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <LoadingSkeleton />;
   }
   if (data) {
     return (
@@ -148,7 +149,7 @@ export function StudentsEvaluationTableView(props: {
             ))}
           </TableBody>
         </Table>
-        <div className="flex justify-center mt-4 gap-2">
+        <div className="flex justify-center mt-8 gap-2">
           <CustomDialog
             title="Evaluations Settings"
             icon={<Settings />}

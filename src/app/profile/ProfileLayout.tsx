@@ -25,7 +25,7 @@ async function ProfileLayout() {
   }
 
   return (
-      <Tabs defaultValue="profile">
+      <Tabs defaultValue="profile" className="py-8">
         <div className="w-full flex justify-center">
           <TabsList>
             <TabsTrigger value="profile">Profile</TabsTrigger>
