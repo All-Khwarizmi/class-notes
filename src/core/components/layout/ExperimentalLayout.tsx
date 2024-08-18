@@ -46,8 +46,13 @@ function Layout({
   const [isSpaces, setIsSpaces] = useState(false);
   const path = usePathname();
   useEffect(() => {
-    setNavItems(experimentalNavItems);
-    setIsLandingPage(path === "/");
+    const isLandingPage = path === "/";
+    if (isLandingPage === true) {
+      setIsLandingPage(true);
+    } else {
+      setIsLandingPage(false);
+      setNavItems(experimentalNavItems);
+    }
   }, [experimentalNavItems, path]);
   return (
     <LayoutContext.Provider
