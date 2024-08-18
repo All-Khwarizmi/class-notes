@@ -15,7 +15,10 @@ import { UseFormReturn } from "react-hook-form";
 import { CoursSequenceForm } from "../views/AddCoursView";
 import SelectImageUrl from "./SelectImageUrl";
 import { useState } from "react";
-import { TypographyH1 } from "@/core/components/common/Typography";
+import {
+  HeaderTypographyH1,
+  TypographyH1,
+} from "@/core/components/common/Typography";
 
 export default function AddCoursOrSequenceForm({
   form,
@@ -50,19 +53,17 @@ export default function AddCoursOrSequenceForm({
   );
 
   return (
-    <div className="px-4 pt-8">
-      <header className="px-8 pb-8">
-        <TypographyH1 text={title} />
-      </header>
+    <div className="px-4 ">
+      <HeaderTypographyH1 text={title} />
       <Form {...form}>
         <form className="space-y-4">
-          <div className="flex justify-between items-center">
+          <div className="flex gap-8 items-center">
             <FormField
               control={form.control}
               name="name"
               render={({ field }) => {
                 return (
-                  <FormItem>
+                  <FormItem className="flex-1">
                     <FormLabel htmlFor={field.name}>Name</FormLabel>
                     <FormControl>
                       <Input {...field} placeholder={`Name `} />
@@ -71,28 +72,26 @@ export default function AddCoursOrSequenceForm({
                 );
               }}
             />
-          </div>
-          <FormField
-            control={form.control}
-            name="category"
-            render={({ field }) => {
-              return (
-                <FormItem>
-                  <FormLabel htmlFor={field.name}>Category</FormLabel>
-                  <FormControl>
-                    <Input
-                      {...field}
-                      placeholder={`keywords separated by commas: "math, algebra, geometry"
+            <FormField
+              control={form.control}
+              name="category"
+              render={({ field }) => {
+                return (
+                  <FormItem className="flex-1">
+                    <FormLabel htmlFor={field.name}>Keywords</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        placeholder={`Separated by commas: "math, algebra, geometry"
                     `}
-                    />
-                  </FormControl>
-                  <FormDescription>
-                    Enter some keywords to help categorize
-                  </FormDescription>
-                </FormItem>
-              );
-            }}
-          />
+                      />
+                    </FormControl>
+                  </FormItem>
+                );
+              }}
+            />
+          </div>
+
           <FormField
             control={form.control}
             name="description"
@@ -116,10 +115,10 @@ export default function AddCoursOrSequenceForm({
             setOpen={setOpen}
           />
 
-            <SelectImageUrl
-              imageUrl={localImageUrl}
-              setImageUrl={setLocalImageUrl}
-            />
+          <SelectImageUrl
+            imageUrl={localImageUrl}
+            setImageUrl={setLocalImageUrl}
+          />
 
           <section className="flex justify-end">
             <Button
