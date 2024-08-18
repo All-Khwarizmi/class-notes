@@ -6,7 +6,7 @@ export default function useGetEvaluationsBaseList(options: { userId: string }) {
   return useQuery({
     queryKey: QUERY_KEYS.EVALUATIONS.BASE_GET_ALL(),
     queryFn: async () => {
-      return await getEvaluations(options);
+      return getEvaluations(options);
     },
   });
 }
