@@ -21,7 +21,7 @@ function Features() {
         <div className="mx-auto grid max-w-4xl justify-center items-strech gap-12 py-12 lg:grid-cols-3">
           <div className="flex flex-col items-center text-center space-y-4">
             <img
-              src="/images/chaklboard-icon.jpeg"
+              src="/images/chaklboard-icon.webp"
               alt="Digital Chalkboard"
               className="h-16 w-16 rounded shadow-sm shadow-black"
             />
@@ -53,7 +53,7 @@ function Features() {
           </div>
           <div className="flex flex-col items-center text-center space-y-4">
             <img
-              src="/images/ai-icon.jpeg"
+              src="/images/ai-icon.webp"
               alt="AI-Powered Insights"
               className="h-16 w-16 rounded shadow-sm shadow-black"
             />

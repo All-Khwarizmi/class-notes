@@ -17,15 +17,15 @@ function useGetSubmitFunction(options: {
   authUser: UserAuth;
   sequenceType: "template" | "sequence";
 }) {
-  const { setSaveCoursMetadata } = useSaveCoursMetadata();
-  const { setSaveSequenceMetadata } = useSaveSequenceMetadata();
-  const { setUpdateCoursMetadata } = useUpdateCoursMetadata();
-  const { setUpdateSequenceMetadata } = useUpdateSequenceMetadata();
+  const { mutate: setSaveCoursMetadata } = useSaveCoursMetadata();
+  const { mutate: setSaveSequenceMetadata } = useSaveSequenceMetadata();
+  const { mutate: setUpdateCoursMetadata } = useUpdateCoursMetadata();
+  const { mutate: setUpdateSequenceMetadata } = useUpdateSequenceMetadata();
 
   function onSubmitCours(data: CoursSequenceForm) {
     const newData = {
       ...data,
-      competences: options.selectedCompetences.map((c) => c._id),
+      competences: data.competences,
     };
     setSaveCoursMetadata({
       sequenceId: options.sequenceId!,
@@ -38,7 +38,7 @@ function useGetSubmitFunction(options: {
     const newData = {
       ...options.cours!,
       ...data,
-      competences: options.selectedCompetences.map((c) => c._id),
+      competences: data.competences,
     };
     setUpdateCoursMetadata({
       cours: newData,
@@ -48,7 +48,7 @@ function useGetSubmitFunction(options: {
   function onSubmitSequence(data: CoursSequenceForm) {
     const newData = {
       ...data,
-      competencesIds: options.selectedCompetences.map((c) => c._id),
+      competencesIds: data.competences,
     };
     setSaveSequenceMetadata({
       sequence: newData,
@@ -61,7 +61,7 @@ function useGetSubmitFunction(options: {
       ...options.sequence!,
       ...data,
 
-      competencesIds: options.selectedCompetences.map((c) => c._id),
+      competencesIds: data.competences,
     };
     setUpdateSequenceMetadata({
       sequence: newData,

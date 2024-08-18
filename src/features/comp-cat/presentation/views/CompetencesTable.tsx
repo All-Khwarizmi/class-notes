@@ -1,9 +1,10 @@
+"use client";
+
 import {
   Table,
   TableBody,
   TableCaption,
   TableCell,
-  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
@@ -14,14 +15,10 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/core/components/ui/accordion";
-import {
-  Category,
-  Competence,
-  groupCompetencesByCategory,
-} from "../../domain/entities/schemas";
+import { groupCompetencesByCategory } from "../../domain/entities/schemas";
 import { Button } from "@/core/components/ui/button";
 import Link from "next/link";
-import { Plus } from "lucide-react";
+import { Plus, Trash } from "lucide-react";
 import { useMemo } from "react";
 import {
   Card,
@@ -34,25 +31,25 @@ import {
 import {
   TypographyH1,
   TypographyH4,
-  TypographyLarge,
   TypographyLead,
   TypographyMuted,
   TypographySmall,
 } from "@/core/components/common/Typography";
+import UpdateCompetenceForm from "../components/UpdateCompetenceForm";
+import { useGetCompCat } from "../../application/adapters/services/useGetCompCat";
+import { isLeft } from "fp-ts/lib/Either";
+import { useDeleteCompCat } from "@/features/complement/application/adapters/services/useDeleteCompCat";
 
-export default function CompetencesTable({
-  competences,
-  categories,
-  userId,
-}: {
-  competences: Competence[];
-  categories: Category[];
-  userId: string;
-}) {
-  const groupedCompetences = useMemo(
-    () => groupCompetencesByCategory(competences),
-    [competences]
-  );
+export default function CompetencesTable({ userId }: { userId: string }) {
+  const { data: compCat } = useGetCompCat({ userId });
+  const { mutate: deleteCompCat } = useDeleteCompCat();
+  const groupedCompetences = useMemo(() => {
+    if (!compCat || isLeft(compCat)) return [];
+    const competences = compCat.right.competences;
+    return groupCompetencesByCategory(competences);
+  }, [compCat]);
+
+  if (!compCat || isLeft(compCat)) return null;
   return (
     <main className="  rounded-md p-4 ">
       <header className="flex justify-between items-center py-8">
@@ -68,8 +65,13 @@ export default function CompetencesTable({
           </TableRow>
         </TableHeader>
         <TableBody>
-          {
-            groupedCompetences.map((group) => (
+          {groupedCompetences.map((group) => {
+            // Fleaky code since there could have multiple categories with the same name
+            // Should add the category id to the groupedCompetences object
+            const category = compCat.right.categories.find(
+              (cat) => cat.name === group.category
+            );
+            return (
               <TableRow key={group.category} className="border-none">
                 <TableCell colSpan={4} className="font-bold">
                   <Accordion type="multiple">
@@ -77,7 +79,30 @@ export default function CompetencesTable({
                       <AccordionTrigger>
                         <TypographyH4 text={group.category} />
                       </AccordionTrigger>
-                      <AccordionContent>
+
+                      <AccordionContent className="flex flex-col gap-4">
+                        {category && (
+                          <div className="pl-4 flex gap-4">
+                            <UpdateCompetenceForm
+                              id={category._id}
+                              name={category.name}
+                              description={category.description}
+                              entityName="Category"
+                            />
+                            <Button
+                              variant={"destructive"}
+                              onClick={() =>
+                                confirm("Are you sure you want to delete") &&
+                                deleteCompCat({
+                                  type: "Category",
+                                  id: category._id,
+                                })
+                              }
+                            >
+                              <Trash size={16} />
+                            </Button>
+                          </div>
+                        )}
                         <div className="pl-4 space-y-4">
                           {group.competences.map((competence) => (
                             <Card
@@ -91,15 +116,30 @@ export default function CompetencesTable({
                               </CardHeader>
                               <CardContent>
                                 <CardDescription>
-                                  <TypographyMuted
-                                    text={competence.description}
-                                  />
+                                  {competence.description}
                                 </CardDescription>
                               </CardContent>
-                              <CardFooter className="flex justify-end">
-                                <Link href={`/competences/${competence._id}`}>
-                                  <Button>Edit</Button>
-                                </Link>
+                              <CardFooter className="flex justify-end gap-4">
+                                <UpdateCompetenceForm
+                                  id={competence._id}
+                                  name={competence.name}
+                                  description={competence.description}
+                                  entityName="Competence"
+                                />
+                                <Button
+                                  variant={"destructive"}
+                                  onClick={() =>
+                                    confirm(
+                                      "Are you sure you want to delete"
+                                    ) &&
+                                    deleteCompCat({
+                                      type: "Competences",
+                                      id: competence._id,
+                                    })
+                                  }
+                                >
+                                  <Trash size={16} />
+                                </Button>
                               </CardFooter>
                             </Card>
                           ))}
@@ -109,8 +149,8 @@ export default function CompetencesTable({
                   </Accordion>
                 </TableCell>
               </TableRow>
-            ))
-          }
+            );
+          })}
         </TableBody>
       </Table>
       <div className="flex justify-center py-4">

@@ -47,6 +47,12 @@ import {
   DeleteEntityFromVisibilityOptions,
   UpdateVisibilityOptions,
 } from "@/features/visibility/domain/types";
+import {
+  CreateCompetenceOptions,
+  DeleteCompCatOptions,
+  GetCompetenceOptions,
+  UpdateCompCatOptions,
+} from "@/features/comp-cat/domain/types";
 
 export interface ConvexDatabaseOptions {
   db: typeof api;
@@ -180,28 +186,133 @@ export default class ConvexDatabase extends IDatabase {
     }
     return right(docs);
   }
+  async updateCategoryCompetence(
+    options: UpdateCompCatOptions
+  ): Promise<Either<Failure<string>, void>> {
+    try {
+      let result;
+      if (options.type === "Category") {
+        result = await fetchMutation(this._db.category.updateCategory, {
+          categoryId: options.id,
+          name: options.name,
+          description: options.description,
+        });
+        if (!result) {
+          return left(
+            Failure.invalidValue({
+              invalidValue: options,
+              message: "Error updating category",
+            })
+          );
+        }
+        return right(undefined);
+      }
+      result = await fetchMutation(this._db.competences.updateCompetence, {
+        competenceId: options.id,
+        name: options.name,
+        description: options.description,
+      });
+      if (!result) {
+        return left(
+          Failure.invalidValue({
+            invalidValue: options,
+            message: "Error updating category competence",
+          })
+        );
+      }
+      return right(undefined);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: options,
+          message: "Error updating category competence",
+        })
+      );
+    }
+  }
+  async deleteCompCat(options: DeleteCompCatOptions) {
+    try {
+      let result;
+      if (options.type === "Category") {
+        result = await fetchMutation(this._db.category.deleteCategory, {
+          categoryId: options.id,
+        });
+        if (!result) {
+          return left(
+            Failure.invalidValue({
+              invalidValue: options,
+              message: "Error deleting category",
+            })
+          );
+        }
+        return right(undefined);
+      }
+      result = await fetchMutation(this._db.competences.deleteCompetence, {
+        competenceId: options.id,
+      });
+      if (!result) {
+        return left(
+          Failure.invalidValue({
+            invalidValue: options,
+            message: "Error deleting category competence",
+          })
+        );
+      }
+      return right(undefined);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: options,
+          message: "Error deleting category competence",
+        })
+      );
+    }
+  }
 
-  async addCompetence({
-    userId,
-    competence,
-  }: {
-    userId: string;
-    competence: Competence;
-  }): Promise<Either<Failure<string>, void>> {
+  async getCompetence(
+    options: GetCompetenceOptions
+  ): Promise<Either<Failure<string>, DocumentData>> {
+    try {
+      const operationResult = await fetchQuery(
+        this._db.competences.getCompetence,
+        options
+      );
+      if (!operationResult) {
+        return left(
+          Failure.invalidValue({
+            invalidValue: options,
+            message: "Error getting competence",
+          })
+        );
+      }
+      return right(operationResult);
+    } catch (error) {
+      return left(
+        Failure.invalidValue({
+          invalidValue: options,
+          message: "Error getting competence",
+        })
+      );
+    }
+  }
+
+  async addCompetence(
+    options: CreateCompetenceOptions
+  ): Promise<Either<Failure<string>, void>> {
     try {
       const result = await fetchMutation(
         this._db.competences.createCompetence,
         {
-          userId,
-          name: competence.name,
-          description: competence.description,
-          category: competence.category,
+          userId: options.createdBy,
+          name: options.name,
+          description: options.description,
+          category: options.category,
         }
       );
       if (!result) {
         return left(
           Failure.invalidValue({
-            invalidValue: competence,
+            invalidValue: options,
             message: "Error adding competence",
           })
         );
@@ -210,7 +321,7 @@ export default class ConvexDatabase extends IDatabase {
     } catch (error) {
       return left(
         Failure.invalidValue({
-          invalidValue: competence,
+          invalidValue: options,
           message: "Error adding competence",
         })
       );

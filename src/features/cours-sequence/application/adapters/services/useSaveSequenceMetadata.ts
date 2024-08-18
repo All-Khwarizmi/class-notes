@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
-import { toast } from "sonner";
 import { coursUsecases } from "../../usecases/cours-usecases";
 import { isLeft } from "fp-ts/lib/Either";
 import { useRouter } from "next/navigation";
 import { CoursSequenceForm } from "@/features/cours-sequence/presentation/views/AddCoursView";
+import { useQueryClient, useMutation } from "@tanstack/react-query";
+import { QUERY_KEYS } from "@/core/query/ query-keys";
+import { toastWrapper } from "@/core/utils/toast-wrapper";
 interface SequenceFormOptions extends CoursSequenceForm {
   competencesIds: string[];
 }
@@ -11,46 +12,31 @@ export interface SaveSequenceMetadataOptions {
   sequence: SequenceFormOptions;
   userId: string;
 }
-
 export default function useSaveSequenceMetadata() {
-  const [saveSequenceMetadata, setSaveSequenceMetadata] =
-    useState<SaveSequenceMetadataOptions | null>(null);
+  const queryClient = useQueryClient();
   const router = useRouter();
-  useEffect(() => {
-    if (!saveSequenceMetadata) {
-      return;
-    }
-    const loadingToast = toast.loading("Saving sequence metadata...", {
-      position: "top-center",
-    });
-    coursUsecases
-      .addSequence({
+  return useMutation({
+    mutationKey: [QUERY_KEYS.SEQUENCE.CREATE()],
+    mutationFn: async (saveSequenceMetadata: SaveSequenceMetadataOptions) => {
+      return coursUsecases.addSequence({
         sequence: {
           ...saveSequenceMetadata.sequence,
           body: "",
           createdBy: saveSequenceMetadata.userId,
         },
         userId: saveSequenceMetadata.userId,
-      })
-      .then((eitherSequence) => {
-        if (isLeft(eitherSequence)) {
-          toast.error("Failed to save sequence metadata", {
-            id: loadingToast,
-            description: `
-           ${eitherSequence.left.message} \n
-           Error code: ${eitherSequence.left.code}
-              `,
-          });
-          return;
-        }
-        toast.success("Sequence metadata saved", {
-          id: loadingToast,
-        });
-        router.push(`/sequences/${eitherSequence.right}?type=template`);
       });
-  }, [saveSequenceMetadata]);
-
-  return {
-    setSaveSequenceMetadata,
-  };
+    },
+    onSuccess: async (eitherSequence) => {
+      if (isLeft(eitherSequence)) {
+        toastWrapper.error("An error occurred");
+        return;
+      }
+      toastWrapper.success("Sequence created successfully");
+      router.push(`/sequences/${eitherSequence.right}?type=template`);
+      queryClient.invalidateQueries({
+        queryKey: QUERY_KEYS.SEQUENCE.GET_ALL(),
+      });
+    },
+  });
 }

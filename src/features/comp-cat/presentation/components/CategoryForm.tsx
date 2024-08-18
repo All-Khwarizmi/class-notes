@@ -13,8 +13,14 @@ import { Input } from "@/core/components/ui/input";
 import { Button } from "@/core/components/ui/button";
 import useCreateCategory from "../../application/usecases/services/useCreateCategory";
 
-export default function CategoryForm({ userId }: { userId: string }) {
-  const { setCreateCategoryOptions } = useCreateCategory();
+export default function CategoryForm({
+  userId,
+  refetch,
+}: {
+  userId: string;
+  refetch: () => Promise<any>;
+}) {
+  const { mutate: setCreateCategoryOptions } = useCreateCategory();
   const form = useForm<Pick<Category, "name" | "description">>({
     resolver: zodResolver(categorySchema),
     defaultValues: {
@@ -24,14 +30,21 @@ export default function CategoryForm({ userId }: { userId: string }) {
   });
 
   function onSubmit(data: Pick<Category, "name" | "description">) {
-    setCreateCategoryOptions({
-      ...data,
-      createdBy: userId,
-    });
+    setCreateCategoryOptions(
+      {
+        ...data,
+        createdBy: userId,
+      },
+      {
+        onSuccess: async () => {
+          await refetch();
+        },
+      }
+    );
   }
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 p-4">
         <FormField
           name="name"
           control={form.control}
@@ -60,14 +73,16 @@ export default function CategoryForm({ userId }: { userId: string }) {
             </FormItem>
           )}
         />
-        <Button
-          onClick={() => {
-            onSubmit(form.getValues());
-          }}
-          type="submit"
-        >
-          Save
-        </Button>
+        <div className="flex justify-end">
+          <Button
+            onClick={() => {
+              onSubmit(form.getValues());
+            }}
+            type="submit"
+          >
+            Save
+          </Button>
+        </div>
       </form>
     </Form>
   );

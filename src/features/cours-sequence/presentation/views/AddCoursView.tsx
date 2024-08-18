@@ -79,8 +79,6 @@ export default function AddUpdateCoursSequenceView({
     }
   }
 
-  // add guard rails to prevent null values from being passed to the AddCoursOrSequenceForm component from the outer component
-
   if (edit && !cours && !sequence) {
     return (
       <ErrorDialog

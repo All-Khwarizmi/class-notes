@@ -1,56 +1,37 @@
 import { Sequence } from "@/features/cours-sequence/domain/entities/cours-schemas";
-import { useEffect, useState } from "react";
-import { toast } from "sonner";
 import { coursUsecases } from "../../usecases/cours-usecases";
 import { isLeft } from "fp-ts/lib/Either";
 import { useRouter } from "next/navigation";
+import { QUERY_KEYS } from "@/core/query/ query-keys";
+import { useMutation } from "@tanstack/react-query";
+import { toastWrapper } from "@/core/utils/toast-wrapper";
 export interface UpdateSequenceMetadataOptions {
   sequence: Sequence;
   type?: "sequence" | "template";
 }
 
 function useUpdateSequenceMetadata() {
-  const [updateSequenceMetadata, setUpdateSequenceMetadata] =
-    useState<UpdateSequenceMetadataOptions | null>(null);
   const router = useRouter();
-  useEffect(() => {
-    if (!updateSequenceMetadata) {
-      return;
-    }
-    const loadingToast = toast.loading("Updating sequence...", {
-      position: "top-center",
-    });
-    coursUsecases
-      .updateSequence({
+  return useMutation({
+    mutationKey: [QUERY_KEYS.SEQUENCE.UPDATE()],
+    mutationFn: async (
+      updateSequenceMetadata: UpdateSequenceMetadataOptions
+    ) => {
+      return coursUsecases.updateSequence({
         sequence: updateSequenceMetadata.sequence,
-        type: updateSequenceMetadata.type,
-      })
-      .then((eitherSequence) => {
-        if (isLeft(eitherSequence)) {
-          toast.error("Failed to update sequence", {
-            id: loadingToast,
-            description: `
-            ${eitherSequence.left.message}
-            ${eitherSequence.left.code}
-            `,
-          });
-          return;
-        }
-        toast.success("Sequence updated", {
-          id: loadingToast,
-        });
-
-        const redirectPath =
-          updateSequenceMetadata.type === "sequence"
-            ? `/sequences/${updateSequenceMetadata.sequence._id}?type=sequence`
-            : `/sequences/${updateSequenceMetadata.sequence._id}`;
-        router.push(redirectPath);
       });
-  }, [updateSequenceMetadata]);
-
-  return {
-    setUpdateSequenceMetadata,
-  };
+    },
+    onSuccess: async (eitherSequence, variables) => {
+      if (isLeft(eitherSequence)) {
+        toastWrapper.error("An error occurred");
+        return;
+      }
+      toastWrapper.success("Sequence updated successfully");
+      router.push(
+        `/sequences/${variables.sequence._id}?type=${variables.type}`
+      );
+    },
+  });
 }
 
 export default useUpdateSequenceMetadata;

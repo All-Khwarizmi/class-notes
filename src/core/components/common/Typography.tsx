@@ -1,8 +1,24 @@
+import { cn } from "@/lib/utils";
+
 export function TypographyH1({ text }: { text: string }) {
   return (
     <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
       {text}
     </h1>
+  );
+}
+
+export function HeaderTypographyH1({
+  text,
+  className,
+}: {
+  text: string;
+  className?: string;
+}) {
+  return (
+    <header className={cn("p-8 pb-12 underline", className)}>
+      <TypographyH1 text={text} />
+    </header>
   );
 }
 

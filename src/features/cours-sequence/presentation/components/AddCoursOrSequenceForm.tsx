@@ -10,12 +10,12 @@ import {
 import { Competence } from "@/features/comp-cat/domain/entities/schemas";
 import { Input } from "@/core/components/ui/input";
 import { Button } from "@/core/components/ui/button";
-import CompetenceSelectorDialog from "./CompetenceSelectorDialog";
+import CompetenceSelectorAccordion from "./CompetenceSelectorAccordion";
 import { UseFormReturn } from "react-hook-form";
 import { CoursSequenceForm } from "../views/AddCoursView";
 import SelectImageUrl from "./SelectImageUrl";
 import { useState } from "react";
-import { Switch } from "@/core/components/ui/switch";
+import { TypographyH1 } from "@/core/components/common/Typography";
 
 export default function AddCoursOrSequenceForm({
   form,
@@ -48,9 +48,12 @@ export default function AddCoursOrSequenceForm({
   const [localImageUrl, setLocalImageUrl] = useState<string>(
     imageUrl ?? "/images/mos-design-jzFbbG2WXv0-unsplash.jpg"
   );
+
   return (
     <div className="px-4 pt-8">
-      <h1 className="text-2xl font-bold pb-8 ">{title}</h1>
+      <header className="px-8 pb-8">
+        <TypographyH1 text={title} />
+      </header>
       <Form {...form}>
         <form className="space-y-4">
           <div className="flex justify-between items-center">
@@ -63,24 +66,6 @@ export default function AddCoursOrSequenceForm({
                     <FormLabel htmlFor={field.name}>Name</FormLabel>
                     <FormControl>
                       <Input {...field} placeholder={`Name `} />
-                    </FormControl>
-                  </FormItem>
-                );
-              }}
-            />
-            {/* Add a switch to controll visibility */}
-            <FormField
-              control={form.control}
-              name="publish"
-              render={({ field }) => {
-                return (
-                  <FormItem className="flex flex-col gap-2  justify-center">
-                    <FormLabel htmlFor={field.name}>Publish</FormLabel>
-                    <FormControl>
-                      <Switch
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
-                      />
                     </FormControl>
                   </FormItem>
                 );
@@ -123,7 +108,7 @@ export default function AddCoursOrSequenceForm({
             }}
           />
 
-          <CompetenceSelectorDialog
+          <CompetenceSelectorAccordion
             competences={competences}
             selectedCompetences={selectedCompetences}
             setSelectedCompetences={setSelectedCompetences}
@@ -131,24 +116,27 @@ export default function AddCoursOrSequenceForm({
             setOpen={setOpen}
           />
 
-          <SelectImageUrl
-            imageUrl={localImageUrl}
-            setImageUrl={setLocalImageUrl}
-          />
+            <SelectImageUrl
+              imageUrl={localImageUrl}
+              setImageUrl={setLocalImageUrl}
+            />
 
-          <Button
-            onClick={(event) => {
-              event.preventDefault();
-              onSubmit({
-                ...form.getValues(),
-                competences: selectedCompetences.map((c) => c._id),
-                imageUrl: localImageUrl,
-              });
-            }}
-            type="submit"
-          >
-            Next
-          </Button>
+          <section className="flex justify-end">
+            <Button
+              onClick={(event) => {
+                event.preventDefault();
+
+                onSubmit({
+                  ...form.getValues(),
+                  competences: selectedCompetences.map((c) => c._id),
+                  imageUrl: localImageUrl,
+                });
+              }}
+              type="submit"
+            >
+              Submit
+            </Button>
+          </section>
         </form>
       </Form>
     </div>

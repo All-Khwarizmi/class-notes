@@ -14,7 +14,12 @@ import { useClassesTableLogic } from "../services/hooks/useClassesTableLogic";
 import Layout from "@/core/components/layout/Layout";
 import { cn } from "@/lib/utils";
 import { Button } from "@/core/components/ui/button";
-import { TypographyH1 } from "@/core/components/common/Typography";
+import {
+  HeaderTypographyH1,
+  TypographyH1,
+} from "@/core/components/common/Typography";
+import CoursSequenceCard from "@/features/cours-sequence/presentation/components/CoursSequenceCard";
+import { BASE_IMAGE_URL } from "@/core/constants/image";
 
 export default function ClassesTable(props: { userId: string }) {
   const {
@@ -47,60 +52,32 @@ export default function ClassesTable(props: { userId: string }) {
 
   return (
     <section className={cn(`py-8 px-4`)}>
-      <header className="pb-8">
-        <TypographyH1 text="Mes Classes" />
-      </header>
+      <HeaderTypographyH1 text="Mes Classes" />
       {classes && classes.right.length > 0 ? (
-        <>
-          <Table data-testid="classes-table" className="">
-            <TableCaption>Ajouter une classe</TableCaption>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Name</TableHead>
-                <TableHead>Description</TableHead>
-                <TableHead>Actions</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {classes?.right.map((classe) => {
-                return (
-                  <TableRow key={classe.id} className="cursor-pointer ">
-                    <Link href={`/classes/class/${classe.id}`} legacyBehavior>
-                      <TableCell>{classe.name}</TableCell>
-                    </Link>
-                    <Link
-                      className="cursor-pointer "
-                      href={`/classes/class/${classe.id}`}
-                      legacyBehavior
-                    >
-                      <TableCell>{classe.description}</TableCell>
-                    </Link>
-
-                    <TableCell className="flex gap-4">
-                      {/* Delete */}
-                      <Delete
-                        className="cursor-pointer text-red-500"
-                        onClick={async () => {
-                          const confirmed = confirm(
-                            "Are you sure you want to delete this class?"
-                          );
-                          if (confirmed) {
-                            await handleDelete(classe.id?.toString() || "");
-                          }
-                        }}
-                        size={20}
-                      />
-
-                      <Link href={`/classes/class/${classe.id}`}>
-                        <Pen size={16} />
-                      </Link>
-                    </TableCell>
-                  </TableRow>
+        <section className="grid grid-cols-1  gap-4 sm:grid-cols-3   lg:grid-cols-4">
+          {classes.right.map((classe) => (
+            <CoursSequenceCard
+              deleteOption={true}
+              deleteSequence={() => {
+                const confirmation = window.confirm(
+                  "Are you sure you want to delete this classe?"
                 );
-              })}
-            </TableBody>
-          </Table>
-        </>
+                if (confirmation) {
+                  handleDelete(classe.id);
+                }
+              }}
+              key={classe.id}
+              title={classe.name}
+              description={classe.description ?? ""}
+              imageUrl={classe.imageUrl ?? BASE_IMAGE_URL}
+              tags={classe.educationLevel}
+              showViewButton={true}
+              pathToView={`/classes/${classe.id}`}
+              path={`/classes/edit/${classe.id}`}
+              spacesMode={true}
+            />
+          ))}
+        </section>
       ) : (
         <>
           {/* Display empty table with test attribute only and the message of emptyness */}

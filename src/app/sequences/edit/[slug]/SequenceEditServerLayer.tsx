@@ -5,7 +5,6 @@ import { isLeft } from "fp-ts/lib/Either";
 import { redirect } from "next/navigation";
 import ErrorDialog from "@/core/components/common/ErrorDialog";
 import editSequence from "@/features/cours-sequence/application/adapters/actions/edit-sequence";
-import LayoutWithProps from "@/core/components/layout/LayoutWithProps";
 
 async function SequenceEditServerLayer(props: {
   slug: string;
