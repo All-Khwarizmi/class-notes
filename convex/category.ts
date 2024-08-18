@@ -78,9 +78,18 @@ export const deleteCategory = mutation({
       .first();
 
     if (category) {
+      // Cascade delete all the competences in the category
+      const competences = await ctx.db
+        .query("Competences")
+        .filter((q) => q.eq(q.field("category"), category.name))
+        .collect();
+
+      for (const competence of competences) {
+        await ctx.db.delete(competence._id);
+      }
+
       await ctx.db.delete(category._id);
       return category._id;
     }
   },
 });
-
