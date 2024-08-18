@@ -10,7 +10,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/core/components/layout/SubNavAccordion";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { ChevronDownIcon } from "@radix-ui/react-icons";
 import { useLayoutContext } from "./ExperimentalLayoutCtx";
 
@@ -21,20 +21,20 @@ interface SideNavProps {
 
 export function SideNav({ setOpen, className }: SideNavProps) {
   const { navItems, spacesNavItems, isSpaces } = useLayoutContext();
-  const [items, setItems] = useState(() => {
+  const items = useMemo(() => {
     if (isSpaces === true && spacesNavItems) {
       return spacesNavItems;
     } else {
       return navItems;
     }
-  });
-  useEffect(() => {
-    if (isSpaces === true && spacesNavItems) {
-      setItems(spacesNavItems);
-    } else {
-      setItems(navItems);
-    }
   }, [isSpaces, spacesNavItems, navItems]);
+  // useEffect(() => {
+  //   if (isSpaces === true && spacesNavItems) {
+  //     setItems(spacesNavItems);
+  //   } else {
+  //     setItems(navItems);
+  //   }
+  // }, [isSpaces, spacesNavItems, navItems]);
 
   const path = usePathname();
   const { isOpen, toggle } = useSidebar();
