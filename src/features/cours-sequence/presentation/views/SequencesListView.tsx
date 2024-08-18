@@ -25,7 +25,7 @@ function SequencesListView({
   const { mutate: deleteSequence } = useDeleteSequence();
   if (sequences && isRight(sequences)) {
     return (
-      <div className="w-full h-full py-8 px-4">
+      <div className="w-full h-full px-4">
         <HeaderTypographyH1 text="Sequences" />
         <section className="grid grid-cols-1  gap-4 sm:grid-cols-3   lg:grid-cols-5">
           {sequences.right.map((sequence) => (
