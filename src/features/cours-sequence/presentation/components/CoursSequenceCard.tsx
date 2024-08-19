@@ -33,11 +33,11 @@ export default function CoursSequenceCard({
   spacesMode?: boolean;
 }) {
   return (
-    <Card className=" md:max-w-sm bg-slate-800">
+    <Card className=" md:max-w-sm bg-slate-800 pb-4">
       <CardHeader className="w-full">
         <img
           alt="Product Image"
-          className="rounded-lg object-cover w-full aspect-[square]"
+          className="rounded-lg object-cover w-full aspect-square"
           height={400}
           src={imageUrl}
           width={600}
