@@ -91,9 +91,13 @@ function useCreateEvaluationBaseFormLogic(props: {
       (criteria) => criteria.gradeType.type === evaluation.gradeType.type
     );
     if (!isValidCriteria) {
-      toast.error("Criteria grade types must match the evaluation grade type");
-      return;
+      criterias.forEach((criteria) => {
+        if (criteria.gradeType.type !== evaluation.gradeType.type) {
+          criteria.gradeType = evaluation.gradeType;
+        }
+      });
     }
+
     // Check if all the weight values are min 0.5
     const isValidWeights = criterias.every(
       (criteria) => criteria.weight >= 0.5
