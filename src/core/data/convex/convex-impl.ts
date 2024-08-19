@@ -1636,7 +1636,7 @@ export default class ConvexDatabase extends IDatabase {
           evaluationId: options.evaluationId,
         }
       );
-      if (!result) {
+      if (result === null) {
         return left(
           Failure.invalidValue({
             invalidValue: options,

@@ -1,5 +1,4 @@
 "use client";
-
 import {
   Table,
   TableBody,
@@ -29,10 +28,9 @@ import {
   CardTitle,
 } from "@/core/components/ui/card";
 import {
-  TypographyH1,
+  HeaderTypographyH1,
   TypographyH4,
   TypographyLead,
-  TypographyMuted,
   TypographySmall,
 } from "@/core/components/common/Typography";
 import UpdateCompetenceForm from "../components/UpdateCompetenceForm";
@@ -51,10 +49,8 @@ export default function CompetencesTable({ userId }: { userId: string }) {
 
   if (!compCat || isLeft(compCat)) return null;
   return (
-    <main className="  rounded-md p-4 ">
-      <header className="flex justify-between items-center py-8">
-        <TypographyH1 text="Competences" />
-      </header>
+    <main className="  rounded-md px-4 ">
+      <HeaderTypographyH1 text="Competences" />
       <Table>
         <TableCaption>Add competences or category</TableCaption>
         <TableHeader>

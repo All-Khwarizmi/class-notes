@@ -120,7 +120,14 @@ export default function SelectImageUrl({
         <DialogFooter>
           <Button type="submit">Choose Image</Button>
           <div>
-            <Button variant="outline">Cancel</Button>
+            <Button
+              onClick={() => {
+                setOpen(false);
+              }}
+              variant="outline"
+            >
+              Cancel
+            </Button>
           </div>
         </DialogFooter>
       </CustomDialog>
