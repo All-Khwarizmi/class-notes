@@ -19,7 +19,7 @@ import {
 import { Switch } from "@/core/components/ui/switch";
 import { toast } from "sonner";
 import { EvaluationBaseType } from "../../domain/entities/evaluation-schema";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import CollapsibleCriteriaList from "../components/CollapsibleCriteriaList";
 import GradeTypeSelectGroup from "../components/GradeTypeSelectGroup";
 import { Loader } from "lucide-react";
@@ -30,6 +30,8 @@ import {
   TypographyH1,
 } from "@/core/components/common/Typography";
 import { toastWrapper } from "@/core/utils/toast-wrapper";
+import { useGetCompCat } from "@/features/comp-cat/application/adapters/services/useGetCompCat";
+import { isLeft } from "fp-ts/lib/Either";
 
 export default function EvaluationBaseForm(props: {
   userId: string;
@@ -48,6 +50,11 @@ export default function EvaluationBaseForm(props: {
     addCriteria,
     onSubmit,
   } = useCreateEvaluationBaseFormLogic(props);
+  const { data } = useGetCompCat({ userId: props.userId });
+  const competences = useMemo(() => {
+    if (!data || isLeft(data)) return [];
+    return data.right.competences;
+  }, [data]);
 
   useEffect(() => {
     if (isSuccess) {
