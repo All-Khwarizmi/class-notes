@@ -12,6 +12,7 @@ import { toast } from "sonner";
 import { getGradeTypeByName } from "../../application/adapters/utils/grade-helpers";
 import useCreateBaseEvaluation from "../../application/adapters/services/useCreateBaseEvaluation";
 import useUpdateBaseEvaluation from "../../application/adapters/services/useUpdateBaseEvaluation";
+import { toastWrapper } from "@/core/utils/toast-wrapper";
 
 function useCreateEvaluationBaseFormLogic(props: {
   userId: string;
@@ -49,7 +50,7 @@ function useCreateEvaluationBaseFormLogic(props: {
   const addCriteria = (options?: { name: string; description: string }) => {
     // If the gradeType is not selected, show an error message
     if (!form.getValues("gradeType")) {
-      toast.error("Please select a grade type before adding criteria");
+      toastWrapper.error("Please select a grade type before adding criteria");
       return;
     }
     const gradeVal = form.getValues("gradeType") as unknown;
@@ -83,7 +84,7 @@ function useCreateEvaluationBaseFormLogic(props: {
     };
     const isValid = EvaluationBaseTypeFormSchema.safeParse(evaluation);
     if (!isValid.success) {
-      toast.error("Invalid evaluation base data");
+      toastWrapper.error("Invalid evaluation base data");
       return;
     }
     // Check if all the criteria gradeTypes are the same as the evaluation gradeType
@@ -104,7 +105,7 @@ function useCreateEvaluationBaseFormLogic(props: {
     );
 
     if (!isValidWeights) {
-      toast.error("Criteria weight must be at least 0.5");
+      toastWrapper.error("Criteria weight must be at least 0.5");
       return;
     }
 
@@ -116,9 +117,9 @@ function useCreateEvaluationBaseFormLogic(props: {
         criterias.filter((c) => c.name === criteria.name).length === 1
     );
     if (!isValidCriterias) {
-      toast.error("Invalid criteria data", {
-        description: `Criteria names and descriptions must be unique and not empty`,
-      });
+      toastWrapper.error(
+        "Criteria names and descriptions must be unique and not empty"
+      );
       return;
     }
     if (props.evaluation) {
