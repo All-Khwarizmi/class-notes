@@ -72,7 +72,7 @@ export default function ClassesTable(props: { userId: string }) {
               imageUrl={classe.imageUrl ?? BASE_IMAGE_URL}
               tags={classe.educationLevel}
               showViewButton={true}
-              pathToView={`/classes/${classe.id}`}
+              pathToView={`/classes/class/${classe.id}`}
               path={`/classes/edit/${classe.id}`}
               spacesMode={true}
             />
