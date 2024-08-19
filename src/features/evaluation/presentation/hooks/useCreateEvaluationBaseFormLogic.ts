@@ -46,7 +46,7 @@ function useCreateEvaluationBaseFormLogic(props: {
   } = useUpdateBaseEvaluation();
 
   // Handler to add a new criteria
-  const addCriteria = () => {
+  const addCriteria = (options?: { name: string; description: string }) => {
     // If the gradeType is not selected, show an error message
     if (!form.getValues("gradeType")) {
       toast.error("Please select a grade type before adding criteria");
@@ -61,8 +61,8 @@ function useCreateEvaluationBaseFormLogic(props: {
       {
         id: crypto.randomUUID(),
         weight: 1,
-        name: "",
-        description: "",
+        name: options?.name || "",
+        description: options?.description || "",
         isGraded: true,
         gradeType,
         createdBy: props.userId,
