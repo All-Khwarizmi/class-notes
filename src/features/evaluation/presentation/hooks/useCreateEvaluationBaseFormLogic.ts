@@ -24,7 +24,7 @@ function useCreateEvaluationBaseFormLogic(props: {
     defaultValues: {
       name: props.evaluation?.name || "",
       description: props.evaluation?.description || "",
-      gradeType: props.evaluation?.gradeType.name || "Numeric",
+      gradeType: props.evaluation?.gradeType.name || "10-point Scale",
       isGraded: props.evaluation?.isGraded || true,
     },
   });
