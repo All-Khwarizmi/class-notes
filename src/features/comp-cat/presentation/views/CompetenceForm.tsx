@@ -32,6 +32,8 @@ import { Check } from "lucide-react";
 import { toastWrapper } from "@/core/utils/toast-wrapper";
 import { useGetCategories } from "../../application/usecases/services/useGetCategories";
 import { isRight } from "fp-ts/lib/Either";
+import Header from "@/core/components/layout/Header";
+import { HeaderTypographyH1 } from "@/core/components/common/Typography";
 
 export default function CompetenceForm({ userId }: { userId: string }) {
   const { data: eitherCategories, refetch } = useGetCategories({ userId });
@@ -81,9 +83,9 @@ export default function CompetenceForm({ userId }: { userId: string }) {
   }
   if (!eitherCategories || !isRight(eitherCategories)) return null;
   return (
-    <div className="w-full max-w-2xl mx-auto  shadow-slate-800 shadow-inner rounded-md p-4">
+    <div className="px-8 rounded-lg bg-slate-900 py-12 shadow-md shadow-slate-800">
+      <HeaderTypographyH1 text="Create Competence" className="pt-0" />
       <Form {...form}>
-        <h1 className="text-3xl font-semibold py-8">Add new competence</h1>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 ">
           <FormField
             control={form.control}

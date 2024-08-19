@@ -31,6 +31,7 @@ import {
 } from "@/features/user/domain/entities/education-systems/niveaux/niveaux";
 import { toastWrapper } from "@/core/utils/toast-wrapper";
 import { BASE_IMAGE_URL } from "@/core/constants/image";
+import { HeaderTypographyH1 } from "@/core/components/common/Typography";
 
 export default function AddClassForm(props: { userId: string }) {
   const router = useRouter();
@@ -88,8 +89,8 @@ export default function AddClassForm(props: { userId: string }) {
     );
   }
   return (
-    <div className="px-4">
-      <h1 className="text-2xl font-semibold py-8">Ajouter une classe</h1>
+    <div className="px-8 rounded-lg bg-slate-900 py-12 shadow-md shadow-slate-800">
+      <HeaderTypographyH1 text="Create Classe" className="pt-0" />
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
           <FormField

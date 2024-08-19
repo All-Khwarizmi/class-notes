@@ -53,8 +53,8 @@ export default function AddCoursOrSequenceForm({
   );
 
   return (
-    <div className="px-4 ">
-      <HeaderTypographyH1 text={title} />
+    <div className="px-8 rounded-lg bg-slate-900 py-12 shadow-md shadow-slate-800">
+      <HeaderTypographyH1 text={title} className="pt-0" />
       <Form {...form}>
         <form className="space-y-4">
           <div className="flex gap-8 items-center">
