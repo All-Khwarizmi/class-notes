@@ -7,17 +7,18 @@ import {
   EvaluationCriteriaType,
   GradeTypeUnionType,
 } from "../../domain/entities/evaluation-schema";
-import { useState } from "react";
-import { toast } from "sonner";
+import { useEffect, useState } from "react";
 import { getGradeTypeByName } from "../../application/adapters/utils/grade-helpers";
 import useCreateBaseEvaluation from "../../application/adapters/services/useCreateBaseEvaluation";
 import useUpdateBaseEvaluation from "../../application/adapters/services/useUpdateBaseEvaluation";
 import { toastWrapper } from "@/core/utils/toast-wrapper";
+import { useRouter } from "next/navigation";
 
 function useCreateEvaluationBaseFormLogic(props: {
   userId: string;
   evaluation?: EvaluationBaseType;
 }) {
+  const router = useRouter();
   const form = useForm({
     resolver: zodResolver(EvaluationBaseTypeFormSchema),
     defaultValues: {
@@ -42,9 +43,21 @@ function useCreateEvaluationBaseFormLogic(props: {
   } = useCreateBaseEvaluation();
   const {
     mutate: updateEvaluation,
+
     isPending: isUpdatePending,
     isSuccess: isUpdateSuccess,
   } = useUpdateBaseEvaluation();
+  useEffect(() => {
+    let loadingToastId: string | number = 0;
+    if (isPending) {
+      loadingToastId = toastWrapper.loading("Creating evaluation...");
+    } else if (isUpdatePending) {
+      loadingToastId = toastWrapper.loading("Updating evaluation...");
+    }
+    return () => {
+      toastWrapper.dismiss(loadingToastId);
+    };
+  }, [isUpdatePending, isPending]);
 
   // Handler to add a new criteria
   const addCriteria = (options?: { name: string; description: string }) => {
@@ -71,7 +84,9 @@ function useCreateEvaluationBaseFormLogic(props: {
     ]);
     setOpenArray([...openArray, true]);
   };
+
   function onSubmit(values: EvaluationBaseTypeForm) {
+    if (isPending || isUpdatePending) return;
     const gradeVal = form.getValues("gradeType") as unknown;
     const gradeType = getGradeTypeByName(
       gradeVal as GradeTypeUnionType["name"]
@@ -129,7 +144,15 @@ function useCreateEvaluationBaseFormLogic(props: {
       });
       return;
     }
-    createEvaluation(evaluation);
+    createEvaluation(evaluation, {
+      onSuccess: (_, variables) => {
+        form.reset();
+        setCriterias([]);
+        setOpenArray([]);
+
+        router.push(`/evaluations`);
+      },
+    });
   }
 
   return {
