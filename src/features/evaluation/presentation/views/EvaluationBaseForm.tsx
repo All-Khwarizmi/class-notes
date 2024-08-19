@@ -32,6 +32,8 @@ import {
 import { toastWrapper } from "@/core/utils/toast-wrapper";
 import { useGetCompCat } from "@/features/comp-cat/application/adapters/services/useGetCompCat";
 import { isLeft } from "fp-ts/lib/Either";
+import CompetenceAccordionListModal from "@/features/comp-cat/presentation/components/CompetenceAccordionListModal";
+import { groupCompetencesByCategory } from "@/features/comp-cat/domain/entities/schemas";
 
 export default function EvaluationBaseForm(props: {
   userId: string;
@@ -51,9 +53,16 @@ export default function EvaluationBaseForm(props: {
     onSubmit,
   } = useCreateEvaluationBaseFormLogic(props);
   const { data } = useGetCompCat({ userId: props.userId });
-  const competences = useMemo(() => {
-    if (!data || isLeft(data)) return [];
-    return data.right.competences;
+  const { competences, categories } = useMemo(() => {
+    if (!data || isLeft(data))
+      return {
+        competences: [],
+        categories: [],
+      };
+    return {
+      competences: groupCompetencesByCategory(data.right.competences),
+      categories: data.right.categories,
+    };
   }, [data]);
 
   useEffect(() => {
@@ -155,6 +164,11 @@ export default function EvaluationBaseForm(props: {
 
           <div className="flex justify-end items-center space-x-4">
             {/* Button to add a new criteria */}
+            <CompetenceAccordionListModal
+              competencesByCategory={competences}
+              categories={categories}
+              addCriteria={addCriteria}
+            />
             <Button
               variant={"outline"}
               type="button"
