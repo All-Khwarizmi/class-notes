@@ -16,6 +16,7 @@ import { BookOpen, BookText, Building, CheckSquare, List } from "lucide-react";
 import { useVisibilityLogic } from "../../application/adapters/services/useVisibilityLogic";
 import ErrorDialog from "@/core/components/common/ErrorDialog";
 import LoaderPage from "@/core/components/layout/LoaderPage";
+import { TypographyH2 } from "@/core/components/common/Typography";
 
 export default function VisibilityManagementComponent(props: {
   userId: string;
@@ -36,9 +37,11 @@ export default function VisibilityManagementComponent(props: {
     );
   } else if (visibilityState) {
     return (
-      <Card className="w-full pb-4">
+      <Card className="w-full pb-8 pt-4 bg-slate-900 shadow-md shadow-slate-800">
         <CardHeader>
-          <CardTitle>Visibility Management</CardTitle>
+          <CardTitle>
+            <TypographyH2 text="Visibility management" />
+          </CardTitle>
           <CardDescription>
             Control the visibility of your educational content hierarchically.
           </CardDescription>

@@ -11,7 +11,7 @@ import Link from "next/link";
 
 function QuickLinksCard() {
   return (
-    <Card>
+    <Card className="bg-slate-900 shadow-md shadow-slate-800 py-4">
       <CardHeader>
         <CardTitle>Quick Links</CardTitle>
         <CardDescription>
