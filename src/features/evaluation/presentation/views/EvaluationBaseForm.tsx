@@ -75,8 +75,8 @@ export default function EvaluationBaseForm(props: {
     }
   }, [isSuccess, isUpdateSuccess, form]);
   return (
-    <div className="  px-4  rounded-lg ">
-      <HeaderTypographyH1 text="Create Evaluation" />
+    <div className="px-8 rounded-lg bg-slate-900 py-12 shadow-md shadow-slate-800">
+      <HeaderTypographyH1 text="Create Evaluation" className="pt-0" />
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
