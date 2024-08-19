@@ -10,7 +10,6 @@ export default function Header() {
   const pathName = usePathname();
   const { navItems } = useLayoutContext();
 
-
   return (
     <header className="flex flex-row gap-4 border-b items-center justify-between border-b-slate-300 p-4">
       <div className={cn("block md:!hidden")}>

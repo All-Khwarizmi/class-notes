@@ -2,27 +2,22 @@ import { DeleteEvaluationBase } from "@/features/evaluation/domain/entities/eval
 import { useMutation } from "@tanstack/react-query";
 import { evaluationUsecases } from "../../usecases/evaluation-usecases";
 import { isLeft } from "fp-ts/lib/Either";
-import { toast } from "sonner";
+import { QUERY_KEYS } from "@/core/query/ query-keys";
+import { toastWrapper } from "@/core/utils/toast-wrapper";
 
 export default function useDeleteEvaluationBase() {
   return useMutation({
-    mutationKey: ["delete-evaluation-base"],
+    mutationKey: QUERY_KEYS.EVALUATIONS.DELETE_EVALUATION_BASE(),
     mutationFn: async (options: DeleteEvaluationBase) => {
       const operationResult = await evaluationUsecases.deleteEvaluationBase(
         options
       );
       if (isLeft(operationResult)) {
-        toast.error("An error occurred while deleting the evaluation base", {
-          position: "top-center",
-          duration: 3000,
-        });
-      } else {
-        toast.success("Evaluation base deleted successfully", {
-          position: "top-center",
-          duration: 3000,
-        });
-        window.location.reload();
+        return toastWrapper.error(
+          "An error occurred while deleting the evaluation"
+        );
       }
+      toastWrapper.success("Evaluation base deleted successfully");
     },
   });
 }

@@ -51,7 +51,7 @@ export default function ClassesTable(props: { userId: string }) {
   }
 
   return (
-    <section className={cn(`py-8 px-4`)}>
+    <section className={cn(` px-4`)}>
       <HeaderTypographyH1 text="Mes Classes" />
       {classes && classes.right.length > 0 ? (
         <section className="grid grid-cols-1  gap-4 sm:grid-cols-3   lg:grid-cols-4">

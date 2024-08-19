@@ -25,7 +25,11 @@ import GradeTypeSelectGroup from "../components/GradeTypeSelectGroup";
 import { Loader } from "lucide-react";
 import { cn } from "@/lib/utils";
 import useCreateEvaluationBaseFormLogic from "../hooks/useCreateEvaluationBaseFormLogic";
-import { TypographyH1 } from "@/core/components/common/Typography";
+import {
+  HeaderTypographyH1,
+  TypographyH1,
+} from "@/core/components/common/Typography";
+import { toastWrapper } from "@/core/utils/toast-wrapper";
 
 export default function EvaluationBaseForm(props: {
   userId: string;
@@ -47,22 +51,20 @@ export default function EvaluationBaseForm(props: {
 
   useEffect(() => {
     if (isSuccess) {
-      toast.success("Evaluation base created successfully!");
+      toastWrapper.success("Evaluation created successfully!");
       form.reset();
     }
     if (isUpdateSuccess) {
-      toast.success("Evaluation base updated successfully!");
+      toastWrapper.success("Evaluation updated successfully!");
     }
-  }, [isSuccess, isUpdateSuccess]);
+  }, [isSuccess, isUpdateSuccess, form]);
   return (
-    <div className=" py-8 px-4  rounded-lg shadow-slate-800 shadow-inner">
-      <header className="pb-12">
-        <TypographyH1 text="Create an Evaluation" />
-      </header>
+    <div className="  px-4  rounded-lg ">
+      <HeaderTypographyH1 text="Create Evaluation" />
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="space-y-4 flex-1"
+          className="space-y-8 flex-1"
         >
           <FormField
             control={form.control}
@@ -91,50 +93,52 @@ export default function EvaluationBaseForm(props: {
             )}
           />
 
-          <FormField
-            control={form.control}
-            name="gradeType"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel htmlFor={field.name}>Grade Type</FormLabel>
-                <FormControl>
-                  <Select onValueChange={field.onChange} value={field.value}>
-                    <SelectTrigger className="w-[180px]">
-                      <SelectValue placeholder="Select a grade type" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <GradeTypeSelectGroup />
-                    </SelectContent>
-                  </Select>
-                </FormControl>
-                <FormDescription>
-                  Select the grade type for the evaluation
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="isGraded"
-            render={({ field }) => (
-              <FormItem className="flex flex-col">
-                <div className="flex flex-col gap-4">
-                  <FormLabel htmlFor={field.name}>Is Graded</FormLabel>
+          <div className="flex justify-between items-center">
+            <FormField
+              control={form.control}
+              name="gradeType"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel htmlFor={field.name}>Grade Type</FormLabel>
                   <FormControl>
-                    <Switch
-                      onCheckedChange={field.onChange}
-                      checked={field.value}
-                    />
+                    <Select onValueChange={field.onChange} value={field.value}>
+                      <SelectTrigger className="w-[180px]">
+                        <SelectValue placeholder="Select a grade type" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <GradeTypeSelectGroup />
+                      </SelectContent>
+                    </Select>
                   </FormControl>
-                </div>
-                <FormDescription>
-                  Indicates if the evaluation is graded
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+                  <FormDescription>
+                    Select the grade type for the evaluation
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="isGraded"
+              render={({ field }) => (
+                <FormItem className="flex flex-col">
+                  <div className="flex flex-col gap-4">
+                    <FormLabel htmlFor={field.name}>Is Graded</FormLabel>
+                    <FormControl>
+                      <Switch
+                        onCheckedChange={field.onChange}
+                        checked={field.value}
+                      />
+                    </FormControl>
+                  </div>
+                  <FormDescription>
+                    Indicates if the evaluation is graded
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
           <CollapsibleCriteriaList
             criterias={criterias}
             openArray={openArray}

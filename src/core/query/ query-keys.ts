@@ -36,9 +36,14 @@ export const QUERY_KEYS = {
       "GET_ALL_EVALUATIONS_COMPOUND",
       ...options,
     ],
+    DELETE_EVALUATION_BASE: (options: string[] = []) => [
+      "DELETE_EVALUATION_BASE",
+      ...options,
+    ],
     // CREATE: (options: string[] = []) => ["CREATE_EVALUATION", ...options],
     // DELETE: (options: string[] = []) => ["DELETE_EVALUATION", ...options],
   },
+
   NOTES: {
     GET_ALL: (options: string[] = []) => ["GET_ALL_NOTES", ...options],
     DELETE: (options: string[] = []) => ["DELETE_NOTE", ...options],
