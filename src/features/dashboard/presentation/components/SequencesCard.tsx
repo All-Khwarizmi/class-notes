@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 import { Button } from "@/core/components/ui/button";
 import {
   Card,
@@ -20,7 +20,7 @@ import { Badge } from "@/core/components/ui/badge";
 
 function SequencesCard() {
   return (
-    <Card className="col-span-2 xl:col-span-3">
+    <Card className="col-span-2 xl:col-span-3 rounded-lg bg-slate-900 py-12 shadow-md shadow-slate-800">
       <CardHeader>
         <CardTitle>Sequences</CardTitle>
         <CardDescription>
@@ -111,4 +111,4 @@ function SequencesCard() {
   );
 }
 
-export default SequencesCard
+export default SequencesCard;

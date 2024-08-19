@@ -38,7 +38,7 @@ export default function CoursSequenceCard({
   spacesMode?: boolean;
 }) {
   return (
-    <Card className=" md:max-w-sm">
+    <Card className=" md:max-w-sm bg-slate-900">
       <CardHeader className="">
         <img
           alt="Product Image"
