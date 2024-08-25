@@ -7,22 +7,24 @@ import {
   EvaluationCriteriaType,
   GradeTypeUnionType,
 } from "../../domain/entities/evaluation-schema";
-import { useState } from "react";
-import { toast } from "sonner";
+import { useEffect, useState } from "react";
 import { getGradeTypeByName } from "../../application/adapters/utils/grade-helpers";
 import useCreateBaseEvaluation from "../../application/adapters/services/useCreateBaseEvaluation";
 import useUpdateBaseEvaluation from "../../application/adapters/services/useUpdateBaseEvaluation";
+import { toastWrapper } from "@/core/utils/toast-wrapper";
+import { useRouter } from "next/navigation";
 
 function useCreateEvaluationBaseFormLogic(props: {
   userId: string;
   evaluation?: EvaluationBaseType;
 }) {
+  const router = useRouter();
   const form = useForm({
     resolver: zodResolver(EvaluationBaseTypeFormSchema),
     defaultValues: {
       name: props.evaluation?.name || "",
       description: props.evaluation?.description || "",
-      gradeType: props.evaluation?.gradeType.name || "Numeric",
+      gradeType: props.evaluation?.gradeType.name || "10-point Scale",
       isGraded: props.evaluation?.isGraded || true,
     },
   });
@@ -41,15 +43,27 @@ function useCreateEvaluationBaseFormLogic(props: {
   } = useCreateBaseEvaluation();
   const {
     mutate: updateEvaluation,
+
     isPending: isUpdatePending,
     isSuccess: isUpdateSuccess,
   } = useUpdateBaseEvaluation();
+  useEffect(() => {
+    let loadingToastId: string | number = 0;
+    if (isPending) {
+      loadingToastId = toastWrapper.loading("Creating evaluation...");
+    } else if (isUpdatePending) {
+      loadingToastId = toastWrapper.loading("Updating evaluation...");
+    }
+    return () => {
+      toastWrapper.dismiss(loadingToastId);
+    };
+  }, [isUpdatePending, isPending]);
 
   // Handler to add a new criteria
-  const addCriteria = () => {
+  const addCriteria = (options?: { name: string; description: string }) => {
     // If the gradeType is not selected, show an error message
     if (!form.getValues("gradeType")) {
-      toast.error("Please select a grade type before adding criteria");
+      toastWrapper.error("Please select a grade type before adding criteria");
       return;
     }
     const gradeVal = form.getValues("gradeType") as unknown;
@@ -61,8 +75,8 @@ function useCreateEvaluationBaseFormLogic(props: {
       {
         id: crypto.randomUUID(),
         weight: 1,
-        name: "",
-        description: "",
+        name: options?.name || "",
+        description: options?.description || "",
         isGraded: true,
         gradeType,
         createdBy: props.userId,
@@ -70,7 +84,9 @@ function useCreateEvaluationBaseFormLogic(props: {
     ]);
     setOpenArray([...openArray, true]);
   };
+
   function onSubmit(values: EvaluationBaseTypeForm) {
+    if (isPending || isUpdatePending) return;
     const gradeVal = form.getValues("gradeType") as unknown;
     const gradeType = getGradeTypeByName(
       gradeVal as GradeTypeUnionType["name"]
@@ -83,7 +99,7 @@ function useCreateEvaluationBaseFormLogic(props: {
     };
     const isValid = EvaluationBaseTypeFormSchema.safeParse(evaluation);
     if (!isValid.success) {
-      toast.error("Invalid evaluation base data");
+      toastWrapper.error("Invalid evaluation base data");
       return;
     }
     // Check if all the criteria gradeTypes are the same as the evaluation gradeType
@@ -91,16 +107,20 @@ function useCreateEvaluationBaseFormLogic(props: {
       (criteria) => criteria.gradeType.type === evaluation.gradeType.type
     );
     if (!isValidCriteria) {
-      toast.error("Criteria grade types must match the evaluation grade type");
-      return;
+      criterias.forEach((criteria) => {
+        if (criteria.gradeType.type !== evaluation.gradeType.type) {
+          criteria.gradeType = evaluation.gradeType;
+        }
+      });
     }
+
     // Check if all the weight values are min 0.5
     const isValidWeights = criterias.every(
       (criteria) => criteria.weight >= 0.5
     );
 
     if (!isValidWeights) {
-      toast.error("Criteria weight must be at least 0.5");
+      toastWrapper.error("Criteria weight must be at least 0.5");
       return;
     }
 
@@ -112,9 +132,9 @@ function useCreateEvaluationBaseFormLogic(props: {
         criterias.filter((c) => c.name === criteria.name).length === 1
     );
     if (!isValidCriterias) {
-      toast.error("Invalid criteria data", {
-        description: `Criteria names and descriptions must be unique and not empty`,
-      });
+      toastWrapper.error(
+        "Criteria names and descriptions must be unique and not empty"
+      );
       return;
     }
     if (props.evaluation) {
@@ -124,7 +144,15 @@ function useCreateEvaluationBaseFormLogic(props: {
       });
       return;
     }
-    createEvaluation(evaluation);
+    createEvaluation(evaluation, {
+      onSuccess: (_, variables) => {
+        form.reset();
+        setCriterias([]);
+        setOpenArray([]);
+
+        router.push(`/evaluations`);
+      },
+    });
   }
 
   return {

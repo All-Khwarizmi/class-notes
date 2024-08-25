@@ -49,17 +49,11 @@ export default function CompetencesTable({ userId }: { userId: string }) {
 
   if (!compCat || isLeft(compCat)) return null;
   return (
-    <main className="  rounded-md px-4 ">
+    <main className="rounded-md px-4">
       <HeaderTypographyH1 text="Competences" />
       <Table>
         <TableCaption>Add competences or category</TableCaption>
-        <TableHeader>
-          <TableRow>
-            <TableHead>
-              <TypographySmall text="Category" />
-            </TableHead>
-          </TableRow>
-        </TableHeader>
+
         <TableBody>
           {groupedCompetences.map((group) => {
             // Fleaky code since there could have multiple categories with the same name
@@ -68,8 +62,11 @@ export default function CompetencesTable({ userId }: { userId: string }) {
               (cat) => cat.name === group.category
             );
             return (
-              <TableRow key={group.category} className="border-none">
-                <TableCell colSpan={4} className="font-bold">
+              <TableRow
+                key={group.category}
+                className="border-none rounded-md bg-slate-800 hover:bg-slate-900 px-8"
+              >
+                <TableCell colSpan={4} className="font-bold px-8 rounded-md">
                   <Accordion type="multiple">
                     <AccordionItem value={group.category}>
                       <AccordionTrigger>

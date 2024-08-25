@@ -19,7 +19,7 @@ import {
 import { Switch } from "@/core/components/ui/switch";
 import { toast } from "sonner";
 import { EvaluationBaseType } from "../../domain/entities/evaluation-schema";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import CollapsibleCriteriaList from "../components/CollapsibleCriteriaList";
 import GradeTypeSelectGroup from "../components/GradeTypeSelectGroup";
 import { Loader } from "lucide-react";
@@ -30,6 +30,10 @@ import {
   TypographyH1,
 } from "@/core/components/common/Typography";
 import { toastWrapper } from "@/core/utils/toast-wrapper";
+import { useGetCompCat } from "@/features/comp-cat/application/adapters/services/useGetCompCat";
+import { isLeft } from "fp-ts/lib/Either";
+import CompetenceAccordionListModal from "@/features/comp-cat/presentation/components/CompetenceAccordionListModal";
+import { groupCompetencesByCategory } from "@/features/comp-cat/domain/entities/schemas";
 
 export default function EvaluationBaseForm(props: {
   userId: string;
@@ -48,6 +52,18 @@ export default function EvaluationBaseForm(props: {
     addCriteria,
     onSubmit,
   } = useCreateEvaluationBaseFormLogic(props);
+  const { data } = useGetCompCat({ userId: props.userId });
+  const { competences, categories } = useMemo(() => {
+    if (!data || isLeft(data))
+      return {
+        competences: [],
+        categories: [],
+      };
+    return {
+      competences: groupCompetencesByCategory(data.right.competences),
+      categories: data.right.categories,
+    };
+  }, [data]);
 
   useEffect(() => {
     if (isSuccess) {
@@ -59,8 +75,8 @@ export default function EvaluationBaseForm(props: {
     }
   }, [isSuccess, isUpdateSuccess, form]);
   return (
-    <div className="  px-4  rounded-lg ">
-      <HeaderTypographyH1 text="Create Evaluation" />
+    <div className="px-8 rounded-lg bg-slate-900 py-12 shadow-md shadow-slate-800">
+      <HeaderTypographyH1 text="Create Evaluation" className="pt-0" />
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
@@ -146,8 +162,13 @@ export default function EvaluationBaseForm(props: {
             setCriterias={setCriterias}
           />
 
-          <div className="flex justify-end items-center space-x-4">
+          <div className="flex justify-end items-center space-x-4 pt-4">
             {/* Button to add a new criteria */}
+            <CompetenceAccordionListModal
+              competencesByCategory={competences}
+              categories={categories}
+              addCriteria={addCriteria}
+            />
             <Button
               variant={"outline"}
               type="button"

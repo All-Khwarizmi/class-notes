@@ -10,7 +10,7 @@ import {
   DialogTrigger,
 } from "@/core/components/ui/dialog";
 import { Button, buttonVariants } from "../ui/button";
-import { TypographyP } from "./Typography";
+import { TypographyH1, TypographyP } from "./Typography";
 
 /**
  * CustomDialog component displays a dialog with a title, description, and optional button.
@@ -128,9 +128,11 @@ export default function CustomDialog({
             </div>
           )}
         </DialogTrigger>
-        <DialogContent>
+        <DialogContent className="py-8">
           <DialogHeader>
-            <DialogTitle>{title}</DialogTitle>
+            <DialogTitle>
+              <TypographyH1 text={title} />
+            </DialogTitle>
             <DialogDescription>{description}</DialogDescription>
           </DialogHeader>
           {children}
