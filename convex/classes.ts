@@ -118,15 +118,28 @@ export const addSequenceClass = mutation({
         publish: sequence.publish ?? false,
         classeId: args.classId,
       });
-
+      console.log(
+        `
+  Creating sequence ${sequence.name} for class ${classe.name}
+  `
+      );
       for (const coursId of sequence.coursIds) {
+        console.log(`
+  Creating cours ${coursId} for class ${classe.name}
+  `);
         const cours = await ctx.db
           .query("Cours")
           .filter((q) => q.eq(q.field("_id"), coursId))
           .first();
         if (!cours) {
+          console.log(`
+  Cours ${coursId} not found
+  `);
           return result;
         }
+        console.log(`
+  Creating cours ${cours.name} for class ${classe.name}
+  `);
         const newCours = await ctx.db.insert("Cours", {
           name: cours.name,
           body: cours.body,
@@ -140,6 +153,9 @@ export const addSequenceClass = mutation({
           lessons: cours.lessons,
           competences: cours.competences,
         });
+        console.log(`
+  Cours ${cours.name} created
+  `);
 
         // Get the cours complement and create new ones to add to the new cours
         const coursComplements = await ctx.db
@@ -147,9 +163,15 @@ export const addSequenceClass = mutation({
           .filter((q) => q.eq(q.field("coursId"), cours._id))
           .collect();
         if (!coursComplements) {
+          console.log(`
+  No complements found for cours ${cours.name}
+  `);
           return result;
         }
         for (const coursComplement of coursComplements) {
+          console.log(`
+  Creating complement ${coursComplement.name} for cours ${cours.name}
+  `);
           await ctx.db.insert("Complement", {
             sequenceId: coursComplement.sequenceId,
             name: coursComplement.name,
@@ -163,6 +185,9 @@ export const addSequenceClass = mutation({
             type: coursComplement.type,
             contentType: coursComplement.contentType,
           });
+          console.log(`
+  Complement ${coursComplement.name} created
+  `);
         }
         return result;
       }

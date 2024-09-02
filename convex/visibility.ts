@@ -6,6 +6,9 @@ import {
 } from "./_generated/server";
 import { v } from "convex/values";
 import { visibilityTableConvexSchema } from "./fields/visibility";
+import { VisibilityEntityTypes } from "@/features/visibility/domain/types";
+import { Id } from "./_generated/dataModel";
+import { VisibilityType } from "@/features/classe/domain/visibility-schema";
 
 export const isVisibilityTable = internalQuery({
   args: {
@@ -45,15 +48,15 @@ export const getVisibility = mutation({
     const visibility = await ctx.db
       .query("VisibilityTable")
       .filter((q) => q.eq(q.field("userId"), args.userId))
-      .first();
+      .first()!;
     if (!visibility) {
       // Fetch all classes and add them to the visibility table
       const classes = await ctx.db
         .query("Classes")
         .filter((q) => q.eq(q.field("userId"), args.userId))
         .collect();
-      const visibility = {
-        userId: args.userId,
+      const visibility: Omit<VisibilityType, "_id" | "_creationTime"> = {
+        userId: args.userId as Id<"Users">,
         classe: classes.map((c) => ({
           id: c._id,
           publish: false,
@@ -61,12 +64,75 @@ export const getVisibility = mutation({
           description: c.description ?? "",
         })),
 
-        sequences: [],
         cours: [],
         complement: [],
+        sequences: [],
       };
-      await ctx.db.insert("VisibilityTable", visibility);
-      return visibility;
+      // For each classe, get all the classeSequences, then for each classeSequence, get all the cours, then for each cours, get all the complement
+      // Then add them to the visibility
+      for (const classe of classes) {
+        const classeSequences = await ctx.db
+          .query("ClasseSequence")
+          .filter((q) => q.eq(q.field("classeId"), classe._id))
+          .collect();
+        visibility.classe.push({
+          id: classe._id,
+          publish: false,
+          name: classe.name,
+          description: classe.description ?? "",
+        });
+        for (const classeSequence of classeSequences) {
+          const courses = await ctx.db
+            .query("Cours")
+            .filter((q) => q.eq(q.field("sequenceId"), classeSequence._id))
+            .collect();
+          visibility.sequences.push({
+            id: classeSequence._id,
+            publish: false,
+            name: classeSequence.name,
+            description: classeSequence.description ?? "",
+            classe: false,
+            classeId: classe._id,
+          });
+          for (const cours of courses) {
+            const complements = await ctx.db
+              .query("Complement")
+              .filter((q) => q.eq(q.field("coursId"), cours._id))
+              .collect();
+
+            visibility.cours.push({
+              id: cours._id,
+              publish: false,
+              name: cours.name,
+              description: cours.description ?? "",
+              classe: false,
+              classeId: classe._id,
+              sequence: false,
+              sequenceId: classeSequence._id,
+            });
+            for (const complement of complements) {
+              visibility.complement.push({
+                id: complement._id,
+                publish: false,
+                name: complement.name,
+                description: complement.description ?? "",
+                classe: false,
+                classeId: classe._id,
+                sequence: false,
+                sequenceId: classeSequence._id,
+                cours: false,
+                coursId: cours._id,
+              });
+            }
+          }
+        }
+      }
+      const visibilityId = await ctx.db.insert("VisibilityTable", visibility);
+      const newVisibility = await ctx.db
+        .query("VisibilityTable")
+        .filter((q) => q.eq(q.field("_id"), visibilityId))
+        .first();
+      return newVisibility;
     }
     return visibility;
   },

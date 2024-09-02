@@ -314,10 +314,10 @@ export const deleteSequence = mutation({
     type: v.union(v.literal("sequence"), v.literal("template")),
   },
   handler: async (ctx, args) => {
-    // const isAuthenticated = await ctx.auth.getUserIdentity();
-    // if (!isAuthenticated) {
-    //   throw new Error("Unauthorized");
-    // }
+    console.log(`
+      Deleting sequence ${args.sequenceId}
+      Type: ${args.type}
+    `);
     if (args.type === "sequence") {
       const classeSequence = await ctx.db
         .query("ClasseSequence")
