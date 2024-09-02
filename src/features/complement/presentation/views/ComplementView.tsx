@@ -7,13 +7,7 @@ import Link from "next/link";
 import AfterMenuButton from "@/core/components/common/editor/AfterMenuButton";
 import useUpdateComplement from "../../application/adapters/services/useUpdateComplement";
 import FloatingEditor from "@/core/components/common/editor/FloatingEditor";
-import dynamic from "next/dynamic";
-const Excalidraw = dynamic(
-  async () => (await import("@excalidraw/excalidraw")).Excalidraw,
-  {
-    ssr: false,
-  }
-);
+import { ExcalidrawCanvas } from "../components/ExcalidrawCanvas";
 
 function ComplementView(props: {
   slug: string;
@@ -30,12 +24,10 @@ function ComplementView(props: {
   //! Check complement type and return the right component
   if (props.complement.contentType === "Diagram" && isLoaded) {
     return (
-      <div
-        className="excalidraw-container rounded-lg h-full shadow-md shadow-slate-800"
-        style={{ width: "100%" }}
-      >
-        <Excalidraw theme="dark" />
-      </div>
+      <ExcalidrawCanvas
+        initialData={props.complement.body}
+        saveComplement={debounceUpdateComplement(props.complement)}
+      />
     );
   }
   return (
