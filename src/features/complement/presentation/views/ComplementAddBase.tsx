@@ -25,6 +25,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import useAddComplementBase from "../../application/adapters/services/useAddComplementBase";
 import { toast } from "sonner";
+import { HeaderTypographyH1 } from "@/core/components/common/Typography";
 
 const ComplementBaseSchema = z.object({
   name: z.string().min(3),
@@ -92,8 +93,9 @@ function ComplementAddBaseForm(props: { slug: string }) {
     });
   }
   return (
-    <div className="px-4 space-y-8 pt-8">
-      <h1 className="text-xl font-bold">Add a ressource to the course</h1>
+    <div className="px-8 rounded-lg bg-slate-900 py-12 shadow-md shadow-slate-800">
+      <HeaderTypographyH1 text="Add Resource" className="pt-0" />
+
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
@@ -183,6 +185,7 @@ function ComplementAddBaseForm(props: { slug: string }) {
                               {/* <SelectItem value="Diagram">Diagram</SelectItem>
                             <SelectItem value="Flowchart">Flowchart</SelectItem> */}
                               <SelectItem value="Markup">Markup</SelectItem>
+                              <SelectItem value="Diagram">Diagram</SelectItem>
                             </SelectGroup>
                           </SelectContent>
                         </Select>

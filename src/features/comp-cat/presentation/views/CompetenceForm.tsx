@@ -32,7 +32,6 @@ import { Check } from "lucide-react";
 import { toastWrapper } from "@/core/utils/toast-wrapper";
 import { useGetCategories } from "../../application/usecases/services/useGetCategories";
 import { isRight } from "fp-ts/lib/Either";
-import Header from "@/core/components/layout/Header";
 import { HeaderTypographyH1 } from "@/core/components/common/Typography";
 
 export default function CompetenceForm({ userId }: { userId: string }) {
