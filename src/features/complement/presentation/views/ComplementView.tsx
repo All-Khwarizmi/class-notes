@@ -7,7 +7,13 @@ import Link from "next/link";
 import AfterMenuButton from "@/core/components/common/editor/AfterMenuButton";
 import useUpdateComplement from "../../application/adapters/services/useUpdateComplement";
 import FloatingEditor from "@/core/components/common/editor/FloatingEditor";
-import { Excalidraw } from "@excalidraw/excalidraw";
+import dynamic from "next/dynamic";
+const Excalidraw = dynamic(
+  async () => (await import("@excalidraw/excalidraw")).Excalidraw,
+  {
+    ssr: false,
+  }
+);
 
 function ComplementView(props: {
   slug: string;
