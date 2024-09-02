@@ -49,9 +49,22 @@ function Layout({
     const isLandingPage = path === "/";
     if (isLandingPage === true) {
       setIsLandingPage(true);
+      setNavItems([]);
+      setSpacesNavItems([]);
+      setIsSpaces(false);
     } else {
-      setIsLandingPage(false);
-      setNavItems(experimentalNavItems);
+      // Path contains /spaces/
+      if (path.includes("/spaces/")) {
+        setIsLandingPage(false);
+        setNavItems([]);
+        setSpacesNavItems(experimentalNavItems);
+        setIsSpaces(true);
+      } else {
+        setIsLandingPage(false);
+        setNavItems(experimentalNavItems);
+        setSpacesNavItems([]);
+        setIsSpaces(false);
+      }
     }
   }, [experimentalNavItems, path]);
   return (
