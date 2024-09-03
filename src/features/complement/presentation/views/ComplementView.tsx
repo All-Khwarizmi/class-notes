@@ -8,6 +8,7 @@ import AfterMenuButton from "@/core/components/common/editor/AfterMenuButton";
 import useUpdateComplement from "../../application/adapters/services/useUpdateComplement";
 import FloatingEditor from "@/core/components/common/editor/FloatingEditor";
 import { ExcalidrawCanvas } from "../components/ExcalidrawCanvas";
+import LoadingSkeleton from "@/core/components/common/LoadingSkeleton";
 
 function ComplementView(props: {
   slug: string;
@@ -25,11 +26,14 @@ function ComplementView(props: {
   if (props.complement.contentType === "Diagram" && isLoaded) {
     return (
       <ExcalidrawCanvas
-      
         initialData={props.complement.body}
         saveComplement={debounceUpdateComplement(props.complement)}
       />
     );
+  }
+
+  if (props.complement.contentType === "Diagram" && !isLoaded) {
+    return <LoadingSkeleton />;
   }
   return (
     <div>
