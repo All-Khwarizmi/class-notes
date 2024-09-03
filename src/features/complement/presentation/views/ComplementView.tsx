@@ -25,6 +25,7 @@ function ComplementView(props: {
   if (props.complement.contentType === "Diagram" && isLoaded) {
     return (
       <ExcalidrawCanvas
+      
         initialData={props.complement.body}
         saveComplement={debounceUpdateComplement(props.complement)}
       />
