@@ -81,4 +81,7 @@ export const QUERY_KEYS = {
       ...options,
     ],
   },
+  COMPLEMENT: {
+    ADD: (options: string[] = []) => ["ADD_COMPLEMENT", ...options],
+  },
 };

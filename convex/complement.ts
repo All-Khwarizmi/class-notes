@@ -14,7 +14,7 @@ export const createComplement = mutation({
     ),
     contentType: v.union(
       v.literal("Diagram"),
-      v.literal("Flowchart"),
+      v.literal("Embed"),
       v.literal("Markup")
     ),
     publish: v.boolean(),

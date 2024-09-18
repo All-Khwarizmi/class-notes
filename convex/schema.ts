@@ -58,7 +58,7 @@ export default defineSchema({
     body: v.string(),
     contentType: v.union(
       v.literal("Diagram"),
-      v.literal("Flowchart"),
+      v.literal("Embed"),
       v.literal("Markup")
     ),
     type: v.union(

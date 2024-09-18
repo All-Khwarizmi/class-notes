@@ -1,4 +1,9 @@
 "use client";
+
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 import { Button } from "@/core/components/ui/button";
 import {
   Form,
@@ -15,41 +20,38 @@ import {
   SelectContent,
   SelectGroup,
   SelectItem,
-  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/core/components/ui/select";
 import { Switch } from "@/core/components/ui/switch";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import useAddComplementBase from "../../application/adapters/services/useAddComplementBase";
-import { toast } from "sonner";
-import { HeaderTypographyH1 } from "@/core/components/common/Typography";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/core/components/ui/card";
+import useAddRessource from "../../application/adapters/services/useAddRessource";
+import { toastWrapper } from "@/core/utils/toast-wrapper";
 
 const ComplementBaseSchema = z.object({
-  name: z.string().min(3),
+  name: z.string().min(3, "Le nom doit contenir au moins 3 caractères"),
   description: z.string().optional(),
   publish: z.boolean().optional(),
-  type: z
-    .string()
-    .default("Lesson")
-    .refine((value) => {
-      return ["Lesson", "Exercise", "Additional"].includes(value);
-    })
-    .optional(),
-  contentType: z
-    .string()
-    .default("Markup")
-    .refine((value) => {
-      return ["Diagram", "Flowchart", "Markup"].includes(value);
-    })
-    .optional(),
+  type: z.enum(["Lesson", "Exercise", "Additional"]).default("Lesson"),
+  contentType: z.enum(["Embed", "Diagram", "Markup"]).default("Markup"),
 });
-export type ComplementBaseType = z.infer<typeof ComplementBaseSchema>;
-function ComplementAddBaseForm(props: { slug: string }) {
-  const { setComplementBaseOptions } = useAddComplementBase();
-  const form = useForm({
+
+type ComplementBaseType = z.infer<typeof ComplementBaseSchema>;
+
+interface ComplementAddBaseFormProps {
+  slug: string;
+}
+
+function ComplementAddBaseForm({ slug }: ComplementAddBaseFormProps) {
+  const { mutate: setComplementBaseOptions, isPending } = useAddRessource();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const form = useForm<ComplementBaseType>({
     resolver: zodResolver(ComplementBaseSchema),
     defaultValues: {
       name: "",
@@ -59,108 +61,91 @@ function ComplementAddBaseForm(props: { slug: string }) {
       contentType: "Markup",
     },
   });
+
   function onSubmit(values: ComplementBaseType) {
-    if (
-      values.type !== "Lesson" &&
-      values.type !== "Exercise" &&
-      values.type !== "Additional"
-    ) {
-      toast.error("Invalid type", {
-        position: "top-center",
-        description: "The type must be lesson, exercise or additional",
-      });
-      return;
-    } else if (
-      values.contentType !== "Diagram" &&
-      values.contentType !== "Flowchart" &&
-      values.contentType !== "Markup"
-    ) {
-      toast.error("Invalid content type", {
-        position: "top-center",
-        description: "The content type must be diagram, flowchart or markup",
-      });
-      return;
-    }
-    setComplementBaseOptions({
-      complementBaseOptions: {
-        name: values.name,
-        description: values.description,
-        publish: values.publish,
-        type: values.type,
-        contentType: values.contentType,
+    setIsSubmitting(true);
+    setComplementBaseOptions(
+      {
+        complement: {
+          coursId: slug,
+          complementBaseOptions: values,
+        },
+        coursId: slug,
       },
-      coursId: props.slug,
-    });
+      {
+        onSuccess: () => {
+          toastWrapper.success("Ressource ajoutée", { duration: 1000 });
+        },
+        onError: () => {
+          toastWrapper.error("Erreur lors de l'ajout de la ressource", {
+            duration: 1000,
+          });
+        },
+      }
+    );
   }
+
   return (
-    <div className="px-8 rounded-lg bg-slate-900 py-12 shadow-md shadow-slate-800">
-      <HeaderTypographyH1 text="Add Resource" className="pt-0" />
-
-      <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
-          className="space-y-4 w-full max-w-lg "
-        >
-          <FormField
-            control={form.control}
-            name="name"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel htmlFor={field.name}>Name</FormLabel>
-                <FormControl>
-                  <Input placeholder="Complement name" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="description"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel htmlFor={field.name}>Description</FormLabel>
-                <FormControl>
-                  <Input placeholder="Complement description" {...field} />
-                </FormControl>
-
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <div className="flex gap-4 justify-between">
-            <div className="space-y-4 w-full max-w-lg mx-auto">
+    <Card className="w-full max-w-2xl mx-auto">
+      <CardHeader>
+        <CardTitle>Ajouter une ressource</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Nom</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Nom de la ressource" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="description"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Description</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Description de la ressource"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <FormField
                 control={form.control}
                 name="type"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel htmlFor={field.name}>Type</FormLabel>
-                    <FormControl>
-                      <Select
-                        onValueChange={field.onChange}
-                        value={field.value}
-                      >
-                        <SelectTrigger className="w-[180px]">
-                          <SelectValue
-                            placeholder="Select a type"
-                            defaultValue={field.value}
-                          />
+                    <FormLabel>Type</FormLabel>
+                    <Select onValueChange={field.onChange} value={field.value}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Sélectionnez un type" />
                         </SelectTrigger>
-                        <SelectContent>
-                          <SelectGroup>
-                            <SelectItem value="Lesson">Lesson</SelectItem>
-                            <SelectItem value="Exercise">Exercise</SelectItem>
-                            <SelectItem value="Additional">
-                              Additional
-                            </SelectItem>
-                          </SelectGroup>
-                        </SelectContent>
-                      </Select>
-                    </FormControl>
-                    <FormDescription>
-                      The type of the complement
-                    </FormDescription>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectGroup>
+                          <SelectItem value="Lesson">Leçon</SelectItem>
+                          <SelectItem value="Exercise">Exercice</SelectItem>
+                          <SelectItem value="Additional">
+                            Supplémentaire
+                          </SelectItem>
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                    <FormDescription>Le type de la ressource</FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -168,64 +153,58 @@ function ComplementAddBaseForm(props: { slug: string }) {
               <FormField
                 control={form.control}
                 name="contentType"
-                render={({ field }) => {
-                  return (
-                    <FormItem>
-                      <FormLabel htmlFor={field.name}>Content Type</FormLabel>
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Type de contenu</FormLabel>
+                    <Select onValueChange={field.onChange} value={field.value}>
                       <FormControl>
-                        <Select
-                          onValueChange={field.onChange}
-                          value={field.value}
-                        >
-                          <SelectTrigger className="w-[180px]">
-                            <SelectValue placeholder="Select a content type" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectGroup>
-                              {/* <SelectItem value="Diagram">Diagram</SelectItem>
-                            <SelectItem value="Flowchart">Flowchart</SelectItem> */}
-                              <SelectItem value="Markup">Markup</SelectItem>
-                              <SelectItem value="Diagram">Diagram</SelectItem>
-                            </SelectGroup>
-                          </SelectContent>
-                        </Select>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Sélectionnez un type de contenu" />
+                        </SelectTrigger>
                       </FormControl>
-                      <FormDescription>
-                        The content type of the complement
-                      </FormDescription>
-                      <FormMessage />
-                    </FormItem>
-                  );
-                }}
+                      <SelectContent>
+                        <SelectGroup>
+                          <SelectItem value="Markup">Texte enrichi</SelectItem>
+                          <SelectItem value="Diagram">Diagramme</SelectItem>
+                          <SelectItem value="Embed">Embed</SelectItem>
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                    <FormDescription>
+                      Le type de contenu de la ressource
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
               />
             </div>
-
             <FormField
               control={form.control}
               name="publish"
               render={({ field }) => (
-                <FormItem className="flex flex-col ">
-                  <div className="flex flex-col gap-4">
-                    <FormLabel htmlFor={field.name}>Publish</FormLabel>
-                    <FormControl>
-                      <Switch
-                        onCheckedChange={field.onChange}
-                        checked={field.value}
-                      />
-                    </FormControl>
+                <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+                  <div className="space-y-0.5">
+                    <FormLabel>Publier</FormLabel>
+                    <FormDescription>
+                      Rendre la ressource visible pour les étudiants
+                    </FormDescription>
                   </div>
-                  <FormDescription>
-                    Should the complement be published
-                  </FormDescription>
-                  <FormMessage />
+                  <FormControl>
+                    <Switch
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                    />
+                  </FormControl>
                 </FormItem>
               )}
             />
-          </div>
-          <Button type="submit">Submit</Button>
-        </form>
-      </Form>
-    </div>
+            <Button type="submit" className="w-full" disabled={isPending}>
+              {isPending ? "Ajout en cours..." : "Ajouter la ressource"}
+            </Button>
+          </form>
+        </Form>
+      </CardContent>
+    </Card>
   );
 }
 

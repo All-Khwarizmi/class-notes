@@ -18,7 +18,7 @@ export const ComplementSchema = z.object({
   ]),
   contentType: z.union([
     z.literal("Diagram"),
-    z.literal("Flowchart"),
+    z.literal("Embed"),
     z.literal("Markup"),
   ]),
 });
