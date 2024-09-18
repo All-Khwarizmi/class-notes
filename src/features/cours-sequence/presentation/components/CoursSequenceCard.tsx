@@ -1,12 +1,15 @@
+import React from "react";
+import Link from "next/link";
+import { Settings, Trash, Eye } from "lucide-react";
 import {
+  Card,
   CardContent,
   CardFooter,
-  Card,
   CardHeader,
 } from "@/core/components/ui/card";
-import { Settings, Trash } from "lucide-react";
 import { Button } from "@/core/components/ui/button";
-import Link from "next/link";
+import { Badge } from "@/core/components/ui/badge";
+import { AspectRatio } from "@/core/components/ui/aspect-ratio";
 
 interface CoursSequenceCardProps {
   title: string;
@@ -34,39 +37,41 @@ export default function CoursSequenceCard({
   deleteSequence,
 }: CoursSequenceCardProps) {
   return (
-    <Card className="max-w-xs overflow-hidden transition-shadow hover:shadow-md dark:bg-gray-800">
+    <Card className="overflow-hidden transition-all hover:shadow-md">
       <CardHeader className="p-0">
-        <img
-          alt={`${title} cover`}
-          className="h-48 w-full object-cover"
-          src={imageUrl}
-        />
+        <AspectRatio ratio={16 / 9}>
+          <img
+            src={imageUrl}
+            alt={`Couverture de ${title}`}
+            className="object-cover w-full h-full"
+          />
+        </AspectRatio>
       </CardHeader>
       <CardContent className="p-4 space-y-2">
-        <h3 className="text-lg font-semibold line-clamp-1">{title}</h3>
+        <h3 className="text-md font-semibold line-clamp-1">{title}</h3>
         <p className="text-sm text-muted-foreground line-clamp-2">
           {description}
         </p>
         <div className="flex flex-wrap gap-1">
           {tags.split(",").map((tag) => (
-            <span
-              key={tag}
-              className="bg-secondary text-secondary-foreground rounded-full px-2 py-0.5 text-xs font-medium"
-            >
+            <Badge key={tag} variant="secondary">
               {tag.trim()}
-            </span>
+            </Badge>
           ))}
         </div>
       </CardContent>
       <CardFooter className="p-4 pt-0 flex justify-between items-center">
         {showViewButton && (
           <Button asChild variant="outline" size="sm">
-            <Link href={pathToView ?? "/sequences"}>View</Link>
+            <Link href={pathToView ?? "/sequences"}>
+              <Eye className="mr-2 h-4 w-4" />
+              Voir
+            </Link>
           </Button>
         )}
         <div className="flex gap-2">
           {!spacesMode && (
-            <Button asChild variant="ghost" size="icon">
+            <Button asChild variant="ghost" size="icon" aria-label="Paramètres">
               <Link href={path}>
                 <Settings className="h-4 w-4" />
               </Link>
@@ -78,6 +83,7 @@ export default function CoursSequenceCard({
               size="icon"
               onClick={deleteSequence}
               className="text-destructive hover:text-destructive/90"
+              aria-label="Supprimer"
             >
               <Trash className="h-4 w-4" />
             </Button>
