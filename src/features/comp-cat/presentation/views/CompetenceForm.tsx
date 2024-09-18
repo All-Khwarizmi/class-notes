@@ -1,5 +1,11 @@
 "use client";
+
 import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useEffect, useMemo, useState } from "react";
+import { isRight } from "fp-ts/lib/Either";
+import { Check, Plus } from "lucide-react";
+import { Competence, competenceSchema } from "../../domain/entities/schemas";
 import {
   Form,
   FormControl,
@@ -7,13 +13,8 @@ import {
   FormField,
   FormItem,
   FormLabel,
+  FormMessage,
 } from "@/core/components/ui/form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  Category,
-  Competence,
-  competenceSchema,
-} from "../../domain/entities/schemas";
 import { Input } from "@/core/components/ui/input";
 import { Button } from "@/core/components/ui/button";
 import {
@@ -24,51 +25,54 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/core/components/ui/select";
-import { useEffect, useMemo, useState } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/core/components/ui/dialog";
+import { Card, CardContent, CardHeader, CardTitle } from "@/core/components/ui/card";
+import { Textarea } from "@/core/components/ui/textarea";
 import useCreateCompetence from "../../application/usecases/services/useCreateCompetence";
-import CustomDialog from "@/core/components/common/CustomDialog";
 import CategoryForm from "../components/CategoryForm";
-import { Check } from "lucide-react";
 import { toastWrapper } from "@/core/utils/toast-wrapper";
 import { useGetCategories } from "../../application/usecases/services/useGetCategories";
-import { isRight } from "fp-ts/lib/Either";
-import { HeaderTypographyH1 } from "@/core/components/common/Typography";
 
 export default function CompetenceForm({ userId }: { userId: string }) {
   const { data: eitherCategories, refetch } = useGetCategories({ userId });
   const [category, setCategory] = useState<string>("");
   const [open, setOpen] = useState(false);
-  const { mutate: setCreateCompetenceOptions } = useCreateCompetence();
+  const { mutate: createCompetence, isPending } = useCreateCompetence();
+
   const form = useForm<Competence>({
     resolver: zodResolver(competenceSchema),
     defaultValues: {
       name: "",
       description: "",
-      category,
+      category: "",
     },
   });
 
-  useEffect(() => {
-    if (
-      eitherCategories &&
-      isRight(eitherCategories) &&
-      eitherCategories.right.length > 0
-    ) {
-      setCategory(eitherCategories.right[0].name);
-      form.setValue("category", category);
-    }
-  }, [eitherCategories]);
   const categories = useMemo(() => {
     if (!eitherCategories || !isRight(eitherCategories)) return [];
     return eitherCategories.right;
   }, [eitherCategories]);
 
+  useEffect(() => {
+    if (categories.length > 0) {
+      setCategory(categories[0].name);
+      form.setValue("category", categories[0].name);
+    }
+  }, [categories, form]);
+
   function onSubmit(data: Competence) {
-    if (data.name === "" || data.description === "") {
-      return toastWrapper.info("Please fill all fields");
+    if (data.name === "" || data.description === "" || data.category === "") {
+      return toastWrapper.error("Please fill all fields");
     }
 
-    setCreateCompetenceOptions(
+    createCompetence(
       {
         category: data.category,
         createdBy: userId,
@@ -76,95 +80,131 @@ export default function CompetenceForm({ userId }: { userId: string }) {
         name: data.name,
       },
       {
-        onSuccess: () => {},
+        onSuccess: () => {
+          toastWrapper.success("Competence created successfully");
+          form.reset();
+        },
+        onError: () => {
+          toastWrapper.error("Failed to create competence");
+        },
       }
     );
   }
+
   if (!eitherCategories || !isRight(eitherCategories)) return null;
+
   return (
-    <div className="px-8 rounded-lg bg-slate-900 py-12 shadow-md shadow-slate-800">
-      <HeaderTypographyH1 text="Create Competence" className="pt-0" />
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 ">
-          <FormField
-            control={form.control}
-            name="name"
-            render={({ field }) => {
-              return (
+    <Card className="w-full max-w-2xl mx-auto">
+      <CardHeader>
+        <CardTitle>Create Competence</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
                 <FormItem>
-                  <FormLabel htmlFor={field.name}>Name</FormLabel>
+                  <FormLabel>Name</FormLabel>
                   <FormControl>
-                    <Input {...field} placeholder="React" />
+                    <Input {...field} placeholder="e.g., React" />
                   </FormControl>
+                  <FormMessage />
                 </FormItem>
-              );
-            }}
-          />
-          <FormField
-            control={form.control}
-            name="description"
-            render={({ field }) => {
-              return (
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="description"
+              render={({ field }) => (
                 <FormItem>
-                  <FormLabel htmlFor={field.name}>Description</FormLabel>
+                  <FormLabel>Description</FormLabel>
                   <FormControl>
-                    <Input
+                    <Textarea
                       {...field}
-                      placeholder="React is a JavaScript library for building user interfaces"
+                      placeholder="e.g., React is a JavaScript library for building user interfaces"
+                      rows={3}
                     />
                   </FormControl>
+                  <FormMessage />
                 </FormItem>
-              );
-            }}
-          />
-          <div className="flex justify-between pt-4">
-            <div className="space-y-1">
-              <div className="flex gap-2">
-                <Select
-                  value={category}
-                  onValueChange={(value) => {
-                    form.setValue("category", value);
-                    setCategory(value);
-                  }}
-                >
-                  <SelectTrigger className="w-[180px]">
-                    <SelectValue placeholder="Select a category" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectGroup>
-                      {categories.map((category) => (
-                        <SelectItem key={category._id} value={category.name}>
-                          {category.name}
-                        </SelectItem>
-                      ))}
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
-                <CustomDialog
-                  open={open}
-                  setOpen={setOpen}
-                  title="Add new category"
-                >
-                  <CategoryForm userId={userId} refetch={() => refetch()} />
-                </CustomDialog>
-              </div>
-              <FormDescription>
-                Select the category of the competence
-              </FormDescription>
-            </div>
-            <Button
-              variant={"outline"}
-              onClick={() => {
-                onSubmit(form.getValues());
-              }}
-              type="submit"
-              className="btn"
-            >
-              <Check className="text-green-500" size={20} />
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="category"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Category</FormLabel>
+                  <div className="flex items-center space-x-2">
+                    <Select
+                      value={field.value}
+                      onValueChange={(value) => {
+                        field.onChange(value);
+                        setCategory(value);
+                      }}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select a category" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectGroup>
+                          {categories.map((category) => (
+                            <SelectItem
+                              key={category._id}
+                              value={category.name}
+                            >
+                              {category.name}
+                            </SelectItem>
+                          ))}
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                    <Dialog open={open} onOpenChange={setOpen}>
+                      <DialogTrigger asChild>
+                        <Button variant="outline" size="icon">
+                          <Plus className="h-4 w-4" />
+                        </Button>
+                      </DialogTrigger>
+                      <DialogContent>
+                        <DialogHeader>
+                          <DialogTitle>Add new category</DialogTitle>
+                          <DialogDescription>
+                            Create a new category for competences
+                          </DialogDescription>
+                        </DialogHeader>
+                        <CategoryForm
+                          userId={userId}
+                          refetch={async () => {
+                            await refetch();
+                            setOpen(false);
+                          }}
+                        />
+                      </DialogContent>
+                    </Dialog>
+                  </div>
+                  <FormDescription>
+                    Select the category of the competence
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <Button type="submit" className="w-full" disabled={isPending}>
+              {isPending ? (
+                <>Creating...</>
+              ) : (
+                <>
+                  <Check className="mr-2 h-4 w-4" /> Create Competence
+                </>
+              )}
             </Button>
-          </div>
-        </form>
-      </Form>
-    </div>
+          </form>
+        </Form>
+      </CardContent>
+    </Card>
   );
 }

@@ -1,3 +1,9 @@
+"use client";
+
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Category, categorySchema } from "../../domain/entities/schemas";
 import {
   Form,
   FormControl,
@@ -5,22 +11,31 @@ import {
   FormField,
   FormItem,
   FormLabel,
+  FormMessage,
 } from "@/core/components/ui/form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Category, categorySchema } from "../../domain/entities/schemas";
-import { useForm } from "react-hook-form";
 import { Input } from "@/core/components/ui/input";
 import { Button } from "@/core/components/ui/button";
+import { Textarea } from "@/core/components/ui/textarea";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/core/components/ui/card";
+import { Loader2 } from "lucide-react";
 import useCreateCategory from "../../application/usecases/services/useCreateCategory";
+import { toastWrapper } from "@/core/utils/toast-wrapper";
 
-export default function CategoryForm({
-  userId,
-  refetch,
-}: {
+interface CategoryFormProps {
   userId: string;
   refetch: () => Promise<any>;
-}) {
-  const { mutate: setCreateCategoryOptions } = useCreateCategory();
+}
+
+export default function CategoryForm({ userId, refetch }: CategoryFormProps) {
+  const { mutate: createCategory, isPending } = useCreateCategory();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const form = useForm<Pick<Category, "name" | "description">>({
     resolver: zodResolver(categorySchema),
     defaultValues: {
@@ -29,8 +44,9 @@ export default function CategoryForm({
     },
   });
 
-  function onSubmit(data: Pick<Category, "name" | "description">) {
-    setCreateCategoryOptions(
+  async function onSubmit(data: Pick<Category, "name" | "description">) {
+    setIsSubmitting(true);
+    createCategory(
       {
         ...data,
         createdBy: userId,
@@ -38,52 +54,84 @@ export default function CategoryForm({
       {
         onSuccess: async () => {
           await refetch();
+          toastWrapper.success("Category created");
+          form.reset();
+        },
+        onError: () => {
+          toastWrapper.error(
+            "There was an error creating the category. Please try again."
+          );
+        },
+        onSettled: () => {
+          setIsSubmitting(false);
         },
       }
     );
   }
+
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 p-4">
-        <FormField
-          name="name"
-          control={form.control}
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel htmlFor={field.name}>Name</FormLabel>
-              <FormControl>
-                <Input {...field} />
-              </FormControl>
-              <FormDescription>Enter the name of the category</FormDescription>
-            </FormItem>
-          )}
-        />
-        <FormField
-          name="description"
-          control={form.control}
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel htmlFor={field.name}>Description</FormLabel>
-              <FormControl>
-                <Input {...field} />
-              </FormControl>
-              <FormDescription>
-                Enter the description of the category
-              </FormDescription>
-            </FormItem>
-          )}
-        />
-        <div className="flex justify-end">
-          <Button
-            onClick={() => {
-              onSubmit(form.getValues());
-            }}
-            type="submit"
-          >
-            Save
-          </Button>
-        </div>
-      </form>
-    </Form>
+    <Card>
+      <CardHeader>
+        <CardTitle>Create New Category</CardTitle>
+      </CardHeader>
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)}>
+          <CardContent className="space-y-4">
+            <FormField
+              name="name"
+              control={form.control}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel htmlFor={field.name}>Name</FormLabel>
+                  <FormControl>
+                    <Input {...field} placeholder="Enter category name" />
+                  </FormControl>
+                  <FormDescription>
+                    Provide a name for the new category
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              name="description"
+              control={form.control}
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel htmlFor={field.name}>Description</FormLabel>
+                  <FormControl>
+                    <Textarea
+                      {...field}
+                      placeholder="Enter category description"
+                      rows={3}
+                    />
+                  </FormControl>
+                  <FormDescription>
+                    Provide a brief description of the category
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </CardContent>
+          <CardFooter>
+            <Button
+              type="submit"
+              disabled={isSubmitting || isPending}
+              className="w-full"
+            >
+              {isSubmitting || isPending ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Creating...
+                </>
+              ) : (
+                "Create Category"
+              )}
+            </Button>
+          </CardFooter>
+        </form>
+      </Form>
+    </Card>
   );
 }
