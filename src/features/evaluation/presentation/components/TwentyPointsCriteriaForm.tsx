@@ -4,6 +4,7 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/core/components/ui/button";
+import { Input } from "@/core/components/ui/input";
 import { Textarea } from "@/core/components/ui/textarea";
 import {
   Form,
@@ -15,15 +16,6 @@ import {
   FormDescription,
 } from "@/core/components/ui/form";
 import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/core/components/ui/select";
-import {
   Card,
   CardContent,
   CardFooter,
@@ -31,19 +23,20 @@ import {
   CardTitle,
 } from "@/core/components/ui/card";
 import { Loader2, Save } from "lucide-react";
-import { EvaluationBaseType } from "../../domain/entities/evaluation-schema";
-import useUpdateGrade from "../../application/adapters/services/useUpdateGrade";
-import { UpdateGradeOptions } from "../../domain/entities/evaluation-types";
+import { UpdateGradeOptions } from "@/features/evaluation/domain/entities/evaluation-types";
 import {
-  CompetenceLevel,
-  StudentGradeCompetenceExtension,
-  StudentGradeCompetenceSchemaExtension,
-} from "../../application/adapters/utils/competence-case";
+  StudentGradeTwentyPointsExtension,
+  StudentGradeTwentyPointsSchemaExtension,
+} from "../../application/adapters/utils/twenty-points-scale-case";
+import { EvaluationCriteriaType } from "../../domain/entities/evaluation-schema";
+import useUpdateGrade from "../../application/adapters/services/useUpdateGrade";
 import { toastWrapper } from "@/core/utils/toast-wrapper";
 
-interface CompetenceCriteriaFormProps {
-  studentGrade: StudentGradeCompetenceExtension;
-  evaluationBase: EvaluationBaseType;
+interface TwentyPointsCriteriaFormProps {
+  studentGrade: StudentGradeTwentyPointsExtension;
+  evaluationBase: {
+    criterias: EvaluationCriteriaType[];
+  };
   evaluationId: string;
   classeId: string;
   studentName: string;
@@ -51,7 +44,7 @@ interface CompetenceCriteriaFormProps {
   setIsDialogOpen: (open: boolean) => void;
 }
 
-export default function CompetenceCriteriaForm({
+export function TwentyPointsCriteriaForm({
   studentGrade,
   evaluationBase,
   evaluationId,
@@ -59,15 +52,15 @@ export default function CompetenceCriteriaForm({
   studentName,
   refetch,
   setIsDialogOpen,
-}: CompetenceCriteriaFormProps) {
+}: TwentyPointsCriteriaFormProps) {
   const { isPending, mutate: updateGrade } = useUpdateGrade();
 
-  const form = useForm<StudentGradeCompetenceExtension>({
-    resolver: zodResolver(StudentGradeCompetenceSchemaExtension),
+  const form = useForm<StudentGradeTwentyPointsExtension>({
+    resolver: zodResolver(StudentGradeTwentyPointsSchemaExtension),
     defaultValues: studentGrade,
   });
 
-  function onSubmit(data: StudentGradeCompetenceExtension) {
+  function onSubmit(data: StudentGradeTwentyPointsExtension) {
     const grade: UpdateGradeOptions = {
       ...data,
       studentId: studentGrade.studentId,
@@ -94,31 +87,16 @@ export default function CompetenceCriteriaForm({
     );
   }
 
-  function fromNumberToCompetenceGrade(value: string): CompetenceLevel {
-    switch (value) {
-      case "1":
-        return "To be acquired";
-      case "2":
-        return "To be developed";
-      case "3":
-        return "Proficiency";
-      case "4":
-        return "Expertise";
-      default:
-        return "To be acquired";
-    }
-  }
-
   return (
-    <Card className="w-full max-w-2xl mx-auto">
+    <Card className="w-full max-w-2xl mx-auto px-1">
       <CardHeader>
         <CardTitle className="text-2xl text-center">
-          Évaluation des compétences de {studentName}
+          Note de {studentName} (Échelle de 20 points)
         </CardTitle>
       </CardHeader>
       <CardContent>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 ">
             <FormField
               control={form.control}
               name="feedback"
@@ -138,13 +116,14 @@ export default function CompetenceCriteriaForm({
             />
             {studentGrade.grades.map((grade, index) => {
               const criteria = evaluationBase.criterias.find(
-                (criteria) => criteria.id === grade.criteriaId
+                (c) => c.id === grade.criteriaId
               );
+              const maxGrade = criteria?.weight ?? 1;
               return (
                 <FormField
                   key={grade.criteriaId}
-                  control={form.control}
                   name={`grades.${index}.grade`}
+                  control={form.control}
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel htmlFor={field.name}>
@@ -153,41 +132,26 @@ export default function CompetenceCriteriaForm({
                           : `Critère: ${grade.criteriaId}`}
                       </FormLabel>
                       <FormDescription>
-                        {criteria
-                          ? `Poids: ${criteria.weight}`
-                          : `Note: ${grade.grade}`}
+                        Note maximale: {maxGrade}
                       </FormDescription>
                       <FormControl>
-                        <Select
-                          onValueChange={(value) => {
-                            form.setValue(
-                              `grades.${index}.grade`,
-                              fromNumberToCompetenceGrade(value)
-                            );
-                            return value;
+                        <Input
+                          type="number"
+                          min={0}
+                          max={maxGrade}
+                          step={0.5}
+                          placeholder={`Entrez la note pour ${
+                            criteria ? criteria.name : grade.criteriaId
+                          }`}
+                          {...field}
+                          onChange={(e) => {
+                            let value = Number(e.target.value);
+                            if (value > maxGrade) {
+                              value = maxGrade;
+                            }
+                            field.onChange(value);
                           }}
-                        
-                        >
-                          <SelectTrigger className="w-full">
-                            <SelectValue placeholder="Sélectionnez un niveau de compétence" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectGroup>
-                              <SelectItem value="1">
-                                <SelectLabel>1 - À acquérir</SelectLabel>
-                              </SelectItem>
-                              <SelectItem value="2">
-                                <SelectLabel>2 - À développer</SelectLabel>
-                              </SelectItem>
-                              <SelectItem value="3">
-                                <SelectLabel>3 - Maîtrise</SelectLabel>
-                              </SelectItem>
-                              <SelectItem value="4">
-                                <SelectLabel>4 - Expertise</SelectLabel>
-                              </SelectItem>
-                            </SelectGroup>
-                          </SelectContent>
-                        </Select>
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -215,3 +179,5 @@ export default function CompetenceCriteriaForm({
     </Card>
   );
 }
+
+export default TwentyPointsCriteriaForm;

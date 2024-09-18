@@ -3,17 +3,19 @@ import {
   GradeSchema,
   StudentGradeSchema,
 } from "@/features/evaluation/domain/entities/evaluation-with-grades-schema";
-import {
-  EvaluationCriteriaType,
-  TenPointScaleSchema,
-} from "@/features/evaluation/domain/entities/evaluation-schema";
+
 import checkSpecialGradeType, {
   SpecialGradeType,
   SpecialGradeTypes,
 } from "./checkSpecialGradeType";
 import { z } from "zod";
 
-export function spanishGradingCalc({
+import {
+  EvaluationCriteriaType,
+  TwentyPointScaleSchema,
+} from "@/features/evaluation/domain/entities/evaluation-schema";
+
+export function frenchGradingCalc({
   grade,
 }: {
   grade: Grade;
@@ -24,10 +26,11 @@ export function spanishGradingCalc({
   }
   const isNumber = z.number().safeParse(check.returnValue);
   if (!isNumber.success) return "Error";
+
   return isNumber.data;
 }
 
-export function tenPointsScaleCase(
+export function twentyPointsScaleCase(
   grades: Grade[],
   criterias: EvaluationCriteriaType[]
 ): number | SpecialGradeType {
@@ -38,20 +41,22 @@ export function tenPointsScaleCase(
   let totalPoints: number = 0;
   let totalWeight: number = 0;
   for (const grade of grades) {
-    const validatedGrade = TenPointScaleSchema.safeParse(grade.gradeType);
+    const validatedGrade = TwentyPointScaleSchema.safeParse(grade.gradeType);
     const gradeWeight = studentCriterias.find(
       (criteria) => criteria.id === grade.criteriaId
     )?.weight;
+
     if (!gradeWeight) return "Error";
     totalWeight += gradeWeight;
     if (validatedGrade.success) {
-      const result = spanishGradingCalc({
+      const result = frenchGradingCalc({
         grade,
       });
       if (typeof result === "string") return result;
-      if (result < 0 || result > 10) return "Error";
-      // Check if grades do not exceed the wheight of the criterias
-      if (result > gradeWeight) return "Error";
+
+      if (result < 0 || result > 20) return "Error";
+      // Check if grades do not exceed the weight of the criteria
+      if (result > gradeWeight) return "Error"; // Multiplied by 2 because we're on a 20-point scale
 
       totalPoints += result;
     } else {
@@ -61,26 +66,27 @@ export function tenPointsScaleCase(
   const isWeighted = totalWeight > grades.length;
   let averageGrade = 0;
   if (isWeighted) {
-    averageGrade = totalPoints / totalPoints;
+    averageGrade = totalPoints / totalWeight;
   } else {
     averageGrade = totalPoints / grades.length;
   }
-  return (totalPoints / totalWeight) * 10;
+  return (totalPoints / totalWeight) * 20;
 }
 
-export const TenPointsGradeSchemaExtension = GradeSchema.extend({
-  gradeType: TenPointScaleSchema,
+export const TwentyPointsGradeSchemaExtension = GradeSchema.extend({
+  gradeType: TwentyPointScaleSchema,
   grade: z.union([SpecialGradeTypes, z.number()]),
 });
 
-export type TenPointsGradeExtension = z.infer<
-  typeof TenPointsGradeSchemaExtension
+export type TwentyPointsGradeExtension = z.infer<
+  typeof TwentyPointsGradeSchemaExtension
 >;
 
-export const StudentGradeTenPointsSchemaExtension = StudentGradeSchema.extend({
-  grades: z.array(TenPointsGradeSchemaExtension),
-});
+export const StudentGradeTwentyPointsSchemaExtension =
+  StudentGradeSchema.extend({
+    grades: z.array(TwentyPointsGradeSchemaExtension),
+  });
 
-export type StudentGradeTenPointsExtension = z.infer<
-  typeof StudentGradeTenPointsSchemaExtension
+export type StudentGradeTwentyPointsExtension = z.infer<
+  typeof StudentGradeTwentyPointsSchemaExtension
 >;

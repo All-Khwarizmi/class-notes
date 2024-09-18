@@ -136,30 +136,6 @@ export const USScale4Schema = z.object({
   ]),
 });
 
-// 10-point Scale Schema
-export const TenPointScaleSchema = z.object({
-  name: z.literal("10-point Scale"),
-  type: z.literal("10-point Scale"),
-  grade: z.union([
-    z.number(), // Grade on a 10-point scale
-    z.literal("N/G"), // Not Graded
-    z.literal("M"), // Missing
-    z.literal("N/D"), // Not Done
-  ]),
-});
-
-// 20-point Scale Schema
-export const TwentyPointScaleSchema = z.object({
-  name: z.literal("20-point Scale"),
-  type: z.literal("20-point Scale"),
-  grade: z.union([
-    z.number(), // Grade on a 20-point scale
-    z.literal("N/G"), // Not Graded
-    z.literal("M"), // Missing
-    z.literal("N/D"), // Not Done
-  ]),
-});
-
 // Grade Points Schema
 export const GradePointsSchema = z.object({
   name: z.literal("Grade Points"),
@@ -299,11 +275,35 @@ export const CompetenceLevelSchema = z.union([
   z.literal("N/D"),
 ]);
 
+// 10-point Scale Schema
+export const TenPointScaleSchema = z.object({
+  name: z.literal("10-point Scale"),
+  type: z.literal("10-point Scale"),
+  grade: z.union([
+    z.number(), // Grade on a 10-point scale
+    z.literal("N/G"), // Not Graded
+    z.literal("M"), // Missing
+    z.literal("N/D"), // Not Done
+  ]),
+});
+
 // Competence-Based Evaluation Schema
 export const CompetenceEvaluationSchema = z.object({
   name: z.literal("Competence-Based Evaluation"),
   type: z.literal("Competence"),
   grade: CompetenceLevelSchema,
+});
+
+// 20-point Scale Schema
+export const TwentyPointScaleSchema = z.object({
+  name: z.literal("20-point Scale"),
+  type: z.literal("20-point Scale"),
+  grade: z.union([
+    z.number(), // Grade on a 20-point scale
+    z.literal("N/G"), // Not Graded
+    z.literal("M"), // Missing
+    z.literal("N/D"), // Not Done
+  ]),
 });
 
 // Union of all Grade Types

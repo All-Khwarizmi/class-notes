@@ -10,6 +10,7 @@ function GradeTypeSelectGroup() {
     <SelectGroup>
       <SelectLabel>Numeric</SelectLabel>
       <SelectItem value="10-point Scale">10-point Scale</SelectItem>
+      <SelectItem value="20-point Scale">20-point Scale</SelectItem>
       <SelectLabel>Descriptive Grades</SelectLabel>
       <SelectItem value="Competence-Based Evaluation">
         Competency-Based Grading
@@ -31,7 +32,7 @@ function GradeTypeSelectGroup() {
       <SelectItem value="First/Upper Second/Lower Second/Third">
         UK Honors
       </SelectItem>
-      <SelectItem value="20-point Scale">20-point Scale</SelectItem>
+     
       <SelectItem value="Grade Points">Grade Points</SelectItem>
       <SelectItem value="Other">Custom</SelectItem>
       <SelectLabel>Sports</SelectLabel>

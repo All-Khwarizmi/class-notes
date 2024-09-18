@@ -1,13 +1,11 @@
+"use client";
+
 import React from "react";
-import {
-  StudentGradeTenPointsExtension,
-  StudentGradeTenPointsSchemaExtension,
-} from "../../application/adapters/utils/ten-points-scale-case";
-import { EvaluationBaseType } from "../../domain/entities/evaluation-schema";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/core/components/ui/button";
 import { Input } from "@/core/components/ui/input";
+import { Textarea } from "@/core/components/ui/textarea";
 import {
   Form,
   FormControl,
@@ -17,13 +15,24 @@ import {
   FormMessage,
   FormDescription,
 } from "@/core/components/ui/form";
-
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/core/components/ui/card";
+import { Loader2, Save } from "lucide-react";
+import {
+  StudentGradeTenPointsExtension,
+  StudentGradeTenPointsSchemaExtension,
+} from "../../application/adapters/utils/ten-points-scale-case";
+import { EvaluationBaseType } from "../../domain/entities/evaluation-schema";
 import useUpdateGrade from "../../application/adapters/services/useUpdateGrade";
 import { UpdateGradeOptions } from "../../domain/entities/evaluation-types";
-import { Loader } from "lucide-react";
-import { toast } from "sonner";
+import { toastWrapper } from "@/core/utils/toast-wrapper";
 
-function TenPointsCriteriaForm(props: {
+interface TenPointsCriteriaFormProps {
   studentGrade: StudentGradeTenPointsExtension;
   evaluationBase: EvaluationBaseType;
   evaluationId: string;
@@ -31,119 +40,140 @@ function TenPointsCriteriaForm(props: {
   studentName: string;
   refetch: () => void;
   setIsDialogOpen: (open: boolean) => void;
-}) {
+}
+
+export default function TenPointsCriteriaForm({
+  studentGrade,
+  evaluationBase,
+  evaluationId,
+  classeId,
+  studentName,
+  refetch,
+  setIsDialogOpen,
+}: TenPointsCriteriaFormProps) {
   const { isPending, mutate: updateGrade } = useUpdateGrade();
+
   const form = useForm<StudentGradeTenPointsExtension>({
     resolver: zodResolver(StudentGradeTenPointsSchemaExtension),
-    defaultValues: props.studentGrade,
+    defaultValues: studentGrade,
   });
 
   function onSubmit(data: StudentGradeTenPointsExtension) {
     const grade: UpdateGradeOptions = {
       ...data,
-      studentId: props.studentGrade.studentId,
-      evaluationId: props.evaluationId,
+      studentId: studentGrade.studentId,
+      evaluationId: evaluationId,
       grades: data.grades,
     };
     updateGrade(
       {
         options: grade,
-        classeId: props.classeId,
+        classeId: classeId,
       },
       {
         onSuccess: () => {
-          props.refetch();
-          props.setIsDialogOpen(false);
-          toast.success("Grade updated successfully");
+          refetch();
+          setIsDialogOpen(false);
+          toastWrapper.success("Note mise à jour");
+        },
+        onError: () => {
+          toastWrapper.error(
+            "Une erreur est survenue lors de la mise à jour de la note."
+          );
         },
       }
     );
   }
 
   return (
-    <div className="space-y-8 py-8 px-4 md:px-0 rounded-lg shadow-md">
-      <h2 className="text-2xl text-center font-bold">
-        {props.studentName}&apos;s Grade
-      </h2>
-      <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit((data) => {
-            onSubmit(data);
-          })}
-          className="space-y-4 w-full max-w-lg mx-auto"
+    <Card className="w-full max-w-2xl mx-auto">
+      <CardHeader>
+        <CardTitle className="text-2xl text-center">
+          Note de {studentName} (Échelle de 10 points)
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <FormField
+              control={form.control}
+              name="feedback"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel htmlFor={field.name}>Commentaire</FormLabel>
+                  <FormControl>
+                    <Textarea
+                      placeholder="Commentaire pour l'étudiant"
+                      className="min-h-[100px]"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            {studentGrade.grades.map((grade, index) => {
+              const criteria = evaluationBase.criterias.find(
+                (c) => c.id === grade.criteriaId
+              );
+              const maxGrade = criteria?.weight ?? 1;
+              return (
+                <FormField
+                  key={grade.criteriaId}
+                  name={`grades.${index}.grade`}
+                  control={form.control}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel htmlFor={field.name}>
+                        {criteria
+                          ? `${criteria.name}: ${criteria.description}`
+                          : `Critère: ${grade.criteriaId}`}
+                      </FormLabel>
+                      <FormDescription>
+                        Note maximale: {maxGrade}
+                      </FormDescription>
+                      <FormControl>
+                        <Input
+                          type="number"
+                          min={0}
+                          max={maxGrade}
+                          step={0.1}
+                          placeholder={`Entrez la note pour ${
+                            criteria ? criteria.name : grade.criteriaId
+                          }`}
+                          {...field}
+                          onChange={(e) => {
+                            let value = Number(e.target.value);
+                            if (value > maxGrade) {
+                              value = maxGrade;
+                            }
+                            field.onChange(value);
+                          }}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              );
+            })}
+          </form>
+        </Form>
+      </CardContent>
+      <CardFooter className="flex justify-end">
+        <Button
+          type="submit"
+          onClick={form.handleSubmit(onSubmit)}
+          disabled={isPending}
         >
-          {/* Feedback */}
-          <FormField
-            control={form.control}
-            name="feedback"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel htmlFor={field.name}>Feedback</FormLabel>
-                <FormControl>
-                  <Input placeholder="Feedback for the student" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          {/* Criteria Grades */}
-          {props.studentGrade.grades.map((grade, index) => {
-            // Find the criteria for the grade. There's a possibility that the criteria might have been deleted. So we default the weight to 1.
-            const criteria = props.evaluationBase.criterias.find(
-              (c) => c.id === grade.criteriaId
-            );
-            const maxGrade = criteria?.weight ?? 1;
-            return (
-              <FormField
-                key={grade.criteriaId}
-                name={`grades.${index}.grade`}
-                control={form.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel htmlFor={field.name}>
-                      {criteria
-                        ? `${criteria.name}: ${criteria.description}`
-                        : `Criterion: ${grade.criteriaId}`}
-                    </FormLabel>
-                    <FormDescription>
-                      {`Max grade: ${maxGrade}`}
-                    </FormDescription>
-                    <FormControl>
-                      <Input
-                        min={0}
-                        max={maxGrade}
-                        placeholder={`Enter grade for ${
-                          criteria ? criteria.name : grade.criteriaId
-                        }`}
-                        value={field.value}
-                        onChange={(e) => {
-                          let value = Number(e.target.value);
-                          if (value > maxGrade) {
-                            value = maxGrade;
-                          }
-                          field.onChange(value);
-                        }}
-                        type={"number"}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            );
-          })}
-
-          <div className="flex justify-between items-center space-x-4">
-            {isPending ? (
-              <Loader size={24} color="white" className="animate-spin" />
-            ) : (
-              <Button type="submit">Submit</Button>
-            )}
-          </div>
-        </form>
-      </Form>
-    </div>
+          {isPending ? (
+            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+          ) : (
+            <Save className="mr-2 h-4 w-4" />
+          )}
+          Enregistrer
+        </Button>
+      </CardFooter>
+    </Card>
   );
 }
-
-export default TenPointsCriteriaForm;

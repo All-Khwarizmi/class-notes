@@ -1,8 +1,7 @@
-"use client";
-
-import { useEffect } from "react";
-import { useForm, Controller } from "react-hook-form";
+import React, { useEffect } from "react";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { toast } from "sonner";
 
 import {
   StudentGradeSchema,
@@ -10,12 +9,13 @@ import {
 } from "@/features/evaluation/domain/entities/evaluation-with-grades-schema";
 import { EvaluationBaseType } from "@/features/evaluation/domain/entities/evaluation-schema";
 import TenPointsCriteriaForm from "@/features/evaluation/presentation/components/TenPointsCriteriaForm";
-import { StudentGradeTenPointsSchemaExtension } from "@/features/evaluation/application/adapters/utils/ten-points-scale-case";
-import { toast } from "sonner";
-import { StudentGradeCompetenceSchemaExtension } from "@/features/evaluation/application/adapters/utils/competence-case";
 import CompetenceCriteriaForm from "@/features/evaluation/presentation/components/CompetenceCriteriaForm";
+import { StudentGradeTenPointsSchemaExtension } from "@/features/evaluation/application/adapters/utils/ten-points-scale-case";
+import { StudentGradeCompetenceSchemaExtension } from "@/features/evaluation/application/adapters/utils/competence-case";
+import { StudentGradeTwentyPointsSchemaExtension } from "@/features/evaluation/application/adapters/utils/twenty-points-scale-case";
+import TwentyPointsCriteriaForm from "@/features/evaluation/presentation/components/TwentyPointsCriteriaForm";
 
-export default function UpdateStudentGradeForm(props: {
+type UpdateStudentGradeFormProps = {
   studentGrade: StudentGradeType;
   evaluationBase: EvaluationBaseType;
   evaluationId: string;
@@ -23,114 +23,139 @@ export default function UpdateStudentGradeForm(props: {
   studentName: string;
   setIsDialogOpen: (open: boolean) => void;
   refetch: () => void;
-}) {
+};
+
+function checkCriteriaConsistency(
+  evaluationCriterias: string[],
+  studentCriterias: string[]
+): { missingCriterias: string[]; missingCriteriasBase: string[] } {
+  const missingCriterias = studentCriterias.filter(
+    (criteria) => !evaluationCriterias.includes(criteria)
+  );
+  const missingCriteriasBase = evaluationCriterias.filter(
+    (criteria) => !studentCriterias.includes(criteria)
+  );
+  return { missingCriterias, missingCriteriasBase };
+}
+
+export default function UpdateStudentGradeForm(
+  props: UpdateStudentGradeFormProps
+) {
+  const {
+    studentGrade,
+    evaluationBase,
+    evaluationId,
+    classeId,
+    studentName,
+    setIsDialogOpen,
+    refetch,
+  } = props;
+
   const form = useForm<StudentGradeType>({
     resolver: zodResolver(StudentGradeSchema),
-    defaultValues: props.studentGrade,
+    defaultValues: studentGrade,
   });
 
   useEffect(() => {
-    // Check that the evaluation base criterias are the same as the student grade criterias
-    let toastId: string | number;
-    const criterias = props.evaluationBase.criterias.map(
+    const evaluationCriterias = evaluationBase.criterias.map(
       (criteria) => criteria.id
     );
-    const studentCriterias = props.studentGrade.grades.map(
+    const studentCriterias = studentGrade.grades.map(
       (grade) => grade.criteriaId
     );
-    const missingCriterias = studentCriterias.filter(
-      (criteria) => !criterias.includes(criteria)
+    const { missingCriterias, missingCriteriasBase } = checkCriteriaConsistency(
+      evaluationCriterias,
+      studentCriterias
     );
-    const missingCriteriasBase = criterias.filter(
-      (criteria) => !studentCriterias.includes(criteria)
-    );
-    if (missingCriterias.length > 0 || missingCriteriasBase.length > 0) {
-      toastId = toast.error("Criterias do not match the evaluation", {
-        description: `
-        If you have added new criterias to the evaluation, those criterias will not be added to the student grade.
-        To update the student grade, please remove the evaluation and assign it again.
 
-       ${
-         missingCriterias.length > 0
-           ? `Missing student criterias: ${missingCriterias.length}`
-           : ""
-       }
-        ${
-          missingCriteriasBase.length > 0
-            ? `Missing evaluation criterias: ${missingCriteriasBase.length}`
-            : ""
-        }
+    if (missingCriterias.length > 0 || missingCriteriasBase.length > 0) {
+      toast.error("Criterias do not match the evaluation", {
+        description: `
+          If you have added new criterias to the evaluation, those criterias will not be added to the student grade.
+          To update the student grade, please remove the evaluation and assign it again.
+          ${missingCriterias.length > 0 ? `Missing student criterias: ${missingCriterias.length}` : ""}
+          ${missingCriteriasBase.length > 0 ? `Missing evaluation criterias: ${missingCriteriasBase.length}` : ""}
         `,
       });
     }
-
-    return () => {
-      if (toastId) toast.dismiss(toastId);
-    };
-  }, []);
+  }, [evaluationBase.criterias, studentGrade.grades]);
 
   useEffect(() => {
-    form.reset(props.studentGrade);
-  }, [props.studentGrade]);
+    form.reset(studentGrade);
+  }, [studentGrade, form]);
 
-  function onSubmit(data: StudentGradeType) {
-    const grade = {
-      ...data,
-      studentId: props.studentGrade.studentId,
-      grades: data.grades.map((g) => ({
-        ...g,
-        grade: typeof g.grade === "string" ? parseFloat(g.grade) : g.grade,
-      })),
-    };
-  }
-
-  function handleSubmit() {
-    return form.handleSubmit((data) => {
-      onSubmit(data);
-    });
-  }
-
-  if (props.evaluationBase.gradeType.type === "10-point Scale") {
-    const studentGrade = StudentGradeTenPointsSchemaExtension.safeParse(
-      props.studentGrade
-    );
-    if (!studentGrade.success) {
-      return <div>Invalid student grade</div>;
+  if (evaluationBase.gradeType.type === "10-point Scale") {
+    const parsedStudentGrade =
+      StudentGradeTenPointsSchemaExtension.safeParse(studentGrade);
+    if (!parsedStudentGrade.success) {
+      return (
+        <div className="p-4 bg-red-100 text-red-700 rounded">
+          Invalid student grade for 10-point Scale
+        </div>
+      );
     }
     return (
       <TenPointsCriteriaForm
-        studentGrade={studentGrade.data}
-        evaluationBase={props.evaluationBase}
-        evaluationId={props.evaluationId}
-        classeId={props.classeId}
-        studentName={props.studentName}
-        refetch={props.refetch}
-        setIsDialogOpen={props.setIsDialogOpen}
+        studentGrade={parsedStudentGrade.data}
+        evaluationBase={evaluationBase}
+        evaluationId={evaluationId}
+        classeId={classeId}
+        studentName={studentName}
+        refetch={refetch}
+        setIsDialogOpen={setIsDialogOpen}
       />
     );
   }
-  if (props.evaluationBase.gradeType.type === "Competence") {
-    const studentGrade = StudentGradeCompetenceSchemaExtension.safeParse(
-      props.studentGrade
-    );
-    if (!studentGrade.success) {
-      return <div>Invalid student grade</div>;
+
+  if (evaluationBase.gradeType.type === "Competence") {
+    const parsedStudentGrade =
+      StudentGradeCompetenceSchemaExtension.safeParse(studentGrade);
+    if (!parsedStudentGrade.success) {
+      return (
+        <div className="p-4 bg-red-100 text-red-700 rounded">
+          Invalid student grade for Competence
+        </div>
+      );
     }
     return (
       <CompetenceCriteriaForm
-        studentGrade={studentGrade.data}
-        evaluationBase={props.evaluationBase}
-        evaluationId={props.evaluationId}
-        classeId={props.classeId}
-        studentName={props.studentName}
-        refetch={props.refetch}
-        setIsDialogOpen={props.setIsDialogOpen}
+        studentGrade={parsedStudentGrade.data}
+        evaluationBase={evaluationBase}
+        evaluationId={evaluationId}
+        classeId={classeId}
+        studentName={studentName}
+        refetch={refetch}
+        setIsDialogOpen={setIsDialogOpen}
       />
     );
   }
+
+  if (evaluationBase.gradeType.type === "20-point Scale") {
+    const parsedStudentGrade =
+      StudentGradeTwentyPointsSchemaExtension.safeParse(studentGrade);
+    if (!parsedStudentGrade.success) {
+      return (
+        <div className="p-4 bg-red-100 text-red-700 rounded">
+          Invalid student grade for 20-point Scale
+        </div>
+      );
+    }
+    return (
+        <TwentyPointsCriteriaForm
+          studentGrade={parsedStudentGrade.data}
+          evaluationBase={evaluationBase}
+          evaluationId={evaluationId}
+          classeId={classeId}
+          studentName={studentName}
+          refetch={refetch}
+          setIsDialogOpen={setIsDialogOpen}
+        />
+    );
+  }
+
   return (
-    <div className="space-y-8 py-8 px-4 md:px-0 rounded-lg shadow-md">
-      Invalid grade type
+    <div className="p-4 bg-red-100 text-red-700 rounded">
+      Unsupported grade type
     </div>
   );
 }

@@ -5,6 +5,7 @@ import {
 } from "@/features/evaluation/domain/entities/evaluation-schema";
 import { tenPointsScaleCase } from "./ten-points-scale-case";
 import { evaluateCompetence } from "./competence-case";
+import { twentyPointsScaleCase } from "./twenty-points-scale-case";
 
 export type SwitchReturnType =
   | string
@@ -33,7 +34,7 @@ export default function calculateOverallGrade({
     case "Competence":
       return evaluateCompetence(grades, criteria);
     case "20-point Scale":
-      return "N/A";
+      return twentyPointsScaleCase(grades, criteria);
     case "Grade Points":
       return "N/A";
     case "Numeric":

@@ -37,7 +37,7 @@ import { Student, StudentSchema } from "../../domain/entities/student-schema";
 import SelectImageUrl from "@/features/cours-sequence/presentation/components/SelectImageUrl";
 import useDeleteStudent from "../../application/adapters/services/useDeleteStudent";
 import useUpdateStudent from "../../application/adapters/services/useUpdateStudent";
-import { toast } from "sonner";
+import { toastWrapper } from "@/core/utils/toast-wrapper";
 
 interface StudentUpdateFormProps {
   student: Student;
@@ -70,12 +70,10 @@ export default function StudentUpdateForm({
       {
         onSuccess: () => {
           refetch();
-          toast.success(
-            "Les informations de l'élève ont été mises à jour avec succès."
-          );
+          toastWrapper.success("Élève mis à jour");
         },
         onError: () => {
-          toast.error(
+          toastWrapper.error(
             "Une erreur est survenue lors de la mise à jour de l'élève."
           );
         },
@@ -89,10 +87,10 @@ export default function StudentUpdateForm({
       {
         onSuccess: () => {
           refetch();
-          toast.success("L'élève a été supprimé avec succès.");
+          toastWrapper.success("Élève supprimé");
         },
         onError: () => {
-          toast.error(
+          toastWrapper.error(
             "Une erreur est survenue lors de la suppression de l'élève."
           );
         },
