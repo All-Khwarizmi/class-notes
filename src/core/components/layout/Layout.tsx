@@ -5,7 +5,7 @@ import { LayoutWithPropsProps } from "./LayoutWithProps";
 import LayoutContext, { useLayoutContext } from "./LayoutContext";
 import Header from "@/core/components/layout/Header";
 import { NavItem } from "@/lib/types";
-import Sidebar from "./Sidebar";
+import Sidebar from "./SpacesSidebar";
 import NotFound from "@/app/not-found";
 import NothingToShow from "../common/editor/NothingToShow";
 import ErrorDialog from "../common/ErrorDialog";

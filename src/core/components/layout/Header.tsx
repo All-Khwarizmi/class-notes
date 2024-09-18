@@ -4,7 +4,7 @@ import { usePathname } from "next/navigation";
 import Title from "@/core/components/common/Title";
 import { cn } from "@/lib/utils";
 import { MobileSidebar } from "./MobileSidebar";
-import { SidebarProps } from "./Sidebar";
+import { SidebarProps } from "./SpacesSidebar";
 
 export default function Header({ className, navItems }: SidebarProps) {
   const pathName = usePathname();

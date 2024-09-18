@@ -2,7 +2,7 @@
 
 import React, { useEffect } from "react";
 import Link from "next/link";
-import { useLayoutContext } from "@/core/components/layout/ExperimentalLayoutCtx";
+import { useSpacesLayoutContext } from "@/core/components/layout/SpacesLayoutCtx";
 import { Button } from "@/core/components/ui/button";
 import {
   Card,
@@ -29,14 +29,13 @@ export default function UserSpaceClasseCard({
   userId,
   navItems,
 }: UserSpaceClasseCardProps) {
-  const { setSpacesNavItems, setIsSpaces } = useLayoutContext();
+  const { setSpacesNavItems } = useSpacesLayoutContext();
 
   useEffect(() => {
-    if (setSpacesNavItems && setIsSpaces) {
+    if (setSpacesNavItems) {
       setSpacesNavItems(navItems);
-      setIsSpaces(true);
     }
-  }, [navItems, setSpacesNavItems, setIsSpaces]);
+  }, [navItems, setSpacesNavItems]);
 
   return (
     <Card

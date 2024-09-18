@@ -12,10 +12,11 @@ import Layout from "./ExperimentalLayout";
 import { coursUsecases } from "@/features/cours-sequence/application/usecases/cours-usecases";
 import LoaderPage from "./LoaderPage";
 import { evaluationUsecases } from "@/features/evaluation/application/usecases/evaluation-usecases";
+import SpacesLayout from "./SpacesLayout";
 async function LayoutServerLayer({ children }: { children: React.ReactNode }) {
   const authUser = await authUseCases.getUserAuth();
   if (isLeft(authUser)) {
-    return <>{children}</>;
+    return <SpacesLayout>{children}</SpacesLayout>;
   }
   const queryClient = new QueryClient();
   const batch = [

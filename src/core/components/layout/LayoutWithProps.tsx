@@ -1,7 +1,7 @@
 import React, { PropsWithChildren } from "react";
 import Header from "@/core/components/layout/Header";
 import { NavItem } from "@/lib/types";
-import Sidebar from "./Sidebar";
+import Sidebar from "./SpacesSidebar";
 import { not } from "fp-ts/lib/Predicate";
 import NotFound from "@/app/not-found";
 import NothingToShow from "../common/editor/NothingToShow";

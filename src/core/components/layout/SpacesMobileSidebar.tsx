@@ -1,11 +1,11 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 import { Sheet, SheetContent, SheetTrigger } from "@/core/components/ui/sheet";
-import { SideNav } from "@/core/components/layout/SideNav";
 import MenuIcon from "../icons/MenuIcon";
 import { NavItem } from "@/lib/types";
 import { ModeToggle } from "../common/ModeToggle";
+import { SpacesSideNav } from "./SpacesSideNav";
 
-export const MobileSidebar = (props: { navItems?: NavItem[] }) => {
+export const SpacesMobileSidebar = (props: { navItems?: NavItem[] }) => {
   const [open, setOpen] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
 
@@ -27,7 +27,7 @@ export const MobileSidebar = (props: { navItems?: NavItem[] }) => {
         </SheetTrigger>
         <SheetContent side="left" className="w-72">
           <div className="px-1 py-6 pt-16">
-            <SideNav setOpen={setOpen} />
+            <SpacesSideNav setOpen={setOpen} />
           </div>
           <section className="flex items-center justify-center">
             <ModeToggle />

@@ -4,7 +4,6 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { Sequence } from "../../domain/entities/cours-schemas";
 import { NavItem } from "@/lib/types";
-import { useLayoutContext } from "@/core/components/layout/ExperimentalLayoutCtx";
 import CoursSequenceCard from "../components/CoursSequenceCard";
 import { Button } from "@/core/components/ui/button";
 import { Input } from "@/core/components/ui/input";
@@ -22,6 +21,7 @@ import {
   TabsTrigger,
 } from "@/core/components/ui/tabs";
 import { Search, Filter, BookOpen } from "lucide-react";
+import { useSpacesLayoutContext } from "@/core/components/layout/SpacesLayoutCtx";
 
 interface SequencesListViewSpacesProps {
   sequences: Sequence[];
@@ -38,16 +38,15 @@ export default function SequencesListViewSpaces({
   navItems,
   userName,
 }: SequencesListViewSpacesProps) {
-  const { setSpacesNavItems, setIsSpaces } = useLayoutContext();
+  const { setSpacesNavItems } = useSpacesLayoutContext();
   const [searchTerm, setSearchTerm] = useState("");
   const [activeTab, setActiveTab] = useState("all");
 
   useEffect(() => {
-    if (setSpacesNavItems && setIsSpaces) {
+    if (setSpacesNavItems) {
       setSpacesNavItems(navItems);
-      setIsSpaces(true);
     }
-  }, [navItems, setSpacesNavItems, setIsSpaces]);
+  }, [navItems, setSpacesNavItems]);
 
   const filteredSequences = sequences.filter((sequence) =>
     sequence.name.toLowerCase().includes(searchTerm.toLowerCase())

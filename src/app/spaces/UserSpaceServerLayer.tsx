@@ -76,7 +76,7 @@ async function UserSpaceServerLayer(props: {
   }
   const userSpaceNavItems: NavItem[] = classes.map((classe) => ({
     title: classe.name,
-    href: `/spaces/classes/${classe.id}`,
+    href: `/spaces/classes/${classe.id}?user=${userId}`,
     icon: <GraduationCap size={16} className="text-blue-500" />,
     color: "text-blue-300",
   }));

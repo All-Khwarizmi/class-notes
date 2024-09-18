@@ -2,7 +2,7 @@
 import { EditorContent, useEditor } from "@tiptap/react";
 import { EXTENSIONS } from "@/core/components/constants/editor-extenstions";
 import { NavItem } from "@/lib/types";
-import { useLayoutContext } from "@/core/components/layout/ExperimentalLayoutCtx";
+import { useSpacesLayoutContext } from "@/core/components/layout/SpacesLayoutCtx";
 import { useEffect } from "react";
 
 function ContentViewer({
@@ -12,13 +12,12 @@ function ContentViewer({
   content: string;
   navItems: NavItem[];
 }) {
-  const { setSpacesNavItems, setIsSpaces } = useLayoutContext();
+  const { setSpacesNavItems } = useSpacesLayoutContext();
   useEffect(() => {
-    if (setSpacesNavItems && setIsSpaces) {
+    if (setSpacesNavItems) {
       setSpacesNavItems(navItems);
-      setIsSpaces(true);
     }
-  }, [navItems, setSpacesNavItems, setIsSpaces]);
+  }, [navItems, setSpacesNavItems]);
 
   const editor = useEditor({
     editable: false,
