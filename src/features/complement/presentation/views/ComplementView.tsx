@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Complement } from "../../domain/complement-schemas";
 import UpdateComplement from "../components/UpdateComplement";
 import { Eye } from "lucide-react";
@@ -7,8 +7,16 @@ import Link from "next/link";
 import AfterMenuButton from "@/core/components/common/editor/AfterMenuButton";
 import useUpdateComplement from "../../application/adapters/services/useUpdateComplement";
 import FloatingEditor from "@/core/components/common/editor/FloatingEditor";
-import { ExcalidrawCanvas } from "../components/ExcalidrawCanvas";
+import dynamic from "next/dynamic";
 import LoadingSkeleton from "@/core/components/common/LoadingSkeleton";
+
+const ExcalidrawCanvas = dynamic(
+  () =>
+    import("../components/ExcalidrawCanvas").then(
+      (mod) => mod.ExcalidrawCanvas
+    ),
+  { ssr: false, loading: () => <LoadingSkeleton /> }
+);
 
 function ComplementView(props: {
   slug: string;
@@ -16,25 +24,31 @@ function ComplementView(props: {
   userId: string;
 }) {
   const { debounceUpdateComplement } = useUpdateComplement();
-  const [isLoaded, setIsLoaded] = useState(false);
+  const [isClient, setIsClient] = useState(false);
+  const [debug, setDebug] = useState<string>("Initializing...");
+  const renderCount = useRef(0);
 
   useEffect(() => {
-    setIsLoaded(true);
+    setIsClient(true);
+    setDebug("Component mounted, isClient set to true");
   }, []);
 
-  //! Check complement type and return the right component
-  if (props.complement.contentType === "Diagram" && isLoaded) {
+
+  if (props.complement.contentType === "Diagram") {
+    if (!isClient) {
+      return <LoadingSkeleton />;
+    }
     return (
-      <ExcalidrawCanvas
-        initialData={props.complement.body}
-        saveComplement={debounceUpdateComplement(props.complement)}
-      />
+      <div>
+        <ExcalidrawCanvas
+          initialData={props.complement.body}
+          saveComplement={debounceUpdateComplement(props.complement)}
+        />
+     
+      </div>
     );
   }
 
-  if (props.complement.contentType === "Diagram" && !isLoaded) {
-    return <LoadingSkeleton />;
-  }
   return (
     <div>
       <FloatingEditor
@@ -53,13 +67,9 @@ function ComplementView(props: {
               </Link>
             </AfterMenuButton>
           </div>
-          {/* <VisibilitySwitch
-            userId={props.userId}
-            type="complement"
-            typeId={props.complement.id}
-          /> */}
         </div>
       </FloatingEditor>
+     
     </div>
   );
 }
