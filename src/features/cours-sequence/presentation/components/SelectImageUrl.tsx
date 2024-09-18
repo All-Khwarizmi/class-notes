@@ -1,14 +1,20 @@
-/**
- * v0 by Vercel.
- * @see https://v0.dev/t/g5Q10vVtZPj
- * Documentation: https://v0.dev/docs#integrating-generated-code-into-your-nextjs-app
- */
+"use client";
+
+import { useState } from "react";
 import { Button } from "@/core/components/ui/button";
-import { DialogFooter } from "@/core/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/core/components/ui/dialog";
 import { Label } from "@/core/components/ui/label";
 import { Input } from "@/core/components/ui/input";
-import CustomDialog from "@/core/components/common/CustomDialog";
-import { useState } from "react";
+import { ScrollArea } from "@/core/components/ui/scroll-area";
+import { Check, Image as ImageIcon } from "lucide-react";
+
 const imagesUrls = [
   "/images/fredrik-ohlander-s9NttXGehL4-unsplash.jpg",
   "/images/joel-muniz-ltZBgG22fqk-unsplash.jpg",
@@ -21,135 +27,111 @@ const imagesUrls = [
   "/images/thomas-de-luze-uFoKmskAUIE-unsplash.jpg",
   "/images/venti-views-jlphfn0fk4A-unsplash.jpg",
 ];
+
+interface SelectImageUrlProps {
+  imageUrl: string;
+  setImageUrl: (url: string) => void;
+}
+
 export default function SelectImageUrl({
   imageUrl,
   setImageUrl,
-}: {
-  imageUrl: string;
-  setImageUrl: (url: string) => void;
-}) {
+}: SelectImageUrlProps) {
   const [open, setOpen] = useState(false);
   const [userImageUrl, setUserImageUrl] = useState("");
+
+  const handleImageSelect = (url: string) => {
+    setImageUrl(url);
+    setOpen(false);
+  };
+
   return (
-    <>
-      <div className="relative group overflow-hidden rounded-lg shadow-lg hover:shadow-xl transition-transform duration-300 ease-in-out hover:-translate-y-2 cursor-pointer">
+    <div className="space-y-4">
+      <div className="relative group overflow-hidden rounded-lg shadow-md hover:shadow-lg transition-all duration-300 cursor-pointer">
         <img
-          alt="Image 1"
+          alt="Selected image"
           className="object-cover w-full h-48"
-          height={300}
           src={imageUrl}
           style={{
-            aspectRatio: "300/300",
+            aspectRatio: "16/9",
             objectFit: "cover",
           }}
-          width={300}
         />
         <div className="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-          <CheckIcon className="w-8 h-8 text-white" />
+          <ImageIcon className="w-8 h-8 text-white" />
         </div>
       </div>
 
-      <CustomDialog
-        title="Select Image"
-        displayButton={true}
-        buttonText="Select Image"
-        open={open}
-        setOpen={setOpen}
-      >
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 py-4">
-          {imagesUrls.map((url) => (
-            <div
-              key={url}
-              onClick={() => {
-                setImageUrl(url);
-                setOpen(false);
-              }}
-              className="relative group overflow-hidden rounded-lg shadow-lg hover:shadow-xl transition-transform duration-300 ease-in-out hover:-translate-y-2 cursor-pointer"
-            >
-              <img
-                alt="Image 1"
-                className="object-cover w-full h-48"
-                height={300}
-                src={url}
-                style={{
-                  aspectRatio: "300/300",
-                  objectFit: "cover",
-                }}
-                width={300}
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogTrigger asChild>
+          <Button variant="outline" className="w-full">
+            Select Image
+          </Button>
+        </DialogTrigger>
+        <DialogContent className="sm:max-w-[625px]">
+          <DialogHeader>
+            <DialogTitle>Select Image</DialogTitle>
+          </DialogHeader>
+          <ScrollArea className="h-[300px] pr-4">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+              {imagesUrls.map((url) => (
+                <button
+                  key={url}
+                  onClick={() => handleImageSelect(url)}
+                  className="relative group overflow-hidden rounded-lg shadow-md hover:shadow-lg transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-primary"
+                >
+                  <img
+                    alt="Selectable image"
+                    className="object-cover w-full h-32"
+                    src={url}
+                    style={{
+                      aspectRatio: "16/9",
+                      objectFit: "cover",
+                    }}
+                  />
+                  <div className="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                    <Check className="w-6 h-6 text-white" />
+                  </div>
+                </button>
+              ))}
+            </div>
+          </ScrollArea>
+          <div className="grid gap-4 py-4">
+            <div className="grid gap-2">
+              <Label htmlFor="file">Upload your own image</Label>
+              <Input
+                id="file"
+                type="file"
+                disabled
+                onClick={() => alert("This feature is not yet implemented")}
               />
-              <div className="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                <CheckIcon className="w-8 h-8 text-white" />
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="url">Insert image URL</Label>
+              <div className="flex items-center gap-2">
+                <Input
+                  id="url"
+                  placeholder="https://example.com/image.jpg"
+                  type="url"
+                  value={userImageUrl}
+                  onChange={(e) => setUserImageUrl(e.target.value)}
+                />
+                <Button
+                  onClick={() => handleImageSelect(userImageUrl)}
+                  type="button"
+                >
+                  Insert
+                </Button>
               </div>
             </div>
-          ))}
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 py-4">
-          <div className="grid gap-2">
-            <Label htmlFor="file">Upload your own image</Label>
-            <Input
-              id="file"
-              disabled
-              onClick={() => {
-                alert("This feature is not yet implemented");
-              }}
-              type="file"
-            />
           </div>
-          <div className="grid gap-2">
-            <Label htmlFor="url">Insert image URL</Label>
-            <div className="flex items-center gap-2">
-              <Input
-                id="url"
-                placeholder="https://example.com/image.jpg"
-                type="text"
-                value={userImageUrl}
-                onChange={(e) => setUserImageUrl(e.target.value)}
-              />
-              <Button
-                onClick={() => {
-                  setImageUrl(userImageUrl);
-                  setOpen(false);
-                }}
-                type="button"
-              >
-                Insert
-              </Button>
-            </div>
-          </div>
-        </div>
-        <DialogFooter>
-          <Button type="submit">Choose Image</Button>
-          <div>
-            <Button
-              onClick={() => {
-                setOpen(false);
-              }}
-              variant="outline"
-            >
+          <DialogFooter>
+            <Button onClick={() => setOpen(false)} variant="outline">
               Cancel
             </Button>
-          </div>
-        </DialogFooter>
-      </CustomDialog>
-    </>
-  );
-}
-
-function CheckIcon(props: React.SVGProps<SVGSVGElement>) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M20 6 9 17l-5-5" />
-    </svg>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </div>
   );
 }

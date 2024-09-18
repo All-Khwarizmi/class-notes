@@ -1,24 +1,37 @@
 "use client";
+
+import { useState } from "react";
+import { UseFormReturn } from "react-hook-form";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
 } from "@/core/components/ui/form";
-import { Competence } from "@/features/comp-cat/domain/entities/schemas";
 import { Input } from "@/core/components/ui/input";
 import { Button } from "@/core/components/ui/button";
-import CompetenceSelectorAccordion from "./CompetenceSelectorAccordion";
-import { UseFormReturn } from "react-hook-form";
+import { Textarea } from "@/core/components/ui/textarea";
+import { Card, CardContent, CardHeader, CardTitle } from "@/core/components/ui/card";
+import { Competence } from "@/features/comp-cat/domain/entities/schemas";
 import { CoursSequenceForm } from "../views/AddCoursView";
+import CompetenceSelectorAccordion from "./CompetenceSelectorAccordion";
 import SelectImageUrl from "./SelectImageUrl";
-import { useState } from "react";
-import {
-  HeaderTypographyH1,
-  TypographyH1,
-} from "@/core/components/common/Typography";
+
+interface AddCoursOrSequenceFormProps {
+  form: UseFormReturn<CoursSequenceForm>;
+  competences: Competence[];
+  selectedCompetences: Competence[];
+  setSelectedCompetences: (params: {
+    competence: Competence;
+    remove?: boolean;
+  }) => void;
+  open: boolean;
+  setOpen: (open: boolean) => void;
+  onSubmit: (data: CoursSequenceForm) => void;
+  title: string;
+  imageUrl?: string;
+}
 
 export default function AddCoursOrSequenceForm({
   form,
@@ -30,114 +43,91 @@ export default function AddCoursOrSequenceForm({
   onSubmit,
   title,
   imageUrl,
-}: {
-  imageUrl?: string;
-
-  form: UseFormReturn<CoursSequenceForm, any, undefined>;
-  open: boolean;
-  competences: Competence[];
-  selectedCompetences: Competence[];
-  setSelectedCompetences: ({
-    competence,
-    remove,
-  }: {
-    competence: Competence;
-    remove?: boolean;
-  }) => void;
-  setOpen: (open: boolean) => void;
-  onSubmit: (data: CoursSequenceForm) => void;
-  title: string;
-}) {
+}: AddCoursOrSequenceFormProps) {
   const [localImageUrl, setLocalImageUrl] = useState<string>(
     imageUrl ?? "/images/mos-design-jzFbbG2WXv0-unsplash.jpg"
   );
 
   return (
-    <div className="px-8 rounded-lg bg-slate-900 py-12 shadow-md shadow-slate-800">
-      <HeaderTypographyH1 text={title} className="pt-0" />
-      <Form {...form}>
-        <form className="space-y-4">
-          <div className="flex gap-8 items-center">
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => {
-                return (
-                  <FormItem className="flex-1">
-                    <FormLabel htmlFor={field.name}>Name</FormLabel>
+    <Card className="w-full max-w-2xl mx-auto">
+      <CardHeader>
+        <CardTitle>{title}</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit((data) =>
+              onSubmit({
+                ...data,
+                competences: selectedCompetences.map((c) => c._id),
+                imageUrl: localImageUrl,
+              })
+            )}
+            className="space-y-6"
+          >
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Name</FormLabel>
                     <FormControl>
-                      <Input {...field} placeholder={`Name `} />
+                      <Input {...field} placeholder="Enter name" />
                     </FormControl>
                   </FormItem>
-                );
-              }}
-            />
-            <FormField
-              control={form.control}
-              name="category"
-              render={({ field }) => {
-                return (
-                  <FormItem className="flex-1">
-                    <FormLabel htmlFor={field.name}>Keywords</FormLabel>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="category"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Keywords</FormLabel>
                     <FormControl>
-                      <Input
-                        {...field}
-                        placeholder={`Separated by commas: "math, algebra, geometry"
-                    `}
-                      />
+                      <Input {...field} placeholder="math, algebra, geometry" />
                     </FormControl>
                   </FormItem>
-                );
-              }}
-            />
-          </div>
+                )}
+              />
+            </div>
 
-          <FormField
-            control={form.control}
-            name="description"
-            render={({ field }) => {
-              return (
+            <FormField
+              control={form.control}
+              name="description"
+              render={({ field }) => (
                 <FormItem>
-                  <FormLabel htmlFor={field.name}>Description</FormLabel>
+                  <FormLabel>Description</FormLabel>
                   <FormControl>
-                    <Input {...field} placeholder="Enter the description" />
+                    <Textarea
+                      {...field}
+                      placeholder="Enter the description"
+                      rows={4}
+                    />
                   </FormControl>
                 </FormItem>
-              );
-            }}
-          />
+              )}
+            />
 
-          <CompetenceSelectorAccordion
-            competences={competences}
-            selectedCompetences={selectedCompetences}
-            setSelectedCompetences={setSelectedCompetences}
-            open={open}
-            setOpen={setOpen}
-          />
+            <CompetenceSelectorAccordion
+              competences={competences}
+              selectedCompetences={selectedCompetences}
+              setSelectedCompetences={setSelectedCompetences}
+              open={open}
+              setOpen={setOpen}
+            />
 
-          <SelectImageUrl
-            imageUrl={localImageUrl}
-            setImageUrl={setLocalImageUrl}
-          />
+            <SelectImageUrl
+              imageUrl={localImageUrl}
+              setImageUrl={setLocalImageUrl}
+            />
 
-          <section className="flex justify-end">
-            <Button
-              onClick={(event) => {
-                event.preventDefault();
-
-                onSubmit({
-                  ...form.getValues(),
-                  competences: selectedCompetences.map((c) => c._id),
-                  imageUrl: localImageUrl,
-                });
-              }}
-              type="submit"
-            >
-              Submit
-            </Button>
-          </section>
-        </form>
-      </Form>
-    </div>
+            <div className="flex justify-end">
+              <Button type="submit">Submit</Button>
+            </div>
+          </form>
+        </Form>
+      </CardContent>
+    </Card>
   );
 }
