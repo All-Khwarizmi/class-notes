@@ -40,7 +40,7 @@ export default function Sidebar() {
       )}
     >
       <section className="flex items-center justify-center">
-        <Title />
+        {isOpen && <Title />}
       </section>
       <ArrowLeft
         className={cn(
