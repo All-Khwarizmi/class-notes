@@ -7,7 +7,19 @@ import {
 import { Settings, Trash } from "lucide-react";
 import { Button } from "@/core/components/ui/button";
 import Link from "next/link";
-import { cn } from "@/lib/utils";
+
+interface CoursSequenceCardProps {
+  title: string;
+  description: string;
+  imageUrl: string;
+  tags: string;
+  path: string;
+  showViewButton?: boolean;
+  pathToView?: string;
+  spacesMode?: boolean;
+  deleteOption?: boolean;
+  deleteSequence?: () => void;
+}
 
 export default function CoursSequenceCard({
   title,
@@ -20,65 +32,55 @@ export default function CoursSequenceCard({
   spacesMode,
   deleteOption,
   deleteSequence,
-}: {
-  deleteOption?: boolean;
-  deleteSequence?: () => void;
-  title: string;
-  description: string;
-  imageUrl: string;
-  tags: string;
-  path: string;
-  showViewButton?: boolean;
-  pathToView?: string;
-  spacesMode?: boolean;
-}) {
+}: CoursSequenceCardProps) {
   return (
-    <Card className=" md:max-w-sm bg-slate-800 pb-4">
-      <CardHeader className="w-full">
+    <Card className="max-w-xs overflow-hidden transition-shadow hover:shadow-md dark:bg-gray-800">
+      <CardHeader className="p-0">
         <img
-          alt="Product Image"
-          className="rounded-lg object-cover w-full aspect-square"
-          height={400}
+          alt={`${title} cover`}
+          className="h-48 w-full object-cover"
           src={imageUrl}
-          width={600}
         />
       </CardHeader>
-      <CardContent className="space-y-2">
-        <h3 className="text-xl font-bold">{title}</h3>
-        <p className="text-gray-500 text-sm dark:text-gray-400">
+      <CardContent className="p-4 space-y-2">
+        <h3 className="text-lg font-semibold line-clamp-1">{title}</h3>
+        <p className="text-sm text-muted-foreground line-clamp-2">
           {description}
         </p>
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-1">
           {tags.split(",").map((tag) => (
             <span
               key={tag}
-              className="bg-gray-100 rounded-full px-3 py-1 text-xs font-medium dark:bg-slate-900"
+              className="bg-secondary text-secondary-foreground rounded-full px-2 py-0.5 text-xs font-medium"
             >
-              {tag}
+              {tag.trim()}
             </span>
           ))}
         </div>
       </CardContent>
-      <CardFooter className="py-4">
-        <div className="flex gap-2 w-full">
-          {showViewButton && (
-            <div className="w-full flex justify-center">
-              <Link href={pathToView ?? "/sequences"}>
-                <Button>View</Button>
-              </Link>
-            </div>
-          )}
+      <CardFooter className="p-4 pt-0 flex justify-between items-center">
+        {showViewButton && (
+          <Button asChild variant="outline" size="sm">
+            <Link href={pathToView ?? "/sequences"}>View</Link>
+          </Button>
+        )}
+        <div className="flex gap-2">
           {!spacesMode && (
-            <Link href={path} className=" ">
-              <Settings />
-            </Link>
+            <Button asChild variant="ghost" size="icon">
+              <Link href={path}>
+                <Settings className="h-4 w-4" />
+              </Link>
+            </Button>
           )}
           {deleteOption && deleteSequence && (
-            <Trash
-              size={28}
+            <Button
+              variant="ghost"
+              size="icon"
               onClick={deleteSequence}
-              className={cn(" text-red-500 cursor-pointer ")}
-            />
+              className="text-destructive hover:text-destructive/90"
+            >
+              <Trash className="h-4 w-4" />
+            </Button>
           )}
         </div>
       </CardFooter>
