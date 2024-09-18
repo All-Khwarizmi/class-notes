@@ -1,4 +1,5 @@
 import ErrorDialog from "@/core/components/common/ErrorDialog";
+import { TypographyH3 } from "@/core/components/common/Typography";
 import LayoutWithProps from "@/core/components/layout/LayoutWithProps";
 import { authUseCases } from "@/features/auth/application/usecases/auth-usecases";
 import { complementUsecases } from "@/features/complement/application/usecases/complement-usecases";
@@ -27,11 +28,15 @@ async function ComplementServerLayer(props: { slug: string }) {
   }
 
   return (
+    <div className="py-8 px-4">
+      <TypographyH3 text={complement.right.name} />
+
       <ComplementView
         slug={props.slug}
         complement={complement.right}
         userId={authUser.right.userId}
       />
+    </div>
   );
 }
 

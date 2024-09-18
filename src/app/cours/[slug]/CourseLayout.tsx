@@ -15,6 +15,7 @@ import ErrorDialog from "@/core/components/common/ErrorDialog";
 import Layout from "@/core/components/layout/Layout";
 import LoadingSkeleton from "@/core/components/common/LoadingSkeleton";
 import ComplementsServerLayer from "@/app/cours/complements/[slug]/ComplementsServerLayer";
+import { TypographyH3 } from "@/core/components/common/Typography";
 
 async function CourseLayout(props: { slug: string }) {
   const authUser = await authUseCases.getUserAuth();
@@ -38,32 +39,34 @@ async function CourseLayout(props: { slug: string }) {
     );
   }
   return (
-      <Tabs defaultValue="course">
-        <div className="w-full flex justify-center">
-          <TabsList>
-            <TabsTrigger value="course">Course</TabsTrigger>
-            <TabsTrigger value="complements">Complements</TabsTrigger>
-          </TabsList>
+    <Tabs defaultValue="course" className="py-8 px-4">
+      <div className="w-full flex justify-between">
+        <TypographyH3 text={eitherCours.right.name} />
+
+        <TabsList>
+          <TabsTrigger value="course">Course</TabsTrigger>
+          <TabsTrigger value="complements">Complements</TabsTrigger>
+        </TabsList>
+      </div>
+      <TabsContent value="course">
+        <div>
+          <Suspense fallback={<LoadingSkeleton />}>
+            <CoursSequenceView
+              cours={eitherCours.right}
+              userId={authUser.right.userId}
+              type="cours"
+            />
+          </Suspense>
         </div>
-        <TabsContent value="course">
-          <div>
-            <Suspense fallback={<LoadingSkeleton />}>
-              <CoursSequenceView
-                cours={eitherCours.right}
-                userId={authUser.right.userId}
-                type="cours"
-              />
-            </Suspense>
-          </div>
-        </TabsContent>
-        <TabsContent value="complements">
-          <div>
-            <Suspense fallback={<LoadingSkeleton />}>
-              <ComplementsServerLayer slug={props.slug} />
-            </Suspense>
-          </div>
-        </TabsContent>
-      </Tabs>
+      </TabsContent>
+      <TabsContent value="complements">
+        <div>
+          <Suspense fallback={<LoadingSkeleton />}>
+            <ComplementsServerLayer slug={props.slug} />
+          </Suspense>
+        </div>
+      </TabsContent>
+    </Tabs>
   );
 }
 

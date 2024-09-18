@@ -14,7 +14,7 @@ import { authUseCases } from "@/features/auth/application/usecases/auth-usecases
 import NotesServerLayer from "@/app/profile/notes/[slug]/NotesServerLayer";
 import CoursesServerLayer from "@/app/cours/all/[slug]/CoursesServerLayer";
 import ErrorDialog from "@/core/components/common/ErrorDialog";
-import { HeaderTypographyH1 } from "@/core/components/common/Typography";
+import { HeaderTypographyH1, TypographyH3 } from "@/core/components/common/Typography";
 
 async function SequenceLayout(props: {
   slug: string;
@@ -56,13 +56,15 @@ async function SequenceLayout(props: {
   }
   return (
     <Tabs defaultValue="sequence" className="py-8 px-4 ">
-      <div className="w-full flex flex-col items-center gap-8 pb-8">
-        <HeaderTypographyH1 text={eitherSequence.right.name} />
-        <TabsList>
-          <TabsTrigger value="sequence">Sequence</TabsTrigger>
-          <TabsTrigger value="courses">Courses</TabsTrigger>
-          <TabsTrigger value="notes">Notes</TabsTrigger>
-        </TabsList>
+      <div className="w-full flex  items-center justify-between gap-8 pb-8">
+        <TypographyH3 text={eitherSequence.right.name} />
+        <div className="flex items-start gap-4">
+          <TabsList>
+            <TabsTrigger value="sequence">Sequence</TabsTrigger>
+            <TabsTrigger value="courses">Courses</TabsTrigger>
+            <TabsTrigger value="notes">Notes</TabsTrigger>
+          </TabsList>
+        </div>
       </div>
       <TabsContent value="sequence">
         <div>
