@@ -1,4 +1,5 @@
 "use client";
+
 import { Button } from "@/core/components/ui/button";
 import {
   Form,
@@ -17,7 +18,6 @@ import {
   SelectValue,
 } from "@/core/components/ui/select";
 import { Switch } from "@/core/components/ui/switch";
-import { toast } from "sonner";
 import { EvaluationBaseType } from "../../domain/entities/evaluation-schema";
 import { useEffect, useMemo } from "react";
 import CollapsibleCriteriaList from "../components/CollapsibleCriteriaList";
@@ -25,17 +25,17 @@ import GradeTypeSelectGroup from "../components/GradeTypeSelectGroup";
 import { Loader } from "lucide-react";
 import { cn } from "@/lib/utils";
 import useCreateEvaluationBaseFormLogic from "../hooks/useCreateEvaluationBaseFormLogic";
-import {
-  HeaderTypographyH1,
-  TypographyH1,
-} from "@/core/components/common/Typography";
 import { toastWrapper } from "@/core/utils/toast-wrapper";
 import { useGetCompCat } from "@/features/comp-cat/application/adapters/services/useGetCompCat";
 import { isLeft } from "fp-ts/lib/Either";
 import CompetenceAccordionListModal from "@/features/comp-cat/presentation/components/CompetenceAccordionListModal";
 import { groupCompetencesByCategory } from "@/features/comp-cat/domain/entities/schemas";
+import { Card, CardContent, CardHeader, CardTitle } from "@/core/components/ui/card";
 
-export default function EvaluationBaseForm(props: {
+export default function EvaluationBaseForm({
+  userId,
+  evaluation,
+}: {
   userId: string;
   evaluation?: EvaluationBaseType;
 }) {
@@ -51,8 +51,9 @@ export default function EvaluationBaseForm(props: {
     isUpdateSuccess,
     addCriteria,
     onSubmit,
-  } = useCreateEvaluationBaseFormLogic(props);
-  const { data } = useGetCompCat({ userId: props.userId });
+  } = useCreateEvaluationBaseFormLogic({ userId, evaluation });
+
+  const { data } = useGetCompCat({ userId });
   const { competences, categories } = useMemo(() => {
     if (!data || isLeft(data))
       return {
@@ -74,121 +75,127 @@ export default function EvaluationBaseForm(props: {
       toastWrapper.success("Evaluation updated successfully!");
     }
   }, [isSuccess, isUpdateSuccess, form]);
-  return (
-    <div className="px-8 rounded-lg bg-slate-900 py-12 shadow-md shadow-slate-800">
-      <HeaderTypographyH1 text="Create Evaluation" className="pt-0" />
-      <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
-          className="space-y-8 flex-1"
-        >
-          <FormField
-            control={form.control}
-            name="name"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel htmlFor={field.name}>Name</FormLabel>
-                <FormControl>
-                  <Input placeholder="Evaluation name" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="description"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel htmlFor={field.name}>Description</FormLabel>
-                <FormControl>
-                  <Input placeholder="Evaluation description" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
 
-          <div className="flex justify-between items-center">
+  return (
+    <Card className="w-full max-w-2xl mx-auto">
+      <CardHeader>
+        <CardTitle>
+          {evaluation ? "Update Evaluation" : "Create Evaluation"}
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <FormField
               control={form.control}
-              name="gradeType"
+              name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel htmlFor={field.name}>Grade Type</FormLabel>
+                  <FormLabel>Name</FormLabel>
                   <FormControl>
+                    <Input placeholder="Evaluation name" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="description"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Description</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Evaluation description" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+              <FormField
+                control={form.control}
+                name="gradeType"
+                render={({ field }) => (
+                  <FormItem className="w-full sm:w-auto">
+                    <FormLabel>Grade Type</FormLabel>
                     <Select onValueChange={field.onChange} value={field.value}>
-                      <SelectTrigger className="w-[180px]">
-                        <SelectValue placeholder="Select a grade type" />
-                      </SelectTrigger>
+                      <FormControl>
+                        <SelectTrigger className="w-full sm:w-[180px]">
+                          <SelectValue placeholder="Select a grade type" />
+                        </SelectTrigger>
+                      </FormControl>
                       <SelectContent>
                         <GradeTypeSelectGroup />
                       </SelectContent>
                     </Select>
-                  </FormControl>
-                  <FormDescription>
-                    Select the grade type for the evaluation
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="isGraded"
-              render={({ field }) => (
-                <FormItem className="flex flex-col">
-                  <div className="flex flex-col gap-4">
-                    <FormLabel htmlFor={field.name}>Is Graded</FormLabel>
+                    <FormDescription>
+                      Select the grade type for the evaluation
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="isGraded"
+                render={({ field }) => (
+                  <FormItem className="flex items-center space-x-2">
                     <FormControl>
                       <Switch
-                        onCheckedChange={field.onChange}
+                        id="is-graded"
                         checked={field.value}
+                        onCheckedChange={field.onChange}
                       />
                     </FormControl>
-                  </div>
-                  <FormDescription>
-                    Indicates if the evaluation is graded
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-          <CollapsibleCriteriaList
-            criterias={criterias}
-            openArray={openArray}
-            setOpenArray={setOpenArray}
-            setCriterias={setCriterias}
-          />
+                    <div className="space-y-0.5">
+                      <FormLabel htmlFor="is-graded">Is Graded</FormLabel>
+                      <FormDescription>
+                        Indicates if the evaluation is graded
+                      </FormDescription>
+                    </div>
+                  </FormItem>
+                )}
+              />
+            </div>
 
-          <div className="flex justify-end items-center space-x-4 pt-4">
-            {/* Button to add a new criteria */}
-            <CompetenceAccordionListModal
-              competencesByCategory={competences}
-              categories={categories}
-              addCriteria={addCriteria}
+            <CollapsibleCriteriaList
+              criterias={criterias}
+              openArray={openArray}
+              setOpenArray={setOpenArray}
+              setCriterias={setCriterias}
             />
-            <Button
-              variant={"outline"}
-              type="button"
-              onClick={() => {
-                addCriteria();
-              }}
-            >
-              Add Criteria
-            </Button>
 
-            {isPending || isUpdatePending ? (
-              <Loader className={cn("animate-spin", "text-blue-500")} />
-            ) : (
-              <Button disabled={isPending || isUpdatePending} type="submit">
-                Submit
+            <div className="flex flex-wrap justify-end items-center gap-4 pt-4">
+              <CompetenceAccordionListModal
+                competencesByCategory={competences}
+                categories={categories}
+                addCriteria={addCriteria}
+              />
+              <Button
+                variant="outline"
+                type="button"
+                onClick={() => {
+                  addCriteria();
+                }}
+              >
+                Add Criteria
               </Button>
-            )}
-          </div>
-        </form>
-      </Form>
-    </div>
+              <Button disabled={isPending || isUpdatePending} type="submit">
+                {isPending || isUpdatePending ? (
+                  <>
+                    <Loader className="mr-2 h-4 w-4 animate-spin" />
+                    {evaluation ? "Updating..." : "Creating..."}
+                  </>
+                ) : (
+                  <>{evaluation ? "Update" : "Create"}</>
+                )}
+              </Button>
+            </div>
+          </form>
+        </Form>
+      </CardContent>
+    </Card>
   );
 }

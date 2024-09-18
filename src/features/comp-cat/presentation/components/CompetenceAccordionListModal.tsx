@@ -5,15 +5,13 @@ import {
   CompetenceByCategory,
 } from "../../domain/entities/schemas";
 import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/core/components/ui/table";
-import CustomDialog from "@/core/components/common/CustomDialog";
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/core/components/ui/dialog";
 import {
   Accordion,
   AccordionContent,
@@ -23,87 +21,116 @@ import {
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
 } from "@/core/components/ui/card";
 import { Button } from "@/core/components/ui/button";
-import { Plus, Trash } from "lucide-react";
-import {
-  TypographyH4,
-  TypographyLead,
-} from "@/core/components/common/Typography";
-import { set } from "lodash";
+import { ScrollArea } from "@/core/components/ui/scroll-area";
+import { Search } from "lucide-react";
+import { Input } from "@/core/components/ui/input";
 
-function CompetenceAccordionListModal(props: {
+interface CompetenceAccordionListModalProps {
   competencesByCategory: CompetenceByCategory[];
   categories: Category[];
   addCriteria: (options?: { name: string; description: string }) => void;
-}) {
-  const [open, setOpen] = React.useState(false);
-  return (
-    <CustomDialog
-      title="Competences"
-      description="Select a competence to add a criteria"
-      buttonText="Select competence"
-      displayButton
-      open={open}
-      setOpen={setOpen}
-    >
-      {props.competencesByCategory.map((group) => {
-        // Fleaky code since there could have multiple categories with the same name
-        // Should add the category id to the groupedCompetences object
-        const category = props.categories.find(
-          (cat) => cat.name === group.category
-        );
-        return (
-          <Accordion type="multiple" key={group.category} className="pt-4">
-            <AccordionItem value={group.category}>
-              <AccordionTrigger>
-                <TypographyH4 text={group.category} />
-              </AccordionTrigger>
-
-              <AccordionContent className="flex flex-col gap-4 w-full">
-                <div className="pl-4 space-y-4">
-                  {group.competences.map((competence) => (
-                    <Card
-                      key={competence._id}
-                      className="shadow-inner w-full shadow-slate-900 "
-                    >
-                      <CardHeader>
-                        <CardTitle>
-                          <TypographyLead text={competence.name} />
-                        </CardTitle>
-                      </CardHeader>
-                      <CardContent>
-                        <CardDescription>
-                          {competence.description}
-                        </CardDescription>
-                      </CardContent>
-                      <CardFooter className="flex justify-end gap-4">
-                        <Button
-                          onClick={() => {
-                            props.addCriteria({
-                              name: competence.name,
-                              description: competence.description,
-                            });
-                            setOpen(false);
-                          }}
-                        >
-                          Select
-                        </Button>
-                      </CardFooter>
-                    </Card>
-                  ))}
-                </div>
-              </AccordionContent>
-            </AccordionItem>
-          </Accordion>
-        );
-      })}
-    </CustomDialog>
-  );
 }
 
-export default CompetenceAccordionListModal;
+export default function CompetenceAccordionListModal({
+  competencesByCategory,
+  categories,
+  addCriteria,
+}: CompetenceAccordionListModalProps) {
+  const [open, setOpen] = React.useState(false);
+  const [searchTerm, setSearchTerm] = React.useState("");
+
+  const filteredCompetences = React.useMemo(() => {
+    if (!searchTerm) return competencesByCategory;
+    return competencesByCategory
+      .map((group) => ({
+        ...group,
+        competences: group.competences.filter(
+          (comp) =>
+            comp.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            comp.description.toLowerCase().includes(searchTerm.toLowerCase())
+        ),
+      }))
+      .filter((group) => group.competences.length > 0);
+  }, [competencesByCategory, searchTerm]);
+
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        <Button variant="outline">Select Competence</Button>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-[625px]">
+        <DialogHeader>
+          <DialogTitle>Competences</DialogTitle>
+          <DialogDescription>
+            Select a competence to add as a criteria
+          </DialogDescription>
+        </DialogHeader>
+        <div className="flex items-center space-x-2 mb-4">
+          <Search className="w-4 h-4 text-muted-foreground" />
+          <Input
+            placeholder="Search competences..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="flex-1"
+          />
+        </div>
+        <ScrollArea className="h-[400px] pr-4">
+          {filteredCompetences.map((group) => (
+            <Accordion
+              type="single"
+              collapsible
+              key={group.category}
+              className="mb-4"
+            >
+              <AccordionItem value={group.category}>
+                <AccordionTrigger className="text-lg font-semibold">
+                  {group.category}
+                </AccordionTrigger>
+                <AccordionContent>
+                  <div className="space-y-4">
+                    {group.competences.map((competence) => (
+                      <Card
+                        key={competence._id}
+                        className="transition-shadow hover:shadow-md"
+                      >
+                        <CardHeader>
+                          <CardTitle className="text-base">
+                            {competence.name}
+                          </CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                          <p className="text-sm text-muted-foreground">
+                            {competence.description}
+                          </p>
+                        </CardContent>
+                        <CardFooter className="flex justify-end">
+                          <Button
+                            size="sm"
+                            onClick={() => {
+                              addCriteria({
+                                name: competence.name,
+                                description: competence.description,
+                              });
+                              setOpen(false);
+                            }}
+                          >
+                            Select
+                          </Button>
+                        </CardFooter>
+                      </Card>
+                    ))}
+                  </div>
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
+          ))}
+        </ScrollArea>
+      </DialogContent>
+    </Dialog>
+  );
+}
