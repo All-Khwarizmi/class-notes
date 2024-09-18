@@ -1,4 +1,6 @@
-import { Student, StudentSchema } from "../../domain/entities/student-schema";
+"use client";
+
+import React, { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import {
@@ -12,24 +14,47 @@ import {
 } from "@/core/components/ui/form";
 import { Input } from "@/core/components/ui/input";
 import { Button } from "@/core/components/ui/button";
-import { useState } from "react";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/core/components/ui/card";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/core/components/ui/alert-dialog";
+import { Loader2, Save, Trash2, UserCircle } from "lucide-react";
+import { Student, StudentSchema } from "../../domain/entities/student-schema";
 import SelectImageUrl from "@/features/cours-sequence/presentation/components/SelectImageUrl";
 import useDeleteStudent from "../../application/adapters/services/useDeleteStudent";
-import { toastWrapper } from "@/core/utils/toast-wrapper";
 import useUpdateStudent from "../../application/adapters/services/useUpdateStudent";
+import { toast } from "sonner";
 
-function StudentUpdateForm(props: {
+interface StudentUpdateFormProps {
   student: Student;
   classeId: string;
   refetch: () => void;
-}) {
-  const { student, classeId } = props;
+}
 
+export default function StudentUpdateForm({
+  student,
+  classeId,
+  refetch,
+}: StudentUpdateFormProps) {
   const [localImageUrl, setLocalImageUrl] = useState<string>(
     student.imageUrl ?? "/images/mos-design-jzFbbG2WXv0-unsplash.jpg"
   );
-  const { mutate: updateStudent } = useUpdateStudent();
-  const { mutate: deleteStudent } = useDeleteStudent();
+  const { mutate: updateStudent, isPending: isUpdating } = useUpdateStudent();
+  const { mutate: deleteStudent, isPending: isDeleting } = useDeleteStudent();
 
   const form = useForm<Pick<Student, "name" | "classId" | "imageUrl">>({
     resolver: zodResolver(StudentSchema),
@@ -44,81 +69,124 @@ function StudentUpdateForm(props: {
       { name, id: student.id, imageUrl: localImageUrl },
       {
         onSuccess: () => {
-          props.refetch();
-          toastWrapper.success("Élève ajouté avec succès");
+          refetch();
+          toast.success(
+            "Les informations de l'élève ont été mises à jour avec succès."
+          );
         },
         onError: () => {
-          toastWrapper.error("Erreur lors de l'ajout de l'élève");
+          toast.error(
+            "Une erreur est survenue lors de la mise à jour de l'élève."
+          );
+        },
+      }
+    );
+  }
+
+  function handleDelete() {
+    deleteStudent(
+      { id: student.id },
+      {
+        onSuccess: () => {
+          refetch();
+          toast.success("L'élève a été supprimé avec succès.");
+        },
+        onError: () => {
+          toast.error(
+            "Une erreur est survenue lors de la suppression de l'élève."
+          );
         },
       }
     );
   }
 
   return (
-    <>
-      <Form {...form}>
-        <form
-          className="flex flex-col space-y-4 w-full p-4"
-          onSubmit={form.handleSubmit(onSubmit)}
-        >
-          <FormField
-            control={form.control}
-            name="name"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel htmlFor={field.name}>Nom</FormLabel>
-                <FormControl>
-                  <Input
-                    data-testid="student-name-input"
-                    placeholder="Nom de l'élève"
-                    {...field}
-                  />
-                </FormControl>
-              </FormItem>
-            )}
-          />
+    <Card>
+      <CardHeader>
+        <CardTitle className="flex items-center gap-2">
+          <UserCircle className="h-6 w-6" />
+          Mettre à jour les informations de l&apos;élève
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel htmlFor={field.name}>Nom</FormLabel>
+                  <FormControl>
+                    <Input
+                      data-testid="student-name-input"
+                      placeholder="Nom de l'élève"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-          <SelectImageUrl
-            imageUrl={localImageUrl}
-            setImageUrl={setLocalImageUrl}
-          />
-          <FormDescription className="flex justify-between items-center">
-            <FormMessage>
-              <Button type="submit">Mettre à jour</Button>
-            </FormMessage>
-            {/* Add button to delete the student */}
-            <Button
-              type="button"
-              variant={"destructive"}
-              onClick={() => {
-                // deleteStudent(student.id);
-                // refetch();
-                confirm("Voulez-vous vraiment supprimer cet élève ?") &&
-                  deleteStudent(
-                    {
-                      id: student.id,
-                    },
-                    {
-                      onSuccess: () => {
-                        props.refetch();
-                        toastWrapper.success("Élève supprimé avec succès");
-                      },
-                      onError: () => {
-                        toastWrapper.error(
-                          "Erreur lors de la suppression de l'élève"
-                        );
-                      },
-                    }
-                  );
-              }}
-            >
-              Delete
+            <FormItem>
+              <FormLabel>Photo de profil</FormLabel>
+              <FormControl>
+                <SelectImageUrl
+                  imageUrl={localImageUrl}
+                  setImageUrl={setLocalImageUrl}
+                />
+              </FormControl>
+              <FormDescription>
+                Choisissez une image de profil pour l&apos;élève
+              </FormDescription>
+            </FormItem>
+          </form>
+        </Form>
+      </CardContent>
+      <CardFooter className="flex justify-between">
+        <Button
+          type="submit"
+          onClick={form.handleSubmit(onSubmit)}
+          disabled={isUpdating}
+        >
+          {isUpdating ? (
+            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+          ) : (
+            <Save className="mr-2 h-4 w-4" />
+          )}
+          Mettre à jour
+        </Button>
+        <AlertDialog>
+          <AlertDialogTrigger asChild>
+            <Button variant="destructive" disabled={isDeleting}>
+              {isDeleting ? (
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              ) : (
+                <Trash2 className="mr-2 h-4 w-4" />
+              )}
+              Supprimer
             </Button>
-          </FormDescription>
-        </form>
-      </Form>
-    </>
+          </AlertDialogTrigger>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>
+                Êtes-vous sûr de vouloir supprimer cet élève ?
+              </AlertDialogTitle>
+              <AlertDialogDescription>
+                Cette action est irréversible. Toutes les données associées à
+                cet élève seront définitivement supprimées.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Annuler</AlertDialogCancel>
+              <AlertDialogAction onClick={handleDelete}>
+                Confirmer la suppression
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+      </CardFooter>
+    </Card>
   );
 }
-
-export default StudentUpdateForm;

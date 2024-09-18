@@ -76,7 +76,7 @@ async function ClasseLayout(props: { slug: string }) {
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <Tabs defaultValue="classe" className="px-4">
-        <div className="w-full  items-center flex flex-col gap-8 justify-center py-8">
+        <div className="w-full  items-center justify-between flex gap-8 py-8">
           <TypographyH1 text={classe.right.name} />
           <TabsList>
             <TabsTrigger value="classe">Classe</TabsTrigger>

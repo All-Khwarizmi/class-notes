@@ -1,182 +1,232 @@
 "use client";
+
 import React, { useState } from "react";
 import {
   Table,
-  TableRow,
-  TableHead,
   TableBody,
-  TableCell,
   TableCaption,
+  TableCell,
+  TableHead,
   TableHeader,
+  TableRow,
 } from "@/core/components/ui/table";
-import CustomDialog from "@/core/components/common/CustomDialog";
+import { Button } from "@/core/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/core/components/ui/dialog";
+import { Card, CardContent, CardHeader, CardTitle } from "@/core/components/ui/card";
+import { ScrollArea } from "@/core/components/ui/scroll-area";
+import { Settings, UserPlus, FileSpreadsheet } from "lucide-react";
 import AssignEvaluation from "./AssignEvaluation";
 import UpdateStudentGradeForm from "./UpdateStudentGradeForm";
 import calculateOverallGrade from "@/features/evaluation/application/adapters/utils/calculate-overall-grade";
 import AddStudentForm from "../../../student/presentation/components/AddStudentForm";
 import { Id } from "../../../../../convex/_generated/dataModel";
-import { Settings } from "lucide-react";
 import useGetStudentTableData from "@/features/evaluation/application/adapters/services/useGetStudentTableData";
 import CSVReader from "./StudentCsvLoader";
 import StudentUpdateForm from "@/features/student/presentation/components/StudentUpdateForm";
-import LoadingSkeleton from "@/core/components/common/LoadingSkeleton";
+import { Skeleton } from "@/core/components/ui/skeleton";
 
-export function StudentsEvaluationTableView(props: {
+interface StudentsEvaluationTableViewProps {
   classeId: string;
   userId: string;
-}) {
-  const [isDialogOpen, setIsDialogOpen] = useState<{
-    [key in string]: boolean;
-  }>({});
+}
+
+export function StudentsEvaluationTableView({
+  classeId,
+  userId,
+}: StudentsEvaluationTableViewProps) {
+  const [isDialogOpen, setIsDialogOpen] = useState<Record<string, boolean>>({});
   const {
     tableData: data,
     isLoading,
     refetchCompoundEvaluations,
     refetchStudents,
-  } = useGetStudentTableData({ classeId: props.classeId });
+  } = useGetStudentTableData({ classeId });
+
   if (isLoading) {
-    return <LoadingSkeleton />;
-  }
-  if (data) {
     return (
-      <div className="w-full h-full">
-        <Table className="w-full">
-          <TableCaption>
-            Overall grades of students in different evaluations. Click on the
-            grade to view detailed criteria.
-          </TableCaption>
-          <TableHeader>
-            <TableRow>
-              <TableHead className="">Student</TableHead>
-              {data?.evaluations.map((evaluation) => (
-                <TableHead key={evaluation.grade.id} className="w-[200px]">
-                  {evaluation.base.name}
-                </TableHead>
-              ))}
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {/* 
-            Loop through the students and evaluations to display the grades.
-            For each student, display the overall grade of the evaluation.
-            If the student has a grade, display a dialog with the detailed criteria.
-          */}
-            {data?.students.map((student, index) => (
-              <TableRow key={student.id}>
-                <TableCell className="w-[200px]">
-                  {" "}
-                  <CustomDialog
-                    title={`Update ${student.name}'s Information`}
-                    buttonText={student.name}
-                    buttonVariant="outline"
-                  >
-                    <StudentUpdateForm
-                      student={student}
-                      classeId={props.classeId}
-                      refetch={refetchStudents}
-                    />
-                  </CustomDialog>
-                </TableCell>
-                {/* 
-                Loop through the evaluations and find the grade of the student.
-                If the student has a grade, display the overall grade.
-                If the student doesn't have a grade, display "N/A".
-              */}
-                {data?.evaluations.map((evaluation, index) => {
-                  const studentGrade = evaluation.grade.grades.find(
-                    (grade) => grade.studentId === student.id
-                  );
+      <Card>
+        <CardHeader>
+          <CardTitle>Chargement des données...</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <Skeleton className="w-full h-[300px]" />
+        </CardContent>
+      </Card>
+    );
+  }
 
-                  const overallGrade = studentGrade
-                    ? calculateOverallGrade({
-                        grades: studentGrade.grades,
-                        criteria: evaluation.base.criterias,
-                        gradeType: evaluation.base.gradeType,
-                      })
-                    : "N/A";
+  if (!data) {
+    return (
+      <Card>
+        <CardHeader>
+          <CardTitle>Erreur</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p>
+            Impossible de charger les données. Veuillez réessayer plus tard.
+          </p>
+        </CardContent>
+      </Card>
+    );
+  }
 
-                  if (studentGrade) {
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>Évaluations des étudiants</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <ScrollArea className="h-[calc(100vh-300px)]">
+          <Table className="">
+            <TableCaption>
+              Notes globales des étudiants dans différentes évaluations. Cliquez
+              sur une note pour voir les critères détaillés.
+            </TableCaption>
+            <TableHeader>
+              <TableRow>
+                <TableHead className="w-[200px]">Étudiant</TableHead>
+                {data.evaluations.map((evaluation) => (
+                  <TableHead key={evaluation.grade.id} className="w-[150px]">
+                    {evaluation.base.name}
+                  </TableHead>
+                ))}
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {data.students.map((student) => (
+                <TableRow key={student.id}>
+                  <TableCell>
+                    <Dialog>
+                      <DialogTrigger asChild>
+                        <Button variant="link">{student.name}</Button>
+                      </DialogTrigger>
+                      <DialogContent>
+                        <DialogHeader>
+                          <DialogTitle>
+                            Mettre à jour les informations de {student.name}
+                          </DialogTitle>
+                        </DialogHeader>
+                        <StudentUpdateForm
+                          student={student}
+                          classeId={classeId}
+                          refetch={refetchStudents}
+                        />
+                      </DialogContent>
+                    </Dialog>
+                  </TableCell>
+                  {data.evaluations.map((evaluation) => {
+                    const studentGrade = evaluation.grade.grades.find(
+                      (grade) => grade.studentId === student.id
+                    );
+                    const overallGrade = studentGrade
+                      ? calculateOverallGrade({
+                          grades: studentGrade.grades,
+                          criteria: evaluation.base.criterias,
+                          gradeType: evaluation.base.gradeType,
+                        })
+                      : "N/A";
                     const dialogKey = `${student.id}-${evaluation.grade.id}`;
-                    if (!isDialogOpen[dialogKey]) {
-                      isDialogOpen[dialogKey] = false;
-                    }
+
                     return (
-                      <TableCell key={evaluation.grade.id} className="">
+                      <TableCell key={evaluation.grade.id}>
                         {studentGrade ? (
-                          <CustomDialog
-                            buttonText={overallGrade.toString()}
-                            buttonVariant="outline"
+                          <Dialog
                             open={isDialogOpen[dialogKey]}
-                            setOpen={(value) =>
-                              setIsDialogOpen({
-                                ...isDialogOpen,
+                            onOpenChange={(value) =>
+                              setIsDialogOpen((prev) => ({
+                                ...prev,
                                 [dialogKey]: value,
-                              })
+                              }))
                             }
                           >
-                            <UpdateStudentGradeForm
-                              studentGrade={studentGrade}
-                              evaluationBase={evaluation.base}
-                              evaluationId={evaluation.grade.id}
-                              classeId={props.classeId}
-                              setIsDialogOpen={(value) =>
-                                setIsDialogOpen({
-                                  ...isDialogOpen,
-                                  [dialogKey]: value,
-                                })
-                              }
-                              studentName={student.name}
-                              refetch={refetchCompoundEvaluations}
-                            />
-                          </CustomDialog>
+                            <DialogTrigger asChild>
+                              <Button variant="link">
+                                {overallGrade.toString()}
+                              </Button>
+                            </DialogTrigger>
+                            <DialogContent>
+                              <DialogHeader>
+                                <DialogTitle>
+                                  Mettre à jour la note de {student.name}
+                                </DialogTitle>
+                              </DialogHeader>
+                              <UpdateStudentGradeForm
+                                studentGrade={studentGrade}
+                                evaluationBase={evaluation.base}
+                                evaluationId={evaluation.grade.id}
+                                classeId={classeId}
+                                setIsDialogOpen={(value) =>
+                                  setIsDialogOpen((prev) => ({
+                                    ...prev,
+                                    [dialogKey]: value,
+                                  }))
+                                }
+                                studentName={student.name}
+                                refetch={refetchCompoundEvaluations}
+                              />
+                            </DialogContent>
+                          </Dialog>
                         ) : (
                           "N/A"
                         )}
                       </TableCell>
                     );
-                  } else {
-                    return (
-                      <TableCell
-                        key={evaluation.grade.id}
-                        className="w-[200px]"
-                      >
-                        N/A
-                      </TableCell>
-                    );
-                  }
-                })}
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-        <div className="flex justify-center mt-8 gap-2">
-          <CustomDialog
-            title="Evaluations Settings"
-            icon={<Settings />}
-            buttonText="Assign Evaluation"
-          >
-            <AssignEvaluation classeId={props.classeId} userId={props.userId} />
-          </CustomDialog>
-          <CustomDialog title="Add Student" buttonText="Add Student">
-            <div>
+                  })}
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </ScrollArea>
+        <div className="flex justify-center mt-8 gap-4">
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button>
+                <Settings className="mr-2 h-4 w-4" />
+                Assigner une évaluation
+              </Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Paramètres des évaluations</DialogTitle>
+              </DialogHeader>
+              <AssignEvaluation classeId={classeId} userId={userId} />
+            </DialogContent>
+          </Dialog>
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button>
+                <UserPlus className="mr-2 h-4 w-4" />
+                Ajouter un étudiant
+              </Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Ajouter un étudiant</DialogTitle>
+              </DialogHeader>
               <AddStudentForm
-                classId={props.classeId as Id<"Classes">}
+                classId={classeId as Id<"Classes">}
                 refetch={() => {
                   refetchStudents();
                   refetchCompoundEvaluations();
                 }}
               />
               <CSVReader
-                classeId={props.classeId}
+                classeId={classeId}
                 refetchCompoundEvaluations={() => {
                   refetchStudents();
                   refetchCompoundEvaluations();
                 }}
               />
-            </div>
-          </CustomDialog>
+            </DialogContent>
+          </Dialog>
         </div>
-      </div>
-    );
-  }
+      </CardContent>
+    </Card>
+  );
 }
