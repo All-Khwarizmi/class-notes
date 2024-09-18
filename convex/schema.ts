@@ -56,7 +56,11 @@ export default defineSchema({
         v.object({
           id: v.string(),
           name: v.string(),
-          contentType: contentType,
+          contentType: v.union(
+            v.literal("Diagram"),
+            v.literal("Flowchart"),
+            v.literal("Markup")
+          ),
           createdAt: v.float64(),
         })
       )
@@ -66,7 +70,11 @@ export default defineSchema({
     content: v.string(),
     type: v.union(v.literal("Folder"), v.literal("Item")),
     lastModified: v.optional(v.float64()),
-    contentType: contentType,
+    contentType: v.union(
+      v.literal("Diagram"),
+      v.literal("Flowchart"),
+      v.literal("Markup")
+    ),
   }).index("by_parentId", ["parentId"]),
   Cours: defineTable({
     name: v.string(),
