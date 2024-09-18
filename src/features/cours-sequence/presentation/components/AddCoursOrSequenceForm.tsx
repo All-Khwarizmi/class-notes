@@ -5,6 +5,7 @@ import { UseFormReturn } from "react-hook-form";
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -13,6 +14,14 @@ import { Input } from "@/core/components/ui/input";
 import { Button } from "@/core/components/ui/button";
 import { Textarea } from "@/core/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/core/components/ui/card";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/core/components/ui/select";
 import { Competence } from "@/features/comp-cat/domain/entities/schemas";
 import { CoursSequenceForm } from "../views/AddCoursView";
 import CompetenceSelectorAccordion from "./CompetenceSelectorAccordion";
@@ -71,9 +80,9 @@ export default function AddCoursOrSequenceForm({
                 name="name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Name</FormLabel>
+                    <FormLabel>Nom</FormLabel>
                     <FormControl>
-                      <Input {...field} placeholder="Enter name" />
+                      <Input {...field} placeholder="Entrez le nom" />
                     </FormControl>
                   </FormItem>
                 )}
@@ -83,9 +92,12 @@ export default function AddCoursOrSequenceForm({
                 name="category"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Keywords</FormLabel>
+                    <FormLabel>Mots-clés</FormLabel>
                     <FormControl>
-                      <Input {...field} placeholder="math, algebra, geometry" />
+                      <Input
+                        {...field}
+                        placeholder="maths, algèbre, géométrie"
+                      />
                     </FormControl>
                   </FormItem>
                 )}
@@ -101,10 +113,37 @@ export default function AddCoursOrSequenceForm({
                   <FormControl>
                     <Textarea
                       {...field}
-                      placeholder="Enter the description"
+                      placeholder="Entrez la description"
                       rows={4}
                     />
                   </FormControl>
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="contentType"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Type de contenu</FormLabel>
+                  <Select onValueChange={field.onChange} value={field.value}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Sélectionnez un type de contenu" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectGroup>
+                        <SelectItem value="Markup">Texte enrichi</SelectItem>
+                        <SelectItem value="Diagram">Diagramme</SelectItem>
+                        <SelectItem value="Embed">Embed</SelectItem>
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                  <FormDescription>
+                    Le type de contenu du cours ou de la séquence
+                  </FormDescription>
                 </FormItem>
               )}
             />
@@ -123,7 +162,7 @@ export default function AddCoursOrSequenceForm({
             />
 
             <div className="flex justify-end">
-              <Button type="submit">Submit</Button>
+              <Button type="submit">Soumettre</Button>
             </div>
           </form>
         </Form>

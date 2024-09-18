@@ -9,14 +9,24 @@ import { Complement } from "@/features/complement/domain/complement-schemas";
 import useUpdateSequenceBody from "../../application/adapters/services/useUpdateSequenceBody";
 import useUpdateCoursBody from "../../application/adapters/services/useUpdateCoursBody";
 import FloatingEditor from "@/core/components/common/editor/FloatingEditor";
+import LoadingSkeleton from "@/core/components/common/LoadingSkeleton";
+import dynamic from "next/dynamic";
+import Embed from "../components/Embed";
+import EmbedWithInput from "../components/Embed";
+const ExcalidrawCanvas = dynamic(
+  () =>
+    import(
+      "@/features/complement/presentation/components/ExcalidrawCanvas"
+    ).then((mod) => mod.ExcalidrawCanvas),
+  { ssr: false, loading: () => <LoadingSkeleton /> }
+);
 
 export default function CoursSequenceView({
   cours,
   sequence,
   userId,
   type,
-  coursFromSequence,
-  complements,
+
   sequenceType,
 }: {
   type: "cours" | "sequence";
@@ -30,19 +40,41 @@ export default function CoursSequenceView({
   const { debounceUpdateSequenceBody } = useUpdateSequenceBody();
 
   const { debounceUpdateCoursBody } = useUpdateCoursBody();
- 
+
   if (type === "cours" && cours) {
-    return (
-      <>
-      
-        <FloatingEditor
-          content={cours.body}
-          debounceUpdateFn={
-            debounceUpdateCoursBody({
+    if (cours.contentType === "Diagram") {
+      return (
+        <>
+          <ExcalidrawCanvas
+            initialData={cours.body}
+            saveComplement={debounceUpdateCoursBody({
               userId,
               coursId: cours._id,
-            })
-          }
+            })}
+          />
+        </>
+      );
+    }
+    if (cours.contentType === "Embed") {
+      return (
+        <EmbedWithInput
+          onUrlUpdate={debounceUpdateCoursBody({
+            userId,
+            coursId: cours._id,
+          })}
+          initialUrl={cours.body}
+          title={cours.name}
+        />
+      );
+    }
+    return (
+      <>
+        <FloatingEditor
+          content={cours.body}
+          debounceUpdateFn={debounceUpdateCoursBody({
+            userId,
+            coursId: cours._id,
+          })}
           afterMenuBar
         >
           {" "}
@@ -66,14 +98,27 @@ export default function CoursSequenceView({
       </>
     );
   }
-  if (type === "sequence" && sequence ) {
+  if (type === "sequence" && sequence) {
+    if (sequence.contentType === "Diagram") {
+      return (
+        <>
+          <ExcalidrawCanvas
+            initialData={sequence.body}
+            saveComplement={debounceUpdateSequenceBody({
+              userId,
+              sequenceId: sequence._id,
+              type: sequenceType,
+            })}
+          />
+        </>
+      );
+    }
     const viewPath =
       sequenceType === "sequence"
         ? `/spaces/sequences/${sequence._id}?user=${userId}`
         : `/spaces/sequences/${sequence._id}?user=${userId}&type=template`;
     return (
       <>
-      
         <FloatingEditor
           content={sequence.body}
           debounceUpdateFn={debounceUpdateSequenceBody({

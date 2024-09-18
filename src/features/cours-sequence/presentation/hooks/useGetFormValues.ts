@@ -20,6 +20,7 @@ function useGetFormValues(options: {
             competences: options.cours?.competences || [],
             imageUrl: options.cours?.imageUrl,
             publish: options.cours?.publish,
+            contentType: options.cours?.contentType,
           }
         : options.sequence !== undefined
         ? {
@@ -29,11 +30,13 @@ function useGetFormValues(options: {
             competences: options.sequence?.competencesIds || [],
             imageUrl: options.sequence?.imageUrl,
             publish: options.sequence?.publish,
+            contentType: options.sequence?.contentType,
           }
         : {
             description: "",
             category: "",
             name: "",
+            contentType: "Markup",
             competences: [],
             imageUrl: "",
             publish: false,

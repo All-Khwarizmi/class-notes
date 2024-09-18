@@ -7,7 +7,7 @@ import { QUERY_KEYS } from "@/core/query/ query-keys";
 import { toastWrapper } from "@/core/utils/toast-wrapper";
 export type CoursMetadata = Pick<
   Cours,
-  "description" | "category" | "name" | "competences" | "imageUrl"
+  "description" | "category" | "name" | "competences" | "imageUrl" | "contentType"
 >;
 
 export interface SaveCoursMetadataOptions {

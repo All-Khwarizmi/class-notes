@@ -1,5 +1,6 @@
 import { mutation, query } from "./_generated/server";
 import { v } from "convex/values";
+import { contentType } from "./fields/content_type";
 
 export const createCours = mutation({
   args: {
@@ -13,6 +14,7 @@ export const createCours = mutation({
     userId: v.string(),
     category: v.string(),
     publish: v.boolean(),
+    contentType: v.optional(contentType),
   },
   handler: async (ctx, args) => {
     const existingUser = await ctx.db
@@ -58,6 +60,7 @@ export const createCours = mutation({
         createdBy: existingUser!._id,
         createdAt: Date.now(),
         category: args.category,
+        contentType: args.contentType,
       });
 
       if (!categoryId) {
@@ -89,6 +92,7 @@ export const createCours = mutation({
       createdBy: existingUser!._id,
       createdAt: Date.now(),
       category: args.category,
+      contentType: args.contentType,
     });
 
     if (!categoryId) {

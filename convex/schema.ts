@@ -4,6 +4,7 @@ import { EvaluationWithGrade } from "./tables/evaluations_with_grades_convex_sch
 import { EvaluationBase } from "./tables/evaluation_base_convex_schema";
 import { userSchema } from "./fields/users";
 import { visibilityTable } from "./fields/visibility";
+import { contentType } from "./fields/content_type";
 export default defineSchema({
   Users: userSchema,
   VisibilityTable: visibilityTable,
@@ -23,30 +24,6 @@ export default defineSchema({
     .index("by_createdBy", ["createdBy"])
     .index("by_category", ["category"]),
 
-  // Lesson: defineTable({
-  //   name: v.string(),
-  //   description: v.string(),
-  //   coursId: v.id("Cours"),
-  //   body: v.string(),
-  //   sequenceId: v.id("Sequences"),
-  //   createdBy: v.id("Users"),
-  //   publish: v.boolean(),
-  //   publishDate: v.float64(),
-  // })
-  //   // .index("by_createdBy", ["createdBy"])
-  //   // .index("by_sequenceId", ["sequenceId"])
-  //   .index("by_coursId", ["coursId"]),
-
-  // Diagram: defineTable({
-  //   name: v.string(),
-  //   description: v.string(),
-  //   coursId: v.id("Cours"),
-  //   sequenceId: v.id("Sequences"),
-  //   createdBy: v.string(),
-  //   publish: v.boolean(),
-  //   publishDate: v.float64(),
-  //   body: v.string(),
-  // }).index("by_coursId", ["coursId"]),
   Complement: defineTable({
     name: v.string(),
     description: v.optional(v.string()),
@@ -56,11 +33,7 @@ export default defineSchema({
     publish: v.boolean(),
     publishDate: v.optional(v.float64()),
     body: v.string(),
-    contentType: v.union(
-      v.literal("Diagram"),
-      v.literal("Embed"),
-      v.literal("Markup")
-    ),
+    contentType: contentType,
     type: v.union(
       v.literal("Lesson"),
       v.literal("Exercise"),
@@ -83,11 +56,7 @@ export default defineSchema({
         v.object({
           id: v.string(),
           name: v.string(),
-          contentType: v.union(
-            v.literal("Diagram"),
-            v.literal("Flowchart"),
-            v.literal("Markup")
-          ),
+          contentType: contentType,
           createdAt: v.float64(),
         })
       )
@@ -97,11 +66,7 @@ export default defineSchema({
     content: v.string(),
     type: v.union(v.literal("Folder"), v.literal("Item")),
     lastModified: v.optional(v.float64()),
-    contentType: v.union(
-      v.literal("Diagram"),
-      v.literal("Flowchart"),
-      v.literal("Markup")
-    ),
+    contentType: contentType,
   }).index("by_parentId", ["parentId"]),
   Cours: defineTable({
     name: v.string(),
@@ -114,6 +79,7 @@ export default defineSchema({
     createdBy: v.string(),
     createdAt: v.float64(),
     category: v.string(),
+    contentType: v.optional(contentType),
     publish: v.optional(v.boolean()),
     coursComplementIds: v.optional(v.array(v.id("Cours"))),
   })
@@ -130,6 +96,7 @@ export default defineSchema({
     createdBy: v.string(),
     createdAt: v.float64(),
     category: v.string(),
+    contentType: v.optional(contentType),
     publish: v.optional(v.boolean()),
   })
     .index("by_createdBy", ["createdBy"])

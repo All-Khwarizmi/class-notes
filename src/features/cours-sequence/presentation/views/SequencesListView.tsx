@@ -5,7 +5,6 @@ import { Button } from "@/core/components/ui/button";
 import useDeleteSequence from "@/features/complement/application/adapters/services/useDeleteSequence";
 import {
   HeaderTypographyH1,
-  TypographyH1,
 } from "@/core/components/common/Typography";
 import CoursSequenceCard from "../components/CoursSequenceCard";
 import useGetAllSequences from "../../application/adapters/services/useGetAllSequences";

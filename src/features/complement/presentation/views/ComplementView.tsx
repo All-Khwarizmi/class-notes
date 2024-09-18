@@ -9,6 +9,7 @@ import useUpdateComplement from "../../application/adapters/services/useUpdateCo
 import FloatingEditor from "@/core/components/common/editor/FloatingEditor";
 import dynamic from "next/dynamic";
 import LoadingSkeleton from "@/core/components/common/LoadingSkeleton";
+import EmbedWithInput from "@/features/cours-sequence/presentation/components/Embed";
 
 const ExcalidrawCanvas = dynamic(
   () =>
@@ -25,14 +26,21 @@ function ComplementView(props: {
 }) {
   const { debounceUpdateComplement } = useUpdateComplement();
   const [isClient, setIsClient] = useState(false);
-  const [debug, setDebug] = useState<string>("Initializing...");
-  const renderCount = useRef(0);
+
 
   useEffect(() => {
     setIsClient(true);
-    setDebug("Component mounted, isClient set to true");
   }, []);
 
+  if (props.complement.contentType === "Embed") {
+    return (
+      <EmbedWithInput
+        initialUrl={props.complement.body}
+        title={props.complement.name}
+        onUrlUpdate={debounceUpdateComplement(props.complement)}
+      />
+    );
+  }
 
   if (props.complement.contentType === "Diagram") {
     if (!isClient) {
@@ -44,7 +52,6 @@ function ComplementView(props: {
           initialData={props.complement.body}
           saveComplement={debounceUpdateComplement(props.complement)}
         />
-     
       </div>
     );
   }
@@ -69,7 +76,6 @@ function ComplementView(props: {
           </div>
         </div>
       </FloatingEditor>
-     
     </div>
   );
 }

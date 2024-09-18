@@ -23,6 +23,7 @@ import type * as cours from "../cours.js";
 import type * as criteria from "../criteria.js";
 import type * as evaluation_base from "../evaluation_base.js";
 import type * as evaluation_with_grades from "../evaluation_with_grades.js";
+import type * as fields_content_type from "../fields/content_type.js";
 import type * as fields_criterias from "../fields/criterias.js";
 import type * as fields_grade_type from "../fields/grade_type.js";
 import type * as fields_users from "../fields/users.js";
@@ -56,6 +57,7 @@ declare const fullApi: ApiFromModules<{
   criteria: typeof criteria;
   evaluation_base: typeof evaluation_base;
   evaluation_with_grades: typeof evaluation_with_grades;
+  "fields/content_type": typeof fields_content_type;
   "fields/criterias": typeof fields_criterias;
   "fields/grade_type": typeof fields_grade_type;
   "fields/users": typeof fields_users;

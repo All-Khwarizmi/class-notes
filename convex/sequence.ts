@@ -1,7 +1,7 @@
-import { de } from "@faker-js/faker";
 import { Id } from "./_generated/dataModel";
 import { mutation, query } from "./_generated/server";
 import { v } from "convex/values";
+import { contentType } from "./fields/content_type";
 
 export const createSequence = mutation({
   args: {
@@ -12,6 +12,7 @@ export const createSequence = mutation({
     userId: v.string(),
     category: v.string(),
     imageUrl: v.string(),
+    contentType: v.optional(contentType),
     publish: v.optional(v.boolean()),
   },
   handler: async (ctx, args) => {
@@ -32,6 +33,7 @@ export const createSequence = mutation({
         createdAt: Date.now(),
         category: args.category,
         publish: args.publish,
+        contentType: args.contentType,
       });
 
       if (!categoryId) {

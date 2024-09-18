@@ -27,6 +27,7 @@ function useGetSubmitFunction(options: {
       ...data,
       competences: data.competences,
     };
+    console.log("In onSubmitCours", newData);
     setSaveCoursMetadata({
       sequenceId: options.sequenceId!,
       cours: newData,

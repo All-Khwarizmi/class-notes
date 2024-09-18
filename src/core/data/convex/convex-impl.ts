@@ -386,6 +386,7 @@ export default class ConvexDatabase extends IDatabase {
         competences: cours.competences,
         publish: cours.publish ?? false,
         category: cours.category,
+        contentType: cours.contentType,
       });
       if (!result) {
         return left(
@@ -501,6 +502,7 @@ export default class ConvexDatabase extends IDatabase {
         category: sequence.category,
         competencesIds: sequence.competencesIds,
         publish: sequence.publish,
+        contentType: sequence.contentType,
       });
       if (!result) {
         return left(
