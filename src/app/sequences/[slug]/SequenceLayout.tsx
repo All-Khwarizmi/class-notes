@@ -55,8 +55,8 @@ async function SequenceLayout(props: {
     );
   }
   return (
-    <Tabs defaultValue="sequence" className="py-8 px-4 ">
-      <div className="w-full flex  items-center justify-between gap-8 pb-8">
+    <Tabs defaultValue="sequence" className=" px-4 ">
+      <div className="w-full flex  items-center justify-between ">
         <TypographyH3 text={eitherSequence.right.name} />
         <div className="flex items-start gap-4">
           <TabsList>

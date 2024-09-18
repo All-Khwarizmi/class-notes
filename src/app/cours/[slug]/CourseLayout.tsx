@@ -39,7 +39,7 @@ async function CourseLayout(props: { slug: string }) {
     );
   }
   return (
-    <Tabs defaultValue="course" className="py-8 px-4">
+    <Tabs defaultValue="course" className=" px-4">
       <div className="w-full flex justify-between">
         <TypographyH3 text={eitherCours.right.name} />
 

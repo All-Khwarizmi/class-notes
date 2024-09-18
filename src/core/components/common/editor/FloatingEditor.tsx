@@ -56,7 +56,7 @@ function FloatingEditor(props: {
           >
             <FloatingMenuBar editor={editor} />
           </FloatingMenu>
-          <EditorContent editor={editor} />
+          <EditorContent className="h-[85vh] overflow-scroll" editor={editor} />
           {props.afterMenuBar && (
             <div className="flex flex-col gap-4 ">
               <AfterMenuBar editor={editor}>{props.children}</AfterMenuBar>
