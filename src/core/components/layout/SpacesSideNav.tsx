@@ -39,9 +39,15 @@ export function SpacesSideNav({ setOpen, className }: SideNavProps) {
       setOpenItem(lastOpenItem);
     } else {
       setLastOpenItem(openItem);
-      setOpenItem("");
+      setOpenItem("");  
     }
   }, [isOpen]);
+
+  useEffect(() => {
+    if (spacesNavItems && spacesNavItems.length < 1) {
+      toggle(false);
+    }
+  }, [spacesNavItems]);
 
   useEffect(() => {
     setLiveHref(path);

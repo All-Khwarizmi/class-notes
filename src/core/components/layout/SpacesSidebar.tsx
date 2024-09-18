@@ -5,9 +5,11 @@ import { useSidebar } from "@/core/application/common/useSidebar";
 import ArrowLeft from "../icons/ArrowLeft";
 
 import { SpacesSideNav } from "./SpacesSideNav";
+import { NavItem } from "@/lib/types";
 
 export interface SidebarProps {
   className?: string;
+  navItems?: NavItem[];
 }
 
 export default function SpacesSidebar({ className }: SidebarProps) {
