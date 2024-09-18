@@ -1,27 +1,26 @@
 "use client";
+
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
+import { useAction } from "convex/react";
+import { UserButton } from "@clerk/nextjs";
+import { CalendarDaysIcon, CoinsIcon } from "lucide-react";
 import {
   UserType,
   userSchema,
 } from "@/features/user/domain/entities/user-schema";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
+  FormMessage,
 } from "@/core/components/ui/form";
 import { Input } from "@/core/components/ui/input";
-import useSaveUser from "../../application/adapters/services/useSaveUser";
-import { UserButton } from "@clerk/nextjs";
 import { Button } from "@/core/components/ui/button";
-import { useAction } from "convex/react";
-import { api } from "../../../../../convex/_generated/api";
-import { useRouter } from "next/navigation";
-import { Separator } from "@radix-ui/react-select";
-import { countryOptions } from "@/features/user/domain/entities/user-schema";
 import {
   Select,
   SelectContent,
@@ -30,290 +29,208 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/core/components/ui/select";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/core/components/ui/card";
+import { Separator } from "@/core/components/ui/separator";
+import { countryOptions } from "@/features/user/domain/entities/user-schema";
 import { getEducationSystemOptions } from "@/features/user/domain/entities/education-systems/global";
 import { educationSystemOptions } from "@/features/user/domain/entities/education-systems/education-system";
+import { checkUserCredits } from "../helpers/helpers";
+import useSaveUser from "../../application/adapters/services/useSaveUser";
+import { api } from "../../../../../convex/_generated/api";
 
 export default function UserProfile({ user }: { user: UserType }) {
   const { setSaveUserOptions, loading, error } = useSaveUser();
+  const [isUpdating, setIsUpdating] = useState(false);
+  const router = useRouter();
+  const pay = useAction(api.stripe.pay);
+
   const form = useForm<Omit<UserType, "_id" | "userId">>({
-    resolver: zodResolver(
-      userSchema.omit({
-        _id: true,
-        userId: true,
-      })
-    ),
+    resolver: zodResolver(userSchema.omit({ _id: true, userId: true })),
     defaultValues: user,
   });
 
-  function onSubmit(data: Omit<UserType, "_id" | "userId">) {
-    setSaveUserOptions({
+  const selectedSystem = form.watch("educationSystem");
+  const subjectsOptions = getEducationSystemOptions(selectedSystem);
+
+  async function onSubmit(data: Omit<UserType, "_id" | "userId">) {
+    setIsUpdating(true);
+    await setSaveUserOptions({
       userId: user.userId,
       ...data,
     });
+    setIsUpdating(false);
   }
-  const router = useRouter();
 
-  const pay = useAction(api.stripe.pay);
-  async function handleOnClick() {
+  async function handleUpgradeClick() {
     const url = await pay();
     router.push(url);
   }
 
-  const selectedSystem = form.watch("educationSystem");
-  const subjectsOptions = getEducationSystemOptions(selectedSystem);
   return (
-    <div
-      data-testid="user-form"
-      className="py-8 mt-8 px-6 pt-12 space-y-8 bg-slate-900 shadow-md shadow-slate-800"
-    >
-      <div className="h-full flex justify-center gap-4 pb-4">
-        <UserButton />
-      </div>
-      <Separator className="my-8" />
-      <div className="grid place-items-center grid-cols-2 gap-6 ">
-        <div className="space-y-2">
-          <h3 className="text-lg font-medium">Subscription Expiration</h3>
-          <div className="text-muted-foreground">
-            <CalendarDaysIcon className="inline-block w-5 h-5 mr-1" />{" "}
-            {user.endsOn
-              ? new Date(user.endsOn).toDateString()
-              : "No subscription"}
+    <Card className="w-full max-w-2xl mx-auto">
+      <CardHeader>
+        <div className="flex items-center justify-between">
+          <CardTitle>User Profile</CardTitle>
+          <UserButton />
+        </div>
+      </CardHeader>
+      <CardContent className="space-y-6">
+        <div className="grid grid-cols-2 gap-4">
+          <div className="space-y-2">
+            <h3 className="text-sm font-medium text-muted-foreground">
+              Subscription Expiration
+            </h3>
+            <p className="text-2xl font-semibold flex items-center">
+              <CalendarDaysIcon className="w-5 h-5 mr-2" />
+              {user.endsOn
+                ? new Date(user.endsOn).toDateString()
+                : "No subscription"}
+            </p>
+          </div>
+          <div className="space-y-2">
+            <h3 className="text-sm font-medium text-muted-foreground">
+              Credits Remaining
+            </h3>
+            <p className="text-2xl font-semibold flex items-center">
+              <CoinsIcon className="w-5 h-5 mr-2" />
+              {checkUserCredits(user.endsOn, user.credits)}
+            </p>
           </div>
         </div>
-        <div className="space-y-2">
-          <h3 className="text-lg font-medium">Credits Remaining</h3>
-          <div className="text-muted-foreground">
-            <CoinsIcon className="inline-block w-5 h-5 mr-1" />{" "}
-            {checkUserCredits(user.endsOn, user.credits)}
-          </div>
-        </div>
-      </div>
-      <Separator className="my-6" />
-      <div className="flex flex-col items-center space-y-4">
+
+        <Separator />
+
         {!user.subscriptionId && (
           <Button
-            variant="default" // Change the variant to "primary" for a more call to action look
+            variant="default"
             className="w-full"
-            onClick={handleOnClick}
+            onClick={handleUpgradeClick}
             data-testid="pay-subcription-btn"
-            type="button"
           >
             Upgrade Now
           </Button>
         )}
-      </div>
 
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-          <FormField
-            control={form.control}
-            name="name"
-            render={({ field }) => {
-              return (
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
                 <FormItem>
-                  <FormLabel htmlFor={field.name}>Name</FormLabel>
+                  <FormLabel>Name</FormLabel>
                   <FormControl>
                     <Input
-                      data-testid="name-input"
                       {...field}
                       placeholder="John Doe"
+                      data-testid="name-input"
                     />
                   </FormControl>
+                  <FormMessage />
                 </FormItem>
-              );
-            }}
-          />
-          {/* Country select option */}
-          <FormField
-            control={form.control}
-            name="country"
-            render={({ field }) => {
-              return (
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="country"
+              render={({ field }) => (
                 <FormItem>
-                  <FormLabel htmlFor={field.name}>Country</FormLabel>
-                  <FormControl>
-                    <Select onValueChange={field.onChange} value={field.value}>
+                  <FormLabel>Country</FormLabel>
+                  <Select onValueChange={field.onChange} value={field.value}>
+                    <FormControl>
                       <SelectTrigger>
                         <SelectValue placeholder="Select a country" />
                       </SelectTrigger>
-                      <SelectContent>
-                        <SelectGroup>
-                          {countryOptions.map((option) => (
-                            <SelectItem key={option.value} value={option.value}>
-                              {option.label}
-                            </SelectItem>
-                          ))}
-                        </SelectGroup>
-                      </SelectContent>
-                    </Select>
-                  </FormControl>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectGroup>
+                        {countryOptions.map((option) => (
+                          <SelectItem key={option.value} value={option.value}>
+                            {option.label}
+                          </SelectItem>
+                        ))}
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
                 </FormItem>
-              );
-            }}
-          />
-          <FormField
-            control={form.control}
-            name="educationSystem"
-            render={({ field }) => {
-              return (
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="educationSystem"
+              render={({ field }) => (
                 <FormItem>
-                  <FormLabel htmlFor={field.name}>Education System</FormLabel>
-                  <FormControl>
-                    <Select onValueChange={field.onChange} value={field.value}>
+                  <FormLabel>Education System</FormLabel>
+                  <Select onValueChange={field.onChange} value={field.value}>
+                    <FormControl>
                       <SelectTrigger>
                         <SelectValue placeholder="Select your education system" />
                       </SelectTrigger>
-                      <SelectContent>
-                        <SelectGroup>
-                          {educationSystemOptions.map((option) => (
-                            <SelectItem key={option.value} value={option.value}>
-                              {option.label}
-                            </SelectItem>
-                          ))}
-                        </SelectGroup>
-                      </SelectContent>
-                    </Select>
-                  </FormControl>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectGroup>
+                        {educationSystemOptions.map((option) => (
+                          <SelectItem key={option.value} value={option.value}>
+                            {option.label}
+                          </SelectItem>
+                        ))}
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
                 </FormItem>
-              );
-            }}
-          />
+              )}
+            />
 
-          <FormField
-            control={form.control}
-            name="schoolSubject"
-            render={({ field }) => {
-              return (
+            <FormField
+              control={form.control}
+              name="schoolSubject"
+              render={({ field }) => (
                 <FormItem>
-                  <FormLabel htmlFor={field.name}>Subject</FormLabel>
-                  <FormControl>
-                    <Select onValueChange={field.onChange} value={field.value}>
+                  <FormLabel>Subject</FormLabel>
+                  <Select onValueChange={field.onChange} value={field.value}>
+                    <FormControl>
                       <SelectTrigger>
                         <SelectValue placeholder="Select your subjects" />
                       </SelectTrigger>
-                      <SelectContent>
-                        <SelectGroup>
-                          {subjectsOptions?.map((option) => {
-                            return (
-                              <SelectItem value={option} key={option}>
-                                {option}
-                              </SelectItem>
-                            );
-                          })}
-                        </SelectGroup>
-                      </SelectContent>
-                    </Select>
-                  </FormControl>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectGroup>
+                        {subjectsOptions?.map((option) => (
+                          <SelectItem key={option} value={option}>
+                            {option}
+                          </SelectItem>
+                        ))}
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
                 </FormItem>
-              );
-            }}
-          />
-          <div className="flex justify-end gap-4">
-            <Button
-              variant="secondary"
-              data-testid="submit-onboarding-form"
-              type="submit"
-            >
-              Update
-            </Button>
-          </div>
-        </form>
-      </Form>
-    </div>
+              )}
+            />
+          </form>
+        </Form>
+      </CardContent>
+      <CardFooter>
+        <Button
+          className="w-full"
+          onClick={form.handleSubmit(onSubmit)}
+          disabled={isUpdating || loading}
+          data-testid="submit-onboarding-form"
+        >
+          {isUpdating || loading ? "Updating..." : "Update Profile"}
+        </Button>
+      </CardFooter>
+    </Card>
   );
-}
-
-function CalendarDaysIcon(props: React.SVGProps<SVGSVGElement>) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M8 2v4" />
-      <path d="M16 2v4" />
-      <rect width="18" height="18" x="3" y="4" rx="2" />
-      <path d="M3 10h18" />
-      <path d="M8 14h.01" />
-      <path d="M12 14h.01" />
-      <path d="M16 14h.01" />
-      <path d="M8 18h.01" />
-      <path d="M12 18h.01" />
-      <path d="M16 18h.01" />
-    </svg>
-  );
-}
-
-function CheckIcon(props: React.SVGProps<SVGSVGElement>) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M20 6 9 17l-5-5" />
-    </svg>
-  );
-}
-
-function CoinsIcon(props: React.SVGProps<SVGSVGElement>) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <circle cx="8" cy="8" r="6" />
-      <path d="M18.09 10.37A6 6 0 1 1 10.34 18" />
-      <path d="M7 6h1v4" />
-      <path d="m16.71 13.88.7.71-2.82 2.82" />
-    </svg>
-  );
-}
-
-function checkUserCredits(endsOn?: number, credits?: number) {
-  if (checkUserSubscriptionStatus(endsOn) === "Active") {
-    return "Unlimited";
-  } else if (credits && credits > 0) {
-    return String(credits);
-  } else if (credits === 0) {
-    return "No credits left";
-  }
-}
-
-export function checkUserSubscriptionStatus(endsOn?: number) {
-  if (!endsOn) {
-    return "No subscription";
-  }
-  const now = new Date();
-  const endsOnDate = new Date(endsOn);
-  if (now < endsOnDate) {
-    return "Active";
-  } else {
-    return "Expired";
-  }
-}
-function getSubjectsByEducationSystem(selectedSystem: string) {
-  throw new Error("Function not implemented.");
 }
