@@ -1,8 +1,11 @@
+import NotFound from "@/app/not-found";
 import NothingToShow from "@/core/components/common/editor/NothingToShow";
+import ErrorDialog from "@/core/components/common/ErrorDialog";
 import getVisibility from "@/features/classe/application/adapters/actions/get-visibility";
 import { coursUsecases } from "@/features/cours-sequence/application/usecases/cours-usecases";
 import { Sequence } from "@/features/cours-sequence/domain/entities/cours-schemas";
 import SequencesListViewSpaces from "@/features/cours-sequence/presentation/views/SeqquenceListViewSpaces";
+import { profileUseCases } from "@/features/profile/application/usecases/profile-usecases";
 import { NavItem } from "@/lib/types";
 import { isLeft } from "fp-ts/lib/Either";
 import { Book } from "lucide-react";
@@ -12,6 +15,23 @@ async function SpacesClasseServerLayer(props: {
   slug: string;
   searchParams: { [key: string]: string | undefined };
 }) {
+  const userId = props.searchParams.user;
+  if (!userId) {
+    return <NotFound />;
+  }
+  const user = await profileUseCases.getUser({ userId });
+
+  if (isLeft(user)) {
+    return (
+      <ErrorDialog
+        message="An error occured while fetching the user"
+        code={user.left.code}
+        description={
+          process.env.NODE_ENV === "development" ? user.left.message : ""
+        }
+      />
+    );
+  }
   const eitherSequences = await coursUsecases.getClasseSequences({
     classeId: props.slug,
   });
@@ -19,6 +39,7 @@ async function SpacesClasseServerLayer(props: {
   if (isLeft(eitherSequences) || !props.searchParams.user) {
     return <NothingToShow />;
   }
+
   const eitherVisibility = await getVisibility({
     userId: props.searchParams.user,
   });
@@ -51,6 +72,7 @@ async function SpacesClasseServerLayer(props: {
     <>
       {sequences.length > 0 ? (
         <SequencesListViewSpaces
+          userName={user.right.name ?? "Unknown User"}
           navItems={sequenceNavItems}
           sequences={sequences}
           spacesMode={true}

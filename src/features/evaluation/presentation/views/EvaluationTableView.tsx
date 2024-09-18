@@ -2,93 +2,109 @@
 
 import React from "react";
 import Link from "next/link";
-import { Delete, ExternalLink, Plus } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { Plus, Loader2 } from "lucide-react";
+import { isLeft } from "fp-ts/lib/Either";
 import {
-  Table,
-  TableRow,
-  TableHead,
-  TableBody,
-  TableCell,
-  TableCaption,
-  TableHeader,
-} from "@/core/components/ui/table";
-import { Button } from "@/core/components/ui/button";
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/core/components/ui/card";
+import {
+  Alert,
+  AlertDescription,
+  AlertTitle,
+} from "@/core/components/ui/alert";
 import { EvaluationBaseType } from "../../domain/entities/evaluation-schema";
 import useDeleteEvaluationBase from "../../application/adapters/services/useDeleteEvaluationBase";
 import useIsEvaluationAssigned from "../../application/adapters/services/useIsEvaluationAssigned";
-import { isLeft } from "fp-ts/lib/Either";
-import {
-  HeaderTypographyH1,
-  TypographyH1,
-} from "@/core/components/common/Typography";
-import { useRouter } from "next/navigation";
-import DeleteTableButton from "@/core/components/common/DeleteTableButton";
 import useGetEvaluationsBaseList from "../../application/adapters/services/useGetEvaluationsBaseList";
 import { toastWrapper } from "@/core/utils/toast-wrapper";
 import EvaluationCard from "../components/EvaluationCard";
+import { Button } from "@/core/components/ui/button";
 
-function EvaluationTableView({ userId }: { userId: string }) {
-  const { data: evaluations, refetch } = useGetEvaluationsBaseList({ userId });
+interface EvaluationTableViewProps {
+  userId: string;
+}
+
+export default function EvaluationTableView({
+  userId,
+}: EvaluationTableViewProps) {
   const router = useRouter();
-  const { mutate: deleteEvaluationBase } = useDeleteEvaluationBase();
   const {
-    mutate: checkIfEvalIsAssgined,
-    data: isEvaluationAssigned,
-    isPending,
-  } = useIsEvaluationAssigned();
-  function handleDelete(evaluationId: string) {
-    checkIfEvalIsAssgined(
-      {
-        evaluationId: evaluationId,
-      },
+    data: evaluations,
+    refetch,
+    isLoading,
+    isError,
+  } = useGetEvaluationsBaseList({ userId });
+  const { mutate: deleteEvaluationBase } = useDeleteEvaluationBase();
+  const { mutate: checkIfEvalIsAssigned } = useIsEvaluationAssigned();
 
+  const handleDelete = (evaluationId: string) => {
+    checkIfEvalIsAssigned(
+      { evaluationId },
       {
         onSuccess: (data) => {
           if (isLeft(data)) {
             toastWrapper.error(
-              "Could not make the relevant checks to be able to safely delete the evaluation. Please try again later."
+              "Impossible de vérifier si l'évaluation peut être supprimée en toute sécurité. Veuillez réessayer plus tard."
             );
             return;
           }
-          if (data.right === true) {
-            confirm(
-              `The evaluation is assigned to at least a class. Deleting the evaluation will remove all together with the grades. Are you sure you want to proceed?`
-            ) &&
-              deleteEvaluationBase({
-                evaluationId: evaluationId,
-              });
-            return;
-          } else {
-            confirm(
-              `Are you sure you want to delete the evaluation? This action is irreversible.`
-            ) &&
-              deleteEvaluationBase(
-                {
-                  evaluationId: evaluationId,
-                },
-                {
-                  onSuccess: async () => {
-                    await refetch();
-                  },
-                }
-              );
+
+          const confirmMessage = data.right
+            ? "Cette évaluation est assignée à au moins une classe. La supprimer effacera également toutes les notes associées. Êtes-vous sûr de vouloir continuer ?"
+            : "Êtes-vous sûr de vouloir supprimer cette évaluation ? Cette action est irréversible.";
+
+          if (window.confirm(confirmMessage)) {
+            deleteEvaluationBase(
+              { evaluationId },
+              {
+                onSuccess: () => refetch(),
+                onError: () =>
+                  toastWrapper.error(
+                    "Erreur lors de la suppression de l'évaluation. Veuillez réessayer."
+                  ),
+              }
+            );
           }
         },
-        onError: () => {
-          alert(
-            "Could not make the relevant checks to be able to safely delete the evaluation. Please try again later."
-          );
-        },
+        onError: () =>
+          toastWrapper.error(
+            "Impossible de vérifier si l'évaluation peut être supprimée en toute sécurité. Veuillez réessayer plus tard."
+          ),
       }
+    );
+  };
+
+  if (isLoading) {
+    return (
+      <Card className="w-full h-[50vh] flex items-center justify-center">
+        <CardContent>
+          <Loader2 className="h-8 w-8 animate-spin" />
+        </CardContent>
+      </Card>
     );
   }
 
-  if (!evaluations || isLeft(evaluations)) return null;
+  if (isError || !evaluations || isLeft(evaluations)) {
+    return (
+      <Alert variant="destructive">
+        <AlertTitle>Erreur</AlertTitle>
+        <AlertDescription>
+          Une erreur s&apos;est produite lors du chargement des évaluations.
+          Veuillez réessayer plus tard.
+        </AlertDescription>
+      </Alert>
+    );
+  }
+
   return (
-    <div className="w-full h-full p-4 ">
-      <HeaderTypographyH1 text="Evaluations" />
-      <div className="w-full">
-        <div className="space-y-4 flex flex-col w-full">
+    <div className="container mx-auto px-4 py-8">
+      <h1 className="text-3xl font-bold mb-6">Évaluations</h1>
+      {evaluations.right.length > 0 ? (
+        <div className="space-y-4">
           {evaluations.right.map((evaluation: EvaluationBaseType) => (
             <EvaluationCard
               key={evaluation.id}
@@ -100,16 +116,27 @@ function EvaluationTableView({ userId }: { userId: string }) {
             />
           ))}
         </div>
-      </div>
+      ) : (
+        <Card className="text-center p-8">
+          <CardHeader>
+            <CardTitle>Aucune évaluation trouvée</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-muted-foreground">
+              Vous n&apos;avez pas encore créé d&apos;évaluation. Commencez par
+              en ajouter une.
+            </p>
+          </CardContent>
+        </Card>
+      )}
       <div className="flex justify-center mt-8">
-        <Link href="/evaluations/add">
-          <Button>
-            <Plus size={16} />
-          </Button>
-        </Link>
+        <Button asChild>
+          <Link href="/evaluations/add">
+            <Plus className="mr-2 h-4 w-4" />
+            Ajouter une évaluation
+          </Link>
+        </Button>
       </div>
     </div>
   );
 }
-
-export default EvaluationTableView;

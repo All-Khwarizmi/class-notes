@@ -1,72 +1,63 @@
 "use client";
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/core/components/ui/table";
+
+import React from "react";
 import Link from "next/link";
-import { Delete, Pen, Plus } from "lucide-react";
+import { Plus, Loader2 } from "lucide-react";
 import { useClassesTableLogic } from "../services/hooks/useClassesTableLogic";
-import Layout from "@/core/components/layout/Layout";
-import { cn } from "@/lib/utils";
 import { Button } from "@/core/components/ui/button";
-import {
-  HeaderTypographyH1,
-  TypographyH1,
-} from "@/core/components/common/Typography";
+import { Card, CardContent, CardHeader, CardTitle } from "@/core/components/ui/card";
+import { Alert, AlertDescription, AlertTitle } from "@/core/components/ui/alert";
 import CoursSequenceCard from "@/features/cours-sequence/presentation/components/CoursSequenceCard";
 import { BASE_IMAGE_URL } from "@/core/constants/image";
 
-export default function ClassesTable(props: { userId: string }) {
-  const {
-    classes,
-    isLoading,
-    isError,
-    error,
-    refetchClasses,
-    open,
-    setOpen,
-    handleDelete,
-  } = useClassesTableLogic({ userId: props.userId });
+interface ClassesTableProps {
+  userId: string;
+}
+
+export default function ClassesTable({ userId }: ClassesTableProps) {
+  const { classes, isLoading, isError, error, handleDelete } =
+    useClassesTableLogic({ userId });
 
   if (isLoading) {
-    return <Layout.LoadingSkeleton />;
+    return (
+      <Card className="w-full h-[50vh] flex items-center justify-center">
+        <CardContent>
+          <Loader2 className="h-8 w-8 animate-spin" />
+        </CardContent>
+      </Card>
+    );
   }
 
   if (isError) {
     return (
-      <Layout
-        isError={{
-          message: "Une erreur s'est produite lors du chargement des classes",
-          description: error?.message,
-        }}
-      >
-        <Layout.ErrorDialog />
-      </Layout>
+      <Alert variant="destructive">
+        <AlertTitle>Erreur</AlertTitle>
+        <AlertDescription>
+          Une erreur s&apos;est produite lors du chargement des classes.{" "}
+          {error?.message}
+        </AlertDescription>
+      </Alert>
     );
   }
 
   return (
-    <section className={cn(` px-4`)}>
-      <HeaderTypographyH1 text="Mes Classes" />
+    <div className="container mx-auto px-4 py-8">
+      <h1 className="text-3xl font-bold mb-6">Mes Classes</h1>
       {classes && classes.right.length > 0 ? (
-        <section className="grid grid-cols-1  gap-4 sm:grid-cols-3   lg:grid-cols-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {classes.right.map((classe) => (
             <CoursSequenceCard
+              key={classe.id}
               deleteOption={true}
               deleteSequence={() => {
-                const confirmation = window.confirm(
-                  "Are you sure you want to delete this classe?"
-                );
-                if (confirmation) {
+                if (
+                  window.confirm(
+                    "Êtes-vous sûr de vouloir supprimer cette classe ?"
+                  )
+                ) {
                   handleDelete(classe.id);
                 }
               }}
-              key={classe.id}
               title={classe.name}
               description={classe.description ?? ""}
               imageUrl={classe.imageUrl ?? BASE_IMAGE_URL}
@@ -77,35 +68,28 @@ export default function ClassesTable(props: { userId: string }) {
               spacesMode={true}
             />
           ))}
-        </section>
-      ) : (
-        <>
-          {/* Display empty table with test attribute only and the message of emptyness */}
-          <Table data-testid="classes-table" className="">
-            <TableCaption>
-              Vous n&apos;avez pas encore ajouté de classe. Ajoutez une classe
-            </TableCaption>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Name</TableHead>
-                <TableHead>Description</TableHead>
-                <TableHead>Actions</TableHead>
-                <TableHead>Show</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody></TableBody>
-          </Table>
-        </>
-      )}
-      <article className="flex flex-col py-8 items-center">
-        <div>
-          <Link data-testid="add-class" href={`/classes/add`}>
-            <Button className="w-full">
-              <Plus size={16} />
-            </Button>
-          </Link>
         </div>
-      </article>
-    </section>
+      ) : (
+        <Card className="text-center p-8">
+          <CardHeader>
+            <CardTitle>Aucune classe trouvée</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-muted-foreground">
+              Vous n&apos;avez pas encore ajouté de classe. Commencez par en ajouter
+              une.
+            </p>
+          </CardContent>
+        </Card>
+      )}
+      <div className="flex justify-center mt-8">
+        <Button asChild>
+          <Link href="/classes/add" data-testid="add-class">
+            <Plus className="mr-2 h-4 w-4" />
+            Ajouter une classe
+          </Link>
+        </Button>
+      </div>
+    </div>
   );
 }

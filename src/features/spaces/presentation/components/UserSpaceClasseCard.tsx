@@ -1,55 +1,92 @@
+"use client";
+
+import React, { useEffect } from "react";
+import Link from "next/link";
 import { useLayoutContext } from "@/core/components/layout/ExperimentalLayoutCtx";
 import { Button } from "@/core/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/core/components/ui/card";
+import { Badge } from "@/core/components/ui/badge";
 import { ClassType } from "@/features/classe/domain/class-schema";
 import { NavItem } from "@/lib/types";
 import { cn } from "@/lib/utils";
-import Link from "next/link";
-import React, { useEffect } from "react";
+import { Users, Calendar, BookOpen } from "lucide-react";
+import { AspectRatio } from "@/core/components/ui/aspect-ratio";
 
-function UserSpaceClasseCard(props: {
+interface UserSpaceClasseCardProps {
   classe: ClassType;
   userId: string;
   navItems: NavItem[];
-}) {
-  const { setSpacesNavItems, setIsSpaces } = useLayoutContext();
-  useEffect(() => {
-    if (setSpacesNavItems && setIsSpaces) {
-      setSpacesNavItems(props.navItems);
-      setIsSpaces(true);
-    }
-  }, [props.navItems, setSpacesNavItems, setIsSpaces]);
-
-  return (
-    <div
-      className={cn(
-        "bg-white rounded-lg overflow-hidden shadow-md dark:bg-gray-950 dark:text-gray-200 border ",
-        `hover:shadow-lg hover:scale-105 transition duration-300 ease-in-out shadow-slate-800 dark:border-gray-800 dark:hover:shadow-slate-900 dark:hover:border-gray-900`
-      )}
-    >
-      <img
-        src={
-          props.classe.imageUrl ?? "/images/mos-design-jzFbbG2WXv0-unsplash.jpg"
-        }
-        alt="Card 1"
-        width={400}
-        height={300}
-        className="w-full h-48 object-cover"
-      />
-      <div className="p-4">
-        <h3 className="text-lg font-semibold ">{props.classe.name}</h3>
-        <p className="text-gray-500 dark:text-gray-400 mb-4">
-          {props.classe.description}
-        </p>
-        <Button variant="outline" className="w-full">
-          <Link
-            href={`/spaces/classes/${props.classe.id}?user=${props.userId}`}
-          >
-            View Classe
-          </Link>
-        </Button>
-      </div>
-    </div>
-  );
 }
 
-export default UserSpaceClasseCard;
+export default function UserSpaceClasseCard({
+  classe,
+  userId,
+  navItems,
+}: UserSpaceClasseCardProps) {
+  const { setSpacesNavItems, setIsSpaces } = useLayoutContext();
+
+  useEffect(() => {
+    if (setSpacesNavItems && setIsSpaces) {
+      setSpacesNavItems(navItems);
+      setIsSpaces(true);
+    }
+  }, [navItems, setSpacesNavItems, setIsSpaces]);
+
+  return (
+    <Card
+      className={cn(
+        "overflow-hidden",
+        "hover:shadow-lg hover:scale-105 transition duration-300 ease-in-out"
+      )}
+    >
+      <CardHeader className="p-0">
+        <AspectRatio ratio={16 / 9}>
+          <img
+            src={
+              classe.imageUrl ?? "/images/mos-design-jzFbbG2WXv0-unsplash.jpg"
+            }
+            alt={`Image de la classe ${classe.name}`}
+            className="object-cover w-full h-full"
+          />
+        </AspectRatio>
+      </CardHeader>
+      <CardContent className="p-4">
+        <CardTitle className="text-lg font-semibold mb-2">
+          {classe.name}
+        </CardTitle>
+        <p className="text-muted-foreground text-sm mb-4 line-clamp-2">
+          {classe.description}
+        </p>
+        <div className="flex flex-wrap gap-2 mb-4">
+          {classe.educationLevel && (
+            <Badge variant="secondary">{classe.educationLevel}</Badge>
+          )}
+        </div>
+        <div className="flex justify-between text-sm text-muted-foreground">
+          {/* <div className="flex items-center">
+            <Users className="w-4 h-4 mr-1" />
+            <span>{classe.students?.length || 0} étudiants</span>
+          </div> */}
+          {/* <div className="flex items-center">
+            <Calendar className="w-4 h-4 mr-1" />
+            <span>{new Date(classe.).toLocaleDateString()}</span>
+          </div> */}
+        </div>
+      </CardContent>
+      <CardFooter>
+        <Button asChild className="w-full">
+          <Link href={`/spaces/classes/${classe.id}?user=${userId}`}>
+            <BookOpen className="w-4 h-4 mr-2" />
+            Voir la classe
+          </Link>
+        </Button>
+      </CardFooter>
+    </Card>
+  );
+}

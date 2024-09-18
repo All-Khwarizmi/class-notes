@@ -48,7 +48,7 @@ export default function CoursSequenceCard({
         </AspectRatio>
       </CardHeader>
       <CardContent className="p-4 space-y-2">
-        <h3 className="text-md font-semibold line-clamp-1">{title}</h3>
+        <h3 className="text-m font-semibold line-clamp-1">{title}</h3>
         <p className="text-sm text-muted-foreground line-clamp-2">
           {description}
         </p>
