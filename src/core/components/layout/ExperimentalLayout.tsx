@@ -15,6 +15,7 @@ import LayoutContext, {
 import { Loader } from "lucide-react";
 import { NavItem } from "@/lib/types";
 import { usePathname } from "next/navigation";
+import { ModeToggle } from "../common/ModeToggle";
 
 /**
  * Renders the layout component with the provided props.
@@ -85,25 +86,27 @@ function Layout({
         userId,
       }}
     >
-      {loading ? (
+      <div className="relative">
+        {loading ? (
         <div className="h-fit w-full overflow-hidden flex items-center justify-center py-4">
           <Layout.Loader />
         </div>
       ) : (
         <>{!isLandingPage && <Header />}</>
       )}
-      <section className="flex h-full w-full border-collapse overflow-hidden">
-        {loading ? (
-          <div className="h-full w-72 px-4 overflow-hidden flex items-center justify-center py-4">
-            <Layout.Loader />
-          </div>
-        ) : (
-          <>{!isLandingPage && <Sidebar />}</>
-        )}
-        <section className="h-full flex-1  pt-4 px-4 overflow-x-hidden">
-          {children}
+        <section className="flex h-full w-full border-collapse overflow-hidden">
+          {loading ? (
+            <div className="h-full w-72 px-4 overflow-hidden flex items-center justify-center py-4">
+              <Layout.Loader />
+            </div>
+          ) : (
+            <>{!isLandingPage && <Sidebar />}</>
+          )}
+          <section className="h-full flex-1  pt-4 px-4 overflow-x-hidden">
+            {children}
+          </section>
         </section>
-      </section>
+      </div>
     </LayoutContext.Provider>
   );
 }

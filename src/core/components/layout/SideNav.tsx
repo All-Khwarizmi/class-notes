@@ -88,7 +88,7 @@ export function SideNav({ setOpen, className }: SideNavProps) {
                 className={cn(
                   buttonVariants({ variant: "ghost" }),
                   pathIsActive({ path: item.href, liveHref }) && "bg-muted",
-                  `${item.color} hover:bg-muted`,
+                  `dark:${item.color} hover:bg-muted`,
                   "group relative flex h-12 justify-between px-4 py-2 text-base duration-200 hover:bg-muted hover:no-underline"
                 )}
               >
@@ -124,7 +124,7 @@ export function SideNav({ setOpen, className }: SideNavProps) {
                     className={cn(
                       buttonVariants({ variant: "ghost" }),
                       "group relative flex h-12 justify-start gap-x-3 ml-4",
-                      `${child.color} hover:bg-muted`,
+                      `dark:${child.color} hover:bg-muted`,
                       pathIsActive({ path: child.href, liveHref }) &&
                         "bg-muted font-bold hover:bg-muted"
                     )}
@@ -153,7 +153,7 @@ export function SideNav({ setOpen, className }: SideNavProps) {
             className={cn(
               buttonVariants({ variant: "ghost" }),
               "group relative flex h-12 justify-start",
-              `${item.color} hover:bg-muted`,
+              `dark:${item.color} hover:bg-muted`,
 
               pathIsActive({ path: item.href, liveHref: liveHref }) &&
                 "bg-secondary font-bold hover:bg-muted"

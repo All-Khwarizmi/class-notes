@@ -4,8 +4,7 @@ import Link from "next/link";
 import Hero from "./HeroSection";
 import ContactCTO from "@/core/components/layout/ContactCTO";
 import Features from "@/core/components/layout/Features";
-import { useLayoutContext } from "@/core/components/layout/ExperimentalLayoutCtx";
-import { useEffect } from "react";
+
 
 export default function Component() {
 
