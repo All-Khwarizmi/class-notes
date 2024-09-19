@@ -22,5 +22,6 @@
 
 ## Essayez La Classe
 
+
 Découvrez La Classe et commencez à transformer votre gestion de classe:
 [Accédez à La Classe](https://laclasse.app/)
