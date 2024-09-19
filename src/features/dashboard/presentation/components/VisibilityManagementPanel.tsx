@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import {
   Card,
   CardHeader,
@@ -14,11 +14,23 @@ import {
   CollapsibleTrigger,
 } from "@/core/components/ui/collapsible";
 import { Switch } from "@/core/components/ui/switch";
-import { BookOpen, BookText, Building, CheckSquare } from "lucide-react";
+import {
+  BookOpen,
+  BookText,
+  Building,
+  CheckSquare,
+  ChevronRight,
+  ChevronDown,
+} from "lucide-react";
 import { useVisibilityLogic } from "../../application/adapters/services/useVisibilityLogic";
 import { Skeleton } from "@/core/components/ui/skeleton";
-import { Alert, AlertDescription, AlertTitle } from "@/core/components/ui/alert";
+import {
+  Alert,
+  AlertDescription,
+  AlertTitle,
+} from "@/core/components/ui/alert";
 import { ScrollArea } from "@/core/components/ui/scroll-area";
+import { Badge } from "@/core/components/ui/badge";
 
 interface VisibilityManagementComponentProps {
   userId: string;
@@ -59,80 +71,79 @@ export default function VisibilityManagementComponent({
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <ScrollArea className="h-[60vh] pr-4">
+        <ScrollArea className=" pr-4">
           {visibilityState.classes.map((item) => (
-            <Collapsible key={item.id} className="mb-4">
-              <CollapsibleItem
-                icon={<Building className="h-4 w-4 text-blue-500" />}
-                name={item.name}
-                description={item.description}
-                isPublished={item.publish}
-                onToggle={() =>
-                  toggleStateVisibility({
-                    type: "classe",
-                    typeId: item.id,
-                    publish: !item.publish,
-                  })
-                }
-              >
-                {item.sequences.map((sequence) => (
-                  <Collapsible key={sequence.id} className="ml-4 mt-2">
+            <CollapsibleItem
+              key={item.id}
+              icon={<Building className="h-4 w-4 text-blue-500" />}
+              name={item.name}
+              description={item.description}
+              isPublished={item.publish}
+              onToggle={() =>
+                toggleStateVisibility({
+                  type: "classe",
+                  typeId: item.id,
+                  publish: !item.publish,
+                })
+              }
+              type="classe"
+            >
+              {item.sequences.map((sequence) => (
+                <CollapsibleItem
+                  key={sequence.id}
+                  icon={<BookText className="h-4 w-4 text-green-500" />}
+                  name={sequence.name}
+                  description={sequence.description}
+                  isPublished={sequence.publish}
+                  onToggle={() =>
+                    toggleStateVisibility({
+                      type: "sequence",
+                      typeId: sequence.id,
+                      publish: !sequence.publish,
+                    })
+                  }
+                  type="séquence"
+                >
+                  {sequence.courses.map((course) => (
                     <CollapsibleItem
-                      icon={<BookText className="h-4 w-4 text-green-500" />}
-                      name={sequence.name}
-                      description={sequence.description}
-                      isPublished={sequence.publish}
+                      key={course.id}
+                      icon={<BookOpen className="h-4 w-4 text-orange-500" />}
+                      name={course.name}
+                      description={course.description}
+                      isPublished={course.publish}
                       onToggle={() =>
                         toggleStateVisibility({
-                          type: "sequence",
-                          typeId: sequence.id,
-                          publish: !sequence.publish,
+                          type: "cours",
+                          typeId: course.id,
+                          publish: !course.publish,
                         })
                       }
+                      type="cours"
                     >
-                      {sequence.courses.map((course) => (
-                        <Collapsible key={course.id} className="ml-4 mt-2">
-                          <CollapsibleItem
-                            icon={
-                              <BookOpen className="h-4 w-4 text-orange-500" />
-                            }
-                            name={course.name}
-                            description={course.description}
-                            isPublished={course.publish}
-                            onToggle={() =>
-                              toggleStateVisibility({
-                                type: "cours",
-                                typeId: course.id,
-                                publish: !course.publish,
-                              })
-                            }
-                          >
-                            {course.complements.map((complement) => (
-                              <CollapsibleItem
-                                key={complement.id}
-                                icon={
-                                  <CheckSquare className="h-4 w-4 text-red-500" />
-                                }
-                                name={complement.name}
-                                description={complement.description}
-                                isPublished={complement.publish}
-                                onToggle={() =>
-                                  toggleStateVisibility({
-                                    type: "complement",
-                                    typeId: complement.id,
-                                    publish: !complement.publish,
-                                  })
-                                }
-                              />
-                            ))}
-                          </CollapsibleItem>
-                        </Collapsible>
+                      {course.complements.map((complement) => (
+                        <CollapsibleItem
+                          key={complement.id}
+                          icon={
+                            <CheckSquare className="h-4 w-4 text-red-500" />
+                          }
+                          name={complement.name}
+                          description={complement.description}
+                          isPublished={complement.publish}
+                          onToggle={() =>
+                            toggleStateVisibility({
+                              type: "complement",
+                              typeId: complement.id,
+                              publish: !complement.publish,
+                            })
+                          }
+                          type="complément"
+                        />
                       ))}
                     </CollapsibleItem>
-                  </Collapsible>
-                ))}
-              </CollapsibleItem>
-            </Collapsible>
+                  ))}
+                </CollapsibleItem>
+              ))}
+            </CollapsibleItem>
           ))}
         </ScrollArea>
       </CardContent>
@@ -147,6 +158,7 @@ interface CollapsibleItemProps {
   isPublished: boolean;
   onToggle: () => void;
   children?: React.ReactNode;
+  type: string;
 }
 
 function CollapsibleItem({
@@ -156,25 +168,48 @@ function CollapsibleItem({
   isPublished,
   onToggle,
   children,
+  type,
 }: CollapsibleItemProps) {
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
-    <>
+    <Collapsible
+      open={isOpen}
+      onOpenChange={setIsOpen}
+      className="mb-4 border rounded-md p-2"
+    >
       <div className="flex items-center justify-between py-2">
         <CollapsibleTrigger className="flex items-center space-x-2 hover:text-primary">
+          {isOpen ? (
+            <ChevronDown className="h-4 w-4" />
+          ) : (
+            <ChevronRight className="h-4 w-4" />
+          )}
           {icon}
           <div>
             <h3 className="text-sm font-medium">{name}</h3>
             <p className="text-xs text-muted-foreground">{description}</p>
           </div>
         </CollapsibleTrigger>
-        <Switch
-          checked={isPublished}
-          onCheckedChange={onToggle}
-          aria-label={`Basculer la visibilité de ${name}`}
-        />
+        <div className="flex items-center space-x-2">
+          <Badge variant={isPublished ? "default" : "secondary"}>
+            {isPublished ? "Publié" : "Non publié"}
+          </Badge>
+          <Switch
+            checked={isPublished}
+            onCheckedChange={onToggle}
+            aria-label={`Basculer la visibilité de ${name}`}
+          />
+        </div>
       </div>
-      {children && <CollapsibleContent>{children}</CollapsibleContent>}
-    </>
+      <CollapsibleContent className="mt-2">
+        {children && (
+          <div className="ml-6 border-l-2 border-muted pl-4 space-y-2">
+            {children}
+          </div>
+        )}
+      </CollapsibleContent>
+    </Collapsible>
   );
 }
 

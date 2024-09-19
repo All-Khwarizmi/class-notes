@@ -8,7 +8,6 @@ import {
   toggleVisibility,
 } from "@/features/classe/domain/visibility-schema";
 import { isLeft, isRight } from "fp-ts/lib/Either";
-import { is } from "immutable";
 import { useState, useEffect } from "react";
 
 export function useVisibilityLogic(options: { userId: string }) {
