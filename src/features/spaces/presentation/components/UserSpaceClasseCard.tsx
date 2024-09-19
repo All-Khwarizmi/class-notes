@@ -15,7 +15,7 @@ import { Badge } from "@/core/components/ui/badge";
 import { ClassType } from "@/features/classe/domain/class-schema";
 import { NavItem } from "@/lib/types";
 import { cn } from "@/lib/utils";
-import { Users, Calendar, BookOpen } from "lucide-react";
+import { BookOpen } from "lucide-react";
 import { AspectRatio } from "@/core/components/ui/aspect-ratio";
 
 interface UserSpaceClasseCardProps {

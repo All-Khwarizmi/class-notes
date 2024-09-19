@@ -20,7 +20,6 @@ export const PricingCard: React.FC<{
   isYearly: boolean;
 }> = ({ tier, isYearly }) => {
   const Icon = tier.icon;
-  const session = useSession();
   const price = isYearly ? tier.price * 10 : tier.price;
   const { handleUpgradeClick, isUpdating } = useUpgradeSubscription();
   const router = useRouter();

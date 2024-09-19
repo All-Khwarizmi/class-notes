@@ -16,11 +16,7 @@ import NotFound from "../not-found";
 async function ProfileLayout() {
   const authUser = await authUseCases.getUserAuth();
   if (isLeft(authUser)) {
-    console.error("auth usecases left ",JSON.stringify(authUser.left));
-    console.error("auth usecases invalid value ",JSON.stringify(authUser.left.invalidValue));
-    console.error("auth usecases code ",JSON.stringify(authUser.left.code));
-    console.error(JSON.stringify(authUser.left));
-    console.error(JSON.stringify(authUser.left));
+
     return <NotFound />;
   }
   const user = await profileUseCases.getUser({

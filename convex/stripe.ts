@@ -15,7 +15,6 @@ export const pay = action({
   args: {},
   handler: async (ctx) => {
     const user = await ctx.auth.getUserIdentity();
-    console.log("user", { user });
     if (!user) {
       throw new Error("you must be logged in to subscribe");
     }
@@ -26,14 +25,11 @@ export const pay = action({
 
     const domain = process.env.HOSTING_URL ?? "http://localhost:3000";
 
-    console.log("domain", { domain });
     const STRIPE_KEY = process.env.STRIPE_KEY;
-    console.log("STRIPE_KEY", { STRIPE_KEY });
     const stripe = new Stripe(STRIPE_KEY!, {
       apiVersion: "2024-06-20",
     });
     const PRICE_ID = process.env.PRICE_ID;
-    console.log("PRICE_ID", { PRICE_ID });
     const session = await stripe.checkout.sessions.create({
       line_items: [{ price: PRICE_ID!, quantity: 1 }],
       customer_email: user.email,
