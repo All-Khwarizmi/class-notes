@@ -10,6 +10,7 @@ import FloatingEditor from "@/core/components/common/editor/FloatingEditor";
 import dynamic from "next/dynamic";
 import LoadingSkeleton from "@/core/components/common/LoadingSkeleton";
 import EmbedWithInput from "@/features/cours-sequence/presentation/components/Embed";
+import ComplementSummaryManager from "./ComplementSummary";
 
 const ExcalidrawCanvas = dynamic(
   () =>
@@ -26,7 +27,6 @@ function ComplementView(props: {
 }) {
   const { debounceUpdateComplement } = useUpdateComplement();
   const [isClient, setIsClient] = useState(false);
-
 
   useEffect(() => {
     setIsClient(true);
@@ -76,6 +76,10 @@ function ComplementView(props: {
           </div>
         </div>
       </FloatingEditor>
+      <ComplementSummaryManager
+        complementId={props.complement.id}
+        contentToSummarize={props.complement.body}
+      />
     </div>
   );
 }

@@ -5,6 +5,8 @@ import { EvaluationBase } from "./tables/evaluation_base_convex_schema";
 import { userSchema } from "./fields/users";
 import { visibilityTable } from "./fields/visibility";
 import { contentType } from "./fields/content_type";
+import { historicStatusType } from "./fields/historic";
+import { complementMetadata } from "./tables/complement_summary";
 export default defineSchema({
   Users: userSchema,
   VisibilityTable: visibilityTable,
@@ -40,6 +42,15 @@ export default defineSchema({
       v.literal("Additional")
     ),
   }).index("by_coursId", ["coursId"]),
+  ComplementSummary: defineTable({
+    complementId: v.string(),
+    complementMetadata: complementMetadata,
+    status: historicStatusType,
+    updatedAt: v.number(),
+    summary: v.optional(v.string()),
+    error: v.optional(v.string()),
+    generatedBy: v.union(v.literal("AI"), v.literal("human")),
+  }).index("by_complementId", ["complementId"]),
   Notes: defineTable({
     name: v.string(),
     description: v.string(),

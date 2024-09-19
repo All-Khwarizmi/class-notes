@@ -1,5 +1,8 @@
-import { mutation, query } from "./_generated/server";
+import { internalMutation, mutation, query } from "./_generated/server";
 import { v } from "convex/values";
+import { complementMetadata } from "./tables/complement_summary";
+import { historicStatusType } from "./fields/historic";
+import { internal } from "./_generated/api";
 
 export const createComplement = mutation({
   args: {
@@ -119,5 +122,73 @@ export const deleteComplement = mutation({
       return true;
     }
     return false;
+  },
+});
+
+export const createComplementSummary = mutation({
+  args: {
+    contentToSummarize: v.string(),
+    complementId: v.string(),
+    complementMetadata: complementMetadata,
+    status: historicStatusType,
+    updatedAt: v.number(),
+    summary: v.optional(v.string()),
+    error: v.optional(v.string()),
+    generatedBy: v.union(v.literal("AI"), v.literal("human")),
+  },
+  handler: async (ctx, args) => {
+    console.log("Creating summary for complement", { args });
+    const complementSummary = await ctx.db.insert("ComplementSummary", {
+      complementId: args.complementId,
+      complementMetadata: args.complementMetadata,
+      status: args.status,
+      updatedAt: args.updatedAt,
+      summary: args.summary,
+      error: args.error,
+      generatedBy: args.generatedBy,
+    });
+    await ctx.scheduler.runAfter(0, internal.serve.summarize, {
+      contentToSummarize: args.contentToSummarize,
+      complementSummaryId: complementSummary,
+    });
+    return complementSummary;
+  },
+});
+
+export const getComplementSummaryByComplementId = query({
+  args: {
+    complementId: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const complementSummary = await ctx.db
+      .query("ComplementSummary")
+      .filter((q) => q.eq(q.field("complementId"), args.complementId))
+      .collect();
+    return complementSummary;
+  },
+});
+
+export const updateComplementSummary = internalMutation({
+  args: {
+    complementSummaryId: v.string(),
+    status: historicStatusType,
+    updatedAt: v.number(),
+    summary: v.optional(v.string()),
+    error: v.optional(v.string()),
+  },
+  handler: async (ctx, args) => {
+    const complementSummary = await ctx.db
+      .query("ComplementSummary")
+      .filter((q) => q.eq(q.field("_id"), args.complementSummaryId))
+      .first();
+    if (!complementSummary) {
+      throw new Error("Complement summary not found");
+    }
+    await ctx.db.patch(complementSummary._id, {
+      summary: args.summary,
+      error: args.error,
+      updatedAt: args.updatedAt,
+      status: args.status,
+    });
   },
 });
