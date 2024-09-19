@@ -12,17 +12,19 @@ import UserProfile from "@/features/profile/presentation/views/UserProfile";
 import { isLeft } from "fp-ts/lib/Either";
 import { redirect } from "next/navigation";
 import LoadingSkeleton from "@/core/components/common/LoadingSkeleton";
+import NotFound from "../not-found";
 async function ProfileLayout() {
   const authUser = await authUseCases.getUserAuth();
   if (isLeft(authUser)) {
     console.error(JSON.stringify(authUser.left));
-    redirect("/");
+    return <NotFound />;
   }
   const user = await profileUseCases.getUser({
     userId: authUser.right.userId,
   });
   if (isLeft(user)) {
-    redirect("/");
+    console.error(JSON.stringify(user.left));
+    return <NotFound />;
   }
 
   return (

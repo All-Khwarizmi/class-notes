@@ -22,6 +22,7 @@ async function UserSpaceServerLayer(props: {
   const user = await profileUseCases.getUser({ userId });
 
   if (isLeft(user)) {
+    console.error(JSON.stringify(user.left));
     return (
       <ErrorDialog
         message="An error occured while fetching the user"
