@@ -14,7 +14,7 @@ import { authUseCases } from "@/features/auth/application/usecases/auth-usecases
 import NotesServerLayer from "@/app/profile/notes/[slug]/NotesServerLayer";
 import CoursesServerLayer from "@/app/cours/all/[slug]/CoursesServerLayer";
 import ErrorDialog from "@/core/components/common/ErrorDialog";
-import { HeaderTypographyH1, TypographyH3 } from "@/core/components/common/Typography";
+import {  TypographyH3 } from "@/core/components/common/Typography";
 
 async function SequenceLayout(props: {
   slug: string;
