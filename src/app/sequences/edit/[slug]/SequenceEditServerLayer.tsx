@@ -12,7 +12,7 @@ async function SequenceEditServerLayer(props: {
 }) {
   const authUser = await authUseCases.getUserAuth();
   if (isLeft(authUser)) {
-    redirect("/login");
+    redirect("/");
   }
   const type =
     props.searchParams?.type === "sequence" ? "sequence" : "template";
@@ -24,37 +24,37 @@ async function SequenceEditServerLayer(props: {
   });
   if (isFailure) {
     return (
-        <ErrorDialog
-          message={`
+      <ErrorDialog
+        message={`
         Failed to fetch data for the cours edit page.
         ${failures.map((failure) => failure.message).join("\n")}
         Code: PRE303
     `}
-        />
+      />
     );
   }
   if (!sequence) {
     return (
-        <ErrorDialog
-          message={`
+      <ErrorDialog
+        message={`
         Failed to fetch data for the sequence edit page.
         Unable to find cours with id: ${props.slug}
         Code: PRE303
     `}
-        />
+      />
     );
   }
 
   return (
-      <AddUpdateCoursSequenceView
-        competences={competences}
-        sequence={sequence}
-        authUser={authUser.right}
-        title="Edit Sequence"
-        edit={true}
-        type="sequence"
-        sequenceType={type}
-      />
+    <AddUpdateCoursSequenceView
+      competences={competences}
+      sequence={sequence}
+      authUser={authUser.right}
+      title="Edit Sequence"
+      edit={true}
+      type="sequence"
+      sequenceType={type}
+    />
   );
 }
 

@@ -11,25 +11,25 @@ import React from "react";
 async function ComplementServerLayer(props: { slug: string }) {
   const authUser = await authUseCases.getUserAuth();
   if (isLeft(authUser)) {
-    redirect("/login");
+    redirect("/");
   }
   const complement = await complementUsecases.getCoursComplement({
     id: props.slug,
   });
   if (isLeft(complement)) {
     return (
-        <ErrorDialog
-          message={`Unable to fetch complement with id: ${props.slug}
+      <ErrorDialog
+        message={`Unable to fetch complement with id: ${props.slug}
             ${complement.left}
             Code: ${complement.left.code}
         `}
-        />
+      />
     );
   }
 
   return (
     <div className=" space-y-4 px-4">
-      <TypographyH3  text={complement.right.name} />
+      <TypographyH3 text={complement.right.name} />
 
       <ComplementView
         slug={props.slug}

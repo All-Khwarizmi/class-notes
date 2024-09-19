@@ -18,7 +18,7 @@ async function NotesServerLayer(props: {
   }
   const authUser = await authUseCases.getUserAuth();
   if (isLeft(authUser)) {
-    redirect("/login");
+    redirect("/");
   }
   const eitherNotes = await getNotes({
     slug: props.slug,

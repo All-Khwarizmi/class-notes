@@ -14,7 +14,7 @@ import ComplementsView from "@/features/complement/presentation/views/Complement
 async function ComplementsServerLayer(props: { slug: string }) {
   const authUser = await authUseCases.getUserAuth();
   if (isLeft(authUser)) {
-    redirect("/login");
+    redirect("/");
   }
   let complements: Complement[] = [];
 
@@ -23,37 +23,37 @@ async function ComplementsServerLayer(props: { slug: string }) {
   });
   if (isLeft(eitherComplements)) {
     return (
-        <ErrorDialog
-          message={`
+      <ErrorDialog
+        message={`
             Unable to fetch cours with id: ${props.slug}
             
                 ${eitherComplements.left}
             `}
-        />
+      />
     );
   }
   for (const complement of eitherComplements.right) {
     const validateComplement = ComplementSchema.safeParse(complement);
     if (!validateComplement.success) {
       return (
-          <ErrorDialog
-            message={`
+        <ErrorDialog
+          message={`
             Unable to validate complement with id: ${complement.id}
             
             ${JSON.stringify(validateComplement.error)}
             `}
-          />
+        />
       );
     }
     complements.push(validateComplement.data);
   }
 
   return (
-      <ComplementsView
-        complements={complements}
-        coursId={props.slug}
-        userId={authUser.right.userId}
-      />
+    <ComplementsView
+      complements={complements}
+      coursId={props.slug}
+      userId={authUser.right.userId}
+    />
   );
 }
 

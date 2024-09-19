@@ -13,7 +13,7 @@ import { redirect } from "next/navigation";
 export default async function Page() {
   const authUser = await authUseCases.getUserAuth();
   if (isLeft(authUser)) {
-    redirect("/login");
+    redirect("/");
   }
 
   const queryClient = new QueryClient();

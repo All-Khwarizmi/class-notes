@@ -14,7 +14,7 @@ export default async function Page() {
   const queryClient = new QueryClient();
   const authUser = await authUseCases.getUserAuth();
   if (isLeft(authUser)) {
-    redirect("/login");
+    redirect("/");
   }
   await queryClient.prefetchQuery({
     queryKey: QUERY_KEYS.COMP_CAT.GET_ALL(),

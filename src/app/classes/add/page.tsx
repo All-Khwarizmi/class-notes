@@ -7,7 +7,7 @@ import React from "react";
 async function Page() {
   const authUser = await authUseCases.getUserAuth();
   if (isLeft(authUser)) {
-    redirect("/login");
+    redirect("/");
   }
   return <AddClassForm userId={authUser.right.userId} />;
 }

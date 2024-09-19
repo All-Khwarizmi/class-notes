@@ -9,7 +9,7 @@ import React from "react";
 async function EvaluationServerLayer(props: { evaluationId: string }) {
   const authUser = await authUseCases.getUserAuth();
   if (isLeft(authUser)) {
-    redirect("/login");
+    redirect("/");
   }
   const eitherEval = await getEvaluation({
     evaluationId: props.evaluationId,

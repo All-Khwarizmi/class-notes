@@ -36,7 +36,7 @@ async function SequenceLayout(props: {
   }
   const authUser = await authUseCases.getUserAuth();
   if (isLeft(authUser)) {
-    redirect("/login");
+    redirect("/");
   }
 
   const eitherSequence = await coursUsecases.getSingleSequence({

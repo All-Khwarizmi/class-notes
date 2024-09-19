@@ -10,7 +10,7 @@ import LayoutWithProps from "@/core/components/layout/LayoutWithProps";
 export default async function Page() {
   const authUser = await authUseCases.getUserAuth();
   if (isLeft(authUser)) {
-    redirect("/login");
+    redirect("/");
   }
   const eitherCompetences = await compCatUsecases.getCompetences({
     userId: authUser.right.userId,
@@ -22,11 +22,11 @@ export default async function Page() {
     competences = [];
   }
   return (
-      <AddUpdateCoursSequenceView
-        competences={competences}
-        authUser={authUser.right}
-        type="cours"
-        title="Add Cours"
-      />
+    <AddUpdateCoursSequenceView
+      competences={competences}
+      authUser={authUser.right}
+      type="cours"
+      title="Add Cours"
+    />
   );
 }

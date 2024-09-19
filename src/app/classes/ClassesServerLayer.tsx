@@ -13,7 +13,7 @@ import { QUERY_KEYS } from "@/core/query/ query-keys";
 async function ClassesServerLayer(props: { slug: string }) {
   const authUser = await authUseCases.getUserAuth();
   if (isLeft(authUser)) {
-    redirect("/login");
+    redirect("/");
   }
   const queryClient = new QueryClient();
 
@@ -27,7 +27,7 @@ async function ClassesServerLayer(props: { slug: string }) {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-        <ClassesTable userId={authUser.right.userId} />
+      <ClassesTable userId={authUser.right.userId} />
     </HydrationBoundary>
   );
 }

@@ -14,7 +14,7 @@ import {
 async function ClasseServerLayer(props: { slug: string }) {
   const authUser = await authUseCases.getUserAuth();
   if (isLeft(authUser)) {
-    redirect("/login");
+    redirect("/");
   }
 
   const queryClient = new QueryClient();
@@ -29,7 +29,7 @@ async function ClasseServerLayer(props: { slug: string }) {
     }),
 
     queryClient.prefetchQuery({
-      queryKey: ["compound-evaluations",],
+      queryKey: ["compound-evaluations"],
       queryFn: () =>
         getEvaluationCompoundList({
           classeId: props.slug,

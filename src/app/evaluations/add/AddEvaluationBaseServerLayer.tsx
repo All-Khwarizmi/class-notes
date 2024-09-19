@@ -14,7 +14,7 @@ import React from "react";
 async function AddEvaluationBaseServerLayer() {
   const authUser = await authUseCases.getUserAuth();
   if (isLeft(authUser)) {
-    redirect("/login");
+    redirect("/");
   }
   const queryClient = new QueryClient();
   await queryClient.prefetchQuery({

@@ -15,34 +15,35 @@ import LoadingSkeleton from "@/core/components/common/LoadingSkeleton";
 async function ProfileLayout() {
   const authUser = await authUseCases.getUserAuth();
   if (isLeft(authUser)) {
-    redirect("/login");
+    console.error(JSON.stringify(authUser.left));
+    redirect("/");
   }
   const user = await profileUseCases.getUser({
     userId: authUser.right.userId,
   });
   if (isLeft(user)) {
-    redirect("/login");
+    redirect("/");
   }
 
   return (
-      <Tabs defaultValue="profile" className="py-8">
-        <div className="w-full flex justify-center">
-          <TabsList>
-            <TabsTrigger value="profile">Profile</TabsTrigger>
-            <TabsTrigger value="notes">Notes</TabsTrigger>
-          </TabsList>
-        </div>
-        <TabsContent value="profile">
-          <Suspense fallback={<LoadingSkeleton />}>
-            <UserProfile user={user.right} />
-          </Suspense>
-        </TabsContent>
-        <TabsContent value="notes">
-          <Suspense fallback={<LoadingSkeleton />}>
-            <NotesServerLayer type="profile" slug={authUser.right.userId} />
-          </Suspense>
-        </TabsContent>
-      </Tabs>
+    <Tabs defaultValue="profile" className="py-8">
+      <div className="w-full flex justify-center">
+        <TabsList>
+          <TabsTrigger value="profile">Profile</TabsTrigger>
+          <TabsTrigger value="notes">Notes</TabsTrigger>
+        </TabsList>
+      </div>
+      <TabsContent value="profile">
+        <Suspense fallback={<LoadingSkeleton />}>
+          <UserProfile user={user.right} />
+        </Suspense>
+      </TabsContent>
+      <TabsContent value="notes">
+        <Suspense fallback={<LoadingSkeleton />}>
+          <NotesServerLayer type="profile" slug={authUser.right.userId} />
+        </Suspense>
+      </TabsContent>
+    </Tabs>
   );
 }
 

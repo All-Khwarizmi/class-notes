@@ -9,7 +9,7 @@ import ClasseSequencesTableView from "@/features/cours-sequence/presentation/vie
 async function ClasseSequencesServerLayer(props: { slug: string }) {
   const authUser = await authUseCases.getUserAuth();
   if (isLeft(authUser)) {
-    redirect("/login");
+    redirect("/");
   }
   const eitherSequences = await coursUsecases.getAllSequences({
     userId: authUser.right.userId,

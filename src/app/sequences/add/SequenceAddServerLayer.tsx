@@ -9,7 +9,7 @@ import { Competence } from "@/features/comp-cat/domain/entities/schemas";
 async function SequenceAddServerLayer() {
   const authUser = await authUseCases.getUserAuth();
   if (isLeft(authUser)) {
-    redirect("/login");
+    redirect("/");
   }
   const eitherCompetences = await compCatUsecases.getCompetences({
     userId: authUser.right.userId,
@@ -21,12 +21,12 @@ async function SequenceAddServerLayer() {
     competences = [];
   }
   return (
-      <AddUpdateCoursSequenceView
-        competences={competences}
-        authUser={authUser.right}
-        type="sequence"
-        title="Add Sequence"
-      />
+    <AddUpdateCoursSequenceView
+      competences={competences}
+      authUser={authUser.right}
+      type="sequence"
+      title="Add Sequence"
+    />
   );
 }
 

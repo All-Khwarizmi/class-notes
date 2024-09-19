@@ -10,7 +10,7 @@ import LayoutWithProps from "@/core/components/layout/LayoutWithProps";
 async function CoursAddServerLayer(props: { slug: string }) {
   const authUser = await authUseCases.getUserAuth();
   if (isLeft(authUser)) {
-    redirect("/login");
+    redirect("/");
   }
 
   const eitherCompetences = await compCatUsecases.getCompetences({
@@ -24,13 +24,13 @@ async function CoursAddServerLayer(props: { slug: string }) {
     competences = [];
   }
   return (
-      <AddUpdateCoursSequenceView
-        competences={competences}
-        authUser={authUser.right}
-        sequenceId={props.slug}
-        type="cours"
-        title="Add Cours"
-      />
+    <AddUpdateCoursSequenceView
+      competences={competences}
+      authUser={authUser.right}
+      sequenceId={props.slug}
+      type="cours"
+      title="Add Cours"
+    />
   );
 }
 

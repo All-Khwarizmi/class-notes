@@ -42,7 +42,7 @@ async function SequencesServerLayer({
 
   const authUser = await authUseCases.getUserAuth();
   if (isLeft(authUser)) {
-    redirect("/login");
+    redirect("/");
   }
   await queryClient.prefetchQuery({
     queryKey: [QUERY_KEYS.SEQUENCE.GET_ALL()],

@@ -30,7 +30,7 @@ import AIServerLayer from "@/app/sequences/[slug]/AIServerLayer";
 async function ClasseLayout(props: { slug: string }) {
   const authUser = await authUseCases.getUserAuth();
   if (isLeft(authUser)) {
-    redirect("/login");
+    redirect("/");
   }
 
   const queryClient = new QueryClient();

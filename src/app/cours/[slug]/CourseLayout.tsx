@@ -20,7 +20,7 @@ import { TypographyH3 } from "@/core/components/common/Typography";
 async function CourseLayout(props: { slug: string }) {
   const authUser = await authUseCases.getUserAuth();
   if (isLeft(authUser)) {
-    redirect("/login");
+    redirect("/");
   }
   const eitherCours = await coursUsecases.getSingleCours({
     userId: authUser.right.userId,

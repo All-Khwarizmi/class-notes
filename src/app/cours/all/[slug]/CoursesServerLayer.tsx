@@ -29,34 +29,34 @@ async function CoursesServerLayer({
   }
   const authUser = await authUseCases.getUserAuth();
   if (isLeft(authUser)) {
-    redirect("/login");
+    redirect("/");
   }
   const eitherCourses = await coursUsecases.getAllCoursFromSequence({
     sequenceId: slug,
     userId: authUser.right.userId,
-    type ,
+    type,
   });
   if (isLeft(eitherCourses)) {
     return (
-        <ErrorDialog
-          message={`
+      <ErrorDialog
+        message={`
         An error occurred while fetching courses. 
         `}
-          code={eitherCourses.left.code}
-          description={
-            process.env.NODE_ENV === "development"
-              ? eitherCourses.left.message
-              : "An error occurred while fetching courses."
-          }
-        />
+        code={eitherCourses.left.code}
+        description={
+          process.env.NODE_ENV === "development"
+            ? eitherCourses.left.message
+            : "An error occurred while fetching courses."
+        }
+      />
     );
   }
   return (
-      <CoursesTable
-        courses={eitherCourses.right}
-        sequenceId={slug}
-        userId={authUser.right.userId}
-      />
+    <CoursesTable
+      courses={eitherCourses.right}
+      sequenceId={slug}
+      userId={authUser.right.userId}
+    />
   );
 }
 

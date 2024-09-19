@@ -9,7 +9,7 @@ import ContentViewer from "@/features/cours-sequence/presentation/views/ContentV
 async function SequenceShowServerLayer(props: { slug: string }) {
   const authUser = await authUseCases.getUserAuth();
   if (isLeft(authUser)) {
-    redirect("/login");
+    redirect("/");
   }
 
   const eitherSequence = await coursUsecases.getSingleSequence({
@@ -34,9 +34,7 @@ async function SequenceShowServerLayer(props: { slug: string }) {
       .map((c) => c.body)
       .join(" ")
       .toString();
-  return <ContentViewer
-    navItems={[]}
-  content={content} />;
+  return <ContentViewer navItems={[]} content={content} />;
 }
 
 export default SequenceShowServerLayer;
