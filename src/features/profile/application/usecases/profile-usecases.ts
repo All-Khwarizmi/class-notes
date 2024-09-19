@@ -29,10 +29,34 @@ export default class ProfileUseCases {
     const eitherUser = await this._repository.getUser({ userId });
 
     if (isLeft(eitherUser)) {
+      console.error(
+        "user left in profile use cases ",
+        JSON.stringify(eitherUser.left)
+      );
+      console.error(
+        "user invalid value in profile use cases ",
+        JSON.stringify(eitherUser.left.invalidValue)
+      );
+
       return eitherUser;
     }
     const user = userSchema.safeParse(eitherUser.right);
     if (!user.success) {
+      console.error(
+        "user left in profile use cases parsing user ",
+        JSON.stringify(user.error.errors)
+      );
+      console.error(
+        "erro cause in profile use cases parsing user ",
+        JSON.stringify(user.error.cause)
+      );
+      console.error(
+        "erro cause in profile use cases parsing user ",
+        JSON.stringify(user.error.message),
+        JSON.stringify(user.error.issues),
+        JSON.stringify(user.error.name)
+      );
+
       return left(
         Failure.invalidValue({
           invalidValue: user.error.errors.toString(),
