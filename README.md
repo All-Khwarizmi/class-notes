@@ -23,7 +23,7 @@
 ## Essayez ClassAI
 
 Découvrez ClassAI et commencez à transformer votre gestion de classe:
-[Accédez à ClassAI](https://classroom.jason-suarez.com/)
+[Accédez à ClassAI](https://laclasse.app/)
 
 ## Contribution
 

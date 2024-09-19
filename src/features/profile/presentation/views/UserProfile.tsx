@@ -4,7 +4,6 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
-import { useAction } from "convex/react";
 import { UserButton } from "@clerk/nextjs";
 import { CalendarDaysIcon, CoinsIcon } from "lucide-react";
 import {
@@ -43,14 +42,15 @@ import { getEducationSystemOptions } from "@/features/user/domain/entities/educa
 import { educationSystemOptions } from "@/features/user/domain/entities/education-systems/education-system";
 import { checkUserCredits } from "../helpers/helpers";
 import useSaveUser from "../../application/adapters/services/useSaveUser";
-import { api } from "../../../../../convex/_generated/api";
+import { useUpgradeSubscription } from "../helpers/useUpgradeSubscription";
 
 export default function UserProfile({ user }: { user: UserType }) {
-  const { setSaveUserOptions, loading, error } = useSaveUser();
   const [isUpdating, setIsUpdating] = useState(false);
-  const router = useRouter();
-  const pay = useAction(api.stripe.pay);
 
+  const { setSaveUserOptions, loading, error } = useSaveUser();
+  const { handleUpgradeClick, isUpdating: isUpdatingSubscription } =
+    useUpgradeSubscription();
+  const router = useRouter();
   const form = useForm<Omit<UserType, "_id" | "userId">>({
     resolver: zodResolver(userSchema.omit({ _id: true, userId: true })),
     defaultValues: user,
@@ -58,7 +58,7 @@ export default function UserProfile({ user }: { user: UserType }) {
 
   const selectedSystem = form.watch("educationSystem");
   const subjectsOptions = getEducationSystemOptions(selectedSystem);
-
+  const isPending = isUpdating || isUpdatingSubscription;
   async function onSubmit(data: Omit<UserType, "_id" | "userId">) {
     setIsUpdating(true);
     await setSaveUserOptions({
@@ -66,11 +66,6 @@ export default function UserProfile({ user }: { user: UserType }) {
       ...data,
     });
     setIsUpdating(false);
-  }
-
-  async function handleUpgradeClick() {
-    const url = await pay();
-    router.push(url);
   }
 
   return (
@@ -225,10 +220,10 @@ export default function UserProfile({ user }: { user: UserType }) {
         <Button
           className="w-full"
           onClick={form.handleSubmit(onSubmit)}
-          disabled={isUpdating || loading}
+          disabled={isPending}
           data-testid="submit-onboarding-form"
         >
-          {isUpdating || loading ? "Updating..." : "Update Profile"}
+          {isPending ? "Updating..." : "Update Profile"}
         </Button>
       </CardFooter>
     </Card>

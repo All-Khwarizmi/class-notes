@@ -2,7 +2,7 @@ name: "Smoke Tests"
 on: [deployment_status]
 env:
   BRANCH_NAME: ${{ github.base_ref }}
-  CYPRESS_BASE_URL: "https://classroom.jason-suarez.com/"
+  CYPRESS_BASE_URL: "https://laclasse.app/"
 
 jobs:
   test-conditions:

@@ -3,11 +3,9 @@
 import Link from "next/link";
 import Hero from "./HeroSection";
 import Features from "@/core/components/layout/Features";
-import EnhancedPricingTable from "@/core/components/layout/ContactCTO";
-
+import EnhancedPricingTable from "@/core/components/layout/Pricing";
 
 export default function Component() {
-
   return (
     <div className="flex flex-col min-h-[100dvh]">
       <main className="flex-1">

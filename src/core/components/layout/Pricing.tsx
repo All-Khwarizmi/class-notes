@@ -2,16 +2,8 @@
 
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Check, X, Zap, Book, Brain, ArrowRight, Info } from "lucide-react";
-import { Button } from "@/core/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/core/components/ui/card";
+import { Check, X, Zap, Book, Brain, Info } from "lucide-react";
+import { PricingCard } from "./landing/PricingCard";
 import { Badge } from "@/core/components/ui/badge";
 import {
   Tooltip,
@@ -73,7 +65,7 @@ const pricingFeatures: PricingFeature[] = [
   },
 ];
 
-const pricingTiers = [
+export const pricingTiers = [
   {
     name: "Découverte",
     brandName: "ClasseStarter",
@@ -134,47 +126,6 @@ const FeatureRow: React.FC<{ feature: PricingFeature }> = ({ feature }) => {
         </td>
       ))}
     </tr>
-  );
-};
-
-
-const PricingCard: React.FC<{
-  tier: (typeof pricingTiers)[0];
-  isYearly: boolean;
-}> = ({ tier, isYearly }) => {
-  const Icon = tier.icon;
-  const price = isYearly ? tier.price * 10 : tier.price;
-
-  return (
-    <Card
-      className={`flex flex-col h-full ${tier.highlighted ? "border-primary shadow-lg scale-105" : ""}`}
-    >
-      <CardHeader>
-        <div
-          className={`w-12 h-12 rounded-full ${tier.color} bg-opacity-20 flex items-center justify-center mb-4`}
-        >
-          <Icon className={`h-6 w-6 ${tier.color}`} />
-        </div>
-        <CardTitle className="text-2xl">{tier.brandName}</CardTitle>
-        <CardDescription className="text-lg">{tier.name}</CardDescription>
-        <CardDescription>
-          <span className="text-3xl font-bold">{price.toFixed(2)}€</span>
-          <span className="text-sm">/{isYearly ? "an" : "mois"}</span>
-        </CardDescription>
-      </CardHeader>
-      <CardContent className="flex-grow">
-        <p className="text-sm text-muted-foreground mb-4">{tier.description}</p>
-      </CardContent>
-      <CardFooter>
-        <Button
-          className={`w-full ${tier.highlighted ? "bg-primary hover:bg-primary/90" : ""}`}
-          variant={tier.highlighted ? "default" : "outline"}
-        >
-          {tier.cta}
-          <ArrowRight className="ml-2 h-4 w-4" />
-        </Button>
-      </CardFooter>
-    </Card>
   );
 };
 
