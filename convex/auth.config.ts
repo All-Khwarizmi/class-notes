@@ -1,7 +1,7 @@
 export default {
   providers: [
     {
-      domain: "https://pleasant-killdeer-34.clerk.accounts.dev",
+      domain: "https://clerk.laclasse.app",
       applicationID: "convex",
     },
   ],
