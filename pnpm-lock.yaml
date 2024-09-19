@@ -161,6 +161,9 @@ dependencies:
   fp-ts:
     specifier: ^2.16.5
     version: 2.16.6
+  framer-motion:
+    specifier: ^11.5.5
+    version: 11.5.5(react-dom@18.3.1)(react@18.3.1)
   immutable:
     specifier: 5.0.0-beta.5
     version: 5.0.0-beta.5
@@ -212,6 +215,9 @@ dependencies:
   react-hook-form:
     specifier: 7.51.1
     version: 7.51.1(react@18.3.1)
+  react-intersection-observer:
+    specifier: ^9.13.1
+    version: 9.13.1(react-dom@18.3.1)(react@18.3.1)
   react-papaparse:
     specifier: ^4.4.0
     version: 4.4.0
@@ -6197,6 +6203,25 @@ packages:
     resolution: {integrity: sha512-v7w209VPj4L6pPn/ftFRJu31Oa8QagwcVw7BZmLCUWU4AQoc954rX9ogSIahDf67Pg+GjPbkW/Kn9XWnlWJG0g==}
     dev: false
 
+  /framer-motion@11.5.5(react-dom@18.3.1)(react@18.3.1):
+    resolution: {integrity: sha512-4srkT940jYA3bdQRglxod0KoqDvcghYri1A6bTjT02IXvq/EAd6A0tgUnJc5Q2ahhf8n959aLD3yO+XmLmE8OQ==}
+    peerDependencies:
+      '@emotion/is-prop-valid': '*'
+      react: ^18.0.0
+      react-dom: ^18.0.0
+    peerDependenciesMeta:
+      '@emotion/is-prop-valid':
+        optional: true
+      react:
+        optional: true
+      react-dom:
+        optional: true
+    dependencies:
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
+      tslib: 2.6.3
+    dev: false
+
   /from@0.1.7:
     resolution: {integrity: sha512-twe20eF1OxVxp/ML/kq2p1uc6KvFK/+vs8WjEbeKmV2He22MKm7YF2ANIt+EOqhJ5L3K/SuuPhk0hWQDjOM23g==}
     dev: true
@@ -8144,6 +8169,19 @@ packages:
       react: ^16.8.0 || ^17 || ^18
     dependencies:
       react: 18.3.1
+    dev: false
+
+  /react-intersection-observer@9.13.1(react-dom@18.3.1)(react@18.3.1):
+    resolution: {integrity: sha512-tSzDaTy0qwNPLJHg8XZhlyHTgGW6drFKTtvjdL+p6um12rcnp8Z5XstE+QNBJ7c64n5o0Lj4ilUleA41bmDoMw==}
+    peerDependencies:
+      react: ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
+      react-dom: ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
+    peerDependenciesMeta:
+      react-dom:
+        optional: true
+    dependencies:
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
     dev: false
 
   /react-is@16.13.1:
