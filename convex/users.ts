@@ -25,7 +25,6 @@ export const onboarding = mutation({
         onboarding: true,
         country: "USA",
         educationSystem: "USA",
-        
       });
       return { userId, error: false };
     }
@@ -51,10 +50,12 @@ export const getUserQuery = query({
     userId: v.string(),
   },
   handler: async (ctx, args) => {
+    console.log("args", args);
     const user = await ctx.db
       .query("Users")
       .filter((q) => q.eq(q.field("userId"), args.userId))
       .first();
+    console.log("user", user);
 
     return user;
   },
@@ -67,7 +68,6 @@ export const saveUserMutation = mutation({
     name: v.optional(v.string()),
     country: v.optional(v.string()),
     educationSystem: v.optional(v.string()),
-
   },
   handler: async (ctx, args) => {
     const user = await ctx.db
