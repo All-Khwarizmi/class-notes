@@ -37,9 +37,7 @@ export default function RootLayout({
           >
             <NextTopLoader />
             <main className="flex fixed h-screen w-screen flex-col border-collapse overflow-scroll">
-              <QueryProvider>
-                <LayoutServerLayer>{children}</LayoutServerLayer>
-              </QueryProvider>
+              <QueryProvider>{children}</QueryProvider>
             </main>
 
             <Toaster richColors expand />

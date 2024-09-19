@@ -13,10 +13,11 @@ import { coursUsecases } from "@/features/cours-sequence/application/usecases/co
 import LoaderPage from "./LoaderPage";
 import { evaluationUsecases } from "@/features/evaluation/application/usecases/evaluation-usecases";
 import SpacesLayout from "./SpacesLayout";
+import { redirect } from "next/navigation";
 async function LayoutServerLayer({ children }: { children: React.ReactNode }) {
   const authUser = await authUseCases.getUserAuth();
   if (isLeft(authUser)) {
-    return <SpacesLayout>{children}</SpacesLayout>;
+    return redirect("/");
   }
   const queryClient = new QueryClient();
   const batch = [
