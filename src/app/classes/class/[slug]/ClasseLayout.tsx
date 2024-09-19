@@ -26,6 +26,7 @@ import ClasseSequencesTableView from "@/features/cours-sequence/presentation/vie
 import { classeUsecases } from "@/features/classe/application";
 import ErrorDialog from "@/core/components/common/ErrorDialog";
 import { TypographyH1 } from "@/core/components/common/Typography";
+import AIServerLayer from "@/app/sequences/[slug]/AIServerLayer";
 async function ClasseLayout(props: { slug: string }) {
   const authUser = await authUseCases.getUserAuth();
   if (isLeft(authUser)) {
@@ -76,12 +77,14 @@ async function ClasseLayout(props: { slug: string }) {
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <Tabs defaultValue="classe" className="px-4">
-        <div className="w-full  items-center justify-between flex gap-8 py-8">
+        <div className="w-full  items-center justify-between flex gap-8 py-4">
           <TypographyH1 text={classe.right.name} />
           <TabsList>
             <TabsTrigger value="classe">Classe</TabsTrigger>
             <TabsTrigger value="sequences">Sequences</TabsTrigger>
+
             <TabsTrigger value="notes">Notes</TabsTrigger>
+            <TabsTrigger value="ai">AI</TabsTrigger>
           </TabsList>
         </div>
         <TabsContent value="classe">
@@ -108,6 +111,13 @@ async function ClasseLayout(props: { slug: string }) {
           <div>
             <Suspense fallback={<LoadingSkeleton />}>
               <NotesServerLayer type="class" slug={props.slug} />
+            </Suspense>
+          </div>
+        </TabsContent>
+        <TabsContent value="ai">
+          <div>
+            <Suspense fallback={<LoadingSkeleton />}>
+              <AIServerLayer />
             </Suspense>
           </div>
         </TabsContent>

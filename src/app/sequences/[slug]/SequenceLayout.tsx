@@ -14,7 +14,8 @@ import { authUseCases } from "@/features/auth/application/usecases/auth-usecases
 import NotesServerLayer from "@/app/profile/notes/[slug]/NotesServerLayer";
 import CoursesServerLayer from "@/app/cours/all/[slug]/CoursesServerLayer";
 import ErrorDialog from "@/core/components/common/ErrorDialog";
-import {  TypographyH3 } from "@/core/components/common/Typography";
+import { TypographyH3 } from "@/core/components/common/Typography";
+import AIServerLayer from "./AIServerLayer";
 
 async function SequenceLayout(props: {
   slug: string;
@@ -63,6 +64,7 @@ async function SequenceLayout(props: {
             <TabsTrigger value="sequence">Sequence</TabsTrigger>
             <TabsTrigger value="courses">Courses</TabsTrigger>
             <TabsTrigger value="notes">Notes</TabsTrigger>
+            <TabsTrigger value="ai">AI</TabsTrigger>
           </TabsList>
         </div>
       </div>
@@ -92,6 +94,13 @@ async function SequenceLayout(props: {
         <div>
           <Suspense fallback={<LoadingSkeleton />}>
             <NotesServerLayer type="sequence" slug={props.slug} />
+          </Suspense>
+        </div>
+      </TabsContent>
+      <TabsContent value="ai">
+        <div>
+          <Suspense fallback={<LoadingSkeleton />}>
+            <AIServerLayer />
           </Suspense>
         </div>
       </TabsContent>
