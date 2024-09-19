@@ -1,6 +1,6 @@
-# ClassAI
+# La Classe
 
-**ClassAI** est un système de gestion de classe intégrant l'intelligence artificielle pour optimiser la gestion et l'interaction en classe. Conçu pour les enseignants, ClassAI utilise des analyses comportementales avancées pour fournir des insights et des recommandations personnalisées.
+**La Classe** est un système de gestion de classe intégrant l'intelligence artificielle pour optimiser la gestion et l'interaction en classe. Conçu pour les enseignants, La Classe utilise des analyses comportementales avancées pour fournir des insights et des recommandations personnalisées.
 
 ## Technologies Utilisées
 
@@ -20,11 +20,11 @@
 - **Insights Proactifs** : Des suggestions basées sur les données pour améliorer proactivement la gestion de la classe et l'engagement des élèves.
 - **Suivi de Performance** : Outils avancés pour suivre les progrès des élèves et ajuster les méthodes d'enseignement en temps réel.
 
-## Essayez ClassAI
+## Essayez La Classe
 
-Découvrez ClassAI et commencez à transformer votre gestion de classe:
-[Accédez à ClassAI](https://laclasse.app/)
+Découvrez La Classe et commencez à transformer votre gestion de classe:
+[Accédez à La Classe](https://laclasse.app/)
 
 ## Contribution
 
-Votre contribution est la bienvenue! Si vous avez des suggestions ou des améliorations, n'hésitez pas à soumettre des pull requests ou ouvrir des issues sur notre dépôt GitHub. Votre feedback est précieux pour nous aider à améliorer ClassAI.
+Votre contribution est la bienvenue! Si vous avez des suggestions ou des améliorations, n'hésitez pas à soumettre des pull requests ou ouvrir des issues sur notre dépôt GitHub. Votre feedback est précieux pour nous aider à améliorer La Classe.

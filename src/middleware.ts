@@ -9,10 +9,18 @@ export default authMiddleware({
     "/sign-up",
     "/spaces",
     "/login",
+    "/pricing",
+    "/privacy-policy",
+    "/terms",
+    "/security",
+    "/legal",
+    "/cookies",
+    "/about",
     "/spaces/classes/:slug",
     "/spaces/sequences/:slug",
     "/spaces/cours/:slug", // Updated this line
     "/spaces/complement/:slug",
+
   ],
 });
 
