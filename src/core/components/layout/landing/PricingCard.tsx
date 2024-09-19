@@ -1,3 +1,5 @@
+"use client";
+
 import { pricingTiers } from "../Pricing";
 import { Button } from "@/core/components/ui/button";
 import {
@@ -47,7 +49,6 @@ export const PricingCard: React.FC<{
           <SignInButton
             afterSignUpUrl={tier.price > 0 ? "/pricing" : "/dashboard"}
             afterSignInUrl={tier.price > 0 ? "/pricing" : "/dashboard"}
-            
           >
             <Button
               className={`w-full ${tier.highlighted ? "bg-primary hover:bg-primary/90" : ""}`}
@@ -65,9 +66,9 @@ export const PricingCard: React.FC<{
             className={`w-full ${tier.highlighted ? "bg-primary hover:bg-primary/90" : ""}`}
             variant={tier.highlighted ? "default" : "outline"}
             disabled={isUpdating}
-            onClick={() => {
+            onClick={async () => {
               if (tier.price > 0) {
-                handleUpgradeClick();
+                return await handleUpgradeClick();
               } else {
                 router.push("/dashboard");
               }

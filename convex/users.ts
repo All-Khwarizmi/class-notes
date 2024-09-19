@@ -155,7 +155,7 @@ export const createUser = internalMutation({
       name: args.name,
       image: args.image,
       country: "USA",
-      educationSystem: "USA",
+      educationSystem: "US",
       schoolSubject: "Arts",
     });
   },

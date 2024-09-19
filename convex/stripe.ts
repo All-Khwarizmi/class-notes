@@ -5,6 +5,7 @@ import Stripe from "stripe";
 
 import { action, internalAction } from "./_generated/server";
 import { internal } from "./_generated/api";
+import { cons } from "fp-ts/lib/ReadonlyNonEmptyArray";
 
 type Metadata = {
   userId: string;
@@ -14,7 +15,7 @@ export const pay = action({
   args: {},
   handler: async (ctx) => {
     const user = await ctx.auth.getUserIdentity();
-
+    console.log("user", { user });
     if (!user) {
       throw new Error("you must be logged in to subscribe");
     }
@@ -24,11 +25,17 @@ export const pay = action({
     }
 
     const domain = process.env.HOSTING_URL ?? "http://localhost:3000";
-    const stripe = new Stripe(process.env.STRIPE_KEY!, {
+
+    console.log("domain", { domain });
+    const STRIPE_KEY = process.env.STRIPE_KEY;
+    console.log("STRIPE_KEY", { STRIPE_KEY });
+    const stripe = new Stripe(STRIPE_KEY!, {
       apiVersion: "2024-06-20",
     });
+    const PRICE_ID = process.env.PRICE_ID;
+    console.log("PRICE_ID", { PRICE_ID });
     const session = await stripe.checkout.sessions.create({
-      line_items: [{ price: process.env.PRICE_ID!, quantity: 1 }],
+      line_items: [{ price: PRICE_ID!, quantity: 1 }],
       customer_email: user.email,
       metadata: {
         userId: user.subject,
@@ -75,16 +82,16 @@ export const fulfill = internalAction({
         });
       }
 
-        if (event.type === "invoice.payment_succeeded") {
-          const subscription = await stripe.subscriptions.retrieve(
-            completedEvent.subscription as string
-          );
+      if (event.type === "invoice.payment_succeeded") {
+        const subscription = await stripe.subscriptions.retrieve(
+          completedEvent.subscription as string
+        );
 
-          await ctx.runMutation(internal.users.updateSubscriptionBySubId, {
-            subscriptionId: subscription.items.data[0]?.price.id,
-            endsOn: subscription.current_period_end * 1000,
-          });
-        }
+        await ctx.runMutation(internal.users.updateSubscriptionBySubId, {
+          subscriptionId: subscription.items.data[0]?.price.id,
+          endsOn: subscription.current_period_end * 1000,
+        });
+      }
 
       return { success: true };
     } catch (err) {
