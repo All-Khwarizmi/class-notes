@@ -9,13 +9,16 @@ import {
   CardTitle,
 } from "@/core/components/ui/card";
 import { useUpgradeSubscription } from "@/features/profile/presentation/helpers/useUpgradeSubscription";
+import { SignedIn, SignedOut, SignInButton, useSession } from "@clerk/nextjs";
 import { ArrowRight } from "lucide-react";
 import { useRouter } from "next/navigation";
+
 export const PricingCard: React.FC<{
   tier: (typeof pricingTiers)[0];
   isYearly: boolean;
 }> = ({ tier, isYearly }) => {
   const Icon = tier.icon;
+  const session = useSession();
   const price = isYearly ? tier.price * 10 : tier.price;
   const { handleUpgradeClick, isUpdating } = useUpgradeSubscription();
   const router = useRouter();
@@ -40,21 +43,40 @@ export const PricingCard: React.FC<{
         <p className="text-sm text-muted-foreground mb-4">{tier.description}</p>
       </CardContent>
       <CardFooter>
-        <Button
-          className={`w-full ${tier.highlighted ? "bg-primary hover:bg-primary/90" : ""}`}
-          variant={tier.highlighted ? "default" : "outline"}
-          onClick={() => {
-            if (tier.price > 0) {
-              handleUpgradeClick();
-            } else {
-              router.push("/dashboard");
-            }
-          }}
-          disabled={isUpdating}
-        >
-          {tier.cta}
-          <ArrowRight className="ml-2 h-4 w-4" />
-        </Button>
+        <SignedOut>
+          <SignInButton
+            afterSignUpUrl={tier.price > 0 ? "/pricing" : "/dashboard"}
+            afterSignInUrl={tier.price > 0 ? "/pricing" : "/dashboard"}
+            
+          >
+            <Button
+              className={`w-full ${tier.highlighted ? "bg-primary hover:bg-primary/90" : ""}`}
+              variant={tier.highlighted ? "default" : "outline"}
+              disabled={isUpdating}
+            >
+              {tier.price > 0 ? "Connectez-vous" : tier.cta}
+              <ArrowRight className="ml-2 h-4 w-4" />
+            </Button>
+          </SignInButton>
+        </SignedOut>
+
+        <SignedIn>
+          <Button
+            className={`w-full ${tier.highlighted ? "bg-primary hover:bg-primary/90" : ""}`}
+            variant={tier.highlighted ? "default" : "outline"}
+            disabled={isUpdating}
+            onClick={() => {
+              if (tier.price > 0) {
+                handleUpgradeClick();
+              } else {
+                router.push("/dashboard");
+              }
+            }}
+          >
+            {tier.cta}
+            <ArrowRight className="ml-2 h-4 w-4" />
+          </Button>
+        </SignedIn>
       </CardFooter>
     </Card>
   );
