@@ -24,7 +24,3 @@
 
 Découvrez La Classe et commencez à transformer votre gestion de classe:
 [Accédez à La Classe](https://laclasse.app/)
-
-## Contribution
-
-Votre contribution est la bienvenue! Si vous avez des suggestions ou des améliorations, n'hésitez pas à soumettre des pull requests ou ouvrir des issues sur notre dépôt GitHub. Votre feedback est précieux pour nous aider à améliorer La Classe.
