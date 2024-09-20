@@ -81,15 +81,6 @@ export default function AddClassForm({ userId }: { userId: string }) {
         ...values,
       },
       {
-        onSuccess: () => {
-          toastWrapper.success("Classe créée avec succès");
-          router.push("/classes");
-        },
-        onError: (error) => {
-          toastWrapper.error(
-            `Erreur lors de la création de la classe: ${error.message}`
-          );
-        },
         onSettled: () => {
           setIsSubmitting(false);
         },
@@ -111,7 +102,7 @@ export default function AddClassForm({ userId }: { userId: string }) {
         </CardHeader>
         <CardContent>
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <form className="space-y-6">
               <FormField
                 control={form.control}
                 name="name"
@@ -243,6 +234,7 @@ export default function AddClassForm({ userId }: { userId: string }) {
                 className="w-full"
                 disabled={isSubmitting || isPending}
                 data-testid="submit-class"
+                onClick={() => onSubmit(form.getValues())}
               >
                 {isSubmitting || isPending ? (
                   <>
