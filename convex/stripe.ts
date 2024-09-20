@@ -91,7 +91,6 @@ export const fulfill = internalAction({
 
       return { success: true };
     } catch (err) {
-      console.error(err);
       return { success: false, error: (err as { message: string }).message };
     }
   },
