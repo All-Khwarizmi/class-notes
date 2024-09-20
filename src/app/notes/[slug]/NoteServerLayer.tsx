@@ -1,32 +1,28 @@
+import React from "react";
+import { isLeft } from "fp-ts/lib/Either";
 import ErrorDialog from "@/core/components/common/ErrorDialog";
 import Layout from "@/core/components/layout/ExperimentalLayout";
 import { notesUsecases } from "@/features/notes/application/usecases/note-usecases";
 import { NoteSchema } from "@/features/notes/domain/notes-schemas";
 import NoteEditorView from "@/features/notes/presentation/views/NoteEditorView";
-import { isLeft } from "fp-ts/lib/Either";
-import React from "react";
 
-async function NoteServerLayer(props: { slug: string }) {
-  if (!props.slug) {
+async function NoteServerLayer({ slug }: { slug: string }) {
+  if (!slug) {
     return <Layout.NotFound />;
   }
 
-  const eitherNote = await notesUsecases.getNote({
-    id: props.slug,
-  });
+  const eitherNote = await notesUsecases.getNote({ id: slug });
 
   if (isLeft(eitherNote)) {
     return (
       <ErrorDialog
-        message={`
-        Failed to fetch note with id: ${props.slug}
-
-        ${eitherNote.left.message}
-        Code: ${eitherNote.left.code}
-        `}
+        message={`Échec de la récupération de la note avec l'ID : ${slug}`}
+        code={eitherNote.left.code}
+        description={eitherNote.left.message}
       />
     );
   }
+
   const parsedNote = {
     ...eitherNote.right,
     id: eitherNote.right._id,
@@ -37,10 +33,8 @@ async function NoteServerLayer(props: { slug: string }) {
   if (!validatedNote.success) {
     return (
       <ErrorDialog
-        message={`
-        Failed to parse note with id: ${props.slug}
-        `}
-        description="Failed to parse note."
+        message={`Échec de l'analyse de la note avec l'ID : ${slug}`}
+        description="La structure de la note est invalide."
       />
     );
   }
