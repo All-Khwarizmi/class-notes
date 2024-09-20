@@ -1,9 +1,17 @@
 import React from "react";
 import { Container, Typography, Box } from "@mui/material";
+import Link from "next/link";
 
 const PrivacyPolicy: React.FC = () => {
   return (
-    <Container maxWidth="md">
+    <Container maxWidth="md" className="mt-4">
+      <Link
+        className="text-blue-500 hover:underline text-lg p-4 mt-4"
+        prefetch={false}
+        href="/"
+      >
+        Home
+      </Link>
       <Box my={4}>
         <Typography variant="h3" component="h1" gutterBottom>
           Privacy Policy for La Classe

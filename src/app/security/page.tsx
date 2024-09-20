@@ -9,10 +9,14 @@ import {
   ListItemText,
 } from "@mui/material";
 import { Security, Lock, Shield, Visibility } from "@mui/icons-material";
+import Link from "next/link";
 
 const SecurityPage: React.FC = () => {
   return (
-    <Container maxWidth="lg">
+    <Container maxWidth="lg" className="mt-4">
+      <Link className="text-blue-500 hover:underline text-lg p-4 mt-4" href="/">
+        Home
+      </Link>
       <Box my={4}>
         <Typography variant="h3" component="h1" gutterBottom>
           Sécurité et Protection des Données
