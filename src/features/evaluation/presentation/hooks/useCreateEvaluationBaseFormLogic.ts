@@ -50,9 +50,9 @@ function useCreateEvaluationBaseFormLogic(props: {
   useEffect(() => {
     let loadingToastId: string | number = 0;
     if (isPending) {
-      loadingToastId = toastWrapper.loading("Creating evaluation...");
+      loadingToastId = toastWrapper.loading("Création de l'évaluation...");
     } else if (isUpdatePending) {
-      loadingToastId = toastWrapper.loading("Updating evaluation...");
+      loadingToastId = toastWrapper.loading("Mise à jour de l'évaluation...");
     }
     return () => {
       toastWrapper.dismiss(loadingToastId);
@@ -63,7 +63,9 @@ function useCreateEvaluationBaseFormLogic(props: {
   const addCriteria = (options?: { name: string; description: string }) => {
     // If the gradeType is not selected, show an error message
     if (!form.getValues("gradeType")) {
-      toastWrapper.error("Please select a grade type before adding criteria");
+      toastWrapper.error(
+        "Veuillez sélectionner un type de notation avant d'ajouter des critères"
+      );
       return;
     }
     const gradeVal = form.getValues("gradeType") as unknown;
@@ -99,7 +101,7 @@ function useCreateEvaluationBaseFormLogic(props: {
     };
     const isValid = EvaluationBaseTypeFormSchema.safeParse(evaluation);
     if (!isValid.success) {
-      toastWrapper.error("Invalid evaluation base data");
+      toastWrapper.error("Données d&apos;évaluation de base invalides");
       return;
     }
     // Check if all the criteria gradeTypes are the same as the evaluation gradeType
@@ -120,7 +122,7 @@ function useCreateEvaluationBaseFormLogic(props: {
     );
 
     if (!isValidWeights) {
-      toastWrapper.error("Criteria weight must be at least 0.5");
+      toastWrapper.error("Le poids des critères doit être au moins de 0.5");
       return;
     }
 
@@ -133,7 +135,7 @@ function useCreateEvaluationBaseFormLogic(props: {
     );
     if (!isValidCriterias) {
       toastWrapper.error(
-        "Criteria names and descriptions must be unique and not empty"
+        "Les critères doivent avoir des noms et descriptions uniques et non vides"
       );
       return;
     }
@@ -149,8 +151,6 @@ function useCreateEvaluationBaseFormLogic(props: {
         form.reset();
         setCriterias([]);
         setOpenArray([]);
-
-        router.push(`/evaluations`);
       },
     });
   }
