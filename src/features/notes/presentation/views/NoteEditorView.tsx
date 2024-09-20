@@ -55,7 +55,7 @@ function NoteEditorView({ note }: { note: Note }) {
   };
 
   return (
-    <Card className="w-full h-[90vh] max-w-4xl mx-auto mt-8">
+    <Card className="w-full h-[90vh]  max-w-4xl mx-auto overflow-y-hidden mt-8">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
         <CardTitle className="text-2xl font-bold">Éditeur de note</CardTitle>
         <Button onClick={handleSave}>
@@ -63,7 +63,7 @@ function NoteEditorView({ note }: { note: Note }) {
           Sauvegarder
         </Button>
       </CardHeader>
-      <CardContent>
+      <CardContent className="overflow-y-auto">
         <div className="space-y-4">
           <div>
             <label
@@ -86,7 +86,7 @@ function NoteEditorView({ note }: { note: Note }) {
             >
               Contenu de la note
             </label>
-            <div className="mt-1 border rounded-md" id="note-content">
+            <div className="mt-1  border rounded-md" id="note-content">
               <FloatingEditor
                 content={note.content}
                 debounceUpdateFn={debounceSaveNote}
