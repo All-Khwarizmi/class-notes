@@ -1,17 +1,43 @@
-import { cn } from "@/lib/utils";
-import { Delete } from "lucide-react";
 import React from "react";
-interface Props extends React.HTMLAttributes<HTMLButtonElement> {}
-const DeleteTableButton: React.FC<Props> = (props) => {
+import { Trash2 } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { Button } from "@/core/components/ui/button";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/core/components/ui/tooltip";
+
+interface DeleteTableButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  tooltipContent?: string;
+}
+
+const DeleteTableButton: React.FC<DeleteTableButtonProps> = ({
+  className,
+  tooltipContent = "Supprimer",
+  ...props
+}) => {
   return (
-    <button
-      {...props}
-      className={cn(
-        "bg-red-500 rounded-md p-1 px-2 flex items-center text-white hover:bg-red-600"
-      )}
-    >
-      <Delete size={14} />
-    </button>
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <Button
+            variant="destructive"
+            size="icon"
+            className={cn("h-8 w-8", className)}
+            {...props}
+          >
+            <Trash2 className="h-4 w-4" />
+            <span className="sr-only">Supprimer</span>
+          </Button>
+        </TooltipTrigger>
+        <TooltipContent>
+          <p>{tooltipContent}</p>
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
   );
 };
 

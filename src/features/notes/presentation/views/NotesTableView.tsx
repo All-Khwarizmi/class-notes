@@ -126,7 +126,7 @@ function NotesTableView({
                 </TableRow>
               ) : (
                 filteredNotes.map((note) => (
-                  <TableRow key={note.id}>
+                  <TableRow key={note.id} className="items-center justify-center">
                     <TableCell className="font-medium">{note.name}</TableCell>
                     <TableCell>{note.description}</TableCell>
                     <TableCell>
@@ -134,9 +134,9 @@ function NotesTableView({
                         note.lastModified ?? Date.now()
                       ).toLocaleDateString()}
                     </TableCell>
-                    <TableCell className="text-right">
+                    <TableCell className="text-right flex justify-end gap-2 items-center">
                       <Button
-                        variant="ghost"
+                        variant="outline"
                         size="sm"
                         onClick={() => router.push(`/notes/${note.id}`)}
                       >
@@ -146,9 +146,7 @@ function NotesTableView({
                       <DeleteTableButton
                         onClick={() => {
                           if (
-                            confirm(
-                              "Are you sure you want to delete this note?"
-                            )
+                            confirm("Are you sure you want to delete this nte?")
                           ) {
                             deleteNote({
                               noteId: note.id,
