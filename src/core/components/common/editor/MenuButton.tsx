@@ -19,15 +19,15 @@ function MenuButton({
   children: React.ReactNode;
   editor: Editor;
 }) {
-
   return (
     <button
       onClick={onClick}
       disabled={disabled}
       className={cn(
         editor.isActive(nodeName) ? "is-active" : "",
-        "bg-slate-400 rounded-md p-1 px-2"
+        "flex items-center justify-center w-8 h-8 rounded-md border border-input bg-transparent hover:bg-accent hover:text-accent-foreground"
       )}
+      aria-label={nodeName}
     >
       {children}
     </button>

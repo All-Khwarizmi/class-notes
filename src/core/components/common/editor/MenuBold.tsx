@@ -14,7 +14,7 @@ export default function MenuBold() {
       disabled={!editor.can().chain().focus().toggleBold().run()}
       className={cn(
         editor.isActive("bold") ? "is-active" : "",
-        "bg-slate-400 rounded-md p-1 px-2"
+        " rounded-md p-1 px-2"
       )}
     >
       <Bold size={12} />
