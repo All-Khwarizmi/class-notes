@@ -1,17 +1,25 @@
 "use client";
-import { Plus, X, Check } from "lucide-react";
+
+import React, { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { Plus, X, Check, Search, File } from "lucide-react";
+import { toast } from "sonner";
+
 import { cn } from "@/lib/utils";
-import { TableCaption, TableHeader } from "@/core/components/ui/table";
+import { Note } from "../../domain/notes-schemas";
+import useAddNote from "../../application/adapters/services/useAddProfileNote";
+import useDeleteNote from "../../application/adapters/services/useDeleteNote";
+
+import { Button } from "@/core/components/ui/button";
+import { Input } from "@/core/components/ui/input";
 import {
   Table,
-  TableRow,
-  TableHead,
   TableBody,
   TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
 } from "@/core/components/ui/table";
-import { Note } from "../../domain/notes-schemas";
-import { useEffect, useState } from "react";
-import { Input } from "@/core/components/ui/input";
 import {
   Select,
   SelectContent,
@@ -20,16 +28,25 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/core/components/ui/select";
-import useAddNote from "../../application/adapters/services/useAddProfileNote";
-import useDeleteNote from "../../application/adapters/services/useDeleteNote";
-import { toast } from "sonner";
-import { Button } from "@/core/components/ui/button";
-import { useRouter } from "next/navigation";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/core/components/ui/card";
+import { ScrollArea } from "@/core/components/ui/scroll-area";
 import DeleteTableButton from "@/core/components/common/DeleteTableButton";
 
-function NotesTableView(props: { notes: Note[]; parentId: string }) {
-  const [localNotes, setLocalNotes] = useState<Note[]>(props.notes);
+function NotesTableView({
+  notes,
+  parentId,
+}: {
+  notes: Note[];
+  parentId: string;
+}) {
+  const [localNotes, setLocalNotes] = useState<Note[]>(notes);
   const [isFileFormVisible, setIsFileFormVisible] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
   const { setNoteOptions } = useAddNote();
   const {
     mutate: deleteNote,
@@ -39,112 +56,130 @@ function NotesTableView(props: { notes: Note[]; parentId: string }) {
     error: noteDeleteError,
   } = useDeleteNote();
   const router = useRouter();
-  function handleSubmit(note: Omit<Note, "id" | "createdBy">) {
-    const newNote = {
-      ...note,
-      parentId: props.parentId,
-      createdBy: props.parentId,
-    };
-    setNoteOptions(newNote);
-  }
 
   useEffect(() => {
-    if (isNoteDeleteError === true) {
+    if (isNoteDeleteError) {
       toast.error("Error while deleting note", {
         description: noteDeleteError.message,
       });
     }
   }, [isNoteDeleteError, noteDeleteError]);
-  return (
-    <>
-      {/* Add a table to display notes */}
-      <div className="w-full h-full py-4">
-        <Table className="w-full">
-          <TableCaption>
-            Add a note to the classe, or click on a note to view it.
-          </TableCaption>
-          <TableHeader>
-            <TableRow>
-              <TableHead className="w-[200px]">Name</TableHead>
-              <TableHead className="w-[200px]">Description</TableHead>
-              {/* <TableHead className="w-[200px]">Type</TableHead> */}
-              <TableHead className="w-[200px]"> Last Modified </TableHead>
 
-              <TableHead className="w-[200px]">Actions</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {/* Add a row to display a note */}
-            {localNotes.map((note) => {
-              return (
-                <TableRow
-                  key={note.id}
-                  onClick={() => {
-                    router.push(`/notes/${note.id}`);
-                  }}
-                  className="cursor-pointer"
-                >
-                  <TableCell className="w-[200px]">{note.name}</TableCell>
-                  <TableCell className="w-[200px]">
-                    {note.description}
+  const filteredNotes = localNotes.filter((note) =>
+    note.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  function handleSubmit(note: Omit<Note, "id" | "createdBy">) {
+    const newNote = {
+      ...note,
+      parentId: parentId,
+      createdBy: parentId,
+    };
+    setNoteOptions(newNote);
+    setIsFileFormVisible(false);
+    setLocalNotes([...localNotes, { ...newNote, id: Date.now().toString() }]);
+  }
+
+  return (
+    <Card className="w-full">
+      <CardHeader>
+        <CardTitle className="text-2xl font-bold">Notes</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="flex justify-between items-center mb-4">
+          <div className="relative w-64">
+            <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+            <Input
+              placeholder="Search notes..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="pl-8"
+            />
+          </div>
+          <Button onClick={() => setIsFileFormVisible(true)}>
+            <Plus className="mr-2 h-4 w-4" />
+            Add Note
+          </Button>
+        </div>
+        <ScrollArea className="h-[400px]">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Name</TableHead>
+                <TableHead>Description</TableHead>
+                <TableHead>Last Modified</TableHead>
+                <TableHead className="text-right">Actions</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {isFileFormVisible && (
+                <NoteItemFormRow
+                  handleSubmit={handleSubmit}
+                  setOpen={setIsFileFormVisible}
+                />
+              )}
+              {filteredNotes.length === 0 ? (
+                <TableRow>
+                  <TableCell colSpan={4} className="h-24 text-center">
+                    No notes found.
                   </TableCell>
-                  {/* <TableCell className="w-[200px]">
-                    {note.type === "Folder" ? (
-                      <Folder size={12} />
-                    ) : (
-                      <File size={12} />
-                    )}
-                  </TableCell> */}
-                  <TableCell className="w-[200px]">
-                    {new Date(note.lastModified ?? Date.now()).toDateString()}
-                  </TableCell>
-                  <TableCell className="w-[200px] ">
-                    <div className="flex items-center justify-center w-full h-full">
+                </TableRow>
+              ) : (
+                filteredNotes.map((note) => (
+                  <TableRow key={note.id}>
+                    <TableCell className="font-medium">{note.name}</TableCell>
+                    <TableCell>{note.description}</TableCell>
+                    <TableCell>
+                      {new Date(
+                        note.lastModified ?? Date.now()
+                      ).toLocaleDateString()}
+                    </TableCell>
+                    <TableCell className="text-right">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => router.push(`/notes/${note.id}`)}
+                      >
+                        <File className="mr-2 h-4 w-4" />
+                        View
+                      </Button>
                       <DeleteTableButton
                         onClick={() => {
-                          confirm(
-                            "Are you sure you want to delete this note?"
-                          ) &&
+                          if (
+                            confirm(
+                              "Are you sure you want to delete this note?"
+                            )
+                          ) {
                             deleteNote({
                               noteId: note.id,
                               pathToRevalidate: `/profile/notes/${note.id}`,
                             });
+                            setLocalNotes(
+                              localNotes.filter((n) => n.id !== note.id)
+                            );
+                          }
                         }}
                       />
-                    </div>
-                  </TableCell>
-                </TableRow>
-              );
-            })}
-            {isFileFormVisible && (
-              <NoteItemFormRow
-                handleSubmit={handleSubmit}
-                setOpen={setIsFileFormVisible}
-              />
-            )}
-          </TableBody>
-        </Table>
-        <div className="flex justify-center py-8 gap-4">
-          <Button
-            onClick={() => {
-              setIsFileFormVisible(true);
-            }}
-          >
-            <Plus size={16} />
-          </Button>
-        </div>
-      </div>
-    </>
+                    </TableCell>
+                  </TableRow>
+                ))
+              )}
+            </TableBody>
+          </Table>
+        </ScrollArea>
+      </CardContent>
+    </Card>
   );
 }
 
-export default NotesTableView;
-
-function NoteItemFormRow(props: {
+function NoteItemFormRow({
+  handleSubmit,
+  setOpen,
+}: {
   handleSubmit: (note: Omit<Note, "id" | "createdBy">) => void;
   setOpen: (value: boolean) => void;
 }) {
-  const [localNotes, setLocalNotes] = useState<Omit<Note, "id" | "createdBy">>({
+  const [localNote, setLocalNote] = useState<Omit<Note, "id" | "createdBy">>({
     name: "",
     description: "",
     type: "Item",
@@ -158,155 +193,58 @@ function NoteItemFormRow(props: {
     keywords: [],
     lastModified: Date.now(),
   });
-  function onChangeNoteName(event: React.ChangeEvent<HTMLInputElement>) {
-    setLocalNotes({ ...localNotes, name: event.target.value });
-  }
-
-  function onChangeNoteDescription(event: React.ChangeEvent<HTMLInputElement>) {
-    setLocalNotes({ ...localNotes, description: event.target.value });
-  }
-
-  function onChangeNoteType(value: string) {
-    if (value !== "Diagram" && value !== "Flowchart" && value !== "Markup") {
-      return;
-    }
-    setLocalNotes({ ...localNotes, contentType: value });
-  }
 
   return (
     <TableRow>
       <TableCell>
         <Input
-          value={localNotes.name}
-          onChange={onChangeNoteName}
-          type="text"
+          value={localNote.name}
+          onChange={(e) => setLocalNote({ ...localNote, name: e.target.value })}
           placeholder="Name"
-          className="border border-slate-400 rounded-md p-1"
         />
       </TableCell>
       <TableCell>
         <Input
-          value={localNotes.description}
-          onChange={onChangeNoteDescription}
-          type="text"
+          value={localNote.description}
+          onChange={(e) =>
+            setLocalNote({ ...localNote, description: e.target.value })
+          }
           placeholder="Description"
-          className="border border-slate-400 rounded-md p-1"
         />
       </TableCell>
       <TableCell>
-        <Select onValueChange={onChangeNoteType} value={localNotes.contentType}>
-          <SelectTrigger className="w-[180px]">
+        <Select
+          onValueChange={(value) =>
+            setLocalNote({ ...localNote, contentType: value as "Markup" })
+          }
+          value={localNote.contentType}
+        >
+          <SelectTrigger>
             <SelectValue placeholder="Select a type" />
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
-              {/* <SelectItem value="Diagram">Diagram</SelectItem>
-              <SelectItem value="Flowchart">Flowchart</SelectItem> */}
               <SelectItem value="Markup">Markup</SelectItem>
             </SelectGroup>
           </SelectContent>
         </Select>
       </TableCell>
-      <TableCell></TableCell>
-
-      <TableCell>
-        <div className="flex gap-2">
-          <button
-            onClick={() => props.handleSubmit(localNotes)}
-            className={cn(
-              "bg-transparent text-green-500 rounded-md p-1 px-2 flex items-center ml-2 hover:bg-slate-400 border border-slate-400 hover:border-slate-400"
-            )}
-          >
-            <Check size={12} />
-          </button>
-          <button
-            onClick={() => {
-              props.setOpen(false);
-            }}
-            className={cn(
-              "bg-transparent text-red-600 rounded-md p-1 px-2 flex items-center ml-2 hover:bg-slate-400 border border-slate-400 hover:border-slate-400"
-            )}
-          >
-            <X size={12} />
-          </button>
-        </div>
+      <TableCell className="text-right">
+        <Button
+          size="sm"
+          onClick={() => handleSubmit(localNote)}
+          disabled={!localNote.name}
+        >
+          <Check className="mr-2 h-4 w-4" />
+          Save
+        </Button>
+        <Button size="sm" variant="ghost" onClick={() => setOpen(false)}>
+          <X className="mr-2 h-4 w-4" />
+          Cancel
+        </Button>
       </TableCell>
     </TableRow>
   );
 }
 
-function NoteFolderFormRow(props: {
-  handleSubmit: (note: Omit<Note, "id" | "createdBy">) => void;
-  setOpen: (value: boolean) => void;
-}) {
-  const [localNotes, setLocalNotes] = useState<Omit<Note, "id" | "createdBy">>({
-    name: "",
-    description: "",
-    type: "Folder",
-    parentId: "1",
-    createdAt: Date.now(),
-    content: "",
-    contentType: "Markup",
-    fullPath: "",
-    pathDictionary: [],
-    folders: [],
-    keywords: [],
-    lastModified: Date.now(),
-  });
-
-  function onChangeNoteName(event: React.ChangeEvent<HTMLInputElement>) {
-    setLocalNotes({ ...localNotes, name: event.target.value });
-  }
-
-  function onChangeNoteDescription(event: React.ChangeEvent<HTMLInputElement>) {
-    setLocalNotes({ ...localNotes, description: event.target.value });
-  }
-
-  return (
-    <TableRow>
-      <TableCell>
-        <Input
-          value={localNotes.name}
-          onChange={onChangeNoteName}
-          type="text"
-          placeholder="Name"
-          className="border border-slate-400 rounded-md p-1"
-        />
-      </TableCell>
-      <TableCell>
-        <Input
-          value={localNotes.description}
-          onChange={onChangeNoteDescription}
-          type="text"
-          placeholder="Description"
-          className="border border-slate-400 rounded-md p-1"
-        />
-      </TableCell>
-      <TableCell></TableCell>
-      <TableCell></TableCell>
-
-      <TableCell>
-        <div className="flex gap-2">
-          <button
-            onClick={() => props.handleSubmit(localNotes)}
-            className={cn(
-              "bg-transparent rounded-md p-1 px-2 flex items-center ml-2 hover:bg-slate-400 border border-slate-400 hover:border-slate-400"
-            )}
-          >
-            <Plus size={12} />
-          </button>
-          <button
-            onClick={() => {
-              props.setOpen(false);
-            }}
-            className={cn(
-              "bg-transparent rounded-md p-1 px-2 flex items-center ml-2 hover:bg-slate-400 border border-slate-400 hover:border-slate-400"
-            )}
-          >
-            <X size={12} />
-          </button>
-        </div>
-      </TableCell>
-    </TableRow>
-  );
-}
+export default NotesTableView;
