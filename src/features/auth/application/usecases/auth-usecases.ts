@@ -1,3 +1,4 @@
+import { isLeft } from "fp-ts/lib/Either";
 import AuthRepository, { authRepository } from "../repository/auth-repository";
 
 export interface AuthUseCasesOptions {
@@ -13,6 +14,14 @@ export default class AuthUseCases {
 
   async getUserAuth() {
     return this._authRepository.getUserAuth();
+  }
+
+  async isCurrentUser(userId: string) {
+    const result = await this.getUserAuth();
+    if (isLeft(result)) {
+      return false;
+    }
+    return result.right.userId === userId;
   }
 }
 

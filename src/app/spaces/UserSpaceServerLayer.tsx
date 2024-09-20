@@ -7,10 +7,9 @@ import UserSpaceClassesGridView from "@/features/spaces/presentation/views/UserS
 import { NavItem } from "@/lib/types";
 import { GraduationCap } from "lucide-react";
 import getVisibility from "@/features/classe/application/adapters/actions/get-visibility";
-import NothingToShow from "@/core/components/common/editor/NothingToShow";
+import EmptyUserSpace from "@/features/spaces/presentation/components/EmptyUserSpace";
 import { authUseCases } from "@/features/auth/application/usecases/auth-usecases";
 import { profileUseCases } from "@/features/profile/application/usecases/profile-usecases";
-
 async function UserSpaceServerLayer(props: {
   slug: string;
   searchParams: { [key: string]: string | undefined };
@@ -24,7 +23,7 @@ async function UserSpaceServerLayer(props: {
   if (isLeft(user)) {
     return (
       <ErrorDialog
-        message="An error occured while fetching the user"
+        message="Une erreur s'est produite lors de la récupération des informations de l'utilisateur"
         code={user.left.code}
         description={
           process.env.NODE_ENV === "development" ? user.left.message : ""
@@ -32,13 +31,14 @@ async function UserSpaceServerLayer(props: {
       />
     );
   }
+
   const eitherVisibility = await getVisibility({
     userId: userId,
   });
   if (isLeft(eitherVisibility)) {
     return (
       <ErrorDialog
-        message="An error occured while fetching the visibility of the classes"
+        message="Une erreur s'est produite lors de la récupération de la visibilité des classes"
         code={eitherVisibility.left.code}
         description={
           process.env.NODE_ENV === "development"
@@ -48,13 +48,14 @@ async function UserSpaceServerLayer(props: {
       />
     );
   }
+
   const eitherClasses = await classeUsecases.getClasses({
     id: userId,
   });
   if (isLeft(eitherClasses)) {
     return (
       <ErrorDialog
-        message="An error occured while fetching the classes"
+        message="Une erreur s'est produite lors de la récupération des classes"
         code={eitherClasses.left.code}
         description={
           process.env.NODE_ENV === "development"
@@ -64,6 +65,7 @@ async function UserSpaceServerLayer(props: {
       />
     );
   }
+
   const classes: ClassType[] = [];
 
   for (const classe of eitherClasses.right) {
@@ -74,25 +76,34 @@ async function UserSpaceServerLayer(props: {
       classes.push(classe);
     }
   }
+
   const userSpaceNavItems: NavItem[] = classes.map((classe) => ({
     title: classe.name,
     href: `/spaces/classes/${classe.id}?user=${userId}`,
     icon: <GraduationCap size={16} className="text-blue-500" />,
     color: "text-blue-300",
   }));
+
+  const isOwner = await authUseCases.isCurrentUser(userId);
+
+  if (classes.length === 0) {
+    return (
+      <EmptyUserSpace
+        isOwner={isOwner}
+        userName={user.right.name ?? "Utilisateur inconnu"}
+        userEmail={user.right.email}
+        contentType="classe"
+      />
+    );
+  }
+
   return (
-    <>
-      {classes.length > 0 ? (
-        <UserSpaceClassesGridView
-          userName={user.right.name ?? "Unknown"}
-          navItems={userSpaceNavItems}
-          userId={userId}
-          classes={classes}
-        />
-      ) : (
-        <NothingToShow />
-      )}
-    </>
+    <UserSpaceClassesGridView
+      userName={user.right.name ?? "Utilisateur inconnu"}
+      navItems={userSpaceNavItems}
+      userId={userId}
+      classes={classes}
+    />
   );
 }
 
