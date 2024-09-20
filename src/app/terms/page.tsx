@@ -10,7 +10,7 @@ const TermsPage: React.FC = () => {
         </Typography>
 
         <Typography variant="body1" paragraph>
-          Dernière mise à jour : [Date]
+          Dernière mise à jour : {new Date().toLocaleDateString()}
         </Typography>
 
         <Typography variant="body1" paragraph>
