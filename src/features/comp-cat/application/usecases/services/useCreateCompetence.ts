@@ -16,14 +16,15 @@ export default function useCreateCompetence() {
     },
     onSuccess: async (either) => {
       if (isLeft(either)) {
-        toastWrapper.error("Failed to add competence");
+        toastWrapper.error("Une erreur est survenue lors de la création");
         return;
       }
-      toastWrapper.success("Competence added");
+      toastWrapper.success("Compétence créée avec succès");
+
       await queryClient.invalidateQueries({
         queryKey: QUERY_KEYS.COMP_CAT.GET_ALL(),
       });
-      router.push("/competences");
+     
     },
   });
 }

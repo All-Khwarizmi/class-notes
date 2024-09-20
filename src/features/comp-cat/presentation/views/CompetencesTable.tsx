@@ -1,8 +1,8 @@
 "use client";
 
-import { useMemo } from "react";
+import React, { useMemo } from "react";
 import Link from "next/link";
-import { Plus, Trash, ChevronRight } from "lucide-react";
+import { Plus, Trash, ChevronRight, FolderTree } from "lucide-react";
 import { isLeft } from "fp-ts/lib/Either";
 import {
   Accordion,
@@ -19,13 +19,14 @@ import {
   CardTitle,
 } from "@/core/components/ui/card";
 import { ScrollArea } from "@/core/components/ui/scroll-area";
+import { Alert, AlertDescription, AlertTitle } from "@/core/components/ui/alert";
 import { groupCompetencesByCategory } from "../../domain/entities/schemas";
 import { useGetCompCat } from "../../application/adapters/services/useGetCompCat";
 import { useDeleteCompCat } from "@/features/complement/application/adapters/services/useDeleteCompCat";
 import UpdateCompetenceForm from "../components/UpdateCompetenceForm";
 
 export default function CompetencesTable({ userId }: { userId: string }) {
-  const { data: compCat } = useGetCompCat({ userId });
+  const { data: compCat, isLoading, isError } = useGetCompCat({ userId });
   const { mutate: deleteCompCat } = useDeleteCompCat();
 
   const groupedCompetences = useMemo(() => {
@@ -34,11 +35,54 @@ export default function CompetencesTable({ userId }: { userId: string }) {
     return groupCompetencesByCategory(competences);
   }, [compCat]);
 
-  if (!compCat || isLeft(compCat)) return null;
+  if (isLoading) {
+    return <div>Chargement des compétences...</div>;
+  }
+
+  if (isError) {
+    return (
+      <Alert variant="destructive">
+        <AlertTitle>Erreur</AlertTitle>
+        <AlertDescription>
+          Une erreur s&apos;est produite lors du chargement des compétences.
+          Veuillez réessayer plus tard.
+        </AlertDescription>
+      </Alert>
+    );
+  }
+
+  if (!compCat || isLeft(compCat) || groupedCompetences.length === 0) {
+    return (
+      <div className="container mx-auto py-6 text-center">
+        <Card className="max-w-md mx-auto">
+          <CardHeader>
+            <CardTitle className="flex items-center justify-center space-x-2">
+              <FolderTree className="h-6 w-6" />
+              <span>Aucune compétence trouvée</span>
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-muted-foreground">
+              Vous n&apos;avez pas encore ajouté de compétences ou de
+              catégories. Commencez à organiser vos compétences dès maintenant !
+            </p>
+          </CardContent>
+          <CardFooter className="flex justify-center">
+            <Button asChild>
+              <Link href="/competences/add">
+                <Plus className="mr-2 h-4 w-4" /> Ajouter une compétence ou une
+                catégorie
+              </Link>
+            </Button>
+          </CardFooter>
+        </Card>
+      </div>
+    );
+  }
 
   return (
     <div className="container mx-auto py-6">
-      <h1 className="text-3xl font-bold mb-6">Competences</h1>
+      <h1 className="text-3xl font-bold mb-6">Compétences</h1>
       <ScrollArea className="h-[calc(100vh-200px)] pr-4">
         <Accordion type="multiple" className="space-y-4">
           {groupedCompetences.map((group) => {
@@ -64,7 +108,9 @@ export default function CompetencesTable({ userId }: { userId: string }) {
                     {category && (
                       <div className="flex items-center justify-between gap-4 pb-2 border-b">
                         <div>
-                          <h3 className="font-semibold">Category Details</h3>
+                          <h3 className="font-semibold">
+                            Détails de la catégorie
+                          </h3>
                           <p className="text-sm text-muted-foreground">
                             {category.description}
                           </p>
@@ -82,7 +128,7 @@ export default function CompetencesTable({ userId }: { userId: string }) {
                             onClick={() => {
                               if (
                                 confirm(
-                                  "Are you sure you want to delete this category?"
+                                  "Êtes-vous sûr de vouloir supprimer cette catégorie ?"
                                 )
                               ) {
                                 deleteCompCat({
@@ -93,6 +139,9 @@ export default function CompetencesTable({ userId }: { userId: string }) {
                             }}
                           >
                             <Trash className="h-4 w-4" />
+                            <span className="sr-only">
+                              Supprimer la catégorie
+                            </span>
                           </Button>
                         </div>
                       </div>
@@ -120,7 +169,7 @@ export default function CompetencesTable({ userId }: { userId: string }) {
                             onClick={() => {
                               if (
                                 confirm(
-                                  "Are you sure you want to delete this competence?"
+                                  "Êtes-vous sûr de vouloir supprimer cette compétence ?"
                                 )
                               ) {
                                 deleteCompCat({
@@ -131,6 +180,9 @@ export default function CompetencesTable({ userId }: { userId: string }) {
                             }}
                           >
                             <Trash className="h-4 w-4" />
+                            <span className="sr-only">
+                              Supprimer la compétence
+                            </span>
                           </Button>
                         </CardFooter>
                       </Card>
@@ -145,7 +197,8 @@ export default function CompetencesTable({ userId }: { userId: string }) {
       <div className="flex justify-center mt-6">
         <Button asChild>
           <Link href="/competences/add">
-            <Plus className="mr-2 h-4 w-4" /> Add Competence or Category
+            <Plus className="mr-2 h-4 w-4" /> Ajouter une compétence ou une
+            catégorie
           </Link>
         </Button>
       </div>
