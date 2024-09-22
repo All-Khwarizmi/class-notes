@@ -74,7 +74,15 @@ export default function AddClassForm({ userId }: { userId: string }) {
       setIsSubmitting(false);
       return;
     }
-
+    const { name, description, imageUrl, educationLevel, educationSystem } =
+      values;
+    if (name.length < 3) {
+      toastWrapper.error(
+        "Le nom de la classe doit contenir au moins 3 caractères"
+      );
+      setIsSubmitting(false);
+      return;
+    }
     setClasse(
       {
         userId,
@@ -102,7 +110,7 @@ export default function AddClassForm({ userId }: { userId: string }) {
         </CardHeader>
         <CardContent>
           <Form {...form}>
-            <form className="space-y-6">
+            <form className="space-y-6" onSubmit={form.handleSubmit(onSubmit)}>
               <FormField
                 control={form.control}
                 name="name"
@@ -111,6 +119,7 @@ export default function AddClassForm({ userId }: { userId: string }) {
                     <FormLabel>Nom</FormLabel>
                     <FormControl>
                       <Input
+                        required
                         data-testid="class-name-input"
                         placeholder="2de 8"
                         {...field}
