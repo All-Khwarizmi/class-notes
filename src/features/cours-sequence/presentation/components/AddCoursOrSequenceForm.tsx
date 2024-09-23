@@ -31,9 +31,8 @@ import { Competence } from "@/features/comp-cat/domain/entities/schemas";
 import { CoursSequenceForm } from "../views/AddCoursView";
 import CompetenceSelectorAccordion from "./CompetenceSelectorAccordion";
 import SelectImageUrl from "./SelectImageUrl";
-import { useRouter } from "next/navigation";
-import { ArrowLeft } from "lucide-react";
 import { toastWrapper } from "@/core/utils/toast-wrapper";
+import { GoBackButton } from "@/core/components/common/navigation/GoBackButton";
 interface AddCoursOrSequenceFormProps {
   form: UseFormReturn<CoursSequenceForm>;
   competences: Competence[];
@@ -63,16 +62,10 @@ export default function AddCoursOrSequenceForm({
   const [localImageUrl, setLocalImageUrl] = useState<string>(
     imageUrl ?? "/images/mos-design-jzFbbG2WXv0-unsplash.jpg"
   );
-  const router = useRouter();
-  function goBack() {
-    router.back();
-  }
+
   return (
     <div className="container mx-auto py-6">
-      <Button variant="ghost" onClick={goBack} className="mb-4">
-        <ArrowLeft className="mr-2 h-4 w-4" />
-        Retour
-      </Button>
+      <GoBackButton />
       <Card className="w-full max-w-2xl mx-auto">
         <CardHeader>
           <CardTitle>{title}</CardTitle>

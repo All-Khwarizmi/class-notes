@@ -40,6 +40,7 @@ import {
 } from "@/features/user/domain/entities/education-systems/niveaux/niveaux";
 import { toastWrapper } from "@/core/utils/toast-wrapper";
 import { BASE_IMAGE_URL } from "@/core/constants/image";
+import { GoBackButton } from "@/core/components/common/navigation/GoBackButton";
 
 type FormValues = Pick<
   ClassType,
@@ -100,13 +101,10 @@ export default function AddClassForm({ userId }: { userId: string }) {
   };
   return (
     <div className="container mx-auto py-6">
-      <Button variant="ghost" onClick={goToClasses} className="mb-4">
-        <ArrowLeft className="mr-2 h-4 w-4" />
-        Retour aux classes
-      </Button>
+      <GoBackButton label="Retour aux classes" onClick={goToClasses} />
       <Card className="w-full max-w-2xl mx-auto">
         <CardHeader>
-          <CardTitle>Créer une classe</CardTitle>
+          <CardTitle>Ajouter une classe</CardTitle>
         </CardHeader>
         <CardContent>
           <Form {...form}>
