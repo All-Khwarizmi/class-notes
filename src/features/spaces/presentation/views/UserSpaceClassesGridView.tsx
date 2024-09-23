@@ -19,6 +19,7 @@ interface UserSpaceClassesGridViewProps {
   userId: string;
   navItems: NavItem[];
   userName: string;
+  hostname: string;
 }
 
 export default function UserSpaceClassesGridView({
@@ -26,6 +27,7 @@ export default function UserSpaceClassesGridView({
   userId,
   navItems,
   userName,
+  hostname,
 }: UserSpaceClassesGridViewProps) {
   const [search, setSearch] = useState("");
   const filteredClasses = classes.filter((classe) =>
@@ -74,6 +76,7 @@ export default function UserSpaceClassesGridView({
               classe={classe}
               userId={userId}
               navItems={navItems}
+              hostname={hostname}
             />
           ))}
         </div>

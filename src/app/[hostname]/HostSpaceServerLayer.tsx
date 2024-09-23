@@ -101,6 +101,7 @@ async function UserSpaceServerLayer(props: {
       navItems={userSpaceNavItems}
       userId={props.userId}
       classes={classes}
+      hostname={props.hostname}
     />
   );
 }

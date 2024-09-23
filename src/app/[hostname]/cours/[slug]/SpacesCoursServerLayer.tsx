@@ -8,9 +8,10 @@ import { complementUsecases } from "@/features/complement/application/usecases/c
 import { Complement } from "@/features/complement/domain/complement-schemas";
 import { coursUsecases } from "@/features/cours-sequence/application/usecases/cours-usecases";
 import ContentViewer from "@/features/cours-sequence/presentation/views/ContentViewer";
-import { profileUseCases } from "@/features/profile/application/usecases/profile-usecases";
 import { authUseCases } from "@/features/auth/application/usecases/auth-usecases";
 import { NavItem } from "@/lib/types";
+import { isNone } from "fp-ts/lib/Option";
+import { getCurrentUser } from "@/data-access/user/get-current-user";
 
 async function SpacesCoursServerLayer(props: {
   slug: string;
@@ -28,14 +29,14 @@ async function SpacesCoursServerLayer(props: {
     );
   }
 
-  const user = await profileUseCases.getUser({ userId });
-  if (isLeft(user)) {
+  const user = await getCurrentUser(userId);
+  if (isNone(user)) {
     return (
       <ErrorDialog
         message="Une erreur s'est produite lors de la récupération des informations de l'utilisateur"
-        code={user.left.code}
+        code="USER_NOT_FOUND"
         description={
-          process.env.NODE_ENV === "development" ? user.left.message : ""
+          process.env.NODE_ENV === "development" ? "User not found" : ""
         }
       />
     );
@@ -86,8 +87,8 @@ async function SpacesCoursServerLayer(props: {
     return (
       <EmptyUserSpace
         isOwner={isOwner}
-        userName={user.right.name ?? "Utilisateur inconnu"}
-        userEmail={user.right.email}
+        userName={user.value.name ?? "Utilisateur inconnu"}
+        userEmail={user.value.email}
         contentType="cours"
       />
     );
@@ -122,7 +123,7 @@ async function SpacesCoursServerLayer(props: {
 
   const complementNavItems: NavItem[] = complements.map((complement) => ({
     title: complement.name,
-    href: `/spaces/complement/${complement.id}?user=${userId}`,
+    href: `/${user.value.hostname}/complement/${complement.id}?user=${userId}`,
     icon: (
       <CheckSquare
         size={16}

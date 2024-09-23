@@ -8,7 +8,8 @@ import getVisibility from "@/features/classe/application/adapters/actions/get-vi
 import { NavItem } from "@/lib/types";
 import EmptyUserSpace from "@/features/spaces/presentation/components/EmptyUserSpace";
 import { authUseCases } from "@/features/auth/application/usecases/auth-usecases";
-import { profileUseCases } from "@/features/profile/application/usecases/profile-usecases";
+import { getCurrentUser as getUser } from "@/data-access/user/get-current-user";
+import { isNone } from "fp-ts/lib/Option";
 
 async function SpacesSequenceServerLayer(props: {
   slug: string;
@@ -22,8 +23,8 @@ async function SpacesSequenceServerLayer(props: {
     return <Layout.NotFound />;
   }
 
-  const user = await profileUseCases.getUser({ userId });
-  if (isLeft(user)) {
+  const user = await getUser(userId);
+  if (isNone(user)) {
     return <Layout.NotFound />;
   }
 
@@ -51,8 +52,8 @@ async function SpacesSequenceServerLayer(props: {
     return (
       <EmptyUserSpace
         isOwner={isOwner}
-        userName={user.right.name ?? "Utilisateur inconnu"}
-        userEmail={user.right.email}
+        userName={user.value.name ?? "Utilisateur inconnu"}
+        userEmail={user.value.email}
         contentType="séquence"
       />
     );
@@ -81,7 +82,7 @@ async function SpacesSequenceServerLayer(props: {
     })
     .map((cours) => ({
       title: cours.name,
-      href: `/spaces/cours/${cours._id}?user=${userId}`,
+      href: `/${user.value.hostname}/cours/${cours._id}?user=${userId}`,
       icon: <BookOpen size={16} className="text-orange-500" />,
       color: "text-blue-300",
     }));
@@ -101,8 +102,8 @@ async function SpacesSequenceServerLayer(props: {
     return (
       <EmptyUserSpace
         isOwner={isOwner}
-        userName={user.right.name ?? "Utilisateur inconnu"}
-        userEmail={user.right.email}
+        userName={user.value.name ?? "Utilisateur inconnu"}
+        userEmail={user.value.email}
         contentType="cours"
       />
     );

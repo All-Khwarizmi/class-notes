@@ -22,12 +22,14 @@ interface UserSpaceClasseCardProps {
   classe: ClassType;
   userId: string;
   navItems: NavItem[];
+  hostname: string;
 }
 
 export default function UserSpaceClasseCard({
   classe,
   userId,
   navItems,
+  hostname,
 }: UserSpaceClasseCardProps) {
   const { setSpacesNavItems } = useSpacesLayoutContext();
 
@@ -80,7 +82,7 @@ export default function UserSpaceClasseCard({
       </CardContent>
       <CardFooter>
         <Button asChild className="w-full">
-          <Link href={`/spaces/classes/${classe.id}?user=${userId}`}>
+          <Link href={`/${hostname}/classes/${classe.id}?user=${userId}`}>
             <BookOpen className="w-4 h-4 mr-2" />
             Voir la classe
           </Link>
