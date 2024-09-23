@@ -1,10 +1,8 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
+import { useMutation } from "@tanstack/react-query";
 import { profileUseCases } from "../../usecases/profile-usecases";
 
 import { useRouter } from "next/navigation";
-import { isLeft, isRight } from "fp-ts/lib/Either";
-import { toast } from "sonner";
+import { isRight } from "fp-ts/lib/Either";
 import { UserType } from "@/features/user/domain/entities/user-schema";
 import { QUERY_KEYS } from "@/core/query/ query-keys";
 import { toastWrapper } from "@/core/utils/toast-wrapper";
@@ -19,6 +17,7 @@ export interface SaveUserOptions {
 }
 
 export default function useSaveUser() {
+  const router = useRouter();
   return useMutation({
     mutationKey: [QUERY_KEYS.PROFILE.SAVE_USER()],
     mutationFn: (args: SaveUserOptions) =>
@@ -35,9 +34,10 @@ export default function useSaveUser() {
     onError: (error) => {
       toastWrapper.error(error.message);
     },
-    onSuccess: (data, variables, context) => {
+    onSuccess: (data) => {
       if (isRight(data)) {
         toastWrapper.success("Profil mis à jour");
+        window.location.reload();
       } else {
         toastWrapper.error("Erreur lors de la mise à jour du profil");
       }

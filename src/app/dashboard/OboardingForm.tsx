@@ -1,9 +1,5 @@
 "use client";
 
-import React, { useState, useCallback, useEffect } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
 import { UserButton } from "@clerk/nextjs";
 import {
   CalendarDaysIcon,
@@ -13,10 +9,7 @@ import {
   CheckCircle,
   XCircle,
 } from "lucide-react";
-import {
-  UserType,
-  userSchema,
-} from "@/features/user/domain/entities/user-schema";
+import { UserType } from "@/features/user/domain/entities/user-schema";
 import {
   Form,
   FormControl,
@@ -46,119 +39,31 @@ import {
 import { Separator } from "@/core/components/ui/separator";
 import { Progress } from "@/core/components/ui/progress";
 import { countryOptions } from "@/features/user/domain/entities/user-schema";
-import { getEducationSystemOptions } from "@/features/user/domain/entities/education-systems/global";
 import { educationSystemOptions } from "@/features/user/domain/entities/education-systems/education-system";
 
-import { debounce } from "lodash";
-import { z } from "zod";
-import useSaveUser from "@/features/profile/application/adapters/services/useSaveUser";
 import { checkUserCredits } from "@/features/profile/presentation/helpers/helpers";
-import { useUpgradeSubscription } from "@/features/profile/presentation/helpers/useUpgradeSubscription";
-import { api } from "../../../convex/_generated/api";
-import { fetchQuery, fetchMutation } from "convex/nextjs";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { QUERY_KEYS } from "@/core/query/ query-keys";
-import { hostname } from "os";
-
-const steps = [
-  { id: "personal", title: "Informations personnelles" },
-  { id: "education", title: "Détails de l'éducation" },
-  { id: "subscription", title: "Abonnement" },
-  { id: "complete", title: "Terminer" },
-];
-
-// Simulated API call for hostname availability check
-const useCheckHostnameAvailabilityQuery = () => {
-  return useMutation({
-    mutationKey: [QUERY_KEYS.HOSTNAME.IS_AVAILABLE()],
-    mutationFn: ({ hostname, userId }: { hostname: string; userId: string }) =>
-      fetchMutation(api.hostname.isHostnameAvailableClient, {
-        hostname,
-        userId,
-      }),
-  });
-};
-
-const useCheckHostnameAvailability = () => {
-  const { isPending, mutateAsync: checkHostnameAvailability } =
-    useCheckHostnameAvailabilityQuery();
-  return {
-    isLoading: isPending,
-    checkHostnameAvailability,
-  };
-};
+import { useUserOnboarding } from "@/features/user/presentation/hooks/useUserOnboarding";
 
 export default function OnboardingProcess({ user }: { user: UserType }) {
-  const [currentStep, setCurrentStep] = useState(0);
-  const [isUpdating, setIsUpdating] = useState(false);
-  const [isHostnameAvailable, setIsHostnameAvailable] = useState<
-    boolean | null
-  >(null);
-  const { mutateAsync: saveUser, isPending: isSavingUser } = useSaveUser();
-  const { handleUpgradeClick, isUpdating: isUpdatingSubscription } =
-    useUpgradeSubscription();
-  const router = useRouter();
-
-  const form = useForm<Omit<UserType, "_id" | "userId">>({
-    resolver: zodResolver(
-      userSchema.omit({ _id: true, userId: true }).extend({
-        hostname: z
-          .string()
-          .min(1, "Le nom d'hôte est requis")
-          .refine(
-            () => isHostnameAvailable === true,
-            "Ce nom d'hôte n'est pas disponible"
-          ),
-      })
-    ),
-    defaultValues: { ...user, hostname: user.hostname ?? "" },
-  });
-  const { checkHostnameAvailability, isLoading: isCheckingHostname } =
-    useCheckHostnameAvailability();
-
-  const selectedSystem = form.watch("educationSystem");
-  const subjectsOptions = getEducationSystemOptions(selectedSystem);
-  const isPending = isUpdating || isUpdatingSubscription || isCheckingHostname;
-
-  const debouncedCheckHostname = useCallback(
-    debounce(async (hostname: string) => {
-      if (hostname) {
-        const available = await checkHostnameAvailability({
-          hostname,
-          userId: user.userId,
-        });
-        setIsHostnameAvailable(available);
-      } else {
-        setIsHostnameAvailable(null);
-      }
-    }, 1000),
-    [checkHostnameAvailability, isCheckingHostname]
-  );
-
-  useEffect(() => {
-    if (user.hostname) {
-      setIsHostnameAvailable(true);
-    }
-  }, []);
-
-  async function onSubmit(data: Omit<UserType, "_id" | "userId">) {
-    if (currentStep === steps.length - 1) {
-      setIsUpdating(true);
-      await saveUser({
-        userId: user.userId,
-        ...data,
-      });
-      setIsUpdating(false);
-      router.push("/dashboard");
-    } else {
-      setCurrentStep(currentStep + 1);
-    }
-  }
-
-  const progress = ((currentStep + 1) / steps.length) * 100;
-
+  const {
+    data: {
+      steps,
+      form,
+      progress,
+      currentStep,
+      isPending,
+      isHostnameAvailable,
+    },
+    functions: {
+      onSubmit,
+      debouncedCheckHostname,
+      subjectsOptions,
+      handleUpgradeClick,
+      setCurrentStep,
+    },
+  } = useUserOnboarding({ user });
   return (
-    <Card className="w-full max-w-2xl mx-auto">
+    <Card className="w-full max-w-2xl mx-auto py-10">
       <CardHeader>
         <div className="flex items-center justify-between">
           <CardTitle>Bienvenue sur La Classe</CardTitle>
@@ -247,6 +152,7 @@ export default function OnboardingProcess({ user }: { user: UserType }) {
                         <FormControl>
                           <Input
                             {...field}
+                            required
                             placeholder="mon-ecole"
                             data-testid="hostname-input"
                             onChange={(e) => {
