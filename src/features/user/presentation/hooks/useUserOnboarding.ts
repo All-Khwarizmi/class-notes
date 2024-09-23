@@ -9,6 +9,7 @@ import { z } from "zod";
 import { getEducationSystemOptions } from "../../domain/entities/education-systems/global";
 import { UserType, userSchema } from "../../domain/entities/user-schema";
 import { useCheckHostnameAvailability } from "./useCheckHostnameAvailability";
+import { isValidHostname } from "@/core/constants/paths/get-reserved-path";
 
 const steps = [
   { id: "personal", title: "Informations personnelles" },
@@ -51,7 +52,7 @@ export function useUserOnboarding({ user }: { user: UserType }) {
 
   const debouncedCheckHostname = useCallback(
     debounce(async (hostname: string) => {
-      if (hostname) {
+      if (isValidHostname(hostname)) {
         const available = await checkHostnameAvailability({
           hostname,
           userId: user.userId,
@@ -59,7 +60,7 @@ export function useUserOnboarding({ user }: { user: UserType }) {
         console.log("available", available);
         setIsHostnameAvailable(available);
       } else {
-        setIsHostnameAvailable(null);
+        setIsHostnameAvailable(false);
       }
     }, 1000),
     [checkHostnameAvailability, isCheckingHostname]
@@ -101,7 +102,6 @@ export function useUserOnboarding({ user }: { user: UserType }) {
       subjectsOptions,
       handleUpgradeClick,
       setCurrentStep,
-      saveUser,
     },
   };
 }
