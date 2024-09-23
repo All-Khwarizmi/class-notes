@@ -63,7 +63,7 @@ export default function VisibilityManagementComponent({
   }
 
   return (
-    <Card className="w-full">
+    <Card className="w-full mt-4">
       <CardHeader>
         <CardTitle>Gestion de la visibilité</CardTitle>
         <CardDescription>

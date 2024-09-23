@@ -52,7 +52,7 @@ const externalLinks = [
 
 export default function Dashboard({ userId }: { userId: string }) {
   return (
-    <div className="container mx-auto p-4 space-y-6">
+    <div className="container mx-auto p-4 space-y-6 mb-12">
       <h1 className="text-3xl font-bold">Tableau de bord</h1>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -107,8 +107,8 @@ export default function Dashboard({ userId }: { userId: string }) {
         </Card>
       </div>
 
-      <Tabs defaultValue="visibility" className="w-full">
-        <TabsList>
+      <Tabs defaultValue="visibility" className="w-full truncate  ">
+        <TabsList >
           <TabsTrigger value="visibility">Gestion de la visibilité</TabsTrigger>
           <TabsTrigger value="quicklinks">Liens rapides</TabsTrigger>
           <TabsTrigger value="resources">Ressources pédagogiques</TabsTrigger>
@@ -137,7 +137,7 @@ export default function Dashboard({ userId }: { userId: string }) {
             Si vous avez des questions ou rencontrez des difficultés,
             n&apos;hésitez pas à nous contacter :
           </p>
-          <div className="flex space-x-4">
+          <div className="flex flex-col md:flex-row space-y-4 md:space-x-4 md:space-y-0">
             <Button asChild>
               <Link href="mailto:jason@laclasse.app">
                 <HelpCircle className="mr-2 h-4 w-4" />
