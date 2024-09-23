@@ -29,10 +29,10 @@ import QuickLinksCard from "../components/QuickLinksCard";
 import RessourceLinksCard from "../components/RessourceLinksCard";
 
 const quickActions = [
-  { name: "Nouvelle classe", icon: PlusCircle, href: "/classes/new" },
-  { name: "Nouvelle séquence", icon: FileText, href: "/sequences/new" },
-  { name: "Nouvelle évaluation", icon: BookOpen, href: "/evaluations/new" },
-  { name: "Gérer les élèves", icon: Users, href: "/students" },
+  { name: "Nouvelle classe", icon: PlusCircle, href: "/classes/add" },
+  { name: "Nouvelle séquence", icon: FileText, href: "/sequences/add" },
+  { name: "Nouvelle évaluation", icon: BookOpen, href: "/evaluations/add" },
+  { name: "Gérer les élèves", icon: Users, href: "/classes" },
 ];
 
 const externalLinks = [

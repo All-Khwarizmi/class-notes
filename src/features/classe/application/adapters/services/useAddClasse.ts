@@ -11,9 +11,9 @@ export default function useAddClasse() {
     mutationFn: async (options: CreateClasseOptions) => {
       const operationResult = await classeUsecases.createClasse(options);
       if (isLeft(operationResult)) {
-        toastWrapper.error("Could not create classe");
+        return toastWrapper.error("La classe n'a pas pu être créée");
       }
-      toastWrapper.success("Classe created successfully");
+      toastWrapper.success("La classe a été créée");
     },
   });
 }

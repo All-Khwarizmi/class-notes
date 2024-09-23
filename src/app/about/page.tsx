@@ -1,9 +1,13 @@
 import React from "react";
 import { Container, Typography, Box, Grid } from "@mui/material";
+import Link from "next/link";
 
 const AboutPage: React.FC = () => {
   return (
-    <Container maxWidth="lg">
+    <Container maxWidth="lg" className="mt-4">
+      <Link className="text-blue-500 hover:underline text-lg p-4 mt-4" href="/">
+        Home
+      </Link>
       <Box my={4}>
         <Typography variant="h3" component="h1" gutterBottom>
           À propos de La Classe
@@ -15,10 +19,10 @@ const AboutPage: React.FC = () => {
         <Typography variant="body1" paragraph>
           Chez La Classe, notre mission est de révolutionner l&apos;éducation en
           fournissant aux enseignants des outils innovants alimentés par
-          l&apos;intelligence artificielle. Nous croyons que chaque enseignant mérite
-          d&apos;avoir accès à des technologies de pointe pour optimiser son
-          enseignement et offrir la meilleure expérience d&apos;apprentissage
-          possible à ses élèves.
+          l&apos;intelligence artificielle. Nous croyons que chaque enseignant
+          mérite d&apos;avoir accès à des technologies de pointe pour optimiser
+          son enseignement et offrir la meilleure expérience
+          d&apos;apprentissage possible à ses élèves.
         </Typography>
 
         <Typography variant="h5" component="h2" gutterBottom>
@@ -27,10 +31,11 @@ const AboutPage: React.FC = () => {
         <Typography variant="body1" paragraph>
           Fondée en [année] par une équipe d&apos;anciens enseignants et de
           développeurs passionnés, La Classe est née de la volonté de combler le
-          fossé entre l&apos;éducation traditionnelle et les possibilités offertes
-          par l&apos;intelligence artificielle. Depuis notre création, nous n&apos;avons
-          cessé d&apos;innover et d&apos;améliorer notre plateforme pour répondre aux
-          besoins changeants des éducateurs du monde entier.
+          fossé entre l&apos;éducation traditionnelle et les possibilités
+          offertes par l&apos;intelligence artificielle. Depuis notre création,
+          nous n&apos;avons cessé d&apos;innover et d&apos;améliorer notre
+          plateforme pour répondre aux besoins changeants des éducateurs du
+          monde entier.
         </Typography>
 
         <Typography variant="h5" component="h2" gutterBottom>
@@ -76,9 +81,9 @@ const AboutPage: React.FC = () => {
           </Typography>
           <Typography variant="body1" paragraph>
             La Classe est portée par une équipe diverse et passionnée
-            d&apos;éducateurs, de développeurs, de designers et d&apos;experts en IA.
-            Ensemble, nous travaillons chaque jour pour faire de La Classe la
-            meilleure plateforme éducative possible.
+            d&apos;éducateurs, de développeurs, de designers et d&apos;experts
+            en IA. Ensemble, nous travaillons chaque jour pour faire de La
+            Classe la meilleure plateforme éducative possible.
           </Typography>
         </Box>
       </Box>

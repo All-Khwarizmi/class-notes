@@ -31,8 +31,8 @@ import { Competence } from "@/features/comp-cat/domain/entities/schemas";
 import { CoursSequenceForm } from "../views/AddCoursView";
 import CompetenceSelectorAccordion from "./CompetenceSelectorAccordion";
 import SelectImageUrl from "./SelectImageUrl";
-import { useRouter } from "next/navigation";
-import { ArrowLeft } from "lucide-react";
+import { toastWrapper } from "@/core/utils/toast-wrapper";
+import { GoBackButton } from "@/core/components/common/navigation/GoBackButton";
 interface AddCoursOrSequenceFormProps {
   form: UseFormReturn<CoursSequenceForm>;
   competences: Competence[];
@@ -62,16 +62,10 @@ export default function AddCoursOrSequenceForm({
   const [localImageUrl, setLocalImageUrl] = useState<string>(
     imageUrl ?? "/images/mos-design-jzFbbG2WXv0-unsplash.jpg"
   );
-  const router = useRouter();
-  function goBack() {
-    router.back();
-  }
+
   return (
     <div className="container mx-auto py-6">
-      <Button variant="ghost" onClick={goBack} className="mb-4">
-        <ArrowLeft className="mr-2 h-4 w-4" />
-        Retour
-      </Button>
+      <GoBackButton />
       <Card className="w-full max-w-2xl mx-auto">
         <CardHeader>
           <CardTitle>{title}</CardTitle>
@@ -79,13 +73,26 @@ export default function AddCoursOrSequenceForm({
         <CardContent>
           <Form {...form}>
             <form
-              onSubmit={form.handleSubmit((data) =>
+              onSubmit={form.handleSubmit((data) => {
+                if (data.name.length < 3) {
+                  toastWrapper.error(
+                    "Le nom de la classe doit contenir au moins 3 caractères"
+                  );
+                  return;
+                }
+                if (data.description.length < 3) {
+                  toastWrapper.error(
+                    "La description doit contenir au moins 3 caractères"
+                  );
+                  return;
+                }
+
                 onSubmit({
                   ...data,
                   competences: selectedCompetences.map((c) => c._id),
                   imageUrl: localImageUrl,
-                })
-              )}
+                });
+              })}
               className="space-y-6"
             >
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -96,7 +103,11 @@ export default function AddCoursOrSequenceForm({
                     <FormItem>
                       <FormLabel>Nom</FormLabel>
                       <FormControl>
-                        <Input {...field} placeholder="Entrez le nom" />
+                        <Input
+                          {...field}
+                          placeholder="Entrez le nom"
+                          required
+                        />
                       </FormControl>
                     </FormItem>
                   )}
@@ -127,6 +138,7 @@ export default function AddCoursOrSequenceForm({
                     <FormControl>
                       <Textarea
                         {...field}
+                        required
                         placeholder="Entrez la description"
                         rows={4}
                       />

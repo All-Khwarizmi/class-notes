@@ -48,6 +48,7 @@ export const QUERY_KEYS = {
     GET_ALL: (options: string[] = []) => ["GET_ALL_NOTES", ...options],
     DELETE: (options: string[] = []) => ["DELETE_NOTE", ...options],
     CREATE: (options: string[] = []) => ["CREATE_NOTE", ...options],
+    UPDATE: (options: string[] = []) => ["UPDATE_NOTE", ...options],
   },
   VISIBILITY: {
     GET_ALL: (options: string[] = []) => ["GET_ALL_VISIBILITY", ...options],

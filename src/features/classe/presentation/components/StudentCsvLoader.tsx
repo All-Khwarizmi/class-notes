@@ -35,7 +35,7 @@ export default function CSVReader({
   const handleUpload = (results: any) => {
     const studentNames = results.data
       .slice(1) // Skip header row
-      .map((row: any) => Object.values(row).join(" ").trim())
+      .map((row: any) => row[0]?.trim()) // Select only the first column and trim whitespace
       .filter((name: string) => name !== ""); // Remove empty rows
     setStudents(studentNames);
     setZoneHover(false);

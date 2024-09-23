@@ -18,7 +18,6 @@ function useCreateEvaluationBaseFormLogic(props: {
   userId: string;
   evaluation?: EvaluationBaseType;
 }) {
-  const router = useRouter();
   const form = useForm({
     resolver: zodResolver(EvaluationBaseTypeFormSchema),
     defaultValues: {

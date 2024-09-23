@@ -83,13 +83,13 @@ export default function useExperimentalLayoutLogic(userId: string) {
           color: "text-blue-300",
         }));
         evaluationsNavItems.unshift({
-          title: "Show All",
+          title: "Tout afficher", // Changed from "Show All"
           icon: <AArrowDown size={16} />,
           href: "/evaluations",
           color: "text-blue-300",
         });
         evaluationsNavItems.unshift({
-          title: "Add Evaluation",
+          title: "Ajouter une évaluation", // Changed from "Add Evaluation"
           icon: <Plus size={16} />,
           href: "/evaluations/add",
           color: "text-blue-300",
@@ -102,13 +102,13 @@ export default function useExperimentalLayoutLogic(userId: string) {
           color: "text-blue-300",
         }));
         sequencesNavItems.unshift({
-          title: "Show All",
+          title: "Tout afficher", // Changed from "Show All"
           icon: <AArrowDown size={16} />,
           href: "/sequences?type=template",
           color: "text-blue-300",
         });
         sequencesNavItems.unshift({
-          title: "Add Sequence",
+          title: "Ajouter une séquence", // Changed from "Add Sequence"
           icon: <Plus size={16} />,
           href: "/sequences/add",
           color: "text-blue-300",
@@ -120,13 +120,13 @@ export default function useExperimentalLayoutLogic(userId: string) {
           color: "text-blue-300",
         }));
         classesNavItems.unshift({
-          title: "Show All Classes",
+          title: "Toutes les classes", // Changed from "Show All Classes"
           icon: <AArrowDown size={16} />,
           href: "/classes",
           color: "text-blue-300",
         });
         classesNavItems.unshift({
-          title: "Add Class",
+          title: "Ajouter une classe", // Changed from "Add Class"
           icon: <Plus size={16} />,
           href: "/classes/add",
           color: "text-blue-300",

@@ -1,97 +1,89 @@
+import React from "react";
 import { Editor } from "@tiptap/react";
 import { Level } from "@tiptap/extension-heading";
 import { cn } from "@/lib/utils";
-import { Heading } from "lucide-react";
-import { Button } from "@/core/components/ui/button";
-
+import { Type } from "lucide-react";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/core/components/ui/popover";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/core/components/ui/select";
 
-export function HeadingMenuBar(props: { editor: Editor }) {
-  const editor = props.editor;
-  function setHeading(level: Level, position?: number) {
-    editor!
-      .chain()
-      .setHeading({ level })
-      .focus(
-        position !== undefined ? position : editor!.state.selection.$head.pos,
-        {
-          scrollIntoView: true,
-        }
-      )
+interface HeadingOption {
+  label: string;
+  value: Level | "paragraph";
+  className: string;
+}
 
-      .run();
-  }
+const headingOptions: HeadingOption[] = [
+  { label: "Paragraph", value: "paragraph", className: "text-base" },
+  { label: "Heading 1", value: 1, className: "text-3xl font-bold" },
+  { label: "Heading 2", value: 2, className: "text-2xl font-bold" },
+  { label: "Heading 3", value: 3, className: "text-xl font-bold" },
+  { label: "Heading 4", value: 4, className: "text-lg font-semibold" },
+  { label: "Heading 5", value: 5, className: "text-base font-semibold" },
+  { label: "Heading 6", value: 6, className: "text-sm font-semibold" },
+];
+
+export function HeadingMenuBar({ editor }: { editor: Editor }) {
+  const setHeading = (value: Level | "paragraph") => {
+    if (value === "paragraph") {
+      editor.chain().focus().setParagraph().run();
+    } else {
+      editor.chain().focus().setHeading({ level: value }).run();
+    }
+  };
+
+  const getCurrentHeading = (): Level | "paragraph" => {
+    for (let i = 1; i <= 6; i++) {
+      if (editor.isActive("heading", { level: i as Level })) {
+        return i as Level;
+      }
+    }
+    return "paragraph";
+  };
 
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <button className="bg-slate-400 rounded-md p-1 px-2">
-          <Heading size={12} />
+        <button
+          className="flex items-center justify-center w-8 h-8 rounded-md border border-input bg-transparent hover:bg-accent hover:text-accent-foreground"
+          aria-label="Text style"
+        >
+          <Type className="h-4 w-4" />
         </button>
       </PopoverTrigger>
-      <PopoverContent className="w-full">
-        <div>
-          <div className="flex gap-2">
-            <button
-              onClick={() => setHeading(1)}
-              className={cn(
-                "text-3xl",
-                editor.isActive("heading", { level: 1 }) && "text-blue-500"
-              )}
-            >
-              H1
-            </button>
-            <button
-              onClick={() => setHeading(2)}
-              className={cn(
-                "text-2xl",
-                editor.isActive("heading", { level: 2 }) && "text-blue-500"
-              )}
-            >
-              H2
-            </button>
-            <button
-              onClick={() => setHeading(3)}
-              className={cn(
-                "text-xl",
-                editor.isActive("heading", { level: 3 }) && "text-blue-500"
-              )}
-            >
-              H3
-            </button>
-            <button
-              onClick={() => setHeading(4)}
-              className={cn(
-                "text-lg",
-                editor.isActive("heading", { level: 4 }) && "text-blue-500"
-              )}
-            >
-              H4
-            </button>
-            <Button
-              onClick={() => setHeading(5)}
-              className={cn(
-                "text-md",
-                editor.isActive("heading", { level: 5 }) && "text-blue-500"
-              )}
-            >
-              H5
-            </Button>
-            <Button
-              onClick={() => setHeading(6)}
-              className={cn(
-                "text-sm",
-                editor.isActive("heading", { level: 6 }) && "text-blue-500"
-              )}
-            >
-              H6
-            </Button>
-          </div>
-        </div>
+      <PopoverContent className="w-56 p-0">
+        <Select
+          value={getCurrentHeading().toString()}
+          onValueChange={(value) =>
+            setHeading(
+              value === "paragraph" ? "paragraph" : (parseInt(value) as Level)
+            )
+          }
+        >
+          <SelectTrigger className="w-full">
+            <SelectValue placeholder="Select heading" />
+          </SelectTrigger>
+          <SelectContent>
+            {headingOptions.map((option) => (
+              <SelectItem
+                key={option.value}
+                value={option.value.toString()}
+                className={cn("cursor-pointer", option.className)}
+              >
+                {option.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
       </PopoverContent>
     </Popover>
   );

@@ -27,6 +27,7 @@ import {
   AccordionTrigger,
 } from "@/core/components/ui/accordion";
 import { useTheme } from "next-themes";
+import Link from "next/link";
 
 const AIServerLayer: React.FC = () => {
   const { theme } = useTheme();
@@ -88,8 +89,8 @@ const AIServerLayer: React.FC = () => {
                       {typeof feature.essential === "string"
                         ? feature.essential
                         : feature.essential
-                          ? "Oui"
-                          : "Non"}
+                        ? "Oui"
+                        : "Non"}
                     </span>
                   </motion.li>
                 ))}
@@ -161,13 +162,15 @@ const AIServerLayer: React.FC = () => {
           <p className="mb-4 text-muted-foreground">
             Exploitez tout le potentiel de l&apos;IA dans votre enseignement
           </p>
-          <Button
-            size="lg"
-            className="w-full sm:w-auto bg-primary hover:bg-primary/90"
-          >
-            Passer à ClasseGenius
-            <ChevronRight className="ml-2 h-4 w-4" />
-          </Button>
+          <Link href="/pricing">
+            <Button
+              size="lg"
+              className="w-full sm:w-auto bg-primary hover:bg-primary/90"
+            >
+              Passer à ClasseGenius
+              <ChevronRight className="ml-2 h-4 w-4" />
+            </Button>
+          </Link>
         </div>
       </CardFooter>
     </Card>

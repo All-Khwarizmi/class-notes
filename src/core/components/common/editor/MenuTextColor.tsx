@@ -20,14 +20,17 @@ export default function MenuTextColor(props: { editor: Editor }) {
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <button className="bg-slate-400 rounded-md p-1 px-2">
+        <button
+          className="flex items-center justify-center w-8 h-8 rounded-md border border-input bg-transparent hover:bg-accent hover:text-accent-foreground"
+          aria-label="Text color"
+        >
           <Pipette size={12} />
         </button>
       </PopoverTrigger>
       <PopoverContent className="w-full">
         <HexColorPicker color={color} onChange={setColor} />
         <button
-          className="bg-slate-400 flex justify-center rounded-md p-1 px-2 mt-2 w-full"
+          className="flex bg-slate-400 justify-center rounded-md p-1 px-2 mt-2 w-full"
           onClick={() => {
             setTextColor(color);
           }}

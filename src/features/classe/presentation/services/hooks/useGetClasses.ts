@@ -14,7 +14,9 @@ export default function useGetClasses(options: GetClasseListOptions) {
       });
       if (isLeft(operationResult)) {
         console.log("An error occurred while fetching classes");
-        toastWrapper.error("An error occurred while fetching classes");
+        toastWrapper.error(
+          "Une erreur est survenue lors du chargement des classes"
+        );
         throw new Error(operationResult.left.message);
       }
 

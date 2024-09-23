@@ -1,9 +1,13 @@
 import React from "react";
 import { Container, Typography, Box } from "@mui/material";
+import { Link } from "lucide-react";
 
 const TermsPage: React.FC = () => {
   return (
-    <Container maxWidth="lg">
+    <Container maxWidth="lg" className="mt-4">
+      <Link className="text-blue-500 hover:underline text-lg p-4 " href="/">
+        Home
+      </Link>
       <Box my={4}>
         <Typography variant="h3" component="h1" gutterBottom>
           Conditions d&apos;Utilisation

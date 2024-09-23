@@ -40,6 +40,7 @@ import {
 } from "@/features/user/domain/entities/education-systems/niveaux/niveaux";
 import { toastWrapper } from "@/core/utils/toast-wrapper";
 import { BASE_IMAGE_URL } from "@/core/constants/image";
+import { GoBackButton } from "@/core/components/common/navigation/GoBackButton";
 
 type FormValues = Pick<
   ClassType,
@@ -74,22 +75,21 @@ export default function AddClassForm({ userId }: { userId: string }) {
       setIsSubmitting(false);
       return;
     }
-
+    const { name, description, imageUrl, educationLevel, educationSystem } =
+      values;
+    if (name.length < 3) {
+      toastWrapper.error(
+        "Le nom de la classe doit contenir au moins 3 caractères"
+      );
+      setIsSubmitting(false);
+      return;
+    }
     setClasse(
       {
         userId,
         ...values,
       },
       {
-        onSuccess: () => {
-          toastWrapper.success("Classe créée avec succès");
-          router.push("/classes");
-        },
-        onError: (error) => {
-          toastWrapper.error(
-            `Erreur lors de la création de la classe: ${error.message}`
-          );
-        },
         onSettled: () => {
           setIsSubmitting(false);
         },
@@ -101,17 +101,14 @@ export default function AddClassForm({ userId }: { userId: string }) {
   };
   return (
     <div className="container mx-auto py-6">
-      <Button variant="ghost" onClick={goToClasses} className="mb-4">
-        <ArrowLeft className="mr-2 h-4 w-4" />
-        Retour aux classes
-      </Button>
+      <GoBackButton label="Retour aux classes" onClick={goToClasses} />
       <Card className="w-full max-w-2xl mx-auto">
         <CardHeader>
-          <CardTitle>Créer une classe</CardTitle>
+          <CardTitle>Ajouter une classe</CardTitle>
         </CardHeader>
         <CardContent>
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <form className="space-y-6" onSubmit={form.handleSubmit(onSubmit)}>
               <FormField
                 control={form.control}
                 name="name"
@@ -120,6 +117,7 @@ export default function AddClassForm({ userId }: { userId: string }) {
                     <FormLabel>Nom</FormLabel>
                     <FormControl>
                       <Input
+                        required
                         data-testid="class-name-input"
                         placeholder="2de 8"
                         {...field}
@@ -243,6 +241,7 @@ export default function AddClassForm({ userId }: { userId: string }) {
                 className="w-full"
                 disabled={isSubmitting || isPending}
                 data-testid="submit-class"
+                onClick={() => onSubmit(form.getValues())}
               >
                 {isSubmitting || isPending ? (
                   <>

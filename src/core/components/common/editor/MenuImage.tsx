@@ -12,7 +12,11 @@ export default function MenuImage(props: { editor: Editor }) {
     }
   }
   return (
-    <button onClick={insertImage} className="bg-slate-400 rounded-md p-1 px-2">
+    <button
+      onClick={insertImage}
+      className="flex items-center justify-center w-8 h-8 rounded-md border border-input bg-transparent hover:bg-accent hover:text-accent-foreground"
+      aria-label="Image"
+    >
       <Image size={12} />
     </button>
   );
