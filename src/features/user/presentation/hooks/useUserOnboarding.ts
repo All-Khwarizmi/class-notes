@@ -102,6 +102,7 @@ export function useUserOnboarding({ user }: { user: UserType }) {
       subjectsOptions,
       handleUpgradeClick,
       setCurrentStep,
+      saveUser,
     },
   };
 }

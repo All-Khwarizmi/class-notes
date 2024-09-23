@@ -94,15 +94,16 @@ export const saveUserMutation = mutation({
         } else if (!hostnameExists) {
           // create hostname
 
-          await ctx.db.insert("Hostname", {
+          const result = await ctx.db.insert("Hostname", {
             hostname: args.hostname.toLowerCase(),
             userId: args.userId,
           });
+
           // Delete the old hostname
 
           const oldHostaname = await ctx.db
             .query("Hostname")
-            .filter((q) => q.eq(q.field("userId"), args.userId))
+            .filter((q) => q.eq(q.field("hostname"), user.hostname))
             .first();
           if (oldHostaname) {
             await ctx.db.delete(oldHostaname._id);

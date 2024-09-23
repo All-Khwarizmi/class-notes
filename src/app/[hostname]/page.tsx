@@ -2,6 +2,9 @@ import { getUserByHostname } from "@/data-access/hostname/get-user-by-hostname";
 import { isNone } from "fp-ts/lib/Option";
 import { checkParams } from "./helpers/check-params";
 import NotFound from "../not-found";
+import LoadingSkeleton from "@/core/components/common/LoadingSkeleton";
+import { Suspense } from "react";
+import HostSpaceServerLayer from "./HostSpaceServerLayer";
 
 export default async function Page({
   params,
@@ -26,5 +29,12 @@ export default async function Page({
   if (!user) {
     return <NotFound />;
   }
-  return <div>{user.value.name}&apos;s Space</div>;
+  return (
+    <Suspense fallback={<LoadingSkeleton />}>
+      <HostSpaceServerLayer
+        userId={user.value.userId}
+        hostname={hostname}
+      />
+    </Suspense>
+  );
 }
