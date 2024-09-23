@@ -1,10 +1,8 @@
 import { httpRouter } from "convex/server";
-
 import { internal } from "./_generated/api";
 import { httpAction } from "./_generated/server";
 
 const http = httpRouter();
-
 http.route({
   path: "/clerk",
   method: "POST",
@@ -24,11 +22,48 @@ http.route({
 
       switch (result.type) {
         case "user.created":
+          if (!result.data.username) {
+            await ctx.runMutation(internal.users.createUser, {
+              userId: result.data.id,
+              name: `${result.data.first_name ?? ""} ${
+                result.data.last_name ?? ""
+              }`,
+              hostname: btoa(result.data.id),
+              image: result.data.image_url,
+              email: result.data.email_addresses[0].email_address,
+            });
+            await ctx.runMutation(internal.visibility.createVisibilityTable, {
+              userId: result.data.id,
+            });
+            break;
+          }
+          const hostname = await ctx.runQuery(
+            internal.hostname.isHostnameAvailable,
+            {
+              hostname: result.data.username,
+            }
+          );
+          if (hostname === true) {
+            await ctx.runMutation(internal.users.createUser, {
+              userId: result.data.id,
+              name: `${result.data.first_name ?? ""} ${
+                result.data.last_name ?? ""
+              }`,
+              hostname: btoa(result.data.id),
+              image: result.data.image_url,
+              email: result.data.email_addresses[0].email_address,
+            });
+            await ctx.runMutation(internal.visibility.createVisibilityTable, {
+              userId: result.data.id,
+            });
+            break;
+          }
           await ctx.runMutation(internal.users.createUser, {
             userId: result.data.id,
             name: `${result.data.first_name ?? ""} ${
               result.data.last_name ?? ""
             }`,
+            hostname: result.data.username,
             image: result.data.image_url,
             email: result.data.email_addresses[0].email_address,
           });

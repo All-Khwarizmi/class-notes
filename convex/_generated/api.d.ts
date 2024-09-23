@@ -28,6 +28,7 @@ import type * as fields_criterias from "../fields/criterias.js";
 import type * as fields_grade_type from "../fields/grade_type.js";
 import type * as fields_users from "../fields/users.js";
 import type * as fields_visibility from "../fields/visibility.js";
+import type * as hostname from "../hostname.js";
 import type * as http from "../http.js";
 import type * as notes from "../notes.js";
 import type * as sequence from "../sequence.js";
@@ -62,6 +63,7 @@ declare const fullApi: ApiFromModules<{
   "fields/grade_type": typeof fields_grade_type;
   "fields/users": typeof fields_users;
   "fields/visibility": typeof fields_visibility;
+  hostname: typeof hostname;
   http: typeof http;
   notes: typeof notes;
   sequence: typeof sequence;

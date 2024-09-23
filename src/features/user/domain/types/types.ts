@@ -4,6 +4,6 @@ export type SaveUserOptions = {
   userId: string;
   user: Pick<
     UserType,
-    "name" | "schoolSubject" | "country" | "educationSystem"
+    "name" | "schoolSubject" | "country" | "educationSystem" | "hostname"
   >;
 };

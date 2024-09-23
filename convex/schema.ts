@@ -6,6 +6,10 @@ import { userSchema } from "./fields/users";
 import { visibilityTable } from "./fields/visibility";
 import { contentType } from "./fields/content_type";
 export default defineSchema({
+  Hostname: defineTable({
+    hostname: v.string(),
+    userId: v.string(),
+  }).index("by_hostname", ["hostname"]),
   Users: userSchema,
   VisibilityTable: visibilityTable,
   Category: defineTable({

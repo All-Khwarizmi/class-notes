@@ -95,6 +95,7 @@ export default class ConvexDatabase extends IDatabase {
         schoolSubject: user.schoolSubject,
         country: user.country,
         educationSystem: user.educationSystem,
+        hostname: user.hostname,
       });
       if (!result) {
         return left(

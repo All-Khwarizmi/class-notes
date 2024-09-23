@@ -7,6 +7,7 @@ export const onboarding = mutation({
     userId: v.string(),
     schoolSubject: v.string(),
     name: v.string(),
+    hostname: v.string(),
   },
   handler: async (ctx, args) => {
     const existingUser = await ctx.db
@@ -25,6 +26,7 @@ export const onboarding = mutation({
         onboarding: true,
         country: "USA",
         educationSystem: "USA",
+        hostname: args.hostname,
       });
       return { userId, error: false };
     }
@@ -68,20 +70,63 @@ export const saveUserMutation = mutation({
     name: v.optional(v.string()),
     country: v.optional(v.string()),
     educationSystem: v.optional(v.string()),
+    classeOnboarding: v.optional(v.boolean()),
+    sequenceOnboarding: v.optional(v.boolean()),
+    courseOnboarding: v.optional(v.boolean()),
+    complementOnboarding: v.optional(v.boolean()),
+    hostname: v.string(),
   },
   handler: async (ctx, args) => {
+    console.log("saveUserMutation", args);
     const user = await ctx.db
       .query("Users")
       .filter((q) => q.eq(q.field("userId"), args.userId))
       .first();
 
     if (user) {
+      // If hostname is provided, check if it is available
+      if (args.hostname) {
+        const hostnameExists = await ctx.db
+          .query("Hostname")
+          .filter((q) => q.eq(q.field("hostname"), args.hostname))
+          .first();
+        // If hostname is already taken by another user, return false
+        if (hostnameExists && hostnameExists.userId !== user.userId) {
+          console.log("hostnameExists", hostnameExists);
+          return { userId: false, error: true };
+          // If hostname is not taken, create it
+        } else if (!hostnameExists) {
+          // create hostname
+          console.log("create hostname");
+          await ctx.db.insert("Hostname", {
+            hostname: args.hostname,
+            userId: args.userId,
+          });
+          // Delete the old hostname
+          console.log("delete old hostname");
+          const oldHostaname = await ctx.db
+            .query("Hostname")
+            .filter((q) => q.eq(q.field("userId"), args.userId))
+            .first();
+          if (oldHostaname) {
+            console.log("delete old hostname", oldHostaname);
+            await ctx.db.delete(oldHostaname._id);
+          }
+        }
+      }
+      const hostname = args.hostname || user.hostname;
+      console.log("hostname", hostname);
       await ctx.db.patch(user._id, {
         schoolSubject: args.schoolSubject,
         name: args.name,
         onboarding: true,
         country: args.country,
         educationSystem: args.educationSystem,
+        classeOnboarding: args.classeOnboarding,
+        sequenceOnboarding: args.sequenceOnboarding,
+        courseOnboarding: args.courseOnboarding,
+        complementOnboarding: args.complementOnboarding,
+        hostname,
       });
       return user;
     } else {
@@ -146,17 +191,41 @@ export const createUser = internalMutation({
     userId: v.string(),
     name: v.string(),
     image: v.string(),
+    hostname: v.string(),
   },
   handler: async (ctx, args) => {
+    console.log("createUser", args);
+    const hostnameExists = await ctx.db
+      .query("Hostname")
+      .filter((q) => q.eq(q.field("hostname"), args.hostname))
+      .first();
+
+    if (hostnameExists) {
+      console.log("hostnameExists", hostnameExists);
+      return { userId: false, error: true };
+    }
+    console.log("create hostname");
+    // create hostname
+    await ctx.db.insert("Hostname", {
+      hostname: args.hostname,
+      userId: args.userId,
+    });
+    console.log("create user");
     await ctx.db.insert("Users", {
       email: args.email,
       userId: args.userId,
       credits: FREE_CREDITS,
+      onboarding: false,
+      classeOnboarding: false,
+      sequenceOnboarding: false,
+      courseOnboarding: false,
+      complementOnboarding: false,
       name: args.name,
       image: args.image,
       country: "USA",
       educationSystem: "US",
       schoolSubject: "Arts",
+      hostname: args.hostname,
     });
   },
 });

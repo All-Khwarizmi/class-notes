@@ -1,4 +1,13 @@
 export const QUERY_KEYS = {
+  PROFILE: {
+    SAVE_USER: (options: string[] = []) => ["SAVE_USER", ...options],
+  },
+  HOSTNAME: {
+    IS_AVAILABLE: (options: string[] = []) => [
+      "IS_HOSTNAME_AVAILABLE",
+      ...options,
+    ],
+  },
   STUDENT: {
     DELETE: (options: string[] = []) => ["DELETE_STUDENT", ...options],
     UPDATE: (options: string[] = []) => ["UPDATE_STUDENT", ...options],
