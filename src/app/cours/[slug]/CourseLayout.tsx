@@ -16,14 +16,13 @@ import Layout from "@/core/components/layout/Layout";
 import LoadingSkeleton from "@/core/components/common/LoadingSkeleton";
 import ComplementsServerLayer from "@/app/cours/complements/[slug]/ComplementsServerLayer";
 import { TypographyH3 } from "@/core/components/common/Typography";
+import checkAuthAndRedirect from "@/data-access/auth/check-and-redirect";
 
 async function CourseLayout(props: { slug: string }) {
-  const authUser = await authUseCases.getUserAuth();
-  if (isLeft(authUser)) {
-    redirect("/");
-  }
+  const { userId } = await checkAuthAndRedirect();
+
   const eitherCours = await coursUsecases.getSingleCours({
-    userId: authUser.right.userId,
+    userId,
     coursId: props.slug,
   });
   if (isLeft(eitherCours)) {
@@ -53,7 +52,7 @@ async function CourseLayout(props: { slug: string }) {
           <Suspense fallback={<LoadingSkeleton />}>
             <CoursSequenceView
               cours={eitherCours.right}
-              userId={authUser.right.userId}
+              userId={userId}
               type="cours"
             />
           </Suspense>

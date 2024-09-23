@@ -1,9 +1,7 @@
 import React from "react";
 import AddUpdateCoursSequenceView from "@/features/cours-sequence/presentation/views/AddCoursView";
 import { compCatUsecases } from "@/features/comp-cat/application/usecases/comp-cat-usecases";
-import { authUseCases } from "@/features/auth/application/usecases/auth-usecases";
 import { Either, isLeft } from "fp-ts/lib/Either";
-import { redirect } from "next/navigation";
 import { Competence } from "@/features/comp-cat/domain/entities/schemas";
 import { coursUsecases } from "@/features/cours-sequence/application/usecases/cours-usecases";
 import ErrorDialog from "@/core/components/common/ErrorDialog";
@@ -12,19 +10,18 @@ import {
   CoursSchema,
 } from "@/features/cours-sequence/domain/entities/cours-schemas";
 import Failure from "@/core/failures/failures";
-import LayoutWithProps from "@/core/components/layout/LayoutWithProps";
+import checkAuthAndRedirect from "@/data-access/auth/check-and-redirect";
 
 async function CoursEditServerLayer(props: { slug: string }) {
-  const authUser = await authUseCases.getUserAuth();
-  if (isLeft(authUser)) {
-    redirect("/");
-  }
+  const { userId } = await checkAuthAndRedirect();
+
+  //! TODO: @DATA-ACCESS
   const batch = await Promise.allSettled([
     compCatUsecases.getCompetences({
-      userId: authUser.right.userId,
+      userId,
     }),
     coursUsecases.getSingleCours({
-      userId: authUser.right.userId,
+      userId,
       coursId: props.slug,
     }),
   ]);
@@ -77,6 +74,12 @@ async function CoursEditServerLayer(props: { slug: string }) {
         ${failures.map((failure) => failure.message).join("\n")}
         Code: PRE303
     `}
+        code="PRE303"
+        description={
+          process.env.NODE_ENV === "development"
+            ? failures[0].message
+            : "An error occurred while fetching data for the cours edit page."
+        }
       />
     );
   }
@@ -86,15 +89,21 @@ async function CoursEditServerLayer(props: { slug: string }) {
         message={`
         Failed to fetch data for the cours edit page.
         Unable to find cours with id: ${props.slug}
-        Code: PRE303
+      
     `}
+        code="PRE303"
+        description={
+          process.env.NODE_ENV === "development"
+            ? failures[0].message
+            : "An error occurred while fetching data for the cours edit page."
+        }
       />
     );
   }
 
   return (
     <AddUpdateCoursSequenceView
-      authUser={authUser.right}
+      userId={userId}
       type="cours"
       edit={true}
       cours={cours}

@@ -6,24 +6,21 @@ import {
   TabsTrigger,
 } from "@/core/components/ui/tabs";
 import NotesServerLayer from "./notes/[slug]/NotesServerLayer";
-import { authUseCases } from "@/features/auth/application/usecases/auth-usecases";
 import { profileUseCases } from "@/features/profile/application/usecases/profile-usecases";
 import UserProfile from "@/features/profile/presentation/views/UserProfile";
 import { isLeft } from "fp-ts/lib/Either";
-import { redirect } from "next/navigation";
 import LoadingSkeleton from "@/core/components/common/LoadingSkeleton";
 import NotFound from "../not-found";
+import checkAuthAndRedirect from "@/data-access/auth/check-and-redirect";
 async function ProfileLayout() {
-  const authUser = await authUseCases.getUserAuth();
-  if (isLeft(authUser)) {
+  const { userId } = await checkAuthAndRedirect();
 
-    return <NotFound />;
-  }
   const user = await profileUseCases.getUser({
-    userId: authUser.right.userId,
+    userId,
   });
+
+  //! TODO: @LOGIC
   if (isLeft(user)) {
-    console.error(JSON.stringify(user.left));
     return <NotFound />;
   }
 
@@ -42,7 +39,7 @@ async function ProfileLayout() {
       </TabsContent>
       <TabsContent value="notes">
         <Suspense fallback={<LoadingSkeleton />}>
-          <NotesServerLayer type="profile" slug={authUser.right.userId} />
+          <NotesServerLayer type="profile" slug={userId} />
         </Suspense>
       </TabsContent>
     </Tabs>

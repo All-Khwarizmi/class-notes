@@ -16,11 +16,13 @@ import CoursesServerLayer from "@/app/cours/all/[slug]/CoursesServerLayer";
 import ErrorDialog from "@/core/components/common/ErrorDialog";
 import { TypographyH3 } from "@/core/components/common/Typography";
 import AIServerLayer from "./AIServerLayer";
+import checkAuthAndRedirect from "@/data-access/auth/check-and-redirect";
 
 async function SequenceLayout(props: {
   slug: string;
   type?: "template" | "sequence";
 }) {
+  //! TODO: @PARAMS
   if (
     !props.slug ||
     !props.type ||
@@ -34,13 +36,11 @@ async function SequenceLayout(props: {
       />
     );
   }
-  const authUser = await authUseCases.getUserAuth();
-  if (isLeft(authUser)) {
-    redirect("/");
-  }
+  const { userId } = await checkAuthAndRedirect();
 
+  //! TODO: @DATA-ACCESS
   const eitherSequence = await coursUsecases.getSingleSequence({
-    userId: authUser.right.userId,
+    userId,
     sequenceId: props.slug,
     type: props.type,
   });
@@ -73,7 +73,7 @@ async function SequenceLayout(props: {
           <Suspense fallback={<LoadingSkeleton />}>
             <CoursSequenceView
               sequence={eitherSequence.right}
-              userId={authUser.right.userId}
+              userId={userId}
               type="sequence"
               sequenceType={props.type}
             />

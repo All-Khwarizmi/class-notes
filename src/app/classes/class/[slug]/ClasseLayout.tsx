@@ -1,10 +1,8 @@
-import { authUseCases } from "@/features/auth/application/usecases/auth-usecases";
 import getStudents from "@/features/classe/application/adapters/actions/get-students";
 import { StudentsEvaluationTableView } from "@/features/classe/presentation/components/StudentsEvaluationTableView";
 import { coursUsecases } from "@/features/cours-sequence/application/usecases/cours-usecases";
 import getEvaluationCompoundList from "@/features/evaluation/application/adapters/actions/get-evaluation-compound-list";
 import { isLeft } from "fp-ts/lib/Either";
-import { redirect } from "next/navigation";
 import React, { Suspense } from "react";
 import {
   dehydrate,
@@ -17,9 +15,7 @@ import {
   TabsList,
   TabsTrigger,
 } from "@/core/components/ui/tabs";
-import Layout from "@/core/components/layout/Layout";
 import LoadingSkeleton from "@/core/components/common/LoadingSkeleton";
-import ClasseSequencesServerLayer from "../../sequences/[slug]/ClasseSequencesServerLayer";
 import NotesServerLayer from "@/app/profile/notes/[slug]/NotesServerLayer";
 import { QUERY_KEYS } from "@/core/query/ query-keys";
 import ClasseSequencesTableView from "@/features/cours-sequence/presentation/views/ClasseSequencesTableView";
@@ -27,20 +23,24 @@ import { classeUsecases } from "@/features/classe/application";
 import ErrorDialog from "@/core/components/common/ErrorDialog";
 import { TypographyH1 } from "@/core/components/common/Typography";
 import AIServerLayer from "@/app/sequences/[slug]/AIServerLayer";
+import checkAuthAndRedirect from "@/data-access/auth/check-and-redirect";
 async function ClasseLayout(props: { slug: string }) {
-  const authUser = await authUseCases.getUserAuth();
-  if (isLeft(authUser)) {
-    redirect("/");
-  }
-
+  const { userId } = await checkAuthAndRedirect();
   const queryClient = new QueryClient();
+
+  const classe = await classeUsecases.getClasse({ id: props.slug });
+  if (isLeft(classe)) {
+    return (
+      <ErrorDialog message="Une erreur s'est produite lors de la récupération des informations de la classe. Veuillez réessayer plus tard." />
+    );
+  }
 
   const queriesBulk = [
     queryClient.prefetchQuery({
       queryKey: [QUERY_KEYS.SEQUENCE.GET_ALL()],
       queryFn: () =>
         coursUsecases.getAllSequences({
-          userId: authUser.right.userId,
+          userId,
         }),
     }),
     queryClient.prefetchQuery({
@@ -66,12 +66,6 @@ async function ClasseLayout(props: { slug: string }) {
         }),
     }),
   ];
-  const classe = await classeUsecases.getClasse({ id: props.slug });
-  if (isLeft(classe)) {
-    return (
-      <ErrorDialog message="Une erreur s'est produite lors de la récupération des informations de la classe. Veuillez réessayer plus tard." />
-    );
-  }
 
   await Promise.allSettled(queriesBulk);
   return (
@@ -92,7 +86,7 @@ async function ClasseLayout(props: { slug: string }) {
             <Suspense fallback={<LoadingSkeleton />}>
               <StudentsEvaluationTableView
                 classeId={props.slug}
-                userId={authUser.right.userId}
+                userId={userId}
               />
             </Suspense>
           </div>
@@ -100,10 +94,7 @@ async function ClasseLayout(props: { slug: string }) {
         <TabsContent value="sequences">
           <div>
             <Suspense fallback={<LoadingSkeleton />}>
-              <ClasseSequencesTableView
-                userId={authUser.right.userId}
-                classeId={props.slug}
-              />
+              <ClasseSequencesTableView userId={userId} classeId={props.slug} />
             </Suspense>
           </div>
         </TabsContent>

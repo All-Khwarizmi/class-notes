@@ -1,15 +1,10 @@
-import { authUseCases } from "@/features/auth/application/usecases/auth-usecases";
+import checkAuthAndRedirect from "@/data-access/auth/check-and-redirect";
 import AddClassForm from "@/features/classe/presentation/components/AddClassForm";
-import { isLeft } from "fp-ts/lib/Either";
-import { redirect } from "next/navigation";
 import React from "react";
 
 async function Page() {
-  const authUser = await authUseCases.getUserAuth();
-  if (isLeft(authUser)) {
-    redirect("/");
-  }
-  return <AddClassForm userId={authUser.right.userId} />;
+  const { userId } = await checkAuthAndRedirect();
+  return <AddClassForm userId={userId} />;
 }
 
 export default Page;

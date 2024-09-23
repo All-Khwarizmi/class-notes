@@ -1,7 +1,5 @@
 import React from "react";
-import { authUseCases } from "@/features/auth/application/usecases/auth-usecases";
 import { isLeft } from "fp-ts/lib/Either";
-import { redirect } from "next/navigation";
 import { complementUsecases } from "@/features/complement/application/usecases/complement-usecases";
 import {
   Complement,
@@ -10,12 +8,13 @@ import {
 import ErrorDialog from "@/core/components/common/ErrorDialog";
 
 import ComplementsView from "@/features/complement/presentation/views/ComplementsView";
+import checkAuthAndRedirect from "@/data-access/auth/check-and-redirect";
 
 async function ComplementsServerLayer(props: { slug: string }) {
-  const authUser = await authUseCases.getUserAuth();
-  if (isLeft(authUser)) {
-    redirect("/");
-  }
+  const { userId } = await checkAuthAndRedirect();
+
+  //! TODO: @DATA-ACCESS
+
   let complements: Complement[] = [];
 
   const eitherComplements = await complementUsecases.getAllCoursComplement({
@@ -25,10 +24,14 @@ async function ComplementsServerLayer(props: { slug: string }) {
     return (
       <ErrorDialog
         message={`
-            Unable to fetch cours with id: ${props.slug}
-            
-                ${eitherComplements.left}
+            Unable to fetch complements with id: ${props.slug}
             `}
+        code={eitherComplements.left.code}
+        description={
+          process.env.NODE_ENV === "development"
+            ? eitherComplements.left.message
+            : "An error occurred while fetching complements."
+        }
       />
     );
   }
@@ -39,9 +42,13 @@ async function ComplementsServerLayer(props: { slug: string }) {
         <ErrorDialog
           message={`
             Unable to validate complement with id: ${complement.id}
-            
-            ${JSON.stringify(validateComplement.error)}
             `}
+          code={validateComplement.error.message}
+          description={
+            process.env.NODE_ENV === "development"
+              ? validateComplement.error.message
+              : "An error occurred while validating complement."
+          }
         />
       );
     }
@@ -52,7 +59,7 @@ async function ComplementsServerLayer(props: { slug: string }) {
     <ComplementsView
       complements={complements}
       coursId={props.slug}
-      userId={authUser.right.userId}
+      userId={userId}
     />
   );
 }

@@ -1,4 +1,5 @@
 import { QUERY_KEYS } from "@/core/query/ query-keys";
+import checkAuthAndRedirect from "@/data-access/auth/check-and-redirect";
 import { authUseCases } from "@/features/auth/application/usecases/auth-usecases";
 import { classeUsecases } from "@/features/classe/application";
 import DashboardGrid from "@/features/dashboard/presentation/views/DashboardGrid";
@@ -7,22 +8,17 @@ import {
   HydrationBoundary,
   QueryClient,
 } from "@tanstack/react-query";
-import { isLeft } from "fp-ts/lib/Either";
-import { redirect } from "next/navigation";
 import React from "react";
 
 async function DashboardServerLayer() {
-  const authUser = await authUseCases.getUserAuth();
-  if (isLeft(authUser)) {
-    redirect("/");
-  }
+  const { userId } = await checkAuthAndRedirect();
   const queryClient = new QueryClient();
 
   const queryBulk = [
     queryClient.prefetchQuery({
       queryKey: [QUERY_KEYS.VISIBILITY.GET_ALL()],
       queryFn: async () => {
-        return classeUsecases.getVisibility({ userId: authUser.right.userId });
+        return classeUsecases.getVisibility({ userId });
       },
     }),
   ];
@@ -31,7 +27,7 @@ async function DashboardServerLayer() {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <DashboardGrid userId={authUser.right.userId} />
+      <DashboardGrid userId={userId} />
     </HydrationBoundary>
   );
 }

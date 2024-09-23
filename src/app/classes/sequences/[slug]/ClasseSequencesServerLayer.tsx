@@ -1,18 +1,14 @@
 import React from "react";
-import { authUseCases } from "@/features/auth/application/usecases/auth-usecases";
 import { coursUsecases } from "@/features/cours-sequence/application/usecases/cours-usecases";
 import { isLeft } from "fp-ts/lib/Either";
-import { redirect } from "next/navigation";
 import ErrorDialog from "@/core/components/common/ErrorDialog";
 import ClasseSequencesTableView from "@/features/cours-sequence/presentation/views/ClasseSequencesTableView";
+import checkAuthAndRedirect from "@/data-access/auth/check-and-redirect";
 
 async function ClasseSequencesServerLayer(props: { slug: string }) {
-  const authUser = await authUseCases.getUserAuth();
-  if (isLeft(authUser)) {
-    redirect("/");
-  }
+  const { userId } = await checkAuthAndRedirect();
   const eitherSequences = await coursUsecases.getAllSequences({
-    userId: authUser.right.userId,
+    userId,
   });
   const eitherClasseSequences = await coursUsecases.getClasseSequences({
     classeId: props.slug,
@@ -37,12 +33,7 @@ async function ClasseSequencesServerLayer(props: { slug: string }) {
     );
   }
 
-  return (
-    <ClasseSequencesTableView
-      userId={authUser.right.userId}
-      classeId={props.slug}
-    />
-  );
+  return <ClasseSequencesTableView userId={userId} classeId={props.slug} />;
 }
 
 export default ClasseSequencesServerLayer;

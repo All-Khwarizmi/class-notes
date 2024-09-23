@@ -1,16 +1,14 @@
 import ErrorDialog from "@/core/components/common/ErrorDialog";
-import { authUseCases } from "@/features/auth/application/usecases/auth-usecases";
+import checkAuthAndRedirect from "@/data-access/auth/check-and-redirect";
 import getEvaluation from "@/features/evaluation/application/adapters/actions/get-evaluation";
 import EvaluationBaseForm from "@/features/evaluation/presentation/views/EvaluationBaseForm";
 import { isLeft } from "fp-ts/lib/Either";
-import { redirect } from "next/navigation";
 import React from "react";
 
 async function EvaluationServerLayer(props: { evaluationId: string }) {
-  const authUser = await authUseCases.getUserAuth();
-  if (isLeft(authUser)) {
-    redirect("/");
-  }
+  const { userId } = await checkAuthAndRedirect();
+
+  //! TODO: @DATA-ACCESS
   const eitherEval = await getEvaluation({
     evaluationId: props.evaluationId,
   });
@@ -22,12 +20,7 @@ async function EvaluationServerLayer(props: { evaluationId: string }) {
       />
     );
   }
-  return (
-    <EvaluationBaseForm
-      evaluation={eitherEval.right}
-      userId={authUser.right.userId}
-    />
-  );
+  return <EvaluationBaseForm evaluation={eitherEval.right} userId={userId} />;
 }
 
 export default EvaluationServerLayer;

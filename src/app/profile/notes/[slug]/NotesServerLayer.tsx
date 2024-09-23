@@ -1,12 +1,11 @@
 import NotFound from "@/app/not-found";
 import ErrorDialog from "@/core/components/common/ErrorDialog";
-import { authUseCases } from "@/features/auth/application/usecases/auth-usecases";
+import checkAuthAndRedirect from "@/data-access/auth/check-and-redirect";
 import getNotes from "@/features/notes/application/adapters/actions/get-notes";
 
 import NotesTableView from "@/features/notes/presentation/views/NotesTableView";
 
 import { isLeft } from "fp-ts/lib/Either";
-import { redirect } from "next/navigation";
 import React from "react";
 
 async function NotesServerLayer(props: {
@@ -16,13 +15,12 @@ async function NotesServerLayer(props: {
   if (!props.slug) {
     <NotFound />;
   }
-  const authUser = await authUseCases.getUserAuth();
-  if (isLeft(authUser)) {
-    redirect("/");
-  }
+  const { userId } = await checkAuthAndRedirect();
+
+  //! TODO: @DATA-ACCESS
   const eitherNotes = await getNotes({
     slug: props.slug,
-    userId: authUser.right.userId,
+    userId,
     type: props.type,
   });
   if (isLeft(eitherNotes)) {
@@ -41,7 +39,7 @@ async function NotesServerLayer(props: {
   return (
     <NotesTableView
       notes={eitherNotes.right}
-      parentId={props.type === "profile" ? authUser.right.userId : props.slug}
+      parentId={props.type === "profile" ? userId : props.slug}
     />
   );
 }

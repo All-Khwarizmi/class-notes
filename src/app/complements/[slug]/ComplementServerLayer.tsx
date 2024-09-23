@@ -1,18 +1,14 @@
 import ErrorDialog from "@/core/components/common/ErrorDialog";
 import { TypographyH3 } from "@/core/components/common/Typography";
-import LayoutWithProps from "@/core/components/layout/LayoutWithProps";
-import { authUseCases } from "@/features/auth/application/usecases/auth-usecases";
+import checkAuthAndRedirect from "@/data-access/auth/check-and-redirect";
 import { complementUsecases } from "@/features/complement/application/usecases/complement-usecases";
 import ComplementView from "@/features/complement/presentation/views/ComplementView";
 import { isLeft } from "fp-ts/lib/Either";
-import { redirect } from "next/navigation";
 import React from "react";
 
 async function ComplementServerLayer(props: { slug: string }) {
-  const authUser = await authUseCases.getUserAuth();
-  if (isLeft(authUser)) {
-    redirect("/");
-  }
+  const { userId } = await checkAuthAndRedirect();
+
   const complement = await complementUsecases.getCoursComplement({
     id: props.slug,
   });
@@ -34,7 +30,7 @@ async function ComplementServerLayer(props: { slug: string }) {
       <ComplementView
         slug={props.slug}
         complement={complement.right}
-        userId={authUser.right.userId}
+        userId={userId}
       />
     </div>
   );

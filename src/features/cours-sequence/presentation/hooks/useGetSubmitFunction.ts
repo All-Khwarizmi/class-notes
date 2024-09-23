@@ -14,7 +14,7 @@ function useGetSubmitFunction(options: {
   cours?: Cours;
   sequence?: Sequence;
   selectedCompetences: Competence[];
-  authUser: UserAuth;
+  userId: string;
   sequenceType: "template" | "sequence";
 }) {
   const { mutate: setSaveCoursMetadata } = useSaveCoursMetadata();
@@ -31,7 +31,7 @@ function useGetSubmitFunction(options: {
     setSaveCoursMetadata({
       sequenceId: options.sequenceId!,
       cours: newData,
-      userId: options.authUser.userId,
+      userId: options.userId,
     });
   }
 
@@ -53,7 +53,7 @@ function useGetSubmitFunction(options: {
     };
     setSaveSequenceMetadata({
       sequence: newData,
-      userId: options.authUser.userId,
+      userId: options.userId,
     });
   }
 

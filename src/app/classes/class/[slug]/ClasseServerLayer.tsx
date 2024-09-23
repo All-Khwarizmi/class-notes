@@ -1,21 +1,16 @@
-import { authUseCases } from "@/features/auth/application/usecases/auth-usecases";
 import getStudents from "@/features/classe/application/adapters/actions/get-students";
 import { StudentsEvaluationTableView } from "@/features/classe/presentation/components/StudentsEvaluationTableView";
 import { coursUsecases } from "@/features/cours-sequence/application/usecases/cours-usecases";
 import getEvaluationCompoundList from "@/features/evaluation/application/adapters/actions/get-evaluation-compound-list";
-import { isLeft } from "fp-ts/lib/Either";
-import { redirect } from "next/navigation";
 import React from "react";
 import {
   dehydrate,
   HydrationBoundary,
   QueryClient,
 } from "@tanstack/react-query";
+import checkAuthAndRedirect from "@/data-access/auth/check-and-redirect";
 async function ClasseServerLayer(props: { slug: string }) {
-  const authUser = await authUseCases.getUserAuth();
-  if (isLeft(authUser)) {
-    redirect("/");
-  }
+  const { userId } = await checkAuthAndRedirect();
 
   const queryClient = new QueryClient();
 
@@ -50,7 +45,7 @@ async function ClasseServerLayer(props: { slug: string }) {
     <HydrationBoundary state={dehydrate(queryClient)}>
       <StudentsEvaluationTableView
         classeId={props.slug}
-        userId={authUser.right.userId}
+        userId={userId}
       />
     </HydrationBoundary>
   );

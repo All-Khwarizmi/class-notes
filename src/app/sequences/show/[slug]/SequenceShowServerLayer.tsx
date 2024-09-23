@@ -5,15 +5,14 @@ import { coursUsecases } from "@/features/cours-sequence/application/usecases/co
 import { isLeft } from "fp-ts/lib/Either";
 import { redirect } from "next/navigation";
 import ContentViewer from "@/features/cours-sequence/presentation/views/ContentViewer";
+import checkAuthAndRedirect from "@/data-access/auth/check-and-redirect";
 
 async function SequenceShowServerLayer(props: { slug: string }) {
-  const authUser = await authUseCases.getUserAuth();
-  if (isLeft(authUser)) {
-    redirect("/");
-  }
+  const { userId } = await checkAuthAndRedirect();
 
+  //! TODO: @DATA-ACCESS
   const eitherSequence = await coursUsecases.getSingleSequence({
-    userId: authUser.right.userId,
+    userId,
     sequenceId: props.slug,
   });
   if (isLeft(eitherSequence)) {
@@ -21,7 +20,7 @@ async function SequenceShowServerLayer(props: { slug: string }) {
   }
   // Get all cours from the sequence
   const eitherCours = await coursUsecases.getAllCoursFromSequence({
-    userId: authUser.right.userId,
+    userId,
     sequenceId: props.slug,
   });
   if (isLeft(eitherCours)) {

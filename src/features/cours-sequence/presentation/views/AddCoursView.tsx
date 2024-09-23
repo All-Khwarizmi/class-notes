@@ -16,17 +16,17 @@ export interface CoursSequenceForm
   > {}
 export default function AddUpdateCoursSequenceView({
   competences,
-  authUser,
   type,
   title,
   sequenceId,
   edit,
   cours,
+  userId,
   sequence,
   sequenceType,
 }: {
   competences: Competence[];
-  authUser: UserAuth;
+  userId: string;
   type: "cours" | "sequence";
   edit?: boolean;
   cours?: Cours;
@@ -59,7 +59,7 @@ export default function AddUpdateCoursSequenceView({
     cours,
     sequence,
     selectedCompetences,
-    authUser,
+    userId,
     sequenceType: sequenceType || "template",
   });
 

@@ -1,10 +1,8 @@
 import ErrorDialog from "@/core/components/common/ErrorDialog";
-import LayoutWithProps from "@/core/components/layout/LayoutWithProps";
-import { authUseCases } from "@/features/auth/application/usecases/auth-usecases";
+import checkAuthAndRedirect from "@/data-access/auth/check-and-redirect";
 import { coursUsecases } from "@/features/cours-sequence/application/usecases/cours-usecases";
 import CoursesTable from "@/features/cours-sequence/presentation/components/CoursesTable";
 import { isLeft } from "fp-ts/lib/Either";
-import { redirect } from "next/navigation";
 import React from "react";
 
 async function CoursesServerLayer({
@@ -18,22 +16,19 @@ async function CoursesServerLayer({
   const { type } = searchParams;
   if (!slug || !type || (type !== "template" && type !== "sequence")) {
     return (
-      <LayoutWithProps
-        isError={{
-          message: "Invalid params",
-          code: "PRE301",
-          description: "Invalid params",
-        }}
-      ></LayoutWithProps>
+      <ErrorDialog
+        code="PRE301"
+        message="Invalid params"
+        description="Invalid params"
+      />
     );
   }
-  const authUser = await authUseCases.getUserAuth();
-  if (isLeft(authUser)) {
-    redirect("/");
-  }
+  const { userId } = await checkAuthAndRedirect();
+  //! TODO: @DATA-ACCESS
+
   const eitherCourses = await coursUsecases.getAllCoursFromSequence({
     sequenceId: slug,
-    userId: authUser.right.userId,
+    userId,
     type,
   });
   if (isLeft(eitherCourses)) {
@@ -55,7 +50,7 @@ async function CoursesServerLayer({
     <CoursesTable
       courses={eitherCourses.right}
       sequenceId={slug}
-      userId={authUser.right.userId}
+      userId={userId}
     />
   );
 }

@@ -1,5 +1,5 @@
 import { QUERY_KEYS } from "@/core/query/ query-keys";
-import { authUseCases } from "@/features/auth/application/usecases/auth-usecases";
+import checkAuthAndRedirect from "@/data-access/auth/check-and-redirect";
 import { compCatUsecases } from "@/features/comp-cat/application/usecases/comp-cat-usecases";
 import CompetenceForm from "@/features/comp-cat/presentation/views/CompetenceForm";
 import {
@@ -7,14 +7,8 @@ import {
   HydrationBoundary,
   QueryClient,
 } from "@tanstack/react-query";
-import { isLeft } from "fp-ts/lib/Either";
-import { redirect } from "next/navigation";
-
 export default async function Page() {
-  const authUser = await authUseCases.getUserAuth();
-  if (isLeft(authUser)) {
-    redirect("/");
-  }
+  const { userId } = await checkAuthAndRedirect();
 
   const queryClient = new QueryClient();
 
@@ -22,13 +16,13 @@ export default async function Page() {
     queryKey: QUERY_KEYS.CATEGORY.GET_ALL(),
     queryFn: () =>
       compCatUsecases.getCategories({
-        userId: authUser.right.userId,
+        userId,
       }),
   });
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <CompetenceForm userId={authUser.right.userId} />
+      <CompetenceForm userId={userId} />
     </HydrationBoundary>
   );
 }
