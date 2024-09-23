@@ -52,12 +52,10 @@ export const getUserQuery = query({
     userId: v.string(),
   },
   handler: async (ctx, args) => {
-    console.log("args", args);
     const user = await ctx.db
       .query("Users")
       .filter((q) => q.eq(q.field("userId"), args.userId))
       .first();
-    console.log("user", user);
 
     return user;
   },
@@ -77,7 +75,6 @@ export const saveUserMutation = mutation({
     hostname: v.string(),
   },
   handler: async (ctx, args) => {
-    console.log("saveUserMutation", args);
     const user = await ctx.db
       .query("Users")
       .filter((q) => q.eq(q.field("userId"), args.userId))
@@ -92,30 +89,28 @@ export const saveUserMutation = mutation({
           .first();
         // If hostname is already taken by another user, return false
         if (hostnameExists && hostnameExists.userId !== user.userId) {
-          console.log("hostnameExists", hostnameExists);
           return { userId: false, error: true };
           // If hostname is not taken, create it
         } else if (!hostnameExists) {
           // create hostname
-          console.log("create hostname");
+
           await ctx.db.insert("Hostname", {
             hostname: args.hostname.toLowerCase(),
             userId: args.userId,
           });
           // Delete the old hostname
-          console.log("delete old hostname");
+
           const oldHostaname = await ctx.db
             .query("Hostname")
             .filter((q) => q.eq(q.field("userId"), args.userId))
             .first();
           if (oldHostaname) {
-            console.log("delete old hostname", oldHostaname);
             await ctx.db.delete(oldHostaname._id);
           }
         }
       }
       const hostname = args.hostname || user.hostname;
-      console.log("hostname", hostname);
+
       await ctx.db.patch(user._id, {
         schoolSubject: args.schoolSubject,
         name: args.name,
@@ -194,23 +189,21 @@ export const createUser = internalMutation({
     hostname: v.string(),
   },
   handler: async (ctx, args) => {
-    console.log("createUser", args);
     const hostnameExists = await ctx.db
       .query("Hostname")
       .filter((q) => q.eq(q.field("hostname"), args.hostname))
       .first();
 
     if (hostnameExists) {
-      console.log("hostnameExists", hostnameExists);
       return { userId: false, error: true };
     }
-    console.log("create hostname");
+
     // create hostname
     await ctx.db.insert("Hostname", {
       hostname: args.hostname,
       userId: args.userId,
     });
-    console.log("create user");
+
     await ctx.db.insert("Users", {
       email: args.email,
       userId: args.userId,

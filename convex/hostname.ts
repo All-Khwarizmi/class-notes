@@ -58,8 +58,6 @@ export const isHostnameAvailableClient = mutation({
       .filter((q) => q.eq(q.field("hostname"), hostname.toLowerCase()))
       .first();
     const isSameUser = result?.userId === userId;
-    console.log("result", result);
-    console.log("isSameUser", isSameUser);
     if (result) {
       return isSameUser ? true : false;
     }
