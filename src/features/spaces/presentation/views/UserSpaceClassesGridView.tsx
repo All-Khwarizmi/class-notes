@@ -34,7 +34,7 @@ export default function UserSpaceClassesGridView({
 
   
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-4 py-8 mt">
       <Card className="mb-8">
         <CardHeader>
           <CardTitle className="text-3xl font-bold">
