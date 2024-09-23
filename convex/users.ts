@@ -249,3 +249,23 @@ export const updateSubscriptionBySubId = internalMutation({
 //     .withIndex("by_userId", (q) => q.eq("userId", userId))
 //     .first();
 // }
+
+export const getUserByHostname = query({
+  args: { hostname: v.string() },
+  handler: async (ctx, args) => {
+    const hostname = await ctx.db
+      .query("Hostname")
+      .filter((q) => q.eq(q.field("hostname"), args.hostname))
+      .first();
+
+    if (!hostname) {
+      return null;
+    }
+
+    const user = await ctx.db
+      .query("Users")
+      .filter((q) => q.eq(q.field("userId"), hostname?.userId))
+      .first();
+    return user;
+  },
+});
