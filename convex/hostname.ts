@@ -6,7 +6,7 @@ export const getHostname = query({
   handler: async ({ db }, { hostname }) => {
     return await db
       .query("Hostname")
-      .filter((q) => q.eq(q.field("hostname"), hostname))
+      .filter((q) => q.eq(q.field("hostname"), hostname.toLowerCase()))
       .first();
   },
 });
@@ -16,7 +16,7 @@ export const createHostname = mutation({
   handler: async ({ db }, { hostname, userId }) => {
     const existingHostname = await db
       .query("Hostname")
-      .filter((q) => q.eq(q.field("hostname"), hostname))
+      .filter((q) => q.eq(q.field("hostname"), hostname.toLowerCase()))
       .first();
     if (existingHostname) {
       return { error: true };
@@ -30,7 +30,7 @@ export const deleteHostname = mutation({
   handler: async ({ db }, { hostname }) => {
     const result = await db
       .query("Hostname")
-      .filter((q) => q.eq(q.field("hostname"), hostname))
+      .filter((q) => q.eq(q.field("hostname"), hostname.toLowerCase()))
       .first();
     if (result) {
       return await db.delete(result._id);
@@ -44,7 +44,7 @@ export const isHostnameAvailable = internalQuery({
   handler: async ({ db }, { hostname }) => {
     const result = await db
       .query("Hostname")
-      .filter((q) => q.eq(q.field("hostname"), hostname))
+      .filter((q) => q.eq(q.field("hostname"), hostname.toLowerCase()))
       .first();
     return result ? false : true;
   },
@@ -55,9 +55,14 @@ export const isHostnameAvailableClient = mutation({
   handler: async ({ db }, { hostname, userId }) => {
     const result = await db
       .query("Hostname")
-      .filter((q) => q.eq(q.field("hostname"), hostname))
-      .filter((q) => q.eq(q.field("userId"), userId))
+      .filter((q) => q.eq(q.field("hostname"), hostname.toLowerCase()))
       .first();
-    return result ? false : true;
+    const isSameUser = result?.userId === userId;
+    console.log("result", result);
+    console.log("isSameUser", isSameUser);
+    if (result) {
+      return isSameUser ? true : false;
+    }
+    return true;
   },
 });

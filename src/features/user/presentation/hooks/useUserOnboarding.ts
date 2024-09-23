@@ -56,6 +56,7 @@ export function useUserOnboarding({ user }: { user: UserType }) {
           hostname,
           userId: user.userId,
         });
+        console.log("available", available);
         setIsHostnameAvailable(available);
       } else {
         setIsHostnameAvailable(null);
@@ -78,7 +79,6 @@ export function useUserOnboarding({ user }: { user: UserType }) {
         ...data,
       });
       setIsUpdating(false);
-      router.push("/dashboard");
     } else {
       setCurrentStep(currentStep + 1);
     }

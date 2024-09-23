@@ -88,7 +88,7 @@ export const saveUserMutation = mutation({
       if (args.hostname) {
         const hostnameExists = await ctx.db
           .query("Hostname")
-          .filter((q) => q.eq(q.field("hostname"), args.hostname))
+          .filter((q) => q.eq(q.field("hostname"), args.hostname.toLowerCase()))
           .first();
         // If hostname is already taken by another user, return false
         if (hostnameExists && hostnameExists.userId !== user.userId) {
@@ -99,7 +99,7 @@ export const saveUserMutation = mutation({
           // create hostname
           console.log("create hostname");
           await ctx.db.insert("Hostname", {
-            hostname: args.hostname,
+            hostname: args.hostname.toLowerCase(),
             userId: args.userId,
           });
           // Delete the old hostname
