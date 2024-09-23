@@ -11,9 +11,15 @@ import { coursUsecases } from "@/features/cours-sequence/application/usecases/co
 import LoaderPage from "./LoaderPage";
 import { evaluationUsecases } from "@/features/evaluation/application/usecases/evaluation-usecases";
 import checkAuthAndRedirect from "@/data-access/auth/check-and-redirect";
+import { getCurrentUser } from "@/data-access/user/get-current-user";
+import { redirect } from "next/navigation";
+import { isNone } from "fp-ts/lib/Option";
 async function LayoutServerLayer({ children }: { children: React.ReactNode }) {
   const { userId } = await checkAuthAndRedirect();
-
+  const user = await getCurrentUser(userId);
+  if (isNone(user)) {
+    return redirect("/");
+  }
   //! TODO: @DATA-ACCESS
   const queryClient = new QueryClient();
   const batch = [
@@ -45,7 +51,9 @@ async function LayoutServerLayer({ children }: { children: React.ReactNode }) {
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <Suspense fallback={<LoaderPage />}>
-        <Layout userId={userId}>{children}</Layout>
+        <Layout userId={userId} hostname={user.value.hostname}>
+          {children}
+        </Layout>
       </Suspense>
     </HydrationBoundary>
   );

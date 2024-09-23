@@ -15,7 +15,6 @@ import LayoutContext, {
 import { Loader } from "lucide-react";
 import { NavItem } from "@/lib/types";
 import { usePathname } from "next/navigation";
-import { ModeToggle } from "../common/ModeToggle";
 
 /**
  * Renders the layout component with the provided props.
@@ -38,9 +37,10 @@ function Layout({
   isError,
   isLoading,
   userId,
+  hostname,
 }: Omit<LayoutWithPropsProps, "navItems">) {
   const { navItems: experimentalNavItems, loading } =
-    useExperimentalLayoutLogic(userId);
+    useExperimentalLayoutLogic(userId, hostname);
   const [navItems, setNavItems] = useState<NavItem[]>(experimentalNavItems);
   const [spacesNavItems, setSpacesNavItems] = useState<NavItem[]>([]);
   const [isLandingPage, setIsLandingPage] = useState(false);
@@ -84,6 +84,7 @@ function Layout({
         isError,
         isLoading,
         userId,
+        hostname,
       }}
     >
       <div className="relative">

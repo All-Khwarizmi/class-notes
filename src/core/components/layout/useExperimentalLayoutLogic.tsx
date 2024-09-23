@@ -1,8 +1,6 @@
 import useGetClasses from "@/features/classe/presentation/services/hooks/useGetClasses";
 import { NavItem } from "@/lib/types";
 import { useEffect, useState } from "react";
-import Dashboard from "../icons/Dashboard";
-import CopyClipboard from "../icons/CopyClipboard";
 import useGetAllSequences from "@/features/cours-sequence/application/adapters/services/useGetAllSequences";
 import { isRight } from "fp-ts/lib/Either";
 import {
@@ -13,18 +11,18 @@ import {
   BookmarkCheck,
   BookText,
   Building,
-  CandlestickChart,
-  FileSliders,
   FlaskConical,
   GraduationCap,
   Plus,
-  Presentation,
   TestTubeDiagonal,
   User,
 } from "lucide-react";
 import useGetEvaluationsBaseList from "@/features/evaluation/application/adapters/services/useGetEvaluationsBaseList";
 
-export default function useExperimentalLayoutLogic(userId: string) {
+export default function useExperimentalLayoutLogic(
+  userId: string,
+  hostname: string
+) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [navItems, setNavItems] = useState<NavItem[]>([]);
@@ -170,16 +168,16 @@ export default function useExperimentalLayoutLogic(userId: string) {
           },
 
           {
-            title: "Profile",
+            title: "Mon compte",
             icon: <User size={16} className="text-stone-500" />,
             href: "/profile",
             color: "text-blue-300",
           },
 
           {
-            title: "My Space",
-            icon: <Airplay size={16} className="text-lime-100" />,
-            href: `/spaces?user=${userId}`,
+            title: "Mon espace",
+            icon: <Airplay size={16} className="text-lime-500" />,
+            href: `/${hostname}`,
             color: "text-blue-300",
           },
         ]);

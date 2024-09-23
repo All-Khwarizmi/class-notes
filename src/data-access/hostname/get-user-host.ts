@@ -5,7 +5,7 @@ import { none, Option, some } from "fp-ts/lib/Option";
 
 export type GetUserHostDto = Pick<
   UserType,
-  "hostname" | "userId" | "name" | "image" | "schoolSubject"
+  "hostname" | "userId" | "name" | "image" | "schoolSubject" 
 >;
 
 export type GetUserHostResponse = Option<GetUserHostDto>;
