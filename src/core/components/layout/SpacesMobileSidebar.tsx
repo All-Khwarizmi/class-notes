@@ -4,6 +4,7 @@ import MenuIcon from "../icons/MenuIcon";
 import { NavItem } from "@/lib/types";
 import { ModeToggle } from "../common/ModeToggle";
 import { SpacesSideNav } from "./SpacesSideNav";
+import { GoBackButton } from "../common/navigation/GoBackButton";
 
 export const SpacesMobileSidebar = (props: { navItems?: NavItem[] }) => {
   const [open, setOpen] = useState(false);
@@ -29,11 +30,20 @@ export const SpacesMobileSidebar = (props: { navItems?: NavItem[] }) => {
           <div className="px-1 py-6 pt-16">
             <SpacesSideNav setOpen={setOpen} />
           </div>
-          <section className="flex items-center justify-center">
+          {/* <section className="flex items-center justify-center">
             <ModeToggle />
-          </section>
+          </section> */}
+          <SpacesMobileSidebarNavigation />
         </SheetContent>
       </Sheet>
     </>
   );
 };
+
+export function SpacesMobileSidebarNavigation() {
+  return (
+    <div className="flex items-center  px-8">
+      <GoBackButton />
+    </div>
+  );
+}
