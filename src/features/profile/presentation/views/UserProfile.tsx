@@ -91,9 +91,10 @@ export default function UserProfile({ user }: { user: UserType }) {
       subjectsOptions,
       handleUpgradeClick,
       setCurrentStep,
+      saveUser,
     },
   } = useUserOnboarding({ user });
-
+  console.log(currentTab);
   return (
     <div className="container mx-auto py-10">
       <div className="flex items-center justify-between mb-6">
@@ -101,36 +102,33 @@ export default function UserProfile({ user }: { user: UserType }) {
         <UserButton />
       </div>
       <div className="flex gap-6">
-        <Card className="w-64 h-fit">
-          <CardHeader>
-            <CardTitle>Navigation</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <Tabs defaultValue={currentTab} className="w-full">
-              <TabsList className="grid w-full grid-cols-1 h-full">
-                {tabs.map((tab) => (
-                  <TabsTrigger
-                    key={tab.id}
-                    value={tab.id}
-                    className="justify-start"
-                    onClick={() => setCurrentTab(tab.id)}
-                  >
-                    <tab.icon className="w-4 h-4 mr-2" />
-                    {tab.label}
-                  </TabsTrigger>
-                ))}
-              </TabsList>
-            </Tabs>
-          </CardContent>
-        </Card>
+        <Tabs defaultValue={currentTab} className="w-full">
+          <div className="flex gap-6">
+            <Card className="w-64 h-fit">
+              <CardHeader>
+                <CardTitle>Navigation</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <TabsList className="grid w-full grid-cols-1 h-full">
+                  {tabs.map((tab) => (
+                    <TabsTrigger
+                      key={tab.id}
+                      value={tab.id}
+                      className="justify-start"
+                    >
+                      <tab.icon className="w-4 h-4 mr-2" />
+                      {tab.label}
+                    </TabsTrigger>
+                  ))}
+                </TabsList>
+              </CardContent>
+            </Card>
 
-        <Card className="flex-grow">
-          <CardHeader>
-            <CardTitle>Informations du profil</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <Tabs defaultValue="personal">
-              {currentTab === "personal" && (
+            <Card className="flex-grow">
+              <CardHeader>
+                <CardTitle>Informations du profil</CardTitle>
+              </CardHeader>
+              <CardContent>
                 <TabsContent value="personal">
                   <Form {...form}>
                     <form
@@ -219,14 +217,21 @@ export default function UserProfile({ user }: { user: UserType }) {
                           </FormItem>
                         )}
                       />
-                      <Button type="submit" disabled={isPending}>
+                      <Button
+                        type="button"
+                        disabled={isPending}
+                        onClick={() =>
+                          saveUser({
+                            userId: user.userId,
+                            ...form.getValues(),
+                          })
+                        }
+                      >
                         {isPending ? "Mise à jour..." : "Mettre à jour"}
                       </Button>
                     </form>
                   </Form>
                 </TabsContent>
-              )}
-              {currentTab === "education" && (
                 <TabsContent value="education">
                   <Form {...form}>
                     <form
@@ -294,14 +299,21 @@ export default function UserProfile({ user }: { user: UserType }) {
                           </FormItem>
                         )}
                       />
-                      <Button type="submit" disabled={isPending}>
+                      <Button
+                        type="button"
+                        disabled={isPending}
+                        onClick={() =>
+                          saveUser({
+                            userId: user.userId,
+                            ...form.getValues(),
+                          })
+                        }
+                      >
                         {isPending ? "Mise à jour..." : "Mettre à jour"}
                       </Button>
                     </form>
                   </Form>
                 </TabsContent>
-              )}
-              {currentTab === "subscription" && (
                 <TabsContent value="subscription">
                   <div className="space-y-6">
                     <div className="grid grid-cols-2 gap-4">
@@ -339,10 +351,10 @@ export default function UserProfile({ user }: { user: UserType }) {
                     )}
                   </div>
                 </TabsContent>
-              )}
-            </Tabs>
-          </CardContent>
-        </Card>
+              </CardContent>
+            </Card>
+          </div>
+        </Tabs>
       </div>
     </div>
   );
