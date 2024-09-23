@@ -1,6 +1,5 @@
 import { QUERY_KEYS } from "@/core/query/ query-keys";
 import checkAuthAndRedirect from "@/data-access/auth/check-and-redirect";
-import { authUseCases } from "@/features/auth/application/usecases/auth-usecases";
 import { classeUsecases } from "@/features/classe/application";
 import DashboardGrid from "@/features/dashboard/presentation/views/DashboardGrid";
 import {
