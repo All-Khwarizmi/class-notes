@@ -7,6 +7,7 @@ import QueryProvider from "@/core/query/QueryProvider";
 import { Metadata } from "next";
 const inter = Inter({ subsets: ["latin"] });
 import { Toaster } from "@/core/components/ui/sonner";
+import { Analytics } from "@vercel/analytics/react"
 import LayoutServerLayer from "@/core/components/layout/LayoutServerLayer";
 export const metadata: Metadata = {
   title: "La Classe - Votre nouveau carnet de notes.",
