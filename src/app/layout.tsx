@@ -8,7 +8,6 @@ import { Metadata } from "next";
 const inter = Inter({ subsets: ["latin"] });
 import { Toaster } from "@/core/components/ui/sonner";
 import { Analytics } from "@vercel/analytics/react";
-import LayoutServerLayer from "@/core/components/layout/LayoutServerLayer";
 
 export const metadata: Metadata = {
   title: "La Classe - Votre site de prof en quelques clics",
