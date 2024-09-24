@@ -112,42 +112,42 @@ const Feature: React.FC<FeatureProps> = ({
   );
 };
 
+import { Zap, Layout, Share2 } from "lucide-react";
+
 const features: FeatureProps[] = [
   {
-    icon: BookMarked,
-    title: "Tableau interactif intelligent",
+    icon: Zap,
+    title: "Site professionnel en 5 minutes",
     description:
-      "Captivez vos élèves avec des leçons interactives en temps réel.",
+      "Créez votre site web d'enseignant sans aucune compétence en programmation.",
     details: [
-      "Annotations collaboratives",
-      "Partage de contenu multimédia",
-      "Sondages et quiz intégrés",
-      "Tableau blanc virtuel",
+      "Templates prêts à l'emploi conçus pour les enseignants",
+      "Personnalisation intuitive par glisser-déposer",
+      "Mise en ligne instantanée avec un nom de domaine inclus",
     ],
     color: "#3B82F6", // blue-500
   },
   {
-    icon: BookOpen,
-    title: "Gestion des ressources centralisée",
-    description: "Organisez et partagez facilement tous vos supports de cours.",
+    icon: Layout,
+    title: "Tout votre contenu au même endroit",
+    description:
+      "Finies les ressources éparpillées. Centralisez tous vos supports de cours dans un espace organisé et facile d'accès.",
     details: [
-      "Bibliothèque de ressources personnalisable",
-      "Partage sécurisé avec les élèves",
-      "Intégration avec les plateformes éducatives",
-      "Suivi de l'utilisation des ressources",
+      "Organisation intuitive par matière, niveau ou projet",
+      "Partage sécurisé avec les élèves et les parents",
+      "Accès depuis n'importe quel appareil, à tout moment",
     ],
     color: "#10B981", // emerald-500
   },
   {
-    icon: Brain,
-    title: "Insights alimentés par l'IA",
+    icon: Share2,
+    title: "Communication simplifiée",
     description:
-      "Analysez la progression de vos élèves avec notre intelligence artificielle.",
+      "Fini le temps perdu en emails interminables. Communiquez efficacement avec les élèves et les parents en un clic.",
     details: [
-      "Tableaux de bord personnalisés",
-      "Prédictions de performance",
-      "Recommandations d'apprentissage",
-      "Détection précoce des difficultés",
+      "Espace d'annonces pour informations importantes",
+      "Blog intégré pour partager des actualités et des ressources",
+      "Formulaires de contact directs pour les parents",
     ],
     color: "#8B5CF6", // violet-500
   },
