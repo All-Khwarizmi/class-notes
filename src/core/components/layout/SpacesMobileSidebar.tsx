@@ -5,6 +5,7 @@ import { NavItem } from "@/lib/types";
 import { ModeToggle } from "../common/ModeToggle";
 import { SpacesSideNav } from "./SpacesSideNav";
 import { GoBackButton } from "../common/navigation/GoBackButton";
+import Title from "../common/Title";
 
 export const SpacesMobileSidebar = (props: { navItems?: NavItem[] }) => {
   const [open, setOpen] = useState(false);
@@ -22,7 +23,7 @@ export const SpacesMobileSidebar = (props: { navItems?: NavItem[] }) => {
     <>
       <Sheet open={open} onOpenChange={setOpen}>
         <SheetTrigger asChild>
-          <div className="flex items-center justify-center gap-2">
+          <div className="flex items-center  gap-2">
             <MenuIcon />
           </div>
         </SheetTrigger>
@@ -33,7 +34,11 @@ export const SpacesMobileSidebar = (props: { navItems?: NavItem[] }) => {
           {/* <section className="flex items-center justify-center">
             <ModeToggle />
           </section> */}
-          <SpacesMobileSidebarNavigation />
+          <section className="flex flex-col items-center justify-center">
+            <SpacesMobileSidebarNavigation />
+
+            <ModeToggle />
+          </section>
         </SheetContent>
       </Sheet>
     </>

@@ -4,6 +4,7 @@ import { SideNav } from "@/core/components/layout/SideNav";
 import MenuIcon from "../icons/MenuIcon";
 import { NavItem } from "@/lib/types";
 import { ModeToggle } from "../common/ModeToggle";
+import { SpacesMobileSidebarNavigation } from "./SpacesMobileSidebar";
 
 export const MobileSidebar = (props: { navItems?: NavItem[] }) => {
   const [open, setOpen] = useState(false);
@@ -29,7 +30,9 @@ export const MobileSidebar = (props: { navItems?: NavItem[] }) => {
           <div className="px-1 py-6 pt-16">
             <SideNav setOpen={setOpen} />
           </div>
-          <section className="flex items-center justify-center">
+          <section className="flex flex-col items-center justify-center">
+            <SpacesMobileSidebarNavigation />
+
             <ModeToggle />
           </section>
         </SheetContent>

@@ -28,10 +28,8 @@ const BlogEditor: React.FC<BlogEditorProps> = ({
   userId,
   sequenceType,
 }) => {
-  
-
   return (
-    <div className="max-w-4xl mx-auto px-4 space-y-8">
+    <div className="max-w-4xl h-max mx-auto px-4 space-y-8">
       <TypographyH3 text={item.name} />
       <FloatingEditor
         content={content}
@@ -49,7 +47,6 @@ const BlogEditor: React.FC<BlogEditorProps> = ({
                 type={sequenceType}
               />
             )}
-        
           </div>
         </div>
       </FloatingEditor>

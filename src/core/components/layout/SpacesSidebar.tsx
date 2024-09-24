@@ -6,6 +6,7 @@ import ArrowLeft from "../icons/ArrowLeft";
 
 import { SpacesSideNav } from "./SpacesSideNav";
 import { NavItem } from "@/lib/types";
+import { SpacesMobileSidebarNavigation } from "./SpacesMobileSidebar";
 
 export interface SidebarProps {
   className?: string;
