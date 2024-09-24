@@ -1,15 +1,14 @@
 "use client";
-import React, { useEffect, useState, useRef } from "react";
+
+import React, { useEffect, useState } from "react";
+import dynamic from "next/dynamic";
 import { Complement } from "../../domain/complement-schemas";
 import UpdateComplement from "../components/UpdateComplement";
-import { Eye } from "lucide-react";
-import Link from "next/link";
-import AfterMenuButton from "@/core/components/common/editor/AfterMenuButton";
 import useUpdateComplement from "../../application/adapters/services/useUpdateComplement";
 import FloatingEditor from "@/core/components/common/editor/FloatingEditor";
-import dynamic from "next/dynamic";
 import LoadingSkeleton from "@/core/components/common/LoadingSkeleton";
 import EmbedWithInput from "@/features/cours-sequence/presentation/components/Embed";
+import { TypographyH3 } from "@/core/components/common/Typography";
 
 const ExcalidrawCanvas = dynamic(
   () =>
@@ -19,63 +18,61 @@ const ExcalidrawCanvas = dynamic(
   { ssr: false, loading: () => <LoadingSkeleton /> }
 );
 
-function ComplementView(props: {
+interface ComplementViewProps {
   slug: string;
   complement: Complement;
   userId: string;
-}) {
+}
+
+function ComplementView({ slug, complement, userId }: ComplementViewProps) {
   const { debounceUpdateComplement } = useUpdateComplement();
   const [isClient, setIsClient] = useState(false);
-
 
   useEffect(() => {
     setIsClient(true);
   }, []);
 
-  if (props.complement.contentType === "Embed") {
-    return (
-      <EmbedWithInput
-        initialUrl={props.complement.body}
-        title={props.complement.name}
-        onUrlUpdate={debounceUpdateComplement(props.complement)}
-      />
-    );
-  }
-
-  if (props.complement.contentType === "Diagram") {
-    if (!isClient) {
-      return <LoadingSkeleton />;
+  const renderContent = () => {
+    switch (complement.contentType) {
+      case "Embed":
+        return (
+          <EmbedWithInput
+            initialUrl={complement.body}
+            title={complement.name}
+            onUrlUpdate={debounceUpdateComplement(complement)}
+          />
+        );
+      case "Diagram":
+        if (!isClient) {
+          return <LoadingSkeleton />;
+        }
+        return (
+          <ExcalidrawCanvas
+            initialData={complement.body}
+            saveComplement={debounceUpdateComplement(complement)}
+          />
+        );
+      default:
+        return (
+          <FloatingEditor
+            debounceUpdateFn={debounceUpdateComplement(complement)}
+            content={complement.body}
+            afterMenuBar
+          >
+            <div className="flex items-center justify-between w-full gap-4">
+              <div className="flex items-center gap-1">
+                <UpdateComplement complement={complement} />
+              </div>
+            </div>
+          </FloatingEditor>
+        );
     }
-    return (
-      <div>
-        <ExcalidrawCanvas
-          initialData={props.complement.body}
-          saveComplement={debounceUpdateComplement(props.complement)}
-        />
-      </div>
-    );
-  }
+  };
 
   return (
-    <div>
-      <FloatingEditor
-        debounceUpdateFn={debounceUpdateComplement(props.complement)}
-        content={props.complement.body}
-        afterMenuBar
-      >
-        <div className="flex items-center justify-between w-full gap-4 ">
-          <div className="flex items-center gap-1">
-            <UpdateComplement complement={props.complement} />
-            <AfterMenuButton>
-              <Link
-                href={`/spaces/complement/${props.complement.id}?user=${props.userId}`}
-              >
-                <Eye size={12} />
-              </Link>
-            </AfterMenuButton>
-          </div>
-        </div>
-      </FloatingEditor>
+    <div className="max-w-4xl mx-auto px-4 py-8 space-y-8">
+      <TypographyH3 text={complement.name} />
+      {renderContent()}
     </div>
   );
 }

@@ -25,7 +25,6 @@ async function ComplementServerLayer(props: { slug: string }) {
 
   return (
     <div className=" space-y-4 px-4">
-      <TypographyH3 text={complement.right.name} />
 
       <ComplementView
         slug={props.slug}

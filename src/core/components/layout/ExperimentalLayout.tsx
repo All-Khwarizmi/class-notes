@@ -94,8 +94,8 @@ function Layout({
         </div>
       ) : (
         <>{!isLandingPage && <Header />}</>
-      )}
-        <section className="flex h-full w-full border-collapse overflow-hidden">
+        )}
+        <section className="flex h-full w-full border-collapse overflow-hidden ">
           {loading ? (
             <div className="h-full w-72 px-4 overflow-hidden flex items-center justify-center py-4">
               <Layout.Loader />
@@ -103,7 +103,7 @@ function Layout({
           ) : (
             <>{!isLandingPage && <Sidebar />}</>
           )}
-          <section className="h-full flex-1  pt-4 px-4 overflow-x-hidden">
+          <section className="h-full flex-1  pt-8 px-4 overflow-x-hidden">
             {children}
           </section>
         </section>

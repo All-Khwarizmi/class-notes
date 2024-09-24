@@ -38,10 +38,8 @@ async function CourseLayout(props: { slug: string }) {
     );
   }
   return (
-    <Tabs defaultValue="course" className=" px-4">
-      <div className="w-full flex justify-between">
-        <TypographyH3 text={eitherCours.right.name} />
-
+    <Tabs defaultValue="course" className=" px-4 space-y-8">
+      <div className="w-full flex justify-end">
         <TabsList>
           <TabsTrigger value="course">Course</TabsTrigger>
           <TabsTrigger value="complements">Complements</TabsTrigger>
