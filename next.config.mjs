@@ -1,3 +1,5 @@
+import { ip } from "address";
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
@@ -10,3 +12,6 @@ const nextConfig = {
 };
 
 export default nextConfig;
+if (process.env.NODE_ENV === "development") {
+  console.log("info  - lanUrl:", `http://${ip()}:3000`);
+}
