@@ -38,7 +38,7 @@ export default function CoursSequenceCard({
 }: CoursSequenceCardProps) {
   return (
     <Card className="overflow-hidden transition-all hover:shadow-md">
-      <CardHeader className="p-0">
+      <CardHeader className="">
         <AspectRatio ratio={16 / 9}>
           <img
             src={imageUrl}

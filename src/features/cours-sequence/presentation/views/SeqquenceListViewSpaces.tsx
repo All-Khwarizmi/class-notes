@@ -103,13 +103,13 @@ export default function SequencesListViewSpaces({
         {activeTab === "all"
           ? "disponibles"
           : activeTab === "recent"
-            ? "récentes"
-            : "populaires"}
+          ? "récentes"
+          : "populaires"}
       </h2>
 
       {filteredSequences.length > 0 ? (
         <ScrollArea className="w-full">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 pb-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-6 pb-4">
             {filteredSequences.map((sequence) => (
               <CoursSequenceCard
                 key={sequence._id}

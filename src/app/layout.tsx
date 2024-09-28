@@ -1,13 +1,19 @@
-import { Inter } from "next/font/google";
+import { Inter as FontSans } from "next/font/google";
 import { Providers } from "./providers";
 import NextTopLoader from "nextjs-toploader";
 import "./globals.css";
 import { ThemeProvider } from "@/core/components/common/theme-provider";
 import QueryProvider from "@/core/query/QueryProvider";
 import { Metadata } from "next";
-const inter = Inter({ subsets: ["latin"] });
+const fontSans = FontSans({
+  subsets: ["latin"],
+  variable: "--font-sans",
+});
+
 import { Toaster } from "@/core/components/ui/sonner";
 import { Analytics } from "@vercel/analytics/react";
+import { cn } from "@/lib/utils";
+import { Main } from "@/core/components/common/Craft";
 
 export const metadata: Metadata = {
   title: "La Classe - Votre site de prof en quelques clics",
@@ -54,9 +60,13 @@ export default function RootLayout({
             name="viewport"
             content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover"
           />
-          <link rel="canonical" href="https://laclasse.app" />
         </head>
-        <body className={inter.className}>
+        <body
+          className={cn(
+            "min-h-screen font-sans antialiased",
+            fontSans.variable
+          )}
+        >
           <ThemeProvider
             attribute="class"
             defaultTheme="dark"
@@ -64,10 +74,11 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             <NextTopLoader />
-            <main className="flex fixed h-screen w-screen flex-col border-collapse overflow-scroll">
+            {/* <main className="flex fixed h-screen w-screen flex-col border-collapse overflow-scroll"></main> */}
+            <Main>
+              {" "}
               <QueryProvider>{children}</QueryProvider>
-            </main>
-
+            </Main>
             <Toaster richColors expand />
           </ThemeProvider>
           <Analytics />

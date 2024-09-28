@@ -62,7 +62,7 @@ const BlogMainPage: React.FC = () => {
 
   return (
     <div className="container mx-auto py-8">
-      <h1 className="text-3xl font-bold mb-8 text-center">Notre Blog</h1>
+      <h1 className="text-3xl font-bold mb-8 ">Notre Blog</h1>
 
       <Tabs defaultValue="Tous" className="w-full mb-8">
         <TabsList className="w-full justify-start overflow-x-auto">
@@ -78,7 +78,7 @@ const BlogMainPage: React.FC = () => {
         </TabsList>
       </Tabs>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-6">
         {filteredPosts.map((post) => (
           <BlogPostCard key={post.id} post={post} />
         ))}

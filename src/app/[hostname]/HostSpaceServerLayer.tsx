@@ -10,6 +10,7 @@ import getVisibility from "@/features/classe/application/adapters/actions/get-vi
 import EmptyUserSpace from "@/features/spaces/presentation/components/EmptyUserSpace";
 import { authUseCases } from "@/features/auth/application/usecases/auth-usecases";
 import { profileUseCases } from "@/features/profile/application/usecases/profile-usecases";
+import SpacesLandingPage from "./_components/SpacesLandingPage";
 async function UserSpaceServerLayer(props: {
   userId: string;
   hostname: string;
@@ -96,11 +97,8 @@ async function UserSpaceServerLayer(props: {
   }
 
   return (
-    <UserSpaceClassesGridView
+    <SpacesLandingPage
       userName={user.right.name ?? "Utilisateur inconnu"}
-      navItems={userSpaceNavItems}
-      userId={props.userId}
-      classes={classes}
       hostname={props.hostname}
     />
   );

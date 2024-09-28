@@ -9,11 +9,11 @@ export default function Title({
 }) {
   return (
     <Link
-    role="ClassAI"
+      role="ClassAI"
       href={"/"}
       className={`${
         size ? size : "text-2xl"
-      }  font-bold bg-gradient-to-r from-orange-700 via-blue-500 to-green-400 text-transparent bg-clip-text animate-gradient`}
+      }  font-bold bg-gradient-to-r underline from-orange-700 via-blue-500 to-green-400 text-transparent bg-clip-text animate-gradient`}
     >
       {title}
     </Link>

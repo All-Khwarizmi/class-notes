@@ -56,7 +56,7 @@ export default function Dashboard({ userId, hostname }: DashboardProps) {
       { name: "Nouvelle évaluation", icon: BookOpen, href: "/evaluations/add" },
       { name: "Gérer les élèves", icon: Users, href: "/classes" },
       { name: "Mon Blog", icon: Rss, href: `/${hostname}/blog` },
-      { name: "Ma Marketplace", icon: Store, href: `/${hostname}/marketplace` },
+      { name: "Ma Marketplace", icon: Store, href: `/${hostname}` },
     ];
   }, [hostname]);
   return (
@@ -69,7 +69,7 @@ export default function Dashboard({ userId, hostname }: DashboardProps) {
             <CardTitle>Actions rapides</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
               {quickActions.map((action) => (
                 <Button
                   key={action.name}
@@ -146,7 +146,7 @@ export default function Dashboard({ userId, hostname }: DashboardProps) {
             n&apos;hésitez pas à nous contacter :
           </p>
           <div className="flex flex-col md:flex-row space-y-4 md:space-x-4 md:space-y-0">
-            <Button asChild>
+            <Button variant="outline" asChild>
               <Link href="mailto:jason@laclasse.app">
                 <HelpCircle className="mr-2 h-4 w-4" />
                 Contacter le support

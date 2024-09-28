@@ -43,10 +43,10 @@ export default function UserSpaceClasseCard({
     <Card
       className={cn(
         "overflow-hidden",
-        "hover:shadow-lg hover:scale-105 transition duration-300 ease-in-out"
+        "hover:shadow-lg hover:scale-105 transition  duration-300 ease-in-out"
       )}
     >
-      <CardHeader className="p-0">
+      <CardHeader className=" object-cover">
         <AspectRatio ratio={16 / 9}>
           <img
             src={
@@ -81,7 +81,7 @@ export default function UserSpaceClasseCard({
         </div>
       </CardContent>
       <CardFooter>
-        <Button asChild className="w-full">
+        <Button variant="outline" asChild className="w-full">
           <Link href={`/${hostname}/classes/${classe.id}?user=${userId}`}>
             <BookOpen className="w-4 h-4 mr-2" />
             Voir la classe
