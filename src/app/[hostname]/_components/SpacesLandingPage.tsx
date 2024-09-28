@@ -31,7 +31,7 @@ const UserSpaceLandingPageContent = (
     <article className="prose-m-none space-y-8">
       <Typography variant="h4" className="font-bold">
         <Balancer>
-          Bienvenue dans votre espace personnel sur {props.userName}
+          Bienvenue dans l&apos; espace personnel de {props.userName}
         </Balancer>
       </Typography>
       <Typography variant="subtitle1" className="text-muted-foreground">
@@ -52,7 +52,7 @@ const UserSpaceLandingPageContent = (
             </span>
           </span>
         </Link>
-        <Link
+        {/* <Link
           className="border h-48 bg-accent/50 rounded-lg p-4 flex flex-col justify-between hover:scale-[1.02] transition-all"
           href={`/${props.hostname}/sequences`}
         >
@@ -75,7 +75,7 @@ const UserSpaceLandingPageContent = (
               Rédigez et publiez vos articles de blog
             </span>
           </span>
-        </Link>
+        </Link> */}
         {/* <Link
           className="border h-48 bg-accent/50 rounded-lg p-4 flex flex-col justify-between hover:scale-[1.02] transition-all"
           href={`/${props.hostname}/profile`}

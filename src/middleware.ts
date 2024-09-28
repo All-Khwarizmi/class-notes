@@ -17,6 +17,8 @@ export default authMiddleware({
     "/cookies",
     "/about",
     "/spaces/classes/:slug",
+    "/blog",
+    "/blog/article/:slug",
     "/spaces/sequences/:slug",
     "/spaces/cours/:slug", // Updated this line
     "/spaces/complement/:slug",

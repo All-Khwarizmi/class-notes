@@ -21,7 +21,7 @@ function RessourceLinksCard(props: { userId: string }) {
       <CardContent className="grid gap-2">
         <Link
           href={`/spaces?user=${props.userId}`}
-          className="inline-flex items-center justify-between gap-2 rounded-md bg-primary px-4 text-sm font-medium  py-2 text-primary-foreground transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+          className="inline-flex items-center justify-between gap-2 rounded-md  px-4 text-sm font-medium  py-2 text-primary-foreground transition-colors  focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
           prefetch={false}
         >
           <div className="h-4 w-4" />
@@ -29,7 +29,7 @@ function RessourceLinksCard(props: { userId: string }) {
         </Link>
         <Link
           href="/classes"
-          className="inline-flex items-center justify-between gap-2  py-2 rounded-md bg-primary px-4  text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+          className="inline-flex items-center justify-between gap-2  py-2 rounded-md  px-4  text-sm font-medium text-primary-foreground transition-colors  focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
           prefetch={false}
         >
           <div className="h-4 w-4" />
@@ -37,7 +37,7 @@ function RessourceLinksCard(props: { userId: string }) {
         </Link>
         <Link
           href="/evaluations"
-          className="inline-flex  py-2 items-center justify-between gap-2 rounded-md bg-primary px-4  text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+          className="inline-flex  py-2 items-center justify-between gap-2 rounded-md  px-4  text-sm font-medium text-primary-foreground transition-colors  focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
           prefetch={false}
         >
           <div className="h-4 w-4" />

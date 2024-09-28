@@ -6,7 +6,7 @@ import { Id } from "./_generated/dataModel";
 
 export const getBlogPosts = query({
   args: {
-    authorId: v.optional(v.id("users")),
+    authorId: v.optional(v.string()),
     limit: v.optional(v.number()),
     cursor: v.optional(v.string()),
   },
@@ -95,7 +95,7 @@ export const getTags = query({
 });
 
 export const getComments = query({
-  args: { postId: v.id("blogPosts") },
+  args: { postId: v.string() },
   handler: async (ctx, args) => {
     return await ctx.db
       .query("blogComments")
@@ -117,8 +117,16 @@ export const createBlogPost = mutation({
     authorId: v.string(),
     categoryIds: v.array(v.string()),
     tagIds: v.array(v.string()),
+    image: v.string(),
   },
   handler: async (ctx, args) => {
+    const author = await ctx.db
+      .query("Users")
+      .filter((q) => q.eq(q.field("userId"), args.authorId))
+      .first();
+    if (!author) {
+      return;
+    }
     const postId = await ctx.db.insert("blogPosts", {
       title: args.title,
       content: args.content,
@@ -128,6 +136,8 @@ export const createBlogPost = mutation({
       authorId: args.authorId,
       createdAt: Date.now(),
       updatedAt: Date.now(),
+      image: args.image,
+      authorName: author.name || "",
     });
 
     for (const categoryId of args.categoryIds) {
@@ -144,19 +154,26 @@ export const createBlogPost = mutation({
 
 export const updateBlogPost = mutation({
   args: {
-    id: v.id("blogPosts"),
+    id: v.string(),
     title: v.optional(v.string()),
     content: v.optional(v.string()),
     excerpt: v.optional(v.string()),
     slug: v.optional(v.string()),
     published: v.optional(v.boolean()),
-    categoryIds: v.optional(v.array(v.id("categories"))),
-    tagIds: v.optional(v.array(v.id("tags"))),
+    categoryIds: v.optional(v.array(v.string())),
+    tagIds: v.optional(v.array(v.string())),
   },
   handler: async (ctx, args) => {
     const { id, ...updateFields } = args;
+    const post = await ctx.db
+      .query("blogPosts")
+      .filter((q) => q.eq(q.field("_id"), id))
+      .first();
+    if (!post) {
+      return;
+    }
 
-    await ctx.db.patch(id, {
+    await ctx.db.patch(post._id, {
       ...updateFields,
       updatedAt: Date.now(),
     });
@@ -243,8 +260,8 @@ export const createTag = mutation({
 export const createComment = mutation({
   args: {
     content: v.string(),
-    authorId: v.id("users"),
-    postId: v.id("blogPosts"),
+    authorId: v.string(),
+    postId: v.string(),
   },
   handler: async (ctx, args) => {
     return await ctx.db.insert("blogComments", {

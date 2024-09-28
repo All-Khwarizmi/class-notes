@@ -1,8 +1,5 @@
 "use client";
-
 import React, { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { UserButton } from "@clerk/nextjs";
 import {
   CalendarDaysIcon,
@@ -49,14 +46,10 @@ import {
   TabsTrigger,
 } from "@/core/components/ui/tabs";
 import { countryOptions } from "@/features/user/domain/entities/user-schema";
-import { getEducationSystemOptions } from "@/features/user/domain/entities/education-systems/global";
 import { educationSystemOptions } from "@/features/user/domain/entities/education-systems/education-system";
 import { checkUserCredits } from "../helpers/helpers";
-import useSaveUser from "../../application/adapters/services/useSaveUser";
-import { useUpgradeSubscription } from "../helpers/useUpgradeSubscription";
-import { debounce } from "lodash";
-import { z } from "zod";
 import { useUserOnboarding } from "@/features/user/presentation/hooks/useUserOnboarding";
+import { TypographySmall } from "@/core/components/common/Typography";
 const tabs = [
   {
     id: "personal",
@@ -99,11 +92,11 @@ export default function UserProfile({ user }: { user: UserType }) {
     <div className="container mx-auto py-10">
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-3xl font-bold">Profil utilisateur</h1>
-        <UserButton />
+        <UserButton appearance={{ elements: { rootBox: "w-16 h-16" } }} />
       </div>
-      <div className="flex gap-6">
+      <div className="">
         <Tabs defaultValue={currentTab} className="w-full">
-          <div className="flex gap-6">
+          <div className="flex   flex-col md:flex-row gap-6">
             <Card className="w-64 h-fit">
               <CardHeader>
                 <CardTitle>Navigation</CardTitle>
@@ -114,10 +107,10 @@ export default function UserProfile({ user }: { user: UserType }) {
                     <TabsTrigger
                       key={tab.id}
                       value={tab.id}
-                      className="justify-start"
+                      className="justify-start truncate"
                     >
                       <tab.icon className="w-4 h-4 mr-2" />
-                      {tab.label}
+                      <TypographySmall text={tab.label} />
                     </TabsTrigger>
                   ))}
                 </TabsList>

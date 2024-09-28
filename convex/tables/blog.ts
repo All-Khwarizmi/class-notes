@@ -10,6 +10,8 @@ const blogPosts = defineTable({
   authorId: v.string(),
   createdAt: v.number(),
   updatedAt: v.number(),
+  image: v.string(),
+  authorName: v.string(),
 })
   .index("by_author", ["authorId"])
   .index("by_slug", ["slug"])

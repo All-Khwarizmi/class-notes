@@ -1,8 +1,8 @@
-import LayoutServerLayer from "@/core/components/layout/LayoutServerLayer";
+import SpacesLayout from "@/core/components/layout/SpacesLayout";
 import React from "react";
 
 function Layout({ children }: { children: React.ReactNode }) {
-  return <LayoutServerLayer>{children}</LayoutServerLayer>;
+  return <SpacesLayout>{children}</SpacesLayout>;
 }
 
 export default Layout;

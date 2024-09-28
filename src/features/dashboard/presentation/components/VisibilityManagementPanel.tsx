@@ -66,12 +66,12 @@ export default function VisibilityManagementComponent({
     <Card className="w-full mt-4">
       <CardHeader>
         <CardTitle>Gestion de la visibilité</CardTitle>
-        <CardDescription>
+        <CardDescription className="truncate">
           Contrôlez hiérarchiquement la visibilité de votre contenu éducatif.
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <ScrollArea className=" pr-4">
+        <ScrollArea className=" pr-4 overflow-x-auto">
           {visibilityState.classes.map((item) => (
             <CollapsibleItem
               key={item.id}
