@@ -167,7 +167,8 @@ const Features: React.FC = () => {
             Révolutionnez votre enseignement
           </h2>
           <p className="text-xl text-muted-foreground">
-            Découvrez comment La Classe transforme l&apos;expérience d&apos;apprentissage
+            Découvrez comment La Classe transforme l&apos;expérience
+            d&apos;apprentissage
           </p>
         </motion.div>
 
@@ -184,11 +185,11 @@ const Features: React.FC = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5, duration: 0.5 }}
         >
-          <Button asChild size="lg" className="bg-primary hover:bg-primary/90">
-            <a href="#demo">
+          <Button asChild size="lg">
+            <span>
               Voir La Classe en action
               <ArrowRight className="ml-2 h-4 w-4" />
-            </a>
+            </span>
           </Button>
         </motion.div>
       </div>

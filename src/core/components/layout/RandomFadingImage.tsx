@@ -39,16 +39,25 @@ const RandomFadingImage = ({ src, alt }: { src: string; alt: string }) => {
   }, []);
 
   return (
-    <img
-      src={src}
-      alt={alt}
-      className="mx-auto hero-image absolute opacity-70 aspect-video overflow-hidden rounded-xl object-cover w-full lg:w-[70%]  "
+    <div
+      className="mx-auto hero-image shadow-none absolute opacity-70 aspect-video overflow-hidden rounded-xl w-full lg:w-[70%]"
       style={{
+        backgroundImage: `
+          linear-gradient(to bottom, 
+            hsla(var(--background), 0.7) 0%, 
+            hsla(var(--background), 0) 20%, 
+            hsla(var(--background), 0) 80%, 
+            hsla(var(--background), 0.7) 100%),
+          url(${src})
+        `,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
         opacity: opacity,
         transition: "opacity 1s ease-in-out",
         filter: filter,
-        boxShadow: `0 0 10px 5px rgba(255, 255, 255, ${glow})`,
       }}
+      role="img"
+      aria-label={alt}
     />
   );
 };
