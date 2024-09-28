@@ -69,7 +69,6 @@ const BlogEditor: React.FC<BlogEditorProps> = ({ userId }) => {
   });
 
   const editor = useEditor({
-    immediatelyRender: false,
     extensions: [StarterKit],
     content: "<p>Commencez à écrire votre article ici...</p>",
     onUpdate: ({ editor }) => {
