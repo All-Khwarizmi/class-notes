@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useMemo } from "react";
 import {
   Card,
   CardContent,
@@ -21,19 +21,14 @@ import {
   Users,
   FileText,
   ExternalLink,
+  Rss,
   HelpCircle,
+  Store,
 } from "lucide-react";
 import Link from "next/link";
 import VisibilityManagementComponent from "../components/VisibilityManagementPanel";
 import QuickLinksCard from "../components/QuickLinksCard";
 import RessourceLinksCard from "../components/RessourceLinksCard";
-
-const quickActions = [
-  { name: "Nouvelle classe", icon: PlusCircle, href: "/classes/add" },
-  { name: "Nouvelle séquence", icon: FileText, href: "/sequences/add" },
-  { name: "Nouvelle évaluation", icon: BookOpen, href: "/evaluations/add" },
-  { name: "Gérer les élèves", icon: Users, href: "/classes" },
-];
 
 const externalLinks = [
   {
@@ -49,8 +44,21 @@ const externalLinks = [
     href: "https://www.notion.so/Notre-Mission-Notre-Histoire-Notre-Vision-10732b247fd380b2b951de6d2cd86b5f?pvs=21",
   },
 ];
-
-export default function Dashboard({ userId }: { userId: string }) {
+type DashboardProps = {
+  userId: string;
+  hostname: string;
+};
+export default function Dashboard({ userId, hostname }: DashboardProps) {
+  const quickActions = useMemo(() => {
+    return [
+      { name: "Nouvelle classe", icon: PlusCircle, href: "/classes/add" },
+      { name: "Nouvelle séquence", icon: FileText, href: "/sequences/add" },
+      { name: "Nouvelle évaluation", icon: BookOpen, href: "/evaluations/add" },
+      { name: "Gérer les élèves", icon: Users, href: "/classes" },
+      { name: "Mon Blog", icon: Rss, href: `/${hostname}/blog` },
+      { name: "Ma Marketplace", icon: Store, href: `/${hostname}/marketplace` },
+    ];
+  }, [hostname]);
   return (
     <div className="container mx-auto p-4 space-y-6 mb-12">
       <h1 className="text-3xl font-bold">Tableau de bord</h1>
@@ -108,7 +116,7 @@ export default function Dashboard({ userId }: { userId: string }) {
       </div>
 
       <Tabs defaultValue="visibility" className="w-full truncate  ">
-        <TabsList >
+        <TabsList>
           <TabsTrigger value="visibility">Gestion de la visibilité</TabsTrigger>
           <TabsTrigger value="quicklinks">Liens rapides</TabsTrigger>
           <TabsTrigger value="resources">Ressources pédagogiques</TabsTrigger>

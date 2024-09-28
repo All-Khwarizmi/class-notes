@@ -89,11 +89,11 @@ function Layout({
     >
       <div className="relative">
         {loading ? (
-        <div className="h-fit w-full overflow-hidden flex items-center justify-center py-4">
-          <Layout.Loader />
-        </div>
-      ) : (
-        <>{!isLandingPage && <Header />}</>
+          <div className="h-fit w-full overflow-hidden flex items-center justify-center py-4">
+            <Layout.Loader />
+          </div>
+        ) : (
+          <>{!isLandingPage && <Header />}</>
         )}
         <section className="flex h-full w-full border-collapse overflow-hidden ">
           {loading ? (

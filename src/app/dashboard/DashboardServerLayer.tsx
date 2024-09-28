@@ -37,7 +37,7 @@ async function DashboardServerLayer() {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <DashboardGrid userId={userId} />
+      <DashboardGrid userId={userId} hostname={userOption.value.hostname} />
     </HydrationBoundary>
   );
 }
