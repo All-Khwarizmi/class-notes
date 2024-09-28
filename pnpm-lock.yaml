@@ -283,6 +283,9 @@ devDependencies:
   '@vitest/ui':
     specifier: ^1.4.0
     version: 1.6.0(vitest@1.6.0)
+  address:
+    specifier: ^2.0.3
+    version: 2.0.3
   autoprefixer:
     specifier: 10.0.1
     version: 10.0.1(postcss@8.4.38)
@@ -4396,6 +4399,11 @@ packages:
     resolution: {integrity: sha512-RTvkC4w+KNXrM39/lWCUaG0IbRkWdCv7W/IOW9oU6SawyxulvkQy5HQPVTKxEjczcUvapcrw3cFx/60VN/NRNw==}
     engines: {node: '>=0.4.0'}
     hasBin: true
+    dev: true
+
+  /address@2.0.3:
+    resolution: {integrity: sha512-XNAb/a6TCqou+TufU8/u11HCu9x1gYvOoxLwtlXgIqmkrYQADVv6ljyW2zwiPhHz9R1gItAWpuDrdJMmrOBFEA==}
+    engines: {node: '>= 16.0.0'}
     dev: true
 
   /agent-base@7.1.1:
