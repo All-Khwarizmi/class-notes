@@ -1,3 +1,8 @@
+type NavProps = {
+  className?: string;
+  children?: React.ReactNode;
+  id?: string;
+};
 export interface NavItem {
   title: string;
   href: string;
