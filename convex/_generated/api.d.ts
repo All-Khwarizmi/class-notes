@@ -14,6 +14,7 @@ import type {
   FilterApi,
   FunctionReference,
 } from "convex/server";
+import type * as blog from "../blog.js";
 import type * as category from "../category.js";
 import type * as classes from "../classes.js";
 import type * as clerk from "../clerk.js";
@@ -34,6 +35,7 @@ import type * as notes from "../notes.js";
 import type * as sequence from "../sequence.js";
 import type * as stripe from "../stripe.js";
 import type * as students from "../students.js";
+import type * as tables_blog from "../tables/blog.js";
 import type * as tables_evaluation_base_convex_schema from "../tables/evaluation_base_convex_schema.js";
 import type * as tables_evaluations_with_grades_convex_schema from "../tables/evaluations_with_grades_convex_schema.js";
 import type * as template from "../template.js";
@@ -49,6 +51,7 @@ import type * as visibility from "../visibility.js";
  * ```
  */
 declare const fullApi: ApiFromModules<{
+  blog: typeof blog;
   category: typeof category;
   classes: typeof classes;
   clerk: typeof clerk;
@@ -69,6 +72,7 @@ declare const fullApi: ApiFromModules<{
   sequence: typeof sequence;
   stripe: typeof stripe;
   students: typeof students;
+  "tables/blog": typeof tables_blog;
   "tables/evaluation_base_convex_schema": typeof tables_evaluation_base_convex_schema;
   "tables/evaluations_with_grades_convex_schema": typeof tables_evaluations_with_grades_convex_schema;
   template: typeof template;

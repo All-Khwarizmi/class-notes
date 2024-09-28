@@ -5,7 +5,10 @@ import { EvaluationBase } from "./tables/evaluation_base_convex_schema";
 import { userSchema } from "./fields/users";
 import { visibilityTable } from "./fields/visibility";
 import { contentType } from "./fields/content_type";
+import blog from "./tables/blog";
+
 export default defineSchema({
+  ...blog,
   Hostname: defineTable({
     hostname: v.string(),
     userId: v.string(),

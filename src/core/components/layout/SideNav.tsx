@@ -72,13 +72,13 @@ export function SideNav({ setOpen, className }: SideNavProps) {
     return liveHref.split("/")[1] === path.split("/")[1];
   }
   return (
-    <nav className="space-y-2 ">
+    <nav className=" ">
       {items.map((item) =>
         item.isChidren ? (
           <Accordion
             type="single"
             collapsible
-            className="space-y-2"
+            className="py-0 "
             key={item.title}
             value={openItem}
             onValueChange={handleOpenItem}
@@ -86,10 +86,11 @@ export function SideNav({ setOpen, className }: SideNavProps) {
             <AccordionItem value={item.title} className="border-none ">
               <AccordionTrigger
                 className={cn(
+                  "p-0 m-0",
                   buttonVariants({ variant: "ghost" }),
                   pathIsActive({ path: item.href, liveHref }) && "bg-muted",
                   `dark:${item.color} hover:bg-muted`,
-                  "group relative flex h-12 justify-between w-full gap-1 px-4 py-2 text-base duration-200 hover:bg-muted hover:no-underline"
+                  "group relative flex  justify-between w-full px-4 text-base duration-200 hover:bg-muted hover:no-underline"
                 )}
               >
                 <div
@@ -112,7 +113,7 @@ export function SideNav({ setOpen, className }: SideNavProps) {
                   <ChevronDownIcon className="h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-200" />
                 )}
               </AccordionTrigger>
-              <AccordionContent className="mt-2 space-y-4 pb-1">
+              <AccordionContent className=" ">
                 {" "}
                 {item.children?.map((child) => (
                   <Link

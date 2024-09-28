@@ -56,7 +56,7 @@ export default function Dashboard({ userId, hostname }: DashboardProps) {
       { name: "Nouvelle évaluation", icon: BookOpen, href: "/evaluations/add" },
       { name: "Gérer les élèves", icon: Users, href: "/classes" },
       { name: "Mon Blog", icon: Rss, href: `/${hostname}/blog` },
-      { name: "Ma Marketplace", icon: Store, href: `/${hostname}` },
+      { name: "Mon Espace", icon: Store, href: `/${hostname}` },
     ];
   }, [hostname]);
   return (
