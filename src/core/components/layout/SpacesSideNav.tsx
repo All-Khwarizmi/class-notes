@@ -1,6 +1,9 @@
 "use client";
+
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { ChevronDownIcon } from "@radix-ui/react-icons";
 import { cn } from "@/lib/utils";
 import { useSidebar } from "@/core/application/common/useSidebar";
 import { buttonVariants } from "@/core/components/ui/button";
@@ -10,8 +13,6 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/core/components/layout/SubNavAccordion";
-import { useEffect, useMemo, useState } from "react";
-import { ChevronDownIcon } from "@radix-ui/react-icons";
 import { useSpacesLayoutContext } from "./SpacesLayoutCtx";
 
 interface SideNavProps {
@@ -21,33 +22,28 @@ interface SideNavProps {
 
 export function SpacesSideNav({ setOpen, className }: SideNavProps) {
   const { spacesNavItems } = useSpacesLayoutContext();
-  const items = useMemo(() => {
-    if (spacesNavItems) {
-      return spacesNavItems;
-    } else {
-      return [];
-    }
-  }, [spacesNavItems]);
+  const items = useMemo(() => spacesNavItems || [], [spacesNavItems]);
 
   const path = usePathname();
   const { isOpen, toggle } = useSidebar();
   const [openItem, setOpenItem] = useState("");
   const [lastOpenItem, setLastOpenItem] = useState("");
   const [liveHref, setLiveHref] = useState(path);
+
   useEffect(() => {
     if (isOpen) {
       setOpenItem(lastOpenItem);
     } else {
       setLastOpenItem(openItem);
-      setOpenItem("");  
+      setOpenItem("");
     }
-  }, [isOpen]);
+  }, [isOpen, lastOpenItem, openItem]);
 
   useEffect(() => {
     if (spacesNavItems && spacesNavItems.length < 1) {
       toggle(false);
     }
-  }, [spacesNavItems]);
+  }, [spacesNavItems, toggle]);
 
   useEffect(() => {
     setLiveHref(path);
@@ -67,29 +63,28 @@ export function SpacesSideNav({ setOpen, className }: SideNavProps) {
   function pathIsActive(props: { path: string; liveHref: string }) {
     let { path, liveHref } = props;
 
-    // Check if the path is nested and return false if it is
     if (path.split("/").length > 2) return false;
 
-    // Check if there are search params in the path and remove them
     if (path.includes("?")) {
       path = path.split("?")[0];
     }
 
     return liveHref.split("/")[1] === path.split("/")[1];
   }
+
   return (
-    <nav className="space-y-2 ">
+    <nav className="space-y-2" aria-label="Sidebar Navigation">
       {items.map((item) =>
         item.isChidren ? (
           <Accordion
+            key={item.title}
             type="single"
             collapsible
             className="space-y-2"
-            key={item.title}
             value={openItem}
             onValueChange={handleOpenItem}
           >
-            <AccordionItem value={item.title} className="border-none ">
+            <AccordionItem value={item.title} className="border-none">
               <AccordionTrigger
                 className={cn(
                   buttonVariants({ variant: "ghost" }),
@@ -100,50 +95,39 @@ export function SpacesSideNav({ setOpen, className }: SideNavProps) {
               >
                 <div
                   className={cn(
-                    !isOpen && "flex w-full justify-center items-center"
+                    "flex items-center",
+                    !isOpen && "w-full justify-center"
                   )}
                 >
-                  {item.icon}
+                  <span className="flex-shrink-0 w-6 h-6 mr-3">
+                    {item.icon}
+                  </span>
+                  <span className={cn("flex-grow", !isOpen && "sr-only")}>
+                    {item.title}
+                  </span>
                 </div>
-                <div
-                  className={cn(
-                    "absolute left-12 text-base duration-200 ",
-                    !isOpen && className
-                  )}
-                >
-                  {item.title}
-                </div>
-
                 {isOpen && (
                   <ChevronDownIcon className="h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-200" />
                 )}
               </AccordionTrigger>
               <AccordionContent className="mt-2 space-y-4 pb-1">
-                {" "}
                 {item.children?.map((child) => (
                   <Link
                     key={child.title}
                     href={child.href}
-                    onClick={() => {
-                      if (setOpen) setOpen(false);
-                    }}
+                    onClick={() => setOpen?.(false)}
                     className={cn(
                       buttonVariants({ variant: "ghost" }),
-                      "group relative flex h-12 justify-start gap-x-3 ml-4",
+                      "group relative flex h-12 items-center justify-start gap-x-3 ml-4",
                       `dark:${child.color} hover:bg-muted`,
                       pathIsActive({ path: child.href, liveHref }) &&
                         "bg-muted font-bold hover:bg-muted"
                     )}
                   >
-                    {child.icon}
-                    <div
-                      className={cn(
-                        "absolute left-12 text-base duration-200",
-                        !isOpen && className
-                      )}
-                    >
+                    <span className="flex-shrink-0 w-6 h-6">{child.icon}</span>
+                    <span className={cn("flex-grow", !isOpen && "sr-only")}>
                       {child.title}
-                    </div>
+                    </span>
                   </Link>
                 ))}
               </AccordionContent>
@@ -153,33 +137,26 @@ export function SpacesSideNav({ setOpen, className }: SideNavProps) {
           <Link
             key={item.title}
             href={item.href}
-            onClick={() => {
-              if (setOpen) setOpen(false);
-            }}
+            onClick={() => setOpen?.(false)}
             className={cn(
               buttonVariants({ variant: "ghost" }),
-              "group relative flex h-12 justify-start",
+              "group relative flex h-12 items-center justify-start",
               `dark:${item.color} hover:bg-muted`,
-
               pathIsActive({ path: item.href, liveHref: liveHref }) &&
                 "bg-secondary font-bold hover:bg-muted"
             )}
           >
             <div
               className={cn(
-                !isOpen && "flex w-full justify-center items-center"
+                "flex items-center w-full",
+                !isOpen && "justify-center"
               )}
             >
-              {item.icon}
+              <span className="flex-shrink-0 w-6 h-6 mr-3">{item.icon}</span>
+              <span className={cn("flex-grow", !isOpen && "sr-only")}>
+                {item.title}
+              </span>
             </div>
-            <span
-              className={cn(
-                "absolute left-12 text-base duration-200 ",
-                !isOpen && className
-              )}
-            >
-              {item.title}
-            </span>
           </Link>
         )
       )}

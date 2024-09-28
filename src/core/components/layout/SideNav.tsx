@@ -28,7 +28,7 @@ export function SideNav({ setOpen, className }: SideNavProps) {
       return navItems;
     }
   }, [isSpaces, spacesNavItems, navItems]);
- 
+
   const path = usePathname();
   const { isOpen, toggle } = useSidebar();
   const [openItem, setOpenItem] = useState("");
@@ -89,7 +89,7 @@ export function SideNav({ setOpen, className }: SideNavProps) {
                   buttonVariants({ variant: "ghost" }),
                   pathIsActive({ path: item.href, liveHref }) && "bg-muted",
                   `dark:${item.color} hover:bg-muted`,
-                  "group relative flex h-12 justify-between px-4 py-2 text-base duration-200 hover:bg-muted hover:no-underline"
+                  "group relative flex h-12 justify-between w-full gap-1 px-4 py-2 text-base duration-200 hover:bg-muted hover:no-underline"
                 )}
               >
                 <div
@@ -97,7 +97,7 @@ export function SideNav({ setOpen, className }: SideNavProps) {
                     !isOpen && "flex w-full justify-center items-center"
                   )}
                 >
-                  {item.icon}
+                  {/* {item.icon} */}
                 </div>
                 <div
                   className={cn(
@@ -129,7 +129,7 @@ export function SideNav({ setOpen, className }: SideNavProps) {
                         "bg-muted font-bold hover:bg-muted"
                     )}
                   >
-                    {child.icon}
+                    {/* {child.icon} */}
                     <div
                       className={cn(
                         "absolute left-12 text-base duration-200",
@@ -152,7 +152,7 @@ export function SideNav({ setOpen, className }: SideNavProps) {
             }}
             className={cn(
               buttonVariants({ variant: "ghost" }),
-              "group relative flex h-12 justify-start",
+              "group relative flex w-full gap-1 h-12 justify-start",
               `dark:${item.color} hover:bg-muted`,
 
               pathIsActive({ path: item.href, liveHref: liveHref }) &&
@@ -164,7 +164,7 @@ export function SideNav({ setOpen, className }: SideNavProps) {
                 !isOpen && "flex w-full justify-center items-center"
               )}
             >
-              {item.icon}
+              {/* {item.icon} */}
             </div>
             <span
               className={cn(

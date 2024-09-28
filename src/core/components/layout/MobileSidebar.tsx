@@ -26,11 +26,11 @@ export const MobileSidebar = (props: { navItems?: NavItem[] }) => {
             <MenuIcon />
           </div>
         </SheetTrigger>
-        <SheetContent side="left" className="w-72">
-          <div className="px-1 py-6 pt-16">
+        <SheetContent side="left" className="">
+          <div className=" py-6 pt-16">
             <SideNav setOpen={setOpen} />
           </div>
-          <section className="flex flex-col items-center justify-center">
+          <section className="flex flex-col items-center ">
             <SpacesMobileSidebarNavigation />
 
             <ModeToggle />

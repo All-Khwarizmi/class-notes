@@ -28,7 +28,7 @@ export const SpacesMobileSidebar = (props: { navItems?: NavItem[] }) => {
           </div>
         </SheetTrigger>
         <SheetContent side="left" className="w-72">
-          <div className="px-1 py-6 pt-16">
+          <div className=" py-6 pt-16">
             <SpacesSideNav setOpen={setOpen} />
           </div>
           {/* <section className="flex items-center justify-center">
@@ -47,7 +47,7 @@ export const SpacesMobileSidebar = (props: { navItems?: NavItem[] }) => {
 
 export function SpacesMobileSidebarNavigation() {
   return (
-    <div className="flex items-center  px-8">
+    <div className="flex  ">
       <GoBackButton />
     </div>
   );
