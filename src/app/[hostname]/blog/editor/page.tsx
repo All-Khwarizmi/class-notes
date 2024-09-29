@@ -1,40 +1,40 @@
-"use client";
+'use client';
 
-import React, { useState } from "react";
-import { useEditor, EditorContent } from "@tiptap/react";
-import StarterKit from "@tiptap/starter-kit";
+import { Button } from '@/core/components/ui/button';
 import {
   Card,
   CardContent,
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/core/components/ui/card";
-import { Input } from "@/core/components/ui/input";
-import { Button } from "@/core/components/ui/button";
-import { Label } from "@/core/components/ui/label";
-import { ScrollArea } from "@/core/components/ui/scroll-area";
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from "@/core/components/ui/tabs";
+} from '@/core/components/ui/card';
+import { Input } from '@/core/components/ui/input';
+import { Label } from '@/core/components/ui/label';
+import { ScrollArea } from '@/core/components/ui/scroll-area';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/core/components/ui/select";
-import { Textarea } from "@/core/components/ui/textarea";
+} from '@/core/components/ui/select';
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from '@/core/components/ui/tabs';
+import { Textarea } from '@/core/components/ui/textarea';
+import { useEditor, EditorContent } from '@tiptap/react';
+import StarterKit from '@tiptap/starter-kit';
 import {
   Save,
   Send,
   ArrowLeft,
   ArrowRight,
   Image as ImageIcon,
-} from "lucide-react";
+} from 'lucide-react';
+import React, { useState } from 'react';
 
 interface BlogPost {
   title: string;
@@ -45,23 +45,23 @@ interface BlogPost {
   isDraft: boolean;
 }
 
-const categories = ["Technologie", "Éducation", "Science", "Culture"];
+const categories = ['Technologie', 'Éducation', 'Science', 'Culture'];
 
 const BlogEditor: React.FC = () => {
-  const [activeTab, setActiveTab] = useState("write");
+  const [activeTab, setActiveTab] = useState('write');
   const [post, setPost] = useState<BlogPost>({
-    title: "",
-    content: "",
-    excerpt: "",
-    category: "",
-    imageUrl: "",
+    title: '',
+    content: '',
+    excerpt: '',
+    category: '',
+    imageUrl: '',
     isDraft: true,
   });
   const [isSaving, setIsSaving] = useState(false);
 
   const editor = useEditor({
     extensions: [StarterKit],
-    content: "<p>Commencez à écrire votre article ici...</p>",
+    content: '<p>Commencez à écrire votre article ici...</p>',
     onUpdate: ({ editor }) => {
       setPost((prev) => ({ ...prev, content: editor.getHTML() }));
     },
@@ -85,13 +85,13 @@ const BlogEditor: React.FC = () => {
     try {
       // Simulated API call - replace with your actual API endpoint
       await new Promise((resolve) => setTimeout(resolve, 1000));
-      console.log("Saving post:", post);
+      console.log('Saving post:', post);
       // Here you would typically send the post to your backend
       // await api.savePost(post)
       alert(
         isDraft
-          ? "Brouillon enregistré avec succès !"
-          : "Article publié avec succès !"
+          ? 'Brouillon enregistré avec succès !'
+          : 'Article publié avec succès !'
       );
     } catch (error) {
       console.error("Erreur lors de l'enregistrement de l'article:", error);
@@ -204,28 +204,28 @@ const BlogEditor: React.FC = () => {
         </Tabs>
       </CardContent>
       <CardFooter className="flex justify-between">
-        {activeTab !== "write" && (
+        {activeTab !== 'write' && (
           <Button
             variant="outline"
             onClick={() =>
-              setActiveTab(activeTab === "metadata" ? "write" : "metadata")
+              setActiveTab(activeTab === 'metadata' ? 'write' : 'metadata')
             }
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
             Précédent
           </Button>
         )}
-        {activeTab !== "preview" && (
+        {activeTab !== 'preview' && (
           <Button
             onClick={() =>
-              setActiveTab(activeTab === "write" ? "metadata" : "preview")
+              setActiveTab(activeTab === 'write' ? 'metadata' : 'preview')
             }
           >
             Suivant
             <ArrowRight className="w-4 h-4 ml-2" />
           </Button>
         )}
-        {activeTab === "preview" && (
+        {activeTab === 'preview' && (
           <>
             <Button
               variant="outline"

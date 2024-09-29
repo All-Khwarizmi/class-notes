@@ -1,5 +1,5 @@
-import { last } from "lodash";
-import { z } from "zod";
+import { last } from 'lodash';
+import { z } from 'zod';
 
 export const NoteSchema = z.object({
   id: z.string(),
@@ -20,9 +20,9 @@ export const NoteSchema = z.object({
       id: z.string(),
       name: z.string(),
       contentType: z.union([
-        z.literal("Diagram"),
-        z.literal("Flowchart"),
-        z.literal("Markup"),
+        z.literal('Diagram'),
+        z.literal('Flowchart'),
+        z.literal('Markup'),
       ]),
       createdAt: z.number(),
     })
@@ -30,11 +30,11 @@ export const NoteSchema = z.object({
   createdBy: z.string(),
   keywords: z.array(z.string()),
   content: z.string(),
-  type: z.union([z.literal("Folder"), z.literal("Item")]),
+  type: z.union([z.literal('Folder'), z.literal('Item')]),
   contentType: z.union([
-    z.literal("Diagram"),
-    z.literal("Flowchart"),
-    z.literal("Markup"),
+    z.literal('Diagram'),
+    z.literal('Flowchart'),
+    z.literal('Markup'),
   ]),
 });
 

@@ -1,4 +1,4 @@
-import { cn } from "@/lib/utils";
+import { cn } from '@/lib/utils';
 
 export default function ArrowLeft({
   className,
@@ -15,7 +15,7 @@ export default function ArrowLeft({
       strokeWidth={1.5}
       stroke="currentColor"
       onClick={onClick}
-      className={`${className} ${cn("h-5 w-5")} "w-6 h-6"`}
+      className={`${className} ${cn('h-5 w-5')} "w-6 h-6"`}
     >
       <path
         strokeLinecap="round"

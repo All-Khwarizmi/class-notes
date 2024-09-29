@@ -1,16 +1,19 @@
-import { Either } from "fp-ts/lib/Either";
-import { DocumentData } from "./database-types";
-import Failure from "../failures/failures";
 import {
-  Category,
-  Competence,
-} from "@/features/comp-cat/domain/entities/schemas";
+  CreateClasseOptions,
+  DeleteClasseOptions,
+} from '@/features/classe/domain/classe-types';
+import { Category } from '@/features/comp-cat/domain/entities/schemas';
+import {
+  CreateCompetenceOptions,
+  DeleteCompCatOptions,
+  GetCompetenceOptions,
+  UpdateCompCatOptions,
+} from '@/features/comp-cat/domain/types';
+import { Complement } from '@/features/complement/domain/complement-schemas';
 import {
   Cours,
   Sequence,
-} from "@/features/cours-sequence/domain/entities/cours-schemas";
-import { Complement } from "@/features/complement/domain/complement-schemas";
-import { Note } from "@/features/notes/domain/notes-schemas";
+} from '@/features/cours-sequence/domain/entities/cours-schemas';
 import {
   AssignEvaluationOptions,
   CreateEvaluationOptions,
@@ -24,17 +27,14 @@ import {
   UpdateEvaluationBaseOptions,
   UpdateGradeOptions,
   DeleteEvaluationWithGradesOptions,
-} from "@/features/evaluation/domain/entities/evaluation-types";
+} from '@/features/evaluation/domain/entities/evaluation-types';
+import { Note } from '@/features/notes/domain/notes-schemas';
 import {
   CreateStudentOptions,
   DeleteStudentOptions,
   UpdateStudentOptions,
-} from "@/features/student/domain/entities/student-types";
-import {
-  CreateClasseOptions,
-  DeleteClasseOptions,
-} from "@/features/classe/domain/classe-types";
-import { SaveUserOptions } from "@/features/user/domain/types/types";
+} from '@/features/student/domain/entities/student-types';
+import { SaveUserOptions } from '@/features/user/domain/types/types';
 import {
   AddClasseToVisibilityOptions,
   AddComplementToVisibilityOptions,
@@ -42,13 +42,11 @@ import {
   AddSequenceToVisibilityOptions,
   DeleteEntityFromVisibilityOptions,
   UpdateVisibilityOptions,
-} from "@/features/visibility/domain/types";
-import {
-  CreateCompetenceOptions,
-  DeleteCompCatOptions,
-  GetCompetenceOptions,
-  UpdateCompCatOptions,
-} from "@/features/comp-cat/domain/types";
+} from '@/features/visibility/domain/types';
+import { Either } from 'fp-ts/lib/Either';
+
+import Failure from '../failures/failures';
+import { DocumentData } from './database-types';
 
 export default abstract class IDatabase {
   abstract getUser({
@@ -73,7 +71,7 @@ export default abstract class IDatabase {
     category,
   }: {
     userId: string;
-    category: Omit<Category, "_id">;
+    category: Omit<Category, '_id'>;
   }): Promise<Either<Failure<string>, void>>;
 
   abstract getCompetences({
@@ -86,7 +84,9 @@ export default abstract class IDatabase {
     options: GetCompetenceOptions
   ): Promise<Either<Failure<string>, DocumentData>>;
 
-  abstract addCompetence(options: CreateCompetenceOptions): Promise<Either<Failure<string>, void>>;
+  abstract addCompetence(
+    options: CreateCompetenceOptions
+  ): Promise<Either<Failure<string>, void>>;
 
   abstract updateCategoryCompetence(
     options: UpdateCompCatOptions
@@ -114,7 +114,7 @@ export default abstract class IDatabase {
     cours,
   }: {
     userId: string;
-    cours: Omit<Cours, "_id" | "createdAt">;
+    cours: Omit<Cours, '_id' | 'createdAt'>;
   }): Promise<Either<Failure<string>, string>>;
 
   abstract updateCours({
@@ -143,7 +143,7 @@ export default abstract class IDatabase {
     sequence,
   }: {
     userId: string;
-    sequence: Omit<Sequence, "_id" | "createdAt" | "coursIds">;
+    sequence: Omit<Sequence, '_id' | 'createdAt' | 'coursIds'>;
   }): Promise<Either<Failure<string>, string>>;
 
   abstract updateSequence({
@@ -151,7 +151,7 @@ export default abstract class IDatabase {
     type,
   }: {
     sequence: Sequence;
-    type?: "template" | "sequence";
+    type?: 'template' | 'sequence';
   }): Promise<Either<Failure<string>, void>>;
 
   abstract getSequences({
@@ -167,7 +167,7 @@ export default abstract class IDatabase {
   }: {
     userId: string;
     sequenceId: string;
-    type?: "template" | "sequence";
+    type?: 'template' | 'sequence';
   }): Promise<Either<Failure<string>, DocumentData>>;
 
   abstract addCoursToSequence({
@@ -189,7 +189,7 @@ export default abstract class IDatabase {
     userId: string;
     sequenceId: string;
     body: string;
-    type?: "template" | "sequence";
+    type?: 'template' | 'sequence';
   }): Promise<Either<Failure<string>, void>>;
 
   abstract deleteSequence({
@@ -197,7 +197,7 @@ export default abstract class IDatabase {
     type,
   }: {
     sequenceId: string;
-    type: "template" | "sequence";
+    type: 'template' | 'sequence';
   }): Promise<Either<Failure<string>, void>>;
 
   abstract getAllCoursFromSequence({
@@ -207,7 +207,7 @@ export default abstract class IDatabase {
   }: {
     userId: string;
     sequenceId: string;
-    type?: "template" | "sequence";
+    type?: 'template' | 'sequence';
   }): Promise<Either<Failure<string>, DocumentData[]>>;
 
   abstract addClasseSequence({
@@ -229,7 +229,7 @@ export default abstract class IDatabase {
     userId: string;
     complement: Pick<
       Complement,
-      "name" | "description" | "type" | "publish" | "coursId" | "body"
+      'name' | 'description' | 'type' | 'publish' | 'coursId' | 'body'
     >;
   }): Promise<Either<Failure<string>, string>>;
 
@@ -261,17 +261,17 @@ export default abstract class IDatabase {
   }: {
     note: Pick<
       Note,
-      | "name"
-      | "description"
-      | "content"
-      | "fullPath"
-      | "pathDictionary"
-      | "folders"
-      | "createdBy"
-      | "keywords"
-      | "type"
-      | "parentId"
-      | "contentType"
+      | 'name'
+      | 'description'
+      | 'content'
+      | 'fullPath'
+      | 'pathDictionary'
+      | 'folders'
+      | 'createdBy'
+      | 'keywords'
+      | 'type'
+      | 'parentId'
+      | 'contentType'
     >;
   }): Promise<Either<Failure<string>, string>>;
   abstract getNotes({
@@ -290,15 +290,15 @@ export default abstract class IDatabase {
   }: {
     note: Pick<
       Note,
-      | "id"
-      | "name"
-      | "description"
-      | "content"
-      | "fullPath"
-      | "pathDictionary"
-      | "folders"
-      | "createdBy"
-      | "keywords"
+      | 'id'
+      | 'name'
+      | 'description'
+      | 'content'
+      | 'fullPath'
+      | 'pathDictionary'
+      | 'folders'
+      | 'createdBy'
+      | 'keywords'
     >;
   }): Promise<Either<Failure<string>, void>>;
 

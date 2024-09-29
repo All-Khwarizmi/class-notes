@@ -1,20 +1,21 @@
-import { useMutation } from "@tanstack/react-query";
-import deleteNote from "../actions/delete-note";
-import { isLeft } from "fp-ts/lib/Either";
-import { toast } from "sonner";
+import { useMutation } from '@tanstack/react-query';
+import { isLeft } from 'fp-ts/lib/Either';
+import { toast } from 'sonner';
+
+import deleteNote from '../actions/delete-note';
 
 export default function useDeleteNote() {
   return useMutation({
-    mutationKey: ["delete-note"],
+    mutationKey: ['delete-note'],
     mutationFn: async (options: {
       noteId: string;
       pathToRevalidate: string;
     }) => {
       const operationResult = await deleteNote({
-       noteId: options.noteId,
+        noteId: options.noteId,
       });
       if (isLeft(operationResult)) {
-        toast.error("Error while deleting note", {
+        toast.error('Error while deleting note', {
           duration: 3000,
           description: operationResult.left.code,
         });

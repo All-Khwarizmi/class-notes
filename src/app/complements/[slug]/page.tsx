@@ -1,6 +1,7 @@
-import LoadingSkeleton from "@/core/components/common/LoadingSkeleton";
-import React, { Suspense } from "react";
-import ComplementServerLayer from "./ComplementServerLayer";
+import LoadingSkeleton from '@/core/components/common/LoadingSkeleton';
+import React, { Suspense } from 'react';
+
+import ComplementServerLayer from './ComplementServerLayer';
 
 async function Page({ params }: { params: { slug: string } }) {
   return (

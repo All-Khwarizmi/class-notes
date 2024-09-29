@@ -1,22 +1,22 @@
-"use client";
+'use client';
 
-import React, { useEffect } from "react";
-import Link from "next/link";
-import { useSpacesLayoutContext } from "@/core/components/layout/SpacesLayoutCtx";
-import { Button } from "@/core/components/ui/button";
+import { useSpacesLayoutContext } from '@/core/components/layout/SpacesLayoutCtx';
+import { AspectRatio } from '@/core/components/ui/aspect-ratio';
+import { Badge } from '@/core/components/ui/badge';
+import { Button } from '@/core/components/ui/button';
 import {
   Card,
   CardContent,
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/core/components/ui/card";
-import { Badge } from "@/core/components/ui/badge";
-import { ClassType } from "@/features/classe/domain/class-schema";
-import { NavItem } from "@/lib/types";
-import { cn } from "@/lib/utils";
-import { BookOpen } from "lucide-react";
-import { AspectRatio } from "@/core/components/ui/aspect-ratio";
+} from '@/core/components/ui/card';
+import { ClassType } from '@/features/classe/domain/class-schema';
+import { NavItem } from '@/lib/types';
+import { cn } from '@/lib/utils';
+import { BookOpen } from 'lucide-react';
+import Link from 'next/link';
+import React, { useEffect } from 'react';
 
 interface UserSpaceClasseCardProps {
   classe: ClassType;
@@ -42,15 +42,15 @@ export default function UserSpaceClasseCard({
   return (
     <Card
       className={cn(
-        "overflow-hidden",
-        "hover:shadow-lg hover:scale-105 transition  duration-300 ease-in-out"
+        'overflow-hidden',
+        'hover:shadow-lg hover:scale-105 transition  duration-300 ease-in-out'
       )}
     >
       <CardHeader className=" object-cover">
         <AspectRatio ratio={16 / 9}>
           <img
             src={
-              classe.imageUrl ?? "/images/mos-design-jzFbbG2WXv0-unsplash.jpg"
+              classe.imageUrl ?? '/images/mos-design-jzFbbG2WXv0-unsplash.jpg'
             }
             alt={`Image de la classe ${classe.name}`}
             className="object-cover w-full h-full"

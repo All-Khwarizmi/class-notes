@@ -1,13 +1,13 @@
-import React from "react";
+import { Button } from '@/core/components/ui/button';
 import {
   Card,
   CardHeader,
   CardTitle,
   CardDescription,
   CardContent,
-} from "@/core/components/ui/card";
-import Link from "next/link";
-import { Button } from "@/core/components/ui/button";
+} from '@/core/components/ui/card';
+import Link from 'next/link';
+import React from 'react';
 
 function RessourceLinksCard(props: { userId: string }) {
   return (

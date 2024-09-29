@@ -1,19 +1,18 @@
 import {
+  EvaluationCriteriaType,
+  TwentyPointScaleSchema,
+} from '@/features/evaluation/domain/entities/evaluation-schema';
+import {
   Grade,
   GradeSchema,
   StudentGradeSchema,
-} from "@/features/evaluation/domain/entities/evaluation-with-grades-schema";
+} from '@/features/evaluation/domain/entities/evaluation-with-grades-schema';
+import { z } from 'zod';
 
 import checkSpecialGradeType, {
   SpecialGradeType,
   SpecialGradeTypes,
-} from "./checkSpecialGradeType";
-import { z } from "zod";
-
-import {
-  EvaluationCriteriaType,
-  TwentyPointScaleSchema,
-} from "@/features/evaluation/domain/entities/evaluation-schema";
+} from './checkSpecialGradeType';
 
 export function frenchGradingCalc({
   grade,
@@ -25,7 +24,7 @@ export function frenchGradingCalc({
     return check.returnValue;
   }
   const isNumber = z.number().safeParse(check.returnValue);
-  if (!isNumber.success) return "Error";
+  if (!isNumber.success) return 'Error';
 
   return isNumber.data;
 }
@@ -46,21 +45,21 @@ export function twentyPointsScaleCase(
       (criteria) => criteria.id === grade.criteriaId
     )?.weight;
 
-    if (!gradeWeight) return "Error";
+    if (!gradeWeight) return 'Error';
     totalWeight += gradeWeight;
     if (validatedGrade.success) {
       const result = frenchGradingCalc({
         grade,
       });
-      if (typeof result === "string") return result;
+      if (typeof result === 'string') return result;
 
-      if (result < 0 || result > 20) return "Error";
+      if (result < 0 || result > 20) return 'Error';
       // Check if grades do not exceed the weight of the criteria
-      if (result > gradeWeight) return "Error"; // Multiplied by 2 because we're on a 20-point scale
+      if (result > gradeWeight) return 'Error'; // Multiplied by 2 because we're on a 20-point scale
 
       totalPoints += result;
     } else {
-      return "Error";
+      return 'Error';
     }
   }
   const isWeighted = totalWeight > grades.length;

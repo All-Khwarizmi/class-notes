@@ -1,20 +1,22 @@
-"use client";
-import React, { useEffect, useState } from "react";
-import NothingToShow from "../common/editor/NothingToShow";
+'use client';
 
-import { Loader } from "lucide-react";
-import { usePathname } from "next/navigation";
+import NotFound from '@/app/not-found';
+import { NavItem, NavProps } from '@/lib/types';
+import { cn } from '@/lib/utils';
+import { Loader } from 'lucide-react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import React, { useEffect, useState } from 'react';
+
+import { mainMenu } from '../../../../menu.config';
+import NothingToShow from '../common/editor/NothingToShow';
+import { Button } from '../ui/button';
 import SpacesLayoutContext, {
   SpacesLayoutContextType,
-} from "./SpacesLayoutCtx";
-import NotFound from "@/app/not-found";
-import SpacesSidebar from "./SpacesSidebar";
-import { Button } from "../ui/button";
-import Link from "next/link";
-import { cn } from "@/lib/utils";
-import { mainMenu } from "../../../../menu.config";
-import { SpacesMobileSidebar } from "./SpacesMobileSidebar";
-import { NavItem, NavProps } from "@/lib/types";
+} from './SpacesLayoutCtx';
+import { SpacesMobileSidebar } from './SpacesMobileSidebar';
+import SpacesSidebar from './SpacesSidebar';
+
 function SpacesLayout({
   children,
   isEmpty = false,
@@ -27,7 +29,7 @@ function SpacesLayout({
   const path = usePathname();
   // const { setNavItems: setSpacesNavItems } = useSpacesLayoutLogic();
   useEffect(() => {
-    console.log("spacesNavItems in SpacesLayout", spacesNavItems);
+    console.log('spacesNavItems in SpacesLayout', spacesNavItems);
     if (spacesNavItems) {
       setItems(spacesNavItems);
     }
@@ -74,9 +76,9 @@ const Nav = ({ className, children, id }: NavProps) => {
   return (
     <nav
       className={cn(
-        "sticky z-50 top-0 bg-background",
-        "border-b",
-        "fade-in",
+        'sticky z-50 top-0 bg-background',
+        'border-b',
+        'fade-in',
         className
       )}
       id={id}

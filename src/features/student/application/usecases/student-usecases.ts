@@ -1,14 +1,15 @@
-import Failure from "@/core/failures/failures";
-import { Either, left, right } from "fp-ts/lib/Either";
+import Failure from '@/core/failures/failures';
+import { Either, left, right } from 'fp-ts/lib/Either';
+
 import {
   CreateManyStudentsOptions,
   CreateStudentOptions,
   DeleteStudentOptions,
   UpdateStudentOptions,
-} from "../../domain/entities/student-types";
+} from '../../domain/entities/student-types';
 import StudentRepository, {
   studentRepository,
-} from "../repositories/student-repository";
+} from '../repositories/student-repository';
 
 export default class StudentUsecases {
   private readonly _studentRepository: StudentRepository;
@@ -34,13 +35,13 @@ export default class StudentUsecases {
       this._studentRepository.addStudent(student)
     );
     const results = await Promise.allSettled(promises);
-    const errors = results.filter((result) => result.status === "rejected");
+    const errors = results.filter((result) => result.status === 'rejected');
     if (errors.length > 0) {
       return left(
         Failure.invalidValue({
-          message: "One or more students could not be added",
+          message: 'One or more students could not be added',
           invalidValue: errors,
-          code: "APP204",
+          code: 'APP204',
         })
       );
     }

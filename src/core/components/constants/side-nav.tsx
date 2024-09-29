@@ -1,45 +1,47 @@
-import { type NavItem } from "@/lib/types";
-import CopyClipboard from "../icons/CopyClipboard";
-import Dashboard from "../icons/Dashboard";
-import { User, BookmarkCheck, Presentation } from "lucide-react";
+import { type NavItem } from '@/lib/types';
+import { User, BookmarkCheck, Presentation } from 'lucide-react';
+
+import CopyClipboard from '../icons/CopyClipboard';
+import Dashboard from '../icons/Dashboard';
+
 export const NavItems: NavItem[] = [
   {
-    title: "Dashboard",
+    title: 'Dashboard',
     icon: Dashboard(),
-    href: "/dashboard",
-    color: "text-sky-500",
+    href: '/dashboard',
+    color: 'text-sky-500',
   },
 
   {
-    title: "Classes",
+    title: 'Classes',
     icon: CopyClipboard(),
-    href: "/classes",
-    color: "text-orange-500",
+    href: '/classes',
+    color: 'text-orange-500',
   },
   {
-    title: "Sequences",
+    title: 'Sequences',
     icon: <Presentation size={16} />,
-    href: "/sequences?type=template",
-    color: "text-orange-500",
+    href: '/sequences?type=template',
+    color: 'text-orange-500',
   },
 
   {
-    title: "Evaluations",
+    title: 'Evaluations',
     icon: CopyClipboard(),
-    href: "/evaluations",
-    color: "text-green-500",
+    href: '/evaluations',
+    color: 'text-green-500',
   },
   {
-    title: "Competences",
+    title: 'Competences',
     icon: <BookmarkCheck size={16} />,
-    href: "/competences",
-    color: "text-sky-500",
+    href: '/competences',
+    color: 'text-sky-500',
   },
 
   {
-    title: "Profile",
+    title: 'Profile',
     icon: <User size={16} />,
-    href: "/profile",
-    color: "text-sky-500",
+    href: '/profile',
+    color: 'text-sky-500',
   },
 ];

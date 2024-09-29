@@ -1,18 +1,18 @@
-import { VisibilityType } from "@/features/classe/domain/visibility-schema";
+import { VisibilityType } from '@/features/classe/domain/visibility-schema';
 
 export type GetVisibilityOptions = {
   userId: string;
 };
 
 export type VisibilityEntityTypes =
-  | "classe"
-  | "sequence"
-  | "cours"
-  | "complement";
+  | 'classe'
+  | 'sequence'
+  | 'cours'
+  | 'complement';
 
 export type UpdateVisibilityOptions = {
   userId: string;
-  visibilityTable: Omit<VisibilityType, "_id">;
+  visibilityTable: Omit<VisibilityType, '_id'>;
 };
 
 export type AddClasseToVisibilityOptions = {

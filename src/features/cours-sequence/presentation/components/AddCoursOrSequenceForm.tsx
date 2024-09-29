@@ -1,7 +1,13 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { UseFormReturn } from "react-hook-form";
+import { GoBackButton } from '@/core/components/common/navigation/GoBackButton';
+import { Button } from '@/core/components/ui/button';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from '@/core/components/ui/card';
 import {
   Form,
   FormControl,
@@ -9,16 +15,8 @@ import {
   FormField,
   FormItem,
   FormLabel,
-} from "@/core/components/ui/form";
-import { Input } from "@/core/components/ui/input";
-import { Button } from "@/core/components/ui/button";
-import { Textarea } from "@/core/components/ui/textarea";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/core/components/ui/card";
+} from '@/core/components/ui/form';
+import { Input } from '@/core/components/ui/input';
 import {
   Select,
   SelectContent,
@@ -26,13 +24,17 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/core/components/ui/select";
-import { Competence } from "@/features/comp-cat/domain/entities/schemas";
-import { CoursSequenceForm } from "../views/AddCoursView";
-import CompetenceSelectorAccordion from "./CompetenceSelectorAccordion";
-import SelectImageUrl from "./SelectImageUrl";
-import { toastWrapper } from "@/core/utils/toast-wrapper";
-import { GoBackButton } from "@/core/components/common/navigation/GoBackButton";
+} from '@/core/components/ui/select';
+import { Textarea } from '@/core/components/ui/textarea';
+import { toastWrapper } from '@/core/utils/toast-wrapper';
+import { Competence } from '@/features/comp-cat/domain/entities/schemas';
+import { useState } from 'react';
+import { UseFormReturn } from 'react-hook-form';
+
+import { CoursSequenceForm } from '../views/AddCoursView';
+import CompetenceSelectorAccordion from './CompetenceSelectorAccordion';
+import SelectImageUrl from './SelectImageUrl';
+
 interface AddCoursOrSequenceFormProps {
   form: UseFormReturn<CoursSequenceForm>;
   competences: Competence[];
@@ -60,7 +62,7 @@ export default function AddCoursOrSequenceForm({
   imageUrl,
 }: AddCoursOrSequenceFormProps) {
   const [localImageUrl, setLocalImageUrl] = useState<string>(
-    imageUrl ?? "/images/mos-design-jzFbbG2WXv0-unsplash.jpg"
+    imageUrl ?? '/images/mos-design-jzFbbG2WXv0-unsplash.jpg'
   );
 
   return (
@@ -76,13 +78,13 @@ export default function AddCoursOrSequenceForm({
               onSubmit={form.handleSubmit((data) => {
                 if (data.name.length < 3) {
                   toastWrapper.error(
-                    "Le nom de la classe doit contenir au moins 3 caractères"
+                    'Le nom de la classe doit contenir au moins 3 caractères'
                   );
                   return;
                 }
                 if (data.description.length < 3) {
                   toastWrapper.error(
-                    "La description doit contenir au moins 3 caractères"
+                    'La description doit contenir au moins 3 caractères'
                   );
                   return;
                 }

@@ -1,26 +1,36 @@
-"use client";
+'use client';
 
-import React, { useState, useEffect } from "react";
+import {
+  Alert,
+  AlertDescription,
+  AlertTitle,
+} from '@/core/components/ui/alert';
+import { Button } from '@/core/components/ui/button';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from '@/core/components/ui/card';
+import { ScrollArea } from '@/core/components/ui/scroll-area';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/core/components/ui/select";
-import { Button } from "@/core/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/core/components/ui/card";
-import { Alert, AlertDescription, AlertTitle } from "@/core/components/ui/alert";
-import { Loader2, PlusCircle, Trash2 } from "lucide-react";
-import { ScrollArea } from "@/core/components/ui/scroll-area";
-import { EvaluationBaseType } from "@/features/evaluation/domain/entities/evaluation-schema";
-import { CompoundEvaluationType } from "../../domain/class-schema";
-import useGetEvaluationsBaseList from "@/features/evaluation/application/adapters/services/useGetEvaluationsBaseList";
-import useAssignEvaluation from "@/features/evaluation/application/adapters/services/useAssignEvaluation";
-import useDeleteEvaluationWithGrades from "@/features/evaluation/application/adapters/services/useDeleteEvaluationWithGrades";
-import useGetStudentTableData from "@/features/evaluation/application/adapters/services/useGetStudentTableData";
-import { isRight } from "fp-ts/lib/Either";
-import { toast } from "sonner";
+} from '@/core/components/ui/select';
+import useAssignEvaluation from '@/features/evaluation/application/adapters/services/useAssignEvaluation';
+import useDeleteEvaluationWithGrades from '@/features/evaluation/application/adapters/services/useDeleteEvaluationWithGrades';
+import useGetEvaluationsBaseList from '@/features/evaluation/application/adapters/services/useGetEvaluationsBaseList';
+import useGetStudentTableData from '@/features/evaluation/application/adapters/services/useGetStudentTableData';
+import { EvaluationBaseType } from '@/features/evaluation/domain/entities/evaluation-schema';
+import { isRight } from 'fp-ts/lib/Either';
+import { Loader2, PlusCircle, Trash2 } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { toast } from 'sonner';
+
+import { CompoundEvaluationType } from '../../domain/class-schema';
 
 interface AssignEvaluationProps {
   userId: string;
@@ -90,8 +100,8 @@ export default function AssignEvaluation({
         }
       );
     } else {
-      toast.error("Sélection requise", {
-        description: "Veuillez sélectionner une évaluation à assigner.",
+      toast.error('Sélection requise', {
+        description: 'Veuillez sélectionner une évaluation à assigner.',
       });
     }
   };

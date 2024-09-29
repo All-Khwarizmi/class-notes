@@ -1,10 +1,10 @@
-describe("Authentication Flow", () => {
+describe('Authentication Flow', () => {
   beforeEach(() => {
-    cy.session("signed-in", () => {
+    cy.session('signed-in', () => {
       cy.signIn();
     });
   });
-  context("Should be able to avigate to classes dashboard", () => {
+  context('Should be able to avigate to classes dashboard', () => {
     it("navigate to the classe's dashboard", () => {
       cy.visit(`/`, {
         timeout: 10000,

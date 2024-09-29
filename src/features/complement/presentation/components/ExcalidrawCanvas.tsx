@@ -1,20 +1,21 @@
-"use client";
+'use client';
 
-import React, { useCallback, useEffect, useState, useRef } from "react";
-import dynamic from "next/dynamic";
+import { Button } from '@/core/components/ui/button';
+import { cn } from '@/lib/utils';
+import { serializeAsJSON, restore } from '@excalidraw/excalidraw';
 import {
   ExcalidrawImperativeAPI,
   ExcalidrawInitialDataState,
-} from "@excalidraw/excalidraw/types/types";
-import { serializeAsJSON, restore } from "@excalidraw/excalidraw";
-import { debounce } from "lodash";
-import { cn } from "@/lib/utils";
-import { Button } from "@/core/components/ui/button";
-import { Loader2, Save } from "lucide-react";
-import { toast } from "sonner";
-import { useTheme } from "next-themes";
+} from '@excalidraw/excalidraw/types/types';
+import { debounce } from 'lodash';
+import { Loader2, Save } from 'lucide-react';
+import { useTheme } from 'next-themes';
+import dynamic from 'next/dynamic';
+import React, { useCallback, useEffect, useState, useRef } from 'react';
+import { toast } from 'sonner';
+
 const Excalidraw = dynamic(
-  async () => (await import("@excalidraw/excalidraw")).Excalidraw,
+  async () => (await import('@excalidraw/excalidraw')).Excalidraw,
   {
     ssr: false,
     loading: () => (
@@ -34,8 +35,8 @@ export function ExcalidrawCanvas({
   initialData,
   saveComplement,
 }: ExcalidrawCanvasProps) {
-  const [saveStatus, setSaveStatus] = useState<"saved" | "saving" | "unsaved">(
-    "saved"
+  const [saveStatus, setSaveStatus] = useState<'saved' | 'saving' | 'unsaved'>(
+    'saved'
   );
   const [excalidrawAPI, setExcalidrawAPI] =
     useState<ExcalidrawImperativeAPI | null>(null);
@@ -44,11 +45,11 @@ export function ExcalidrawCanvas({
     appState: {},
     files: {},
   });
-  const theme = useTheme()
-  const lastSerializedData = useRef("");
+  const theme = useTheme();
+  const lastSerializedData = useRef('');
 
   useEffect(() => {
-    console.log("Initial data received");
+    console.log('Initial data received');
     if (initialData) {
       try {
         const restoredData = restore(
@@ -58,32 +59,32 @@ export function ExcalidrawCanvas({
         );
         setAppState(restoredData);
         lastSerializedData.current = initialData;
-        console.log("Data restored successfully");
+        console.log('Data restored successfully');
       } catch (error) {
-        console.error("Error parsing Excalidraw data:", error);
+        console.error('Error parsing Excalidraw data:', error);
       }
     }
   }, [initialData]);
 
   const saveData = useCallback(() => {
-    console.log("saveData called");
+    console.log('saveData called');
     if (!excalidrawAPI) {
-      console.log("excalidrawAPI not available");
+      console.log('excalidrawAPI not available');
       return;
     }
 
-    setSaveStatus("saving");
+    setSaveStatus('saving');
     const elements = excalidrawAPI.getSceneElements();
     const appState = excalidrawAPI.getAppState();
     const files = excalidrawAPI.getFiles();
 
-    const serializedData = serializeAsJSON(elements, appState, files, "local");
-    console.log("New serialized data:");
+    const serializedData = serializeAsJSON(elements, appState, files, 'local');
+    console.log('New serialized data:');
 
     saveComplement(serializedData);
     lastSerializedData.current = serializedData;
-    setSaveStatus("saved");
-    toast.success("Vos modifications ont été enregistrées avec succès.");
+    setSaveStatus('saved');
+    toast.success('Vos modifications ont été enregistrées avec succès.');
   }, [excalidrawAPI, saveComplement]);
 
   const handleChange = useCallback(() => {
@@ -92,11 +93,11 @@ export function ExcalidrawCanvas({
     const elements = excalidrawAPI.getSceneElements();
     const appState = excalidrawAPI.getAppState();
     const files = excalidrawAPI.getFiles();
-    const serializedData = serializeAsJSON(elements, appState, files, "local");
+    const serializedData = serializeAsJSON(elements, appState, files, 'local');
 
     if (serializedData !== lastSerializedData.current) {
-      console.log("Change detected");
-      setSaveStatus("unsaved");
+      console.log('Change detected');
+      setSaveStatus('unsaved');
     }
   }, [excalidrawAPI]);
 
@@ -109,10 +110,10 @@ export function ExcalidrawCanvas({
     <div className="flex flex-col w-full h-[88vh] rounded-lg overflow-hidden border border-border">
       <div className="flex-grow">
         <Excalidraw
-          theme={theme.resolvedTheme === "dark" ? "dark" : "light"}
+          theme={theme.resolvedTheme === 'dark' ? 'dark' : 'light'}
           initialData={appState}
           excalidrawAPI={(api) => {
-            console.log("Excalidraw API set");
+            console.log('Excalidraw API set');
             setExcalidrawAPI(api);
           }}
           onChange={debouncedHandleChange}
@@ -122,25 +123,34 @@ export function ExcalidrawCanvas({
         <div className="flex items-center space-x-2">
           <div
             className={cn(
-              "w-3 h-3 rounded-full transition-colors duration-300",
-              saveStatus === "saved" ? "bg-green-500" : 
-              saveStatus === "saving" ? "bg-yellow-500" : "bg-red-500"
+              'w-3 h-3 rounded-full transition-colors duration-300',
+              saveStatus === 'saved'
+                ? 'bg-green-500'
+                : saveStatus === 'saving'
+                  ? 'bg-yellow-500'
+                  : 'bg-red-500'
             )}
             title={
-              saveStatus === "saved" ? "Sauvegardé" : 
-              saveStatus === "saving" ? "Sauvegarde en cours..." : "Non sauvegardé"
+              saveStatus === 'saved'
+                ? 'Sauvegardé'
+                : saveStatus === 'saving'
+                  ? 'Sauvegarde en cours...'
+                  : 'Non sauvegardé'
             }
           />
           <span className="text-sm text-muted-foreground">
-            {saveStatus === "saved" ? "Sauvegardé" : 
-             saveStatus === "saving" ? "Sauvegarde en cours..." : "Non sauvegardé"}
+            {saveStatus === 'saved'
+              ? 'Sauvegardé'
+              : saveStatus === 'saving'
+                ? 'Sauvegarde en cours...'
+                : 'Non sauvegardé'}
           </span>
         </div>
         <Button
           onClick={saveData}
-          disabled={saveStatus === "saving" || saveStatus === "saved"}
+          disabled={saveStatus === 'saving' || saveStatus === 'saved'}
         >
-          {saveStatus === "saving" ? (
+          {saveStatus === 'saving' ? (
             <>
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
               Sauvegarde...

@@ -1,6 +1,7 @@
-import { v } from "convex/values";
-import { defineTable } from "convex/server";
-import { gradeType } from "../fields/grade_type";
+import { defineTable } from 'convex/server';
+import { v } from 'convex/values';
+
+import { gradeType } from '../fields/grade_type';
 
 const EvaluationWithGrade = defineTable({
   publishDate: v.float64(), // Date when the evaluation is published
@@ -23,7 +24,7 @@ const EvaluationWithGrade = defineTable({
     })
   ),
 })
-  .index("by_classeId", ["classeId"])
-  .index("by_evaluationBaseId", ["evaluationBaseId"]);
+  .index('by_classeId', ['classeId'])
+  .index('by_evaluationBaseId', ['evaluationBaseId']);
 
 export { EvaluationWithGrade };

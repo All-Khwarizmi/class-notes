@@ -1,22 +1,23 @@
-"use client";
+'use client';
 
-import React, { useState } from "react";
-import { useCSVReader, formatFileSize } from "react-papaparse";
-import { Button } from "@/core/components/ui/button";
+import {
+  Alert,
+  AlertDescription,
+  AlertTitle,
+} from '@/core/components/ui/alert';
+import { Button } from '@/core/components/ui/button';
 import {
   Card,
   CardContent,
   CardHeader,
   CardTitle,
-} from "@/core/components/ui/card";
-import { ScrollArea } from "@/core/components/ui/scroll-area";
-import {
-  Alert,
-  AlertDescription,
-  AlertTitle,
-} from "@/core/components/ui/alert";
-import { Trash2, Upload, Save, X } from "lucide-react";
-import useAddManyStudents from "../../application/adapters/services/useAddManyStudents";
+} from '@/core/components/ui/card';
+import { ScrollArea } from '@/core/components/ui/scroll-area';
+import { Trash2, Upload, Save, X } from 'lucide-react';
+import React, { useState } from 'react';
+import { useCSVReader, formatFileSize } from 'react-papaparse';
+
+import useAddManyStudents from '../../application/adapters/services/useAddManyStudents';
 
 interface CSVReaderProps {
   classeId: string;
@@ -36,7 +37,7 @@ export default function CSVReader({
     const studentNames = results.data
       .slice(1) // Skip header row
       .map((row: any) => row[0]?.trim()) // Select only the first column and trim whitespace
-      .filter((name: string) => name !== ""); // Remove empty rows
+      .filter((name: string) => name !== ''); // Remove empty rows
     setStudents(studentNames);
     setZoneHover(false);
   };
@@ -86,7 +87,7 @@ export default function CSVReader({
               <div
                 {...getRootProps()}
                 className={`border-2 border-dashed rounded-lg p-6 flex flex-col items-center justify-center cursor-pointer transition-colors ${
-                  zoneHover ? "border-primary" : "border-muted"
+                  zoneHover ? 'border-primary' : 'border-muted'
                 }`}
               >
                 {acceptedFile ? (

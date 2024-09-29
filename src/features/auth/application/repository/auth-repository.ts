@@ -1,5 +1,5 @@
-import { clerkAuth } from "@/core/auth/clerk/auth-impl";
-import IAuth from "@/core/auth/i-auth";
+import { clerkAuth } from '@/core/auth/clerk/auth-impl';
+import IAuth from '@/core/auth/i-auth';
 
 export interface AuthRepositoryOptons {
   auth: IAuth;

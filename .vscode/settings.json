@@ -1,5 +1,12 @@
 {
     "exportall.config.folderListener": [
         "/src/features/classe/application/usecases"
-    ]
+    ],
+      "editor.formatOnSave": true,
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
 }

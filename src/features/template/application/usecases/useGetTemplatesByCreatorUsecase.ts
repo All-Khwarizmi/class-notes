@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
-import TemplateEntity from "../../domain/entities/template-entity";
-import { GetTemplatesByCreator } from "../../infra/services/useGetTemplatesByCreatorInfra";
-import { toast } from "sonner";
+import { useEffect, useState } from 'react';
+import { toast } from 'sonner';
+
+import TemplateEntity from '../../domain/entities/template-entity';
+import { GetTemplatesByCreator } from '../../infra/services/useGetTemplatesByCreatorInfra';
 
 export default function useGetEvaluationsByCreatorUsecase({
   useGetTemplatesByCreatorInfra,
@@ -13,8 +14,8 @@ export default function useGetEvaluationsByCreatorUsecase({
   const getTemplatesByCratorPayload = useGetTemplatesByCreatorInfra({
     userId,
   });
-  const [templates, setTemplates] = useState<TemplateEntity[] | "NO DATA">(
-    "NO DATA"
+  const [templates, setTemplates] = useState<TemplateEntity[] | 'NO DATA'>(
+    'NO DATA'
   );
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -25,13 +26,13 @@ export default function useGetEvaluationsByCreatorUsecase({
         "Une erreur s'est produite lors de la récupération des évaluations. Veuillez réessayer."
       );
     } else if (
-      getTemplatesByCratorPayload?.templates !== "NO DATA" &&
+      getTemplatesByCratorPayload?.templates !== 'NO DATA' &&
       getTemplatesByCratorPayload?.templates !== false
     ) {
-      setTemplates(getTemplatesByCratorPayload?.templates ?? "NO DATA");
+      setTemplates(getTemplatesByCratorPayload?.templates ?? 'NO DATA');
       setLoading(false);
-    } else if (getTemplatesByCratorPayload?.templates === "NO DATA") {
-      setTemplates("NO DATA");
+    } else if (getTemplatesByCratorPayload?.templates === 'NO DATA') {
+      setTemplates('NO DATA');
       setLoading(false);
     }
   }, [getTemplatesByCratorPayload]);

@@ -1,62 +1,62 @@
-"use client";
+'use client';
 
-import React, { useState } from "react";
+import { Button } from '@/core/components/ui/button';
 import {
   Card,
   CardContent,
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/core/components/ui/card";
-import { Button } from "@/core/components/ui/button";
-import { ScrollArea } from "@/core/components/ui/scroll-area";
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from "@/core/components/ui/tabs";
+} from '@/core/components/ui/card';
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/core/components/ui/dialog";
-import { Share2, Calendar, User } from "lucide-react";
-import Image from "next/image";
+} from '@/core/components/ui/dialog';
+import { ScrollArea } from '@/core/components/ui/scroll-area';
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from '@/core/components/ui/tabs';
+import { Share2, Calendar, User } from 'lucide-react';
+import Image from 'next/image';
+import React, { useState } from 'react';
 
 // Mock data for categories and blog posts
-const categories = ["Tous", "Technologie", "Éducation", "Science", "Culture"];
+const categories = ['Tous', 'Technologie', 'Éducation', 'Science', 'Culture'];
 const blogPosts = [
   {
     id: 1,
     title: "L'impact de l'IA sur l'éducation moderne",
     excerpt:
       "Découvrez comment l'intelligence artificielle transforme les méthodes d'enseignement et d'apprentissage...",
-    category: "Technologie",
-    author: "Marie Dupont",
-    date: "2023-05-15",
-    imageUrl: "/placeholder.svg?height=200&width=400",
+    category: 'Technologie',
+    author: 'Marie Dupont',
+    date: '2023-05-15',
+    imageUrl: '/placeholder.svg?height=200&width=400',
   },
   {
     id: 2,
-    title: "Les dernières découvertes en astrophysique",
+    title: 'Les dernières découvertes en astrophysique',
     excerpt:
       "Une exploration fascinante des récentes avancées dans notre compréhension de l'univers...",
-    category: "Science",
-    author: "Jean Martin",
-    date: "2023-05-10",
-    imageUrl: "/placeholder.svg?height=200&width=400",
+    category: 'Science',
+    author: 'Jean Martin',
+    date: '2023-05-10',
+    imageUrl: '/placeholder.svg?height=200&width=400',
   },
   // Add more blog posts here
 ];
 
 const BlogMainPage: React.FC = () => {
-  const [selectedCategory, setSelectedCategory] = useState("Tous");
+  const [selectedCategory, setSelectedCategory] = useState('Tous');
 
   const filteredPosts =
-    selectedCategory === "Tous"
+    selectedCategory === 'Tous'
       ? blogPosts
       : blogPosts.filter((post) => post.category === selectedCategory);
 
@@ -116,7 +116,7 @@ const BlogPostCard: React.FC<{ post: BlogPost }> = ({ post }) => {
           <User className="w-4 h-4 mr-1" />
           {post.author}
           <Calendar className="w-4 h-4 ml-4 mr-1" />
-          {new Date(post.date).toLocaleDateString("fr-FR")}
+          {new Date(post.date).toLocaleDateString('fr-FR')}
         </div>
       </CardContent>
       <CardFooter className="flex justify-between">
@@ -154,7 +154,7 @@ const SharePreviewDialog: React.FC<{ post: BlogPost }> = ({ post }) => {
               <User className="w-4 h-4 mr-1" />
               {post.author}
               <Calendar className="w-4 h-4 ml-4 mr-1" />
-              {new Date(post.date).toLocaleDateString("fr-FR")}
+              {new Date(post.date).toLocaleDateString('fr-FR')}
             </div>
           </div>
           <div className="mt-4 flex justify-between">

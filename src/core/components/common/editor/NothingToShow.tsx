@@ -1,17 +1,18 @@
-"use client";
+'use client';
 
-import React from "react";
-import { Button } from "@/core/components/ui/button";
+import { Button } from '@/core/components/ui/button';
 import {
   Card,
   CardContent,
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/core/components/ui/card";
-import { FrownIcon } from "lucide-react";
-import Link from "next/link";
-import { SUPPORT_EMAIL } from "../../constants/support";
+} from '@/core/components/ui/card';
+import { FrownIcon } from 'lucide-react';
+import Link from 'next/link';
+import React from 'react';
+
+import { SUPPORT_EMAIL } from '../../constants/support';
 
 export default function NothingToShow() {
   return (

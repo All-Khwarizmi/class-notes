@@ -1,26 +1,5 @@
-"use client";
+'use client';
 
-import React, { useState } from "react";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/core/components/ui/form";
-import { Input } from "@/core/components/ui/input";
-import { Button } from "@/core/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/core/components/ui/card";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -31,13 +10,35 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/core/components/ui/alert-dialog";
-import { Loader2, Save, Trash2, UserCircle } from "lucide-react";
-import { Student, StudentSchema } from "../../domain/entities/student-schema";
-import SelectImageUrl from "@/features/cours-sequence/presentation/components/SelectImageUrl";
-import useDeleteStudent from "../../application/adapters/services/useDeleteStudent";
-import useUpdateStudent from "../../application/adapters/services/useUpdateStudent";
-import { toastWrapper } from "@/core/utils/toast-wrapper";
+} from '@/core/components/ui/alert-dialog';
+import { Button } from '@/core/components/ui/button';
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/core/components/ui/card';
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/core/components/ui/form';
+import { Input } from '@/core/components/ui/input';
+import { toastWrapper } from '@/core/utils/toast-wrapper';
+import SelectImageUrl from '@/features/cours-sequence/presentation/components/SelectImageUrl';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Loader2, Save, Trash2, UserCircle } from 'lucide-react';
+import React, { useState } from 'react';
+import { useForm } from 'react-hook-form';
+
+import useDeleteStudent from '../../application/adapters/services/useDeleteStudent';
+import useUpdateStudent from '../../application/adapters/services/useUpdateStudent';
+import { Student, StudentSchema } from '../../domain/entities/student-schema';
 
 interface StudentUpdateFormProps {
   student: Student;
@@ -51,18 +52,18 @@ export default function StudentUpdateForm({
   refetch,
 }: StudentUpdateFormProps) {
   const [localImageUrl, setLocalImageUrl] = useState<string>(
-    student.imageUrl ?? "/images/mos-design-jzFbbG2WXv0-unsplash.jpg"
+    student.imageUrl ?? '/images/mos-design-jzFbbG2WXv0-unsplash.jpg'
   );
   const { mutate: updateStudent, isPending: isUpdating } = useUpdateStudent();
   const { mutate: deleteStudent, isPending: isDeleting } = useDeleteStudent();
 
-  const form = useForm<Pick<Student, "name" | "classId" | "imageUrl">>({
+  const form = useForm<Pick<Student, 'name' | 'classId' | 'imageUrl'>>({
     resolver: zodResolver(StudentSchema),
     defaultValues: student,
   });
 
   async function onSubmit(
-    values: Pick<Student, "name" | "classId" | "imageUrl">
+    values: Pick<Student, 'name' | 'classId' | 'imageUrl'>
   ) {
     const { name } = values;
     updateStudent(
@@ -70,7 +71,7 @@ export default function StudentUpdateForm({
       {
         onSuccess: () => {
           refetch();
-          toastWrapper.success("Élève mis à jour");
+          toastWrapper.success('Élève mis à jour');
         },
         onError: () => {
           toastWrapper.error(
@@ -87,7 +88,7 @@ export default function StudentUpdateForm({
       {
         onSuccess: () => {
           refetch();
-          toastWrapper.success("Élève supprimé");
+          toastWrapper.success('Élève supprimé');
         },
         onError: () => {
           toastWrapper.error(

@@ -1,5 +1,6 @@
-import { Either } from "fp-ts/lib/Either";
-import Failure from "../failures/failures";
+import { Either } from 'fp-ts/lib/Either';
+
+import Failure from '../failures/failures';
 
 export interface UserAuth {
   userId: string;

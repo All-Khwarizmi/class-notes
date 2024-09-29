@@ -1,10 +1,11 @@
-import { auth, currentUser } from "@clerk/nextjs";
-import IAuth from "../i-auth";
-import { left, right } from "fp-ts/lib/Either";
-import Failure from "@/core/failures/failures";
+import Failure from '@/core/failures/failures';
+import { auth, currentUser } from '@clerk/nextjs';
+import { left, right } from 'fp-ts/lib/Either';
+
+import IAuth from '../i-auth';
 
 export async function getAuthToken() {
-  return (await auth().getToken({ template: "convex" })) ?? undefined;
+  return (await auth().getToken({ template: 'convex' })) ?? undefined;
 }
 export default class ClerkAuth extends IAuth {
   async getUserAuthInfra() {
@@ -13,9 +14,9 @@ export default class ClerkAuth extends IAuth {
     if (!user) {
       return left(
         Failure.invalidValue({
-          message: "User not found",
+          message: 'User not found',
           invalidValue: user,
-          code: "AUTH101",
+          code: 'AUTH101',
         })
       );
     }

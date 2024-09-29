@@ -1,7 +1,12 @@
-"use client";
+'use client';
 
-import React, { useEffect, useMemo } from "react";
-import { Button } from "@/core/components/ui/button";
+import { Button } from '@/core/components/ui/button';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from '@/core/components/ui/card';
 import {
   Form,
   FormControl,
@@ -10,38 +15,35 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/core/components/ui/form";
-import { Input } from "@/core/components/ui/input";
+} from '@/core/components/ui/form';
+import { Input } from '@/core/components/ui/input';
 import {
   Select,
   SelectContent,
   SelectTrigger,
   SelectValue,
-} from "@/core/components/ui/select";
-import { Switch } from "@/core/components/ui/switch";
-import { EvaluationBaseType } from "../../domain/entities/evaluation-schema";
-import CollapsibleCriteriaList from "../components/CollapsibleCriteriaList";
-import GradeTypeSelectGroup from "../components/GradeTypeSelectGroup";
-import { ArrowLeft, Loader } from "lucide-react";
-import useCreateEvaluationBaseFormLogic from "../hooks/useCreateEvaluationBaseFormLogic";
-import { toastWrapper } from "@/core/utils/toast-wrapper";
-import { useGetCompCat } from "@/features/comp-cat/application/adapters/services/useGetCompCat";
-import { isLeft } from "fp-ts/lib/Either";
-import CompetenceAccordionListModal from "@/features/comp-cat/presentation/components/CompetenceAccordionListModal";
-import { groupCompetencesByCategory } from "@/features/comp-cat/domain/entities/schemas";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/core/components/ui/card";
+} from '@/core/components/ui/select';
+import { Switch } from '@/core/components/ui/switch';
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@/core/components/ui/tooltip";
-import { useRouter } from "next/navigation";
+} from '@/core/components/ui/tooltip';
+import { toastWrapper } from '@/core/utils/toast-wrapper';
+import { useGetCompCat } from '@/features/comp-cat/application/adapters/services/useGetCompCat';
+import { groupCompetencesByCategory } from '@/features/comp-cat/domain/entities/schemas';
+import CompetenceAccordionListModal from '@/features/comp-cat/presentation/components/CompetenceAccordionListModal';
+import { isLeft } from 'fp-ts/lib/Either';
+import { ArrowLeft, Loader } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import React, { useEffect, useMemo } from 'react';
+
+import { EvaluationBaseType } from '../../domain/entities/evaluation-schema';
+import CollapsibleCriteriaList from '../components/CollapsibleCriteriaList';
+import GradeTypeSelectGroup from '../components/GradeTypeSelectGroup';
+import useCreateEvaluationBaseFormLogic from '../hooks/useCreateEvaluationBaseFormLogic';
+
 export default function EvaluationBaseForm({
   userId,
   evaluation,
@@ -77,15 +79,15 @@ export default function EvaluationBaseForm({
   }, [data]);
   const router = useRouter();
   function goToEvaluations() {
-    router.push("/evaluations");
+    router.push('/evaluations');
   }
   useEffect(() => {
     if (isSuccess) {
-      toastWrapper.success("Évaluation créée avec succès !");
+      toastWrapper.success('Évaluation créée avec succès !');
       form.reset();
     }
     if (isUpdateSuccess) {
-      toastWrapper.success("Évaluation mise à jour avec succès !");
+      toastWrapper.success('Évaluation mise à jour avec succès !');
     }
   }, [isSuccess, isUpdateSuccess, form]);
 
@@ -98,7 +100,7 @@ export default function EvaluationBaseForm({
       <Card className="w-full max-w-2xl mx-auto">
         <CardHeader>
           <CardTitle>
-            {evaluation ? "Modifier l'évaluation" : "Créer une évaluation"}
+            {evaluation ? "Modifier l'évaluation" : 'Créer une évaluation'}
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -228,10 +230,10 @@ export default function EvaluationBaseForm({
                   {isPending || isUpdatePending ? (
                     <>
                       <Loader className="mr-2 h-4 w-4 animate-spin" />
-                      {evaluation ? "Mise à jour..." : "Création..."}
+                      {evaluation ? 'Mise à jour...' : 'Création...'}
                     </>
                   ) : (
-                    <>{evaluation ? "Mettre à jour" : "Créer"}</>
+                    <>{evaluation ? 'Mettre à jour' : 'Créer'}</>
                   )}
                 </Button>
               </div>

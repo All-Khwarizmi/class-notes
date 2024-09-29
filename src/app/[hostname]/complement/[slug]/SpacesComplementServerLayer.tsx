@@ -1,10 +1,10 @@
-import ErrorDialog from "@/core/components/common/ErrorDialog";
-import NothingToShow from "@/core/components/common/editor/NothingToShow";
-import getVisibility from "@/features/classe/application/adapters/actions/get-visibility";
-import { complementUsecases } from "@/features/complement/application/usecases/complement-usecases";
-import ContentViewer from "@/features/cours-sequence/presentation/views/ContentViewer";
-import { isLeft } from "fp-ts/lib/Either";
-import React from "react";
+import ErrorDialog from '@/core/components/common/ErrorDialog';
+import NothingToShow from '@/core/components/common/editor/NothingToShow';
+import getVisibility from '@/features/classe/application/adapters/actions/get-visibility';
+import { complementUsecases } from '@/features/complement/application/usecases/complement-usecases';
+import ContentViewer from '@/features/cours-sequence/presentation/views/ContentViewer';
+import { isLeft } from 'fp-ts/lib/Either';
+import React from 'react';
 
 async function SpacesComplementServerLayer(props: {
   slug: string;
@@ -27,9 +27,9 @@ async function SpacesComplementServerLayer(props: {
         message="An error occured while fetching the visibility"
         code={eitherVibility.left.code}
         description={
-          process.env.NODE_ENV === "development"
+          process.env.NODE_ENV === 'development'
             ? eitherVibility.left.message
-            : ""
+            : ''
         }
       />
     );
@@ -43,9 +43,9 @@ async function SpacesComplementServerLayer(props: {
         message="An error occured while fetching the complement"
         code={eitherComplement.left.code}
         description={
-          process.env.NODE_ENV === "development"
+          process.env.NODE_ENV === 'development'
             ? eitherComplement.left.message
-            : ""
+            : ''
         }
       />
     );

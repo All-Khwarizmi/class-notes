@@ -1,16 +1,16 @@
-import { useMutation } from "@tanstack/react-query";
-import { profileUseCases } from "../../usecases/profile-usecases";
+import { QUERY_KEYS } from '@/core/query/ query-keys';
+import { toastWrapper } from '@/core/utils/toast-wrapper';
+import { UserType } from '@/features/user/domain/entities/user-schema';
+import { useMutation } from '@tanstack/react-query';
+import { isRight } from 'fp-ts/lib/Either';
+import { useRouter } from 'next/navigation';
 
-import { useRouter } from "next/navigation";
-import { isRight } from "fp-ts/lib/Either";
-import { UserType } from "@/features/user/domain/entities/user-schema";
-import { QUERY_KEYS } from "@/core/query/ query-keys";
-import { toastWrapper } from "@/core/utils/toast-wrapper";
+import { profileUseCases } from '../../usecases/profile-usecases';
 
 export interface SaveUserOptions {
-  schoolSubject: UserType["schoolSubject"];
-  country: UserType["country"];
-  educationSystem: UserType["educationSystem"];
+  schoolSubject: UserType['schoolSubject'];
+  country: UserType['country'];
+  educationSystem: UserType['educationSystem'];
   name?: string;
   userId: string;
   hostname: string;
@@ -36,10 +36,10 @@ export default function useSaveUser() {
     },
     onSuccess: (data) => {
       if (isRight(data)) {
-        toastWrapper.success("Profil mis à jour");
+        toastWrapper.success('Profil mis à jour');
         window.location.reload();
       } else {
-        toastWrapper.error("Erreur lors de la mise à jour du profil");
+        toastWrapper.error('Erreur lors de la mise à jour du profil');
       }
     },
   });

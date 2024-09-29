@@ -1,29 +1,34 @@
-"use client";
+'use client';
 
-import React, { useMemo } from "react";
-import Link from "next/link";
-import { Plus, Trash, ChevronRight, FolderTree } from "lucide-react";
-import { isLeft } from "fp-ts/lib/Either";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "@/core/components/ui/accordion";
-import { Button } from "@/core/components/ui/button";
+} from '@/core/components/ui/accordion';
+import {
+  Alert,
+  AlertDescription,
+  AlertTitle,
+} from '@/core/components/ui/alert';
+import { Button } from '@/core/components/ui/button';
 import {
   Card,
   CardContent,
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/core/components/ui/card";
-import { ScrollArea } from "@/core/components/ui/scroll-area";
-import { Alert, AlertDescription, AlertTitle } from "@/core/components/ui/alert";
-import { groupCompetencesByCategory } from "../../domain/entities/schemas";
-import { useGetCompCat } from "../../application/adapters/services/useGetCompCat";
-import { useDeleteCompCat } from "@/features/complement/application/adapters/services/useDeleteCompCat";
-import UpdateCompetenceForm from "../components/UpdateCompetenceForm";
+} from '@/core/components/ui/card';
+import { ScrollArea } from '@/core/components/ui/scroll-area';
+import { useDeleteCompCat } from '@/features/complement/application/adapters/services/useDeleteCompCat';
+import { isLeft } from 'fp-ts/lib/Either';
+import { Plus, Trash, ChevronRight, FolderTree } from 'lucide-react';
+import Link from 'next/link';
+import React, { useMemo } from 'react';
+
+import { useGetCompCat } from '../../application/adapters/services/useGetCompCat';
+import { groupCompetencesByCategory } from '../../domain/entities/schemas';
+import UpdateCompetenceForm from '../components/UpdateCompetenceForm';
 
 export default function CompetencesTable({ userId }: { userId: string }) {
   const { data: compCat, isLoading, isError } = useGetCompCat({ userId });
@@ -128,11 +133,11 @@ export default function CompetencesTable({ userId }: { userId: string }) {
                             onClick={() => {
                               if (
                                 confirm(
-                                  "Êtes-vous sûr de vouloir supprimer cette catégorie ?"
+                                  'Êtes-vous sûr de vouloir supprimer cette catégorie ?'
                                 )
                               ) {
                                 deleteCompCat({
-                                  type: "Category",
+                                  type: 'Category',
                                   id: category._id,
                                 });
                               }
@@ -169,11 +174,11 @@ export default function CompetencesTable({ userId }: { userId: string }) {
                             onClick={() => {
                               if (
                                 confirm(
-                                  "Êtes-vous sûr de vouloir supprimer cette compétence ?"
+                                  'Êtes-vous sûr de vouloir supprimer cette compétence ?'
                                 )
                               ) {
                                 deleteCompCat({
-                                  type: "Competences",
+                                  type: 'Competences',
                                   id: competence._id,
                                 });
                               }

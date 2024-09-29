@@ -1,19 +1,18 @@
-import React, { useEffect } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { toast } from "sonner";
-
+import { StudentGradeCompetenceSchemaExtension } from '@/features/evaluation/application/adapters/utils/competence-case';
+import { StudentGradeTenPointsSchemaExtension } from '@/features/evaluation/application/adapters/utils/ten-points-scale-case';
+import { StudentGradeTwentyPointsSchemaExtension } from '@/features/evaluation/application/adapters/utils/twenty-points-scale-case';
+import { EvaluationBaseType } from '@/features/evaluation/domain/entities/evaluation-schema';
 import {
   StudentGradeSchema,
   StudentGradeType,
-} from "@/features/evaluation/domain/entities/evaluation-with-grades-schema";
-import { EvaluationBaseType } from "@/features/evaluation/domain/entities/evaluation-schema";
-import TenPointsCriteriaForm from "@/features/evaluation/presentation/components/TenPointsCriteriaForm";
-import CompetenceCriteriaForm from "@/features/evaluation/presentation/components/CompetenceCriteriaForm";
-import { StudentGradeTenPointsSchemaExtension } from "@/features/evaluation/application/adapters/utils/ten-points-scale-case";
-import { StudentGradeCompetenceSchemaExtension } from "@/features/evaluation/application/adapters/utils/competence-case";
-import { StudentGradeTwentyPointsSchemaExtension } from "@/features/evaluation/application/adapters/utils/twenty-points-scale-case";
-import TwentyPointsCriteriaForm from "@/features/evaluation/presentation/components/TwentyPointsCriteriaForm";
+} from '@/features/evaluation/domain/entities/evaluation-with-grades-schema';
+import CompetenceCriteriaForm from '@/features/evaluation/presentation/components/CompetenceCriteriaForm';
+import TenPointsCriteriaForm from '@/features/evaluation/presentation/components/TenPointsCriteriaForm';
+import TwentyPointsCriteriaForm from '@/features/evaluation/presentation/components/TwentyPointsCriteriaForm';
+import { zodResolver } from '@hookform/resolvers/zod';
+import React, { useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 
 type UpdateStudentGradeFormProps = {
   studentGrade: StudentGradeType;
@@ -69,12 +68,12 @@ export default function UpdateStudentGradeForm(
     );
 
     if (missingCriterias.length > 0 || missingCriteriasBase.length > 0) {
-      toast.error("Criterias do not match the evaluation", {
+      toast.error('Criterias do not match the evaluation', {
         description: `
           If you have added new criterias to the evaluation, those criterias will not be added to the student grade.
           To update the student grade, please remove the evaluation and assign it again.
-          ${missingCriterias.length > 0 ? `Missing student criterias: ${missingCriterias.length}` : ""}
-          ${missingCriteriasBase.length > 0 ? `Missing evaluation criterias: ${missingCriteriasBase.length}` : ""}
+          ${missingCriterias.length > 0 ? `Missing student criterias: ${missingCriterias.length}` : ''}
+          ${missingCriteriasBase.length > 0 ? `Missing evaluation criterias: ${missingCriteriasBase.length}` : ''}
         `,
       });
     }
@@ -84,7 +83,7 @@ export default function UpdateStudentGradeForm(
     form.reset(studentGrade);
   }, [studentGrade, form]);
 
-  if (evaluationBase.gradeType.type === "10-point Scale") {
+  if (evaluationBase.gradeType.type === '10-point Scale') {
     const parsedStudentGrade =
       StudentGradeTenPointsSchemaExtension.safeParse(studentGrade);
     if (!parsedStudentGrade.success) {
@@ -107,7 +106,7 @@ export default function UpdateStudentGradeForm(
     );
   }
 
-  if (evaluationBase.gradeType.type === "Competence") {
+  if (evaluationBase.gradeType.type === 'Competence') {
     const parsedStudentGrade =
       StudentGradeCompetenceSchemaExtension.safeParse(studentGrade);
     if (!parsedStudentGrade.success) {
@@ -130,7 +129,7 @@ export default function UpdateStudentGradeForm(
     );
   }
 
-  if (evaluationBase.gradeType.type === "20-point Scale") {
+  if (evaluationBase.gradeType.type === '20-point Scale') {
     const parsedStudentGrade =
       StudentGradeTwentyPointsSchemaExtension.safeParse(studentGrade);
     if (!parsedStudentGrade.success) {
@@ -141,15 +140,15 @@ export default function UpdateStudentGradeForm(
       );
     }
     return (
-        <TwentyPointsCriteriaForm
-          studentGrade={parsedStudentGrade.data}
-          evaluationBase={evaluationBase}
-          evaluationId={evaluationId}
-          classeId={classeId}
-          studentName={studentName}
-          refetch={refetch}
-          setIsDialogOpen={setIsDialogOpen}
-        />
+      <TwentyPointsCriteriaForm
+        studentGrade={parsedStudentGrade.data}
+        evaluationBase={evaluationBase}
+        evaluationId={evaluationId}
+        classeId={classeId}
+        studentName={studentName}
+        refetch={refetch}
+        setIsDialogOpen={setIsDialogOpen}
+      />
     );
   }
 

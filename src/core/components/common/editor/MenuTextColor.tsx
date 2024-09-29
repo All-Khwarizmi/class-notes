@@ -1,17 +1,16 @@
-import { Editor } from "@tiptap/react";
-import { HexColorPicker } from "react-colorful";
-
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/core/components/ui/popover";
+} from '@/core/components/ui/popover';
+import { Editor } from '@tiptap/react';
+import { Pipette } from 'lucide-react';
+import { useState } from 'react';
+import { HexColorPicker } from 'react-colorful';
 
-import { useState } from "react";
-import { Pipette } from "lucide-react";
 export default function MenuTextColor(props: { editor: Editor }) {
   const editor = props.editor;
-  const [color, setColor] = useState("#aabbcc");
+  const [color, setColor] = useState('#aabbcc');
 
   function setTextColor(color: string) {
     editor!.chain().focus().setColor(color).run();

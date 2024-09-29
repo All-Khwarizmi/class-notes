@@ -1,6 +1,6 @@
-import oldAuthRepositoy from "@/features/auth/application/repository/old-auth-repository";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import oldAuthRepositoy from '@/features/auth/application/repository/old-auth-repository';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 
 export function useLandingRedirect() {
   const router = useRouter();
@@ -8,9 +8,9 @@ export function useLandingRedirect() {
 
   useEffect(() => {
     if (authUserId) {
-      router.push("/dashboard");
+      router.push('/dashboard');
     } else {
-      router.push("/");
+      router.push('/');
     }
   }, [authUserId]);
 }

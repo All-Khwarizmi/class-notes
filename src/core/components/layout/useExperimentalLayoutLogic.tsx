@@ -1,8 +1,8 @@
-import useGetClasses from "@/features/classe/presentation/services/hooks/useGetClasses";
-import { NavItem } from "@/lib/types";
-import { useEffect, useState } from "react";
-import useGetAllSequences from "@/features/cours-sequence/application/adapters/services/useGetAllSequences";
-import { isRight } from "fp-ts/lib/Either";
+import useGetClasses from '@/features/classe/presentation/services/hooks/useGetClasses';
+import useGetAllSequences from '@/features/cours-sequence/application/adapters/services/useGetAllSequences';
+import useGetEvaluationsBaseList from '@/features/evaluation/application/adapters/services/useGetEvaluationsBaseList';
+import { NavItem } from '@/lib/types';
+import { isRight } from 'fp-ts/lib/Either';
 import {
   AArrowDown,
   Airplay,
@@ -16,8 +16,8 @@ import {
   Plus,
   TestTubeDiagonal,
   User,
-} from "lucide-react";
-import useGetEvaluationsBaseList from "@/features/evaluation/application/adapters/services/useGetEvaluationsBaseList";
+} from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 export default function useExperimentalLayoutLogic(
   userId: string,
@@ -78,107 +78,107 @@ export default function useExperimentalLayoutLogic(
           title: evaluation.name,
           icon: <TestTubeDiagonal size={16} className="text-red-500" />,
           href: `/evaluations/${evaluation.id}`,
-          color: "text-blue-300",
+          color: 'text-blue-300',
         }));
         evaluationsNavItems.unshift({
-          title: "Tout afficher", // Changed from "Show All"
+          title: 'Tout afficher', // Changed from "Show All"
           icon: <AArrowDown size={16} />,
-          href: "/evaluations",
-          color: "text-blue-300",
+          href: '/evaluations',
+          color: 'text-blue-300',
         });
         evaluationsNavItems.unshift({
-          title: "Ajouter une évaluation", // Changed from "Add Evaluation"
+          title: 'Ajouter une évaluation', // Changed from "Add Evaluation"
           icon: <Plus size={16} />,
-          href: "/evaluations/add",
-          color: "text-blue-300",
+          href: '/evaluations/add',
+          color: 'text-blue-300',
         });
 
         const sequencesNavItems = sequences.right.map((sequence) => ({
           title: sequence.name,
           icon: <Book size={16} className="text-green-500" />,
           href: `/sequences/${sequence._id}?type=template`,
-          color: "text-blue-300",
+          color: 'text-blue-300',
         }));
         sequencesNavItems.unshift({
-          title: "Tout afficher", // Changed from "Show All"
+          title: 'Tout afficher', // Changed from "Show All"
           icon: <AArrowDown size={16} />,
-          href: "/sequences?type=template",
-          color: "text-blue-300",
+          href: '/sequences?type=template',
+          color: 'text-blue-300',
         });
         sequencesNavItems.unshift({
-          title: "Ajouter une séquence", // Changed from "Add Sequence"
+          title: 'Ajouter une séquence', // Changed from "Add Sequence"
           icon: <Plus size={16} />,
-          href: "/sequences/add",
-          color: "text-blue-300",
+          href: '/sequences/add',
+          color: 'text-blue-300',
         });
         const classesNavItems = classes.right.map((classe) => ({
           title: classe.name,
           icon: <GraduationCap size={16} className="text-blue-500" />,
           href: `/classes/class/${classe.id}`,
-          color: "text-blue-300",
+          color: 'text-blue-300',
         }));
         classesNavItems.unshift({
-          title: "Toutes les classes", // Changed from "Show All Classes"
+          title: 'Toutes les classes', // Changed from "Show All Classes"
           icon: <AArrowDown size={16} />,
-          href: "/classes",
-          color: "text-blue-300",
+          href: '/classes',
+          color: 'text-blue-300',
         });
         classesNavItems.unshift({
-          title: "Ajouter une classe", // Changed from "Add Class"
+          title: 'Ajouter une classe', // Changed from "Add Class"
           icon: <Plus size={16} />,
-          href: "/classes/add",
-          color: "text-blue-300",
+          href: '/classes/add',
+          color: 'text-blue-300',
         });
         setNavItems((prev) => [
           {
-            title: "Dashboard",
+            title: 'Dashboard',
             icon: <AppWindow size={16} className="text-pink-500" />,
-            href: "/dashboard",
-            color: "text-blue-300",
+            href: '/dashboard',
+            color: 'text-blue-300',
           },
           {
-            title: "Classes",
+            title: 'Classes',
             icon: <Building size={16} className="text-blue-500" />,
-            href: "/classes",
-            color: "text-blue-300",
+            href: '/classes',
+            color: 'text-blue-300',
             isChidren: true,
             children: classesNavItems,
           },
           {
-            title: "Sequences",
+            title: 'Sequences',
             icon: <BookText size={16} className="text-green-500" />,
-            href: "/sequences",
-            color: "text-blue-300",
+            href: '/sequences',
+            color: 'text-blue-300',
             isChidren: true,
             children: sequencesNavItems,
           },
           {
-            title: "Evaluations",
+            title: 'Evaluations',
             icon: <FlaskConical size={16} className="text-red-500" />,
-            href: "/evaluations",
-            color: "text-blue-300",
+            href: '/evaluations',
+            color: 'text-blue-300',
             isChidren: true,
             children: evaluationsNavItems,
           },
           {
-            title: "Competences",
+            title: 'Competences',
             icon: <BookmarkCheck size={16} className="text-amber-500" />,
-            href: "/competences",
-            color: "text-blue-300",
+            href: '/competences',
+            color: 'text-blue-300',
           },
 
           {
-            title: "Mon compte",
+            title: 'Mon compte',
             icon: <User size={16} className="text-stone-500" />,
-            href: "/profile",
-            color: "text-blue-300",
+            href: '/profile',
+            color: 'text-blue-300',
           },
 
           {
-            title: "Mon espace",
+            title: 'Mon espace',
             icon: <Airplay size={16} className="text-lime-500" />,
             href: `/${hostname}`,
-            color: "text-blue-300",
+            color: 'text-blue-300',
           },
         ]);
       }

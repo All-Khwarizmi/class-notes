@@ -1,9 +1,8 @@
-import { Metadata } from "next";
-
-import Balancer from "react-wrap-balancer";
-import { getBlogPostBySlug } from "@/data-access/blog/blog-post";
-import { isNone } from "fp-ts/lib/Option";
-import { Article, Container, Section } from "@/core/components/common/Craft";
+import { Article, Container, Section } from '@/core/components/common/Craft';
+import { getBlogPostBySlug } from '@/data-access/blog/blog-post';
+import { isNone } from 'fp-ts/lib/Option';
+import { Metadata } from 'next';
+import Balancer from 'react-wrap-balancer';
 
 export async function generateMetadata({
   params,
@@ -13,8 +12,8 @@ export async function generateMetadata({
   const post = await getBlogPostBySlug(params.slug);
   if (isNone(post)) {
     return {
-      title: "Not Found",
-      description: "Blog post not found",
+      title: 'Not Found',
+      description: 'Blog post not found',
     };
   }
   return {
@@ -28,10 +27,10 @@ export default async function Page({ params }: { params: { slug: string } }) {
   if (isNone(post)) {
     return <div>Not Found</div>;
   }
-  const date = new Date(post.value.createdAt).toLocaleDateString("en-US", {
-    month: "long",
-    day: "numeric",
-    year: "numeric",
+  const date = new Date(post.value.createdAt).toLocaleDateString('en-US', {
+    month: 'long',
+    day: 'numeric',
+    year: 'numeric',
   });
   const category = [];
 
@@ -46,12 +45,12 @@ export default async function Page({ params }: { params: { slug: string } }) {
 
         <div className="flex justify-between items-center gap-4 text-sm mb-4">
           <h5>
-            Publié le {new Date(date).toLocaleDateString("fr-FR")} par{" "}
+            Publié le {new Date(date).toLocaleDateString('fr-FR')} par{' '}
             {post.value.authorId && (
               <span>
                 <a href={`/posts/?author=${post.value.authorId}`}>
                   {post.value.authorName}
-                </a>{" "}
+                </a>{' '}
               </span>
             )}
           </h5>

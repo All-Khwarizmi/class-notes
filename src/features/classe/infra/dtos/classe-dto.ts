@@ -1,9 +1,10 @@
-import Failure from "@/core/failures/failures";
-import { Either, right } from "fp-ts/lib/Either";
-import ClasseEntity from "@/features/classe/domain/class-entity";
-import { Id } from "../../../../../convex/_generated/dataModel";
-import { left } from "fp-ts/lib/Either";
-import { CreateClasseOptions } from "../../domain/classe-types";
+import Failure from '@/core/failures/failures';
+import ClasseEntity from '@/features/classe/domain/class-entity';
+import { Either, right } from 'fp-ts/lib/Either';
+import { left } from 'fp-ts/lib/Either';
+
+import { Id } from '../../../../../convex/_generated/dataModel';
+import { CreateClasseOptions } from '../../domain/classe-types';
 
 export class ClasseEntityDto {
   static toDomain(props: ClasseInfra): Either<Failure<string>, ClasseEntity> {
@@ -11,7 +12,7 @@ export class ClasseEntityDto {
       return left(
         Failure.invalidValue({
           invalidValue: props,
-          message: "No class found",
+          message: 'No class found',
         })
       );
     }
@@ -23,11 +24,11 @@ export class ClasseEntityDto {
       educationLevel: props.educationLevel,
       educationSystem: props.educationSystem,
     });
-    if (classeEntity.values._tag === "Left") {
+    if (classeEntity.values._tag === 'Left') {
       return left(
         Failure.invalidValue({
           invalidValue: classeEntity.values.left,
-          message: "Invalid value",
+          message: 'Invalid value',
         })
       );
     }
@@ -37,14 +38,14 @@ export class ClasseEntityDto {
 
 type ClasseInfra =
   | {
-      _id: Id<"Classes">;
+      _id: Id<'Classes'>;
       _creationTime: number;
       description?: string | undefined;
       imageUrl?: string | undefined;
       students?: any[] | undefined;
       name: string;
       userId: string;
-      educationLevel: CreateClasseOptions["educationLevel"];
-      educationSystem: CreateClasseOptions["educationSystem"];
+      educationLevel: CreateClasseOptions['educationLevel'];
+      educationSystem: CreateClasseOptions['educationSystem'];
     }
   | undefined;

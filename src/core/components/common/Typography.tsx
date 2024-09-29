@@ -1,4 +1,4 @@
-import { cn } from "@/lib/utils";
+import { cn } from '@/lib/utils';
 
 export function TypographyH1({ text }: { text: string }) {
   return (
@@ -16,7 +16,7 @@ export function HeaderTypographyH1({
   className?: string;
 }) {
   return (
-    <header className={cn("p-8 pb-12 underline", className)}>
+    <header className={cn('p-8 pb-12 underline', className)}>
       <TypographyH1 text={text} />
     </header>
   );

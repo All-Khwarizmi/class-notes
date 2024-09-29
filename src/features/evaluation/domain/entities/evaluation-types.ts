@@ -1,7 +1,7 @@
 import {
   EvaluationCriteriaType,
   GradeTypeUnionType,
-} from "./evaluation-schema";
+} from './evaluation-schema';
 
 export interface CreateEvaluationOptions {
   name: string;

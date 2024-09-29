@@ -1,16 +1,16 @@
-import React from "react";
-import { isLeft } from "fp-ts/lib/Either";
-import { Book } from "lucide-react";
-import NotFound from "@/app/not-found";
-import ErrorDialog from "@/core/components/common/ErrorDialog";
-import EmptyUserSpace from "@/features/spaces/presentation/components/EmptyUserSpace";
-import getVisibility from "@/features/classe/application/adapters/actions/get-visibility";
-import { coursUsecases } from "@/features/cours-sequence/application/usecases/cours-usecases";
-import { Sequence } from "@/features/cours-sequence/domain/entities/cours-schemas";
-import SequencesListViewSpaces from "@/features/cours-sequence/presentation/views/SeqquenceListViewSpaces";
-import { profileUseCases } from "@/features/profile/application/usecases/profile-usecases";
-import { authUseCases } from "@/features/auth/application/usecases/auth-usecases";
-import { NavItem } from "@/lib/types";
+import NotFound from '@/app/not-found';
+import ErrorDialog from '@/core/components/common/ErrorDialog';
+import { authUseCases } from '@/features/auth/application/usecases/auth-usecases';
+import getVisibility from '@/features/classe/application/adapters/actions/get-visibility';
+import { coursUsecases } from '@/features/cours-sequence/application/usecases/cours-usecases';
+import { Sequence } from '@/features/cours-sequence/domain/entities/cours-schemas';
+import SequencesListViewSpaces from '@/features/cours-sequence/presentation/views/SeqquenceListViewSpaces';
+import { profileUseCases } from '@/features/profile/application/usecases/profile-usecases';
+import EmptyUserSpace from '@/features/spaces/presentation/components/EmptyUserSpace';
+import { NavItem } from '@/lib/types';
+import { isLeft } from 'fp-ts/lib/Either';
+import { Book } from 'lucide-react';
+import React from 'react';
 
 async function SpacesClasseServerLayer(props: {
   slug: string;
@@ -30,7 +30,7 @@ async function SpacesClasseServerLayer(props: {
         message="Une erreur s'est produite lors de la récupération des informations de l'utilisateur"
         code={user.left.code}
         description={
-          process.env.NODE_ENV === "development" ? user.left.message : ""
+          process.env.NODE_ENV === 'development' ? user.left.message : ''
         }
       />
     );
@@ -48,9 +48,9 @@ async function SpacesClasseServerLayer(props: {
         message="Une erreur s'est produite lors de la récupération des séquences"
         code={eitherSequences.left.code}
         description={
-          process.env.NODE_ENV === "development"
+          process.env.NODE_ENV === 'development'
             ? eitherSequences.left.message
-            : ""
+            : ''
         }
       />
     );
@@ -66,9 +66,9 @@ async function SpacesClasseServerLayer(props: {
         message="Une erreur s'est produite lors de la récupération des paramètres de visibilité"
         code={eitherVisibility.left.code}
         description={
-          process.env.NODE_ENV === "development"
+          process.env.NODE_ENV === 'development'
             ? eitherVisibility.left.message
-            : ""
+            : ''
         }
       />
     );
@@ -88,7 +88,7 @@ async function SpacesClasseServerLayer(props: {
     return (
       <EmptyUserSpace
         isOwner={isOwner}
-        userName={user.right.name ?? "Utilisateur inconnu"}
+        userName={user.right.name ?? 'Utilisateur inconnu'}
         userEmail={user.right.email}
         contentType="séquence"
       />
@@ -99,12 +99,12 @@ async function SpacesClasseServerLayer(props: {
     title: sequence.name,
     href: `/spaces/sequences/${sequence._id}?user=${userId}`,
     icon: <Book size={16} className="text-green-500" aria-hidden="true" />,
-    color: "text-blue-300",
+    color: 'text-blue-300',
   }));
 
   return (
     <SequencesListViewSpaces
-      userName={user.right.name ?? "Utilisateur inconnu"}
+      userName={user.right.name ?? 'Utilisateur inconnu'}
       navItems={sequenceNavItems}
       sequences={sequences}
       spacesMode={true}

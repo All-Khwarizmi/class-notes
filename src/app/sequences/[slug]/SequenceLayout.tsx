@@ -1,32 +1,33 @@
-import { Suspense } from "react";
+import CoursesServerLayer from '@/app/cours/all/[slug]/CoursesServerLayer';
+import NotesServerLayer from '@/app/profile/notes/[slug]/NotesServerLayer';
+import ErrorDialog from '@/core/components/common/ErrorDialog';
+import LoadingSkeleton from '@/core/components/common/LoadingSkeleton';
+import { TypographyH3 } from '@/core/components/common/Typography';
 import {
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
-} from "@/core/components/ui/tabs";
-import { isLeft } from "fp-ts/lib/Either";
-import { redirect } from "next/navigation";
-import LoadingSkeleton from "@/core/components/common/LoadingSkeleton";
-import { coursUsecases } from "@/features/cours-sequence/application/usecases/cours-usecases";
-import CoursSequenceView from "@/features/cours-sequence/presentation/views/CoursSequenceView";
-import { authUseCases } from "@/features/auth/application/usecases/auth-usecases";
-import NotesServerLayer from "@/app/profile/notes/[slug]/NotesServerLayer";
-import CoursesServerLayer from "@/app/cours/all/[slug]/CoursesServerLayer";
-import ErrorDialog from "@/core/components/common/ErrorDialog";
-import { TypographyH3 } from "@/core/components/common/Typography";
-import AIServerLayer from "./AIServerLayer";
-import checkAuthAndRedirect from "@/data-access/auth/check-and-redirect";
+} from '@/core/components/ui/tabs';
+import checkAuthAndRedirect from '@/data-access/auth/check-and-redirect';
+import { authUseCases } from '@/features/auth/application/usecases/auth-usecases';
+import { coursUsecases } from '@/features/cours-sequence/application/usecases/cours-usecases';
+import CoursSequenceView from '@/features/cours-sequence/presentation/views/CoursSequenceView';
+import { isLeft } from 'fp-ts/lib/Either';
+import { redirect } from 'next/navigation';
+import { Suspense } from 'react';
+
+import AIServerLayer from './AIServerLayer';
 
 async function SequenceLayout(props: {
   slug: string;
-  type?: "template" | "sequence";
+  type?: 'template' | 'sequence';
 }) {
   //! TODO: @PARAMS
   if (
     !props.slug ||
     !props.type ||
-    (props.type !== "template" && props.type !== "sequence")
+    (props.type !== 'template' && props.type !== 'sequence')
   ) {
     return (
       <ErrorDialog

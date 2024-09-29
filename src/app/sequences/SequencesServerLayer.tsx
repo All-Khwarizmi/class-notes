@@ -1,14 +1,14 @@
-import React from "react";
-import { coursUsecases } from "@/features/cours-sequence/application/usecases/cours-usecases";
-import SequencesListView from "@/features/cours-sequence/presentation/views/SequencesListView";
-import ErrorDialog from "@/core/components/common/ErrorDialog";
+import ErrorDialog from '@/core/components/common/ErrorDialog';
+import { QUERY_KEYS } from '@/core/query/ query-keys';
+import checkAuthAndRedirect from '@/data-access/auth/check-and-redirect';
+import { coursUsecases } from '@/features/cours-sequence/application/usecases/cours-usecases';
+import SequencesListView from '@/features/cours-sequence/presentation/views/SequencesListView';
 import {
   dehydrate,
   HydrationBoundary,
   QueryClient,
-} from "@tanstack/react-query";
-import { QUERY_KEYS } from "@/core/query/ query-keys";
-import checkAuthAndRedirect from "@/data-access/auth/check-and-redirect";
+} from '@tanstack/react-query';
+import React from 'react';
 
 async function SequencesServerLayer({
   params,
@@ -18,7 +18,7 @@ async function SequencesServerLayer({
   searchParams: { [key in string]: string };
 }) {
   const { type } = searchParams;
-  if (!type || (type !== "template" && type !== "sequence")) {
+  if (!type || (type !== 'template' && type !== 'sequence')) {
     return (
       <ErrorDialog
         message="Invalid params"
@@ -31,7 +31,7 @@ async function SequencesServerLayer({
 
   //! TODO: @DATA-ACCESS
   const queryClient = new QueryClient();
-  if (type === "sequence" && !params.slug) {
+  if (type === 'sequence' && !params.slug) {
     return (
       <ErrorDialog
         message="Invalid params"
@@ -54,7 +54,7 @@ async function SequencesServerLayer({
     <HydrationBoundary state={dehydrate(queryClient)}>
       <SequencesListView
         userId={userId}
-        sequenceType={type as "template" | "sequence"}
+        sequenceType={type as 'template' | 'sequence'}
         sequenceId={params.slug}
       />
     </HydrationBoundary>

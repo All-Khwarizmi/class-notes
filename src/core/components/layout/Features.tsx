@@ -1,23 +1,24 @@
-"use client";
+'use client';
 
-import React, { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import {
-  BookMarked,
-  BookOpen,
-  Brain,
-  LucideIcon,
-  ArrowRight,
-} from "lucide-react";
-import { Button } from "@/core/components/ui/button";
+import { Button } from '@/core/components/ui/button';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/core/components/ui/card";
-import { useInView } from "react-intersection-observer";
+} from '@/core/components/ui/card';
+import { motion, AnimatePresence } from 'framer-motion';
+import {
+  BookMarked,
+  BookOpen,
+  Brain,
+  LucideIcon,
+  ArrowRight,
+} from 'lucide-react';
+import { Zap, Layout, Share2 } from 'lucide-react';
+import React, { useState } from 'react';
+import { useInView } from 'react-intersection-observer';
 
 interface FeatureProps {
   icon: LucideIcon;
@@ -53,7 +54,7 @@ const Feature: React.FC<FeatureProps> = ({
         style={{
           backgroundColor: `${color}10`,
           borderColor: color,
-          transform: isHovered ? "translateY(-10px)" : "none",
+          transform: isHovered ? 'translateY(-10px)' : 'none',
         }}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
@@ -77,7 +78,7 @@ const Feature: React.FC<FeatureProps> = ({
             {isHovered && (
               <motion.ul
                 initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: "auto" }}
+                animate={{ opacity: 1, height: 'auto' }}
                 exit={{ opacity: 0, height: 0 }}
                 className="space-y-2"
               >
@@ -112,44 +113,42 @@ const Feature: React.FC<FeatureProps> = ({
   );
 };
 
-import { Zap, Layout, Share2 } from "lucide-react";
-
 const features: FeatureProps[] = [
   {
     icon: Zap,
-    title: "Site professionnel en 5 minutes",
+    title: 'Site professionnel en 5 minutes',
     description:
       "Créez votre site web d'enseignant sans aucune compétence en programmation.",
     details: [
       "Templates prêts à l'emploi conçus pour les enseignants",
-      "Personnalisation intuitive par glisser-déposer",
-      "Mise en ligne instantanée avec un nom de domaine inclus",
+      'Personnalisation intuitive par glisser-déposer',
+      'Mise en ligne instantanée avec un nom de domaine inclus',
     ],
-    color: "#3B82F6", // blue-500
+    color: '#3B82F6', // blue-500
   },
   {
     icon: Layout,
-    title: "Tout votre contenu au même endroit",
+    title: 'Tout votre contenu au même endroit',
     description:
       "Finies les ressources éparpillées. Centralisez tous vos supports de cours dans un espace organisé et facile d'accès.",
     details: [
-      "Organisation intuitive par matière, niveau ou projet",
-      "Partage sécurisé avec les élèves et les parents",
+      'Organisation intuitive par matière, niveau ou projet',
+      'Partage sécurisé avec les élèves et les parents',
       "Accès depuis n'importe quel appareil, à tout moment",
     ],
-    color: "#10B981", // emerald-500
+    color: '#10B981', // emerald-500
   },
   {
     icon: Share2,
-    title: "Communication simplifiée",
+    title: 'Communication simplifiée',
     description:
-      "Fini le temps perdu en emails interminables. Communiquez efficacement avec les élèves et les parents en un clic.",
+      'Fini le temps perdu en emails interminables. Communiquez efficacement avec les élèves et les parents en un clic.',
     details: [
       "Espace d'annonces pour informations importantes",
-      "Blog intégré pour partager des actualités et des ressources",
-      "Formulaires de contact directs pour les parents",
+      'Blog intégré pour partager des actualités et des ressources',
+      'Formulaires de contact directs pour les parents',
     ],
-    color: "#8B5CF6", // violet-500
+    color: '#8B5CF6', // violet-500
   },
 ];
 

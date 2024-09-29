@@ -1,6 +1,6 @@
-import React from "react";
-import { Container, Typography, Box } from "@mui/material";
-import { Link } from "lucide-react";
+import { Container, Typography, Box } from '@mui/material';
+import { Link } from 'lucide-react';
+import React from 'react';
 
 const TermsPage: React.FC = () => {
   return (

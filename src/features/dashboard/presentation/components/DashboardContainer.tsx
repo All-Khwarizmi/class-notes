@@ -1,17 +1,17 @@
-"use client";
+'use client';
 
-import React from "react";
+import { Button } from '@/core/components/ui/button';
 import {
   Card,
   CardHeader,
   CardTitle,
   CardDescription,
   CardContent,
-} from "@/core/components/ui/card";
-import { Button } from "@/core/components/ui/button";
-import { ResponsiveLine, ResponsiveLineCanvas, Serie } from "@nivo/line";
-import { ResponsiveBar, BarDatum } from "@nivo/bar";
-import { ResponsivePie } from "@nivo/pie";
+} from '@/core/components/ui/card';
+import { ResponsiveBar, BarDatum } from '@nivo/bar';
+import { ResponsiveLine, ResponsiveLineCanvas, Serie } from '@nivo/line';
+import { ResponsivePie } from '@nivo/pie';
+import React from 'react';
 
 // Define the props type for each chart component
 interface ChartProps extends React.HTMLAttributes<HTMLDivElement> {}
@@ -133,23 +133,23 @@ function DashboardContainer() {
 // Define the BarChart component with types
 const BarChart: React.FC<ChartProps> = (props) => {
   const data: BarDatum[] = [
-    { name: "Jan", count: 111 },
-    { name: "Feb", count: 157 },
-    { name: "Mar", count: 129 },
-    { name: "Apr", count: 150 },
-    { name: "May", count: 119 },
-    { name: "Jun", count: 72 },
+    { name: 'Jan', count: 111 },
+    { name: 'Feb', count: 157 },
+    { name: 'Mar', count: 129 },
+    { name: 'Apr', count: 150 },
+    { name: 'May', count: 119 },
+    { name: 'Jun', count: 72 },
   ];
 
   return (
     <div {...props}>
       <ResponsiveBar
         data={data}
-        keys={["count"]}
+        keys={['count']}
         indexBy="name"
         margin={{ top: 0, right: 0, bottom: 40, left: 40 }}
         padding={0.3}
-        colors={["#2563eb"]}
+        colors={['#2563eb']}
         axisBottom={{
           tickSize: 0,
           tickPadding: 16,
@@ -163,17 +163,17 @@ const BarChart: React.FC<ChartProps> = (props) => {
         theme={{
           tooltip: {
             chip: {
-              borderRadius: "9999px",
+              borderRadius: '9999px',
             },
             container: {
-              fontSize: "12px",
-              textTransform: "capitalize",
-              borderRadius: "6px",
+              fontSize: '12px',
+              textTransform: 'capitalize',
+              borderRadius: '6px',
             },
           },
           grid: {
             line: {
-              stroke: "#f3f4f6",
+              stroke: '#f3f4f6',
             },
           },
         }}
@@ -190,25 +190,25 @@ const BarChart: React.FC<ChartProps> = (props) => {
 const LineChart: React.FC<ChartProps> = (props) => {
   const data: Serie[] = [
     {
-      id: "Desktop",
+      id: 'Desktop',
       data: [
-        { x: "Jan", y: 43 },
-        { x: "Feb", y: 137 },
-        { x: "Mar", y: 61 },
-        { x: "Apr", y: 145 },
-        { x: "May", y: 26 },
-        { x: "Jun", y: 154 },
+        { x: 'Jan', y: 43 },
+        { x: 'Feb', y: 137 },
+        { x: 'Mar', y: 61 },
+        { x: 'Apr', y: 145 },
+        { x: 'May', y: 26 },
+        { x: 'Jun', y: 154 },
       ],
     },
     {
-      id: "Mobile",
+      id: 'Mobile',
       data: [
-        { x: "Jan", y: 60 },
-        { x: "Feb", y: 48 },
-        { x: "Mar", y: 177 },
-        { x: "Apr", y: 78 },
-        { x: "May", y: 96 },
-        { x: "Jun", y: 204 },
+        { x: 'Jan', y: 60 },
+        { x: 'Feb', y: 48 },
+        { x: 'Mar', y: 177 },
+        { x: 'Apr', y: 78 },
+        { x: 'May', y: 96 },
+        { x: 'Jun', y: 204 },
       ],
     },
   ];
@@ -218,8 +218,8 @@ const LineChart: React.FC<ChartProps> = (props) => {
       <ResponsiveLine
         data={data}
         margin={{ top: 10, right: 10, bottom: 40, left: 40 }}
-        xScale={{ type: "point" }}
-        yScale={{ type: "linear" }}
+        xScale={{ type: 'point' }}
+        yScale={{ type: 'linear' }}
         axisTop={null}
         axisRight={null}
         axisBottom={{
@@ -231,24 +231,24 @@ const LineChart: React.FC<ChartProps> = (props) => {
           tickValues: 5,
           tickPadding: 16,
         }}
-        colors={["#2563eb", "#e11d48"]}
+        colors={['#2563eb', '#e11d48']}
         pointSize={6}
         useMesh={true}
         gridYValues={6}
         theme={{
           tooltip: {
             chip: {
-              borderRadius: "9999px",
+              borderRadius: '9999px',
             },
             container: {
-              fontSize: "12px",
-              textTransform: "capitalize",
-              borderRadius: "6px",
+              fontSize: '12px',
+              textTransform: 'capitalize',
+              borderRadius: '6px',
             },
           },
           grid: {
             line: {
-              stroke: "#f3f4f6",
+              stroke: '#f3f4f6',
             },
           },
         }}
@@ -261,12 +261,12 @@ const LineChart: React.FC<ChartProps> = (props) => {
 // Define the PieChart component with types
 const PieChart: React.FC<ChartProps> = (props) => {
   const data = [
-    { id: "Jan", value: 111 },
-    { id: "Feb", value: 157 },
-    { id: "Mar", value: 129 },
-    { id: "Apr", value: 150 },
-    { id: "May", value: 119 },
-    { id: "Jun", value: 72 },
+    { id: 'Jan', value: 111 },
+    { id: 'Feb', value: 157 },
+    { id: 'Mar', value: 129 },
+    { id: 'Apr', value: 150 },
+    { id: 'May', value: 119 },
+    { id: 'Jun', value: 72 },
   ];
 
   return (
@@ -278,26 +278,26 @@ const PieChart: React.FC<ChartProps> = (props) => {
         cornerRadius={0}
         padAngle={0}
         borderWidth={1}
-        borderColor={"#ffffff"}
+        borderColor={'#ffffff'}
         enableArcLinkLabels={false}
         arcLabel={(d) => `${d.id}`}
-        arcLabelsTextColor={"#ffffff"}
+        arcLabelsTextColor={'#ffffff'}
         arcLabelsRadiusOffset={0.65}
-        colors={["#2563eb"]}
+        colors={['#2563eb']}
         theme={{
           labels: {
             text: {
-              fontSize: "18px",
+              fontSize: '18px',
             },
           },
           tooltip: {
             chip: {
-              borderRadius: "9999px",
+              borderRadius: '9999px',
             },
             container: {
-              fontSize: "12px",
-              textTransform: "capitalize",
-              borderRadius: "6px",
+              fontSize: '12px',
+              textTransform: 'capitalize',
+              borderRadius: '6px',
             },
           },
         }}

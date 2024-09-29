@@ -1,11 +1,12 @@
-import { Cours } from "@/features/cours-sequence/domain/entities/cours-schemas";
-import { toast } from "sonner";
-import { coursUsecases } from "../../usecases/cours-usecases";
-import { isLeft } from "fp-ts/lib/Either";
-import { useRouter } from "next/navigation";
-import { toastWrapper } from "@/core/utils/toast-wrapper";
-import { useMutation } from "@tanstack/react-query";
-import { QUERY_KEYS } from "@/core/query/ query-keys";
+import { QUERY_KEYS } from '@/core/query/ query-keys';
+import { toastWrapper } from '@/core/utils/toast-wrapper';
+import { Cours } from '@/features/cours-sequence/domain/entities/cours-schemas';
+import { useMutation } from '@tanstack/react-query';
+import { isLeft } from 'fp-ts/lib/Either';
+import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
+
+import { coursUsecases } from '../../usecases/cours-usecases';
 
 export interface SaveCoursMetadataOptions {
   cours: Cours;
@@ -22,10 +23,10 @@ export default function useUpdateCoursMetadata() {
     },
     onSuccess: async (eitherCours) => {
       if (isLeft(eitherCours)) {
-        toast.error("An error occurred");
+        toast.error('An error occurred');
         return;
       }
-      toastWrapper.success("Cours updated successfully");
+      toastWrapper.success('Cours updated successfully');
       router.push(`/cours/${eitherCours.right}`);
     },
   });

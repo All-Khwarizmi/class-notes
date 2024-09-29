@@ -1,6 +1,7 @@
-import { Suspense } from "react";
-import LoadingSkeleton from "@/core/components/common/LoadingSkeleton";
-import SequencesServerLayer from "./SequencesServerLayer";
+import LoadingSkeleton from '@/core/components/common/LoadingSkeleton';
+import { Suspense } from 'react';
+
+import SequencesServerLayer from './SequencesServerLayer';
 
 export default async function Page({
   params,

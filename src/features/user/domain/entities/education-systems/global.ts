@@ -1,27 +1,28 @@
-import { z } from "zod";
-import { ChineseEducationSubjectsSchema } from "./chna";
+import { option } from 'fp-ts/lib/Option';
+import { z } from 'zod';
+
+import { ChineseEducationSubjectsSchema } from './chna';
 import {
   frenchEducationSubjectsOptions,
   FrenchEducationSubjectsSchema,
-} from "./french";
+} from './french';
 import {
   germanEducationSubjectsOptions,
   GermanEducationSubjectsSchema,
-} from "./german";
+} from './german';
 import {
   indianEducationSubjectsOptions,
   IndianEducationSubjectsSchema,
-} from "./india";
+} from './india';
 import {
   spanishEducationSubjectsOptions,
   SpanishEducationSubjectsSchema,
-} from "./spain";
-import { ukEducationSubjectsOptions, UKEducationSubjectsSchema } from "./uk";
+} from './spain';
+import { ukEducationSubjectsOptions, UKEducationSubjectsSchema } from './uk';
 import {
   americanEducationSubjectsOptions,
   AmericanEducationSubjectsSchema,
-} from "./usa";
-import { option } from "fp-ts/lib/Option";
+} from './usa';
 
 // Union de tous les schémas des systèmes éducatifs
 export const GlobalEducationSubjectsSchema = z.union([

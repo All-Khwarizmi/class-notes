@@ -1,5 +1,6 @@
-import { none, Option, some } from "fp-ts/lib/Option";
-import { blogPostSchema } from "./blog-schema";
+import { none, Option, some } from 'fp-ts/lib/Option';
+
+import { blogPostSchema } from './blog-schema';
 
 // DTOs
 export type BlogPostDto = {

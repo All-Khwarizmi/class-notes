@@ -1,23 +1,24 @@
-"use client";
+'use client';
 
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Card, CardContent, CardFooter } from "@/core/components/ui/card";
-import { Input } from "@/core/components/ui/input";
-import { Button } from "@/core/components/ui/button";
-import { Textarea } from "@/core/components/ui/textarea";
-import { Competence, competenceSchema } from "../../domain/entities/schemas";
-import CustomDialog from "@/core/components/common/CustomDialog";
-import { z } from "zod";
-import { useUpdateCompCat } from "../../application/adapters/services/useUpdateCompCat";
-import { toastWrapper } from "@/core/utils/toast-wrapper";
-import { useState } from "react";
+import CustomDialog from '@/core/components/common/CustomDialog';
+import { Button } from '@/core/components/ui/button';
+import { Card, CardContent, CardFooter } from '@/core/components/ui/card';
+import { Input } from '@/core/components/ui/input';
+import { Textarea } from '@/core/components/ui/textarea';
+import { toastWrapper } from '@/core/utils/toast-wrapper';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+
+import { useUpdateCompCat } from '../../application/adapters/services/useUpdateCompCat';
+import { Competence, competenceSchema } from '../../domain/entities/schemas';
 
 export default function UpdateCompetenceForm(props: {
   id: string;
   name: string;
   description: string;
-  entityName: "Competence" | "Category";
+  entityName: 'Competence' | 'Category';
 }) {
   const [open, setOpen] = useState(false);
   const form = useForm({
@@ -37,14 +38,14 @@ export default function UpdateCompetenceForm(props: {
   const onSubmit = form.handleSubmit((data) => {
     const { name, description } = data;
     if (props.name === name && props.description === description) {
-      return toastWrapper.info("No changes made");
+      return toastWrapper.info('No changes made');
     }
     updateCompCat(
       {
         id: props.id,
         name: data.name,
         description: data.description,
-        type: props.entityName === "Competence" ? "Competences" : "Category",
+        type: props.entityName === 'Competence' ? 'Competences' : 'Category',
       },
       {
         onSuccess: () => {
@@ -71,7 +72,7 @@ export default function UpdateCompetenceForm(props: {
               <Input
                 id="name"
                 placeholder={`Enter the ${props.entityName} name`}
-                {...form.register("name")}
+                {...form.register('name')}
               />
             </div>
             <div className="grid gap-2">
@@ -82,7 +83,7 @@ export default function UpdateCompetenceForm(props: {
                 id="description"
                 placeholder={`Enter the ${props.entityName} description`}
                 className="min-h-[100px]"
-                {...form.register("description")}
+                {...form.register('description')}
               />
             </div>
           </CardContent>

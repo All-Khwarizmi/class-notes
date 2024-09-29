@@ -1,19 +1,19 @@
-"use client";
+'use client';
 
-import React, { useEffect, useState, useRef } from "react";
-import { EditorContent, useEditor } from "@tiptap/react";
-import { EXTENSIONS } from "@/core/components/constants/editor-extenstions";
-import { NavItem } from "@/lib/types";
-import { useSpacesLayoutContext } from "@/core/components/layout/SpacesLayoutCtx";
+import { EXTENSIONS } from '@/core/components/constants/editor-extenstions';
+import { useSpacesLayoutContext } from '@/core/components/layout/SpacesLayoutCtx';
+import { Button } from '@/core/components/ui/button';
 import {
   Card,
   CardContent,
   CardHeader,
   CardTitle,
-} from "@/core/components/ui/card";
-import { ScrollArea } from "@/core/components/ui/scroll-area";
-import { Button } from "@/core/components/ui/button";
-import { Maximize2, Minimize2 } from "lucide-react";
+} from '@/core/components/ui/card';
+import { ScrollArea } from '@/core/components/ui/scroll-area';
+import { NavItem } from '@/lib/types';
+import { EditorContent, useEditor } from '@tiptap/react';
+import { Maximize2, Minimize2 } from 'lucide-react';
+import React, { useEffect, useState, useRef } from 'react';
 
 interface ContentViewerProps {
   content: string;
@@ -53,9 +53,9 @@ function ContentViewer({ content, navItems, title }: ContentViewerProps) {
       setIsFullScreen(!!document.fullscreenElement);
     };
 
-    document.addEventListener("fullscreenchange", handleFullScreenChange);
+    document.addEventListener('fullscreenchange', handleFullScreenChange);
     return () => {
-      document.removeEventListener("fullscreenchange", handleFullScreenChange);
+      document.removeEventListener('fullscreenchange', handleFullScreenChange);
     };
   }, []);
 
@@ -72,7 +72,7 @@ function ContentViewer({ content, navItems, title }: ContentViewerProps) {
           size="icon"
           onClick={toggleFullScreen}
           aria-label={
-            isFullScreen ? "Quitter le plein écran" : "Afficher en plein écran"
+            isFullScreen ? 'Quitter le plein écran' : 'Afficher en plein écran'
           }
         >
           {isFullScreen ? (
@@ -85,7 +85,7 @@ function ContentViewer({ content, navItems, title }: ContentViewerProps) {
       <CardContent>
         <ScrollArea
           className={
-            isFullScreen ? "h-[calc(100vh-100px)]" : "h-[calc(100vh-200px)]"
+            isFullScreen ? 'h-[calc(100vh-100px)]' : 'h-[calc(100vh-200px)]'
           }
         >
           <div className="prose prose-sm sm:prose lg:prose-lg xl:prose-xl max-w-none">

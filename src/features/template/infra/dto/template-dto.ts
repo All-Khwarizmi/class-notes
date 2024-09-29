@@ -1,7 +1,8 @@
-import { Either, left, right } from "fp-ts/lib/Either";
-import TemplateEntity from "../../domain/entities/template-entity";
-import Failure from "@/core/failures/failures";
-import { TemplateSchema } from "../../domain/entities/template-schema";
+import Failure from '@/core/failures/failures';
+import { Either, left, right } from 'fp-ts/lib/Either';
+
+import TemplateEntity from '../../domain/entities/template-entity';
+import { TemplateSchema } from '../../domain/entities/template-schema';
 
 export default class TemplateDto {
   static toDomain({
@@ -13,7 +14,7 @@ export default class TemplateDto {
       return left(
         Failure.invalidValue({
           invalidValue: props,
-          message: "No evaluation found",
+          message: 'No evaluation found',
         })
       );
     } else {
@@ -24,7 +25,7 @@ export default class TemplateDto {
         return left(
           Failure.invalidValue({
             invalidValue: props,
-            message: "Invalid value",
+            message: 'Invalid value',
           })
         );
       }

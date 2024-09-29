@@ -1,13 +1,15 @@
-import { Sequence } from "@/features/cours-sequence/domain/entities/cours-schemas";
-import { coursUsecases } from "../../usecases/cours-usecases";
-import { isLeft } from "fp-ts/lib/Either";
-import { useRouter } from "next/navigation";
-import { QUERY_KEYS } from "@/core/query/ query-keys";
-import { useMutation } from "@tanstack/react-query";
-import { toastWrapper } from "@/core/utils/toast-wrapper";
+import { QUERY_KEYS } from '@/core/query/ query-keys';
+import { toastWrapper } from '@/core/utils/toast-wrapper';
+import { Sequence } from '@/features/cours-sequence/domain/entities/cours-schemas';
+import { useMutation } from '@tanstack/react-query';
+import { isLeft } from 'fp-ts/lib/Either';
+import { useRouter } from 'next/navigation';
+
+import { coursUsecases } from '../../usecases/cours-usecases';
+
 export interface UpdateSequenceMetadataOptions {
   sequence: Sequence;
-  type?: "sequence" | "template";
+  type?: 'sequence' | 'template';
 }
 
 function useUpdateSequenceMetadata() {
@@ -23,10 +25,10 @@ function useUpdateSequenceMetadata() {
     },
     onSuccess: async (eitherSequence, variables) => {
       if (isLeft(eitherSequence)) {
-        toastWrapper.error("An error occurred");
+        toastWrapper.error('An error occurred');
         return;
       }
-      toastWrapper.success("Sequence updated successfully");
+      toastWrapper.success('Sequence updated successfully');
       router.push(
         `/sequences/${variables.sequence._id}?type=${variables.type}`
       );

@@ -1,21 +1,21 @@
-"use client";
+'use client';
 
-import React from "react";
+import { Button } from '@/core/components/ui/button';
 import {
   Card,
   CardContent,
   CardHeader,
   CardTitle,
-} from "@/core/components/ui/card";
-import { Button } from "@/core/components/ui/button";
-import { PlusCircle, Mail, AlertCircle, Eye } from "lucide-react";
-import Link from "next/link";
+} from '@/core/components/ui/card';
+import { PlusCircle, Mail, AlertCircle, Eye } from 'lucide-react';
+import Link from 'next/link';
+import React from 'react';
 
 interface EmptyUserSpaceProps {
   isOwner: boolean;
   userName: string;
   userEmail?: string;
-  contentType: "classe" | "séquence" | "cours" | "exercice";
+  contentType: 'classe' | 'séquence' | 'cours' | 'exercice';
 }
 
 export default function EmptyUserSpace({
@@ -26,24 +26,24 @@ export default function EmptyUserSpace({
 }: EmptyUserSpaceProps) {
   const contentTypeMap = {
     classe: {
-      singular: "classe",
-      plural: "classes",
-      createLink: "/classes/new",
+      singular: 'classe',
+      plural: 'classes',
+      createLink: '/classes/new',
     },
     séquence: {
-      singular: "séquence",
-      plural: "séquences",
-      createLink: "/sequences/new",
+      singular: 'séquence',
+      plural: 'séquences',
+      createLink: '/sequences/new',
     },
     cours: {
-      singular: "cours",
-      plural: "cours",
-      createLink: "/cours/new",
+      singular: 'cours',
+      plural: 'cours',
+      createLink: '/cours/new',
     },
     exercice: {
-      singular: "exercice",
-      plural: "exercices",
-      createLink: "/exercices/new",
+      singular: 'exercice',
+      plural: 'exercices',
+      createLink: '/exercices/new',
     },
   };
 
@@ -64,15 +64,15 @@ export default function EmptyUserSpace({
             <>
               <p className="text-muted-foreground">
                 Vous n&apos;avez pas encore créé de {singular} ou rendu visible
-                votre contenu. Commencez par créer{" "}
-                {singular === "classe" ? "une" : "un"} {singular} et gérez sa
+                votre contenu. Commencez par créer{' '}
+                {singular === 'classe' ? 'une' : 'un'} {singular} et gérez sa
                 visibilité depuis votre tableau de bord.
               </p>
               <div className="flex flex-col sm:flex-row justify-center gap-4">
                 <Button asChild>
                   <Link href={createLink}>
                     <PlusCircle className="mr-2 h-4 w-4" />
-                    Créer {singular === "classe" ? "une" : "un"} {singular}
+                    Créer {singular === 'classe' ? 'une' : 'un'} {singular}
                   </Link>
                 </Button>
                 <Button variant="outline" asChild>

@@ -1,7 +1,7 @@
-import { coursUsecases } from "../../usecases/cours-usecases";
+import { QUERY_KEYS } from '@/core/query/ query-keys';
+import { useMutation } from '@tanstack/react-query';
 
-import { useMutation } from "@tanstack/react-query";
-import { QUERY_KEYS } from "@/core/query/ query-keys";
+import { coursUsecases } from '../../usecases/cours-usecases';
 
 function useAddClasseSequence() {
   return useMutation({

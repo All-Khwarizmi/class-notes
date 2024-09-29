@@ -1,61 +1,62 @@
-"use client";
+'use client';
 
-import React, { useState, useRef, useEffect } from "react";
-import { useEditor, EditorContent } from "@tiptap/react";
-import StarterKit from "@tiptap/starter-kit";
+import { Button } from '@/core/components/ui/button';
 import {
   Card,
   CardContent,
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/core/components/ui/card";
-import { Input } from "@/core/components/ui/input";
-import { Button } from "@/core/components/ui/button";
-import { Label } from "@/core/components/ui/label";
-import { ScrollArea } from "@/core/components/ui/scroll-area";
+} from '@/core/components/ui/card';
+import { Input } from '@/core/components/ui/input';
+import { Label } from '@/core/components/ui/label';
+import { ScrollArea } from '@/core/components/ui/scroll-area';
 import {
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
-} from "@/core/components/ui/tabs";
-import { Textarea } from "@/core/components/ui/textarea";
+} from '@/core/components/ui/tabs';
+import { Textarea } from '@/core/components/ui/textarea';
+import {
+  createBlogPostSchema,
+  CreatedBlogPostDto,
+} from '@/data-access/blog/blog-post-dto';
+import { blogPostSchema } from '@/data-access/blog/blog-schema';
+import { createBlogPostAction } from '@/data-access/blog/create-blog-post';
+import { getCurrentUser } from '@/data-access/user/get-current-user';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useEditor, EditorContent } from '@tiptap/react';
+import StarterKit from '@tiptap/starter-kit';
 import {
   Save,
   Send,
   ArrowLeft,
   ArrowRight,
   Image as ImageIcon,
-} from "lucide-react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { createBlogPostAction } from "@/data-access/blog/create-blog-post";
-import { blogPostSchema } from "@/data-access/blog/blog-schema";
-import {
-  createBlogPostSchema,
-  CreatedBlogPostDto,
-} from "@/data-access/blog/blog-post-dto";
-import { BlogPostDto } from "../BlogPage";
-import { getCurrentUser } from "@/data-access/user/get-current-user";
+} from 'lucide-react';
+import React, { useState, useRef, useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+
+import { BlogPostDto } from '../BlogPage';
 
 const initialState: Omit<
   CreatedBlogPostDto,
-  "createdAt" | "updatedAt" | "categoryIds" | "tagIds"
+  'createdAt' | 'updatedAt' | 'categoryIds' | 'tagIds'
 > = {
-  title: "",
-  slug: "",
-  content: "",
-  excerpt: "",
+  title: '',
+  slug: '',
+  content: '',
+  excerpt: '',
   published: false,
-  authorId: "",
-  image: "",
+  authorId: '',
+  image: '',
 };
 type BlogEditorProps = {
   userId: string;
 };
 const BlogEditor: React.FC<BlogEditorProps> = ({ userId }) => {
-  const [activeTab, setActiveTab] = useState("write");
+  const [activeTab, setActiveTab] = useState('write');
   const formRef = useRef<HTMLFormElement>(null);
   const {
     register,
@@ -70,9 +71,9 @@ const BlogEditor: React.FC<BlogEditorProps> = ({ userId }) => {
 
   const editor = useEditor({
     extensions: [StarterKit],
-    content: "<p>Commencez à écrire votre article ici...</p>",
+    content: '<p>Commencez à écrire votre article ici...</p>',
     onUpdate: ({ editor }) => {
-      setValue("content", editor.getHTML(), { shouldValidate: true });
+      setValue('content', editor.getHTML(), { shouldValidate: true });
     },
   });
   async function handleAddDraft() {
@@ -80,18 +81,18 @@ const BlogEditor: React.FC<BlogEditorProps> = ({ userId }) => {
     const values = watch();
     const newValues: CreatedBlogPostDto = {
       ...values,
-      content: editor?.getHTML() || "",
+      content: editor?.getHTML() || '',
       authorId: userId,
-      excerpt: values.excerpt || "",
+      excerpt: values.excerpt || '',
       tagIds: [],
       categoryIds: [],
       published: false,
     };
-    console.log("newValues", newValues);
+    console.log('newValues', newValues);
     // Validate the form data
     const validatedData = createBlogPostSchema.safeParse(newValues);
     if (!validatedData.success) {
-      console.error("Validation failed:", validatedData.error.errors);
+      console.error('Validation failed:', validatedData.error.errors);
       return;
     }
     const result = await createBlogPostAction(validatedData.data);
@@ -104,24 +105,24 @@ const BlogEditor: React.FC<BlogEditorProps> = ({ userId }) => {
     const values = watch();
     const newValues: CreatedBlogPostDto = {
       ...values,
-      content: editor?.getHTML() || "",
+      content: editor?.getHTML() || '',
       authorId: userId,
 
-      excerpt: values.excerpt || "",
+      excerpt: values.excerpt || '',
       tagIds: [],
       categoryIds: [],
       published: true,
     };
-    console.log("newValues", newValues);
+    console.log('newValues', newValues);
     // Validate the form data
     const validatedData = createBlogPostSchema.safeParse(newValues);
     if (!validatedData.success) {
-      console.error("Validation failed:", validatedData.error.errors);
+      console.error('Validation failed:', validatedData.error.errors);
       return;
     }
     const result = await createBlogPostAction(validatedData.data);
     if (result.message) {
-      console.log("result", result);
+      console.log('result', result);
     }
   };
 
@@ -149,7 +150,7 @@ const BlogEditor: React.FC<BlogEditorProps> = ({ userId }) => {
                   <Label htmlFor="title">Titre</Label>
                   <Input
                     id="title"
-                    {...register("title")}
+                    {...register('title')}
                     placeholder="Entrez le titre de votre article"
                   />
                   {errors.title && (
@@ -160,7 +161,7 @@ const BlogEditor: React.FC<BlogEditorProps> = ({ userId }) => {
                   <Label htmlFor="excerpt">Extrait</Label>
                   <Textarea
                     id="excerpt"
-                    {...register("excerpt")}
+                    {...register('excerpt')}
                     placeholder="Entrez un bref résumé de votre article"
                   />
                   {errors.excerpt && (
@@ -171,7 +172,7 @@ const BlogEditor: React.FC<BlogEditorProps> = ({ userId }) => {
                   <Label htmlFor="slug">Slug</Label>
                   <Input
                     id="slug"
-                    {...register("slug")}
+                    {...register('slug')}
                     placeholder="Entrez le slug de votre article"
                   />
                   {errors.slug && (
@@ -184,7 +185,7 @@ const BlogEditor: React.FC<BlogEditorProps> = ({ userId }) => {
                   </Label>
                   <Input
                     id="image"
-                    {...register("image")}
+                    {...register('image')}
                     placeholder="Entrez l'URL de l'image de couverture"
                   />
                   {errors.image && (
@@ -197,14 +198,14 @@ const BlogEditor: React.FC<BlogEditorProps> = ({ userId }) => {
               <Card>
                 <CardHeader>
                   <CardTitle>
-                    {watch("title") || "Titre de l'article"}
+                    {watch('title') || "Titre de l'article"}
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="aspect-video bg-muted relative mb-4">
-                    {watch("image") ? (
+                    {watch('image') ? (
                       <img
-                        src={watch("image")}
+                        src={watch('image')}
                         alt="Image de couverture"
                         className="object-cover w-full h-full"
                       />
@@ -215,41 +216,41 @@ const BlogEditor: React.FC<BlogEditorProps> = ({ userId }) => {
                     )}
                   </div>
                   <p className="text-muted-foreground mb-4">
-                    {watch("excerpt") || "Extrait de l'article"}
+                    {watch('excerpt') || "Extrait de l'article"}
                   </p>
                   <div
                     className="prose max-w-none"
-                    dangerouslySetInnerHTML={{ __html: watch("content") }}
+                    dangerouslySetInnerHTML={{ __html: watch('content') }}
                   />
                 </CardContent>
               </Card>
             </TabsContent>
           </Tabs>
           <CardFooter className="flex justify-between mt-4">
-            {activeTab !== "write" && (
+            {activeTab !== 'write' && (
               <Button
                 type="button"
                 variant="outline"
                 onClick={() =>
-                  setActiveTab(activeTab === "metadata" ? "write" : "metadata")
+                  setActiveTab(activeTab === 'metadata' ? 'write' : 'metadata')
                 }
               >
                 <ArrowLeft className="w-4 h-4 mr-2" />
                 Précédent
               </Button>
             )}
-            {activeTab !== "preview" && (
+            {activeTab !== 'preview' && (
               <Button
                 type="button"
                 onClick={() =>
-                  setActiveTab(activeTab === "write" ? "metadata" : "preview")
+                  setActiveTab(activeTab === 'write' ? 'metadata' : 'preview')
                 }
               >
                 Suivant
                 <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
             )}
-            {activeTab === "preview" && (
+            {activeTab === 'preview' && (
               <>
                 <Button
                   type="submit"

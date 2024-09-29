@@ -1,11 +1,12 @@
-import { httpRouter } from "convex/server";
-import { internal } from "./_generated/api";
-import { httpAction } from "./_generated/server";
+import { httpRouter } from 'convex/server';
+
+import { internal } from './_generated/api';
+import { httpAction } from './_generated/server';
 
 const http = httpRouter();
 http.route({
-  path: "/clerk",
-  method: "POST",
+  path: '/clerk',
+  method: 'POST',
   handler: httpAction(async (ctx, request) => {
     const payloadString = await request.text();
     const headerPayload = request.headers;
@@ -14,19 +15,19 @@ http.route({
       const result = await ctx.runAction(internal.clerk.fulfill, {
         payload: payloadString,
         headers: {
-          "svix-id": headerPayload.get("svix-id")!,
-          "svix-timestamp": headerPayload.get("svix-timestamp")!,
-          "svix-signature": headerPayload.get("svix-signature")!,
+          'svix-id': headerPayload.get('svix-id')!,
+          'svix-timestamp': headerPayload.get('svix-timestamp')!,
+          'svix-signature': headerPayload.get('svix-signature')!,
         },
       });
 
       switch (result.type) {
-        case "user.created":
+        case 'user.created':
           if (!result.data.username) {
             await ctx.runMutation(internal.users.createUser, {
               userId: result.data.id,
-              name: `${result.data.first_name ?? ""} ${
-                result.data.last_name ?? ""
+              name: `${result.data.first_name ?? ''} ${
+                result.data.last_name ?? ''
               }`,
               hostname: btoa(result.data.id),
               image: result.data.image_url,
@@ -46,8 +47,8 @@ http.route({
           if (hostname === true) {
             await ctx.runMutation(internal.users.createUser, {
               userId: result.data.id,
-              name: `${result.data.first_name ?? ""} ${
-                result.data.last_name ?? ""
+              name: `${result.data.first_name ?? ''} ${
+                result.data.last_name ?? ''
               }`,
               hostname: btoa(result.data.id),
               image: result.data.image_url,
@@ -60,8 +61,8 @@ http.route({
           }
           await ctx.runMutation(internal.users.createUser, {
             userId: result.data.id,
-            name: `${result.data.first_name ?? ""} ${
-              result.data.last_name ?? ""
+            name: `${result.data.first_name ?? ''} ${
+              result.data.last_name ?? ''
             }`,
             hostname: result.data.username,
             image: result.data.image_url,
@@ -71,11 +72,11 @@ http.route({
             userId: result.data.id,
           });
           break;
-        case "user.updated":
+        case 'user.updated':
           await ctx.runMutation(internal.users.updateUser, {
             userId: result.data.id,
-            name: `${result.data.first_name ?? ""} ${
-              result.data.last_name ?? ""
+            name: `${result.data.first_name ?? ''} ${
+              result.data.last_name ?? ''
             }`,
             image: result.data.image_url,
           });
@@ -86,7 +87,7 @@ http.route({
         status: 200,
       });
     } catch (err) {
-      return new Response("Webhook Error", {
+      return new Response('Webhook Error', {
         status: 400,
       });
     }
@@ -94,10 +95,10 @@ http.route({
 });
 
 http.route({
-  path: "/stripe",
-  method: "POST",
+  path: '/stripe',
+  method: 'POST',
   handler: httpAction(async (ctx, request) => {
-    const signature = request.headers.get("stripe-signature") as string;
+    const signature = request.headers.get('stripe-signature') as string;
 
     try {
       const result = await ctx.runAction(internal.stripe.fulfill, {
@@ -110,7 +111,7 @@ http.route({
           status: 200,
         });
       } else {
-        return new Response("Webhook Error", {
+        return new Response('Webhook Error', {
           status: 400,
         });
       }
@@ -131,7 +132,7 @@ http.route({
       //     status: 200,
       //   });
     } catch (err) {
-      return new Response("Webhook Error", {
+      return new Response('Webhook Error', {
         status: 400,
       });
     }

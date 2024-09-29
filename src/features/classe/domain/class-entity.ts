@@ -1,7 +1,8 @@
-import { Entity } from "../../../core/domain/entity/entity-generic-class";
-import classSchema, { ClassType } from "./class-schema";
-import { Either, left, right } from "fp-ts/lib/Either";
-import Failure from "@/core/failures/failures";
+import Failure from '@/core/failures/failures';
+import { Either, left, right } from 'fp-ts/lib/Either';
+
+import { Entity } from '../../../core/domain/entity/entity-generic-class';
+import classSchema, { ClassType } from './class-schema';
 
 /**
  * Represents a ClassEntity, which is a subclass of the Entity class.
@@ -39,8 +40,8 @@ export default class ClassEntity extends Entity<ClassType> {
       return left(
         Failure.invalidValue({
           invalidValue: props,
-          message: "Invalid value",
-          code: "DOM201",
+          message: 'Invalid value',
+          code: 'DOM201',
         })
       );
     }

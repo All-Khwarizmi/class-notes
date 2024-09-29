@@ -1,20 +1,21 @@
-import { Either, isLeft, left, right } from "fp-ts/lib/Either";
+import Failure from '@/core/failures/failures';
+import { Either, isLeft, left, right } from 'fp-ts/lib/Either';
+
 import {
   Category,
   Competence,
   categorySchema,
   competenceSchema,
-} from "../../domain/entities/schemas";
-import CompCatRepository, {
-  compCatRepository,
-} from "../repositories/comp-cat-repository";
-import Failure from "@/core/failures/failures";
+} from '../../domain/entities/schemas';
 import {
   CreateCompetenceOptions,
   DeleteCompCatOptions,
   GetCompetenceOptions,
   UpdateCompCatOptions,
-} from "../../domain/types";
+} from '../../domain/types';
+import CompCatRepository, {
+  compCatRepository,
+} from '../repositories/comp-cat-repository';
 
 export default class CompCatUsecases {
   private readonly _repository: CompCatRepository;
@@ -47,8 +48,8 @@ export default class CompCatUsecases {
     if (errorMessages.length > 0) {
       return left(
         Failure.invalidValue({
-          invalidValue: errorMessages.join("\n"),
-          message: "Invalid category",
+          invalidValue: errorMessages.join('\n'),
+          message: 'Invalid category',
         })
       );
     }
@@ -61,7 +62,7 @@ export default class CompCatUsecases {
     category,
   }: {
     userId: string;
-    category: Omit<Category, "_id">;
+    category: Omit<Category, '_id'>;
   }) {
     return this._repository.addCategory({ userId, category });
   }
@@ -88,8 +89,8 @@ export default class CompCatUsecases {
     if (errorMessages.length > 0) {
       return left(
         Failure.invalidValue({
-          invalidValue: errorMessages.join("\n"),
-          message: "Invalid competence",
+          invalidValue: errorMessages.join('\n'),
+          message: 'Invalid competence',
         })
       );
     }
@@ -117,7 +118,7 @@ export default class CompCatUsecases {
     ]);
 
     const failures = batch.some((result) => {
-      if (result.status === "rejected") {
+      if (result.status === 'rejected') {
         return true;
       }
       if (isLeft(result.value)) {
@@ -129,7 +130,7 @@ export default class CompCatUsecases {
       return left(
         Failure.invalidValue({
           invalidValue: userId,
-          message: "Error getting categories and competences: error in batch",
+          message: 'Error getting categories and competences: error in batch',
         })
       );
     }
@@ -137,22 +138,22 @@ export default class CompCatUsecases {
     const categories: Category[] = [];
     const competences: Competence[] = [];
 
-    if (batch[0].status === "rejected") {
+    if (batch[0].status === 'rejected') {
       return left(
         Failure.invalidValue({
           invalidValue: userId,
-          message: "Error getting categories",
+          message: 'Error getting categories',
         })
       );
     }
     if (isLeft(batch[0].value)) {
       return left(batch[0].value.left);
     }
-    if (batch[1].status === "rejected") {
+    if (batch[1].status === 'rejected') {
       return left(
         Failure.invalidValue({
           invalidValue: userId,
-          message: "Error getting competences",
+          message: 'Error getting competences',
         })
       );
     }

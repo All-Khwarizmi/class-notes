@@ -27,14 +27,14 @@ declare global {
   }
 }
 
-Cypress.Commands.add("getByTestId", (testId) => {
+Cypress.Commands.add('getByTestId', (testId) => {
   return cy.get(`[data-testid="${testId}"]`);
 });
 
 Cypress.Commands.add(`signIn`, () => {
   cy.log(`Signing in.`);
   // const baseUrl = Cypress.env("CYPRESS_BASE_URL");
-  cy.visit("/", {
+  cy.visit('/', {
     timeout: 10000,
     failOnStatusCode: false,
   });

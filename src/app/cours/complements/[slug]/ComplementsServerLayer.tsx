@@ -1,14 +1,13 @@
-import React from "react";
-import { isLeft } from "fp-ts/lib/Either";
-import { complementUsecases } from "@/features/complement/application/usecases/complement-usecases";
+import ErrorDialog from '@/core/components/common/ErrorDialog';
+import checkAuthAndRedirect from '@/data-access/auth/check-and-redirect';
+import { complementUsecases } from '@/features/complement/application/usecases/complement-usecases';
 import {
   Complement,
   ComplementSchema,
-} from "@/features/complement/domain/complement-schemas";
-import ErrorDialog from "@/core/components/common/ErrorDialog";
-
-import ComplementsView from "@/features/complement/presentation/views/ComplementsView";
-import checkAuthAndRedirect from "@/data-access/auth/check-and-redirect";
+} from '@/features/complement/domain/complement-schemas';
+import ComplementsView from '@/features/complement/presentation/views/ComplementsView';
+import { isLeft } from 'fp-ts/lib/Either';
+import React from 'react';
 
 async function ComplementsServerLayer(props: { slug: string }) {
   const { userId } = await checkAuthAndRedirect();
@@ -28,9 +27,9 @@ async function ComplementsServerLayer(props: { slug: string }) {
             `}
         code={eitherComplements.left.code}
         description={
-          process.env.NODE_ENV === "development"
+          process.env.NODE_ENV === 'development'
             ? eitherComplements.left.message
-            : "An error occurred while fetching complements."
+            : 'An error occurred while fetching complements.'
         }
       />
     );
@@ -45,9 +44,9 @@ async function ComplementsServerLayer(props: { slug: string }) {
             `}
           code={validateComplement.error.message}
           description={
-            process.env.NODE_ENV === "development"
+            process.env.NODE_ENV === 'development'
               ? validateComplement.error.message
-              : "An error occurred while validating complement."
+              : 'An error occurred while validating complement.'
           }
         />
       );

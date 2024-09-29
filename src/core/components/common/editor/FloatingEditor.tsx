@@ -1,20 +1,21 @@
-"use client";
+'use client';
 
-import React, { useState, useRef, useEffect } from "react";
-import { EditorContent, FloatingMenu, useEditor } from "@tiptap/react";
-import { EXTENSIONS } from "@/core/components/constants/editor-extenstions";
-import { DebouncedFunc } from "lodash";
-import FloatingMenuBar from "@/core/components/common/editor/FloatingMenuBar";
+import FloatingMenuBar from '@/core/components/common/editor/FloatingMenuBar';
+import { EXTENSIONS } from '@/core/components/constants/editor-extenstions';
+import { Button } from '@/core/components/ui/button';
 import {
   Card,
   CardContent,
   CardHeader,
   CardTitle,
-} from "@/core/components/ui/card";
-import { ScrollArea } from "@/core/components/ui/scroll-area";
-import { Button } from "@/core/components/ui/button";
-import { Maximize2, Minimize2 } from "lucide-react";
-import AfterMenuBar from "./AfterMunuBar";
+} from '@/core/components/ui/card';
+import { ScrollArea } from '@/core/components/ui/scroll-area';
+import { EditorContent, FloatingMenu, useEditor } from '@tiptap/react';
+import { DebouncedFunc } from 'lodash';
+import { Maximize2, Minimize2 } from 'lucide-react';
+import React, { useState, useRef, useEffect } from 'react';
+
+import AfterMenuBar from './AfterMunuBar';
 
 interface FloatingEditorProps {
   content: string;
@@ -34,7 +35,7 @@ function FloatingEditor({
   const [isFullScreen, setIsFullScreen] = useState(false);
   const editorRef = useRef<HTMLDivElement>(null);
 
-  const contentOrPlaceholder = content !== "" ? content : getDefaultContent();
+  const contentOrPlaceholder = content !== '' ? content : getDefaultContent();
 
   const editor = useEditor({
     extensions: EXTENSIONS,
@@ -60,9 +61,9 @@ function FloatingEditor({
       setIsFullScreen(!!document.fullscreenElement);
     };
 
-    document.addEventListener("fullscreenchange", handleFullScreenChange);
+    document.addEventListener('fullscreenchange', handleFullScreenChange);
     return () => {
-      document.removeEventListener("fullscreenchange", handleFullScreenChange);
+      document.removeEventListener('fullscreenchange', handleFullScreenChange);
     };
   }, []);
 
@@ -79,7 +80,7 @@ function FloatingEditor({
           size="icon"
           onClick={toggleFullScreen}
           aria-label={
-            isFullScreen ? "Quitter le plein écran" : "Afficher en plein écran"
+            isFullScreen ? 'Quitter le plein écran' : 'Afficher en plein écran'
           }
         >
           {isFullScreen ? (
@@ -92,7 +93,7 @@ function FloatingEditor({
       <CardContent>
         <ScrollArea
           className={
-            isFullScreen ? "h-[calc(100vh-100px)]" : "h-[calc(80vh-200px)]"
+            isFullScreen ? 'h-[calc(100vh-100px)]' : 'h-[calc(80vh-200px)]'
           }
         >
           <div className="prose prose-sm sm:prose lg:prose-lg xl:prose-xl max-w-none">
@@ -101,13 +102,13 @@ function FloatingEditor({
               tippyOptions={{
                 duration: 300,
                 offset: [0, 50],
-                placement: "top",
+                placement: 'top',
               }}
               shouldShow={({ state, view }) => {
                 const { selection } = state;
                 const { empty } = selection;
-                const right = view.endOfTextblock("right");
-                const left = view.endOfTextblock("left");
+                const right = view.endOfTextblock('right');
+                const left = view.endOfTextblock('left');
                 return !empty || (right && left);
               }}
             >

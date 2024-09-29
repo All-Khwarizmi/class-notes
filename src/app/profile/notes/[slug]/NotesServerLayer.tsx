@@ -1,16 +1,14 @@
-import NotFound from "@/app/not-found";
-import ErrorDialog from "@/core/components/common/ErrorDialog";
-import checkAuthAndRedirect from "@/data-access/auth/check-and-redirect";
-import getNotes from "@/features/notes/application/adapters/actions/get-notes";
-
-import NotesTableView from "@/features/notes/presentation/views/NotesTableView";
-
-import { isLeft } from "fp-ts/lib/Either";
-import React from "react";
+import NotFound from '@/app/not-found';
+import ErrorDialog from '@/core/components/common/ErrorDialog';
+import checkAuthAndRedirect from '@/data-access/auth/check-and-redirect';
+import getNotes from '@/features/notes/application/adapters/actions/get-notes';
+import NotesTableView from '@/features/notes/presentation/views/NotesTableView';
+import { isLeft } from 'fp-ts/lib/Either';
+import React from 'react';
 
 async function NotesServerLayer(props: {
   slug: string;
-  type: "profile" | "sequence" | "cours" | "class" | "student";
+  type: 'profile' | 'sequence' | 'cours' | 'class' | 'student';
 }) {
   if (!props.slug) {
     <NotFound />;
@@ -39,7 +37,7 @@ async function NotesServerLayer(props: {
   return (
     <NotesTableView
       notes={eitherNotes.right}
-      parentId={props.type === "profile" ? userId : props.slug}
+      parentId={props.type === 'profile' ? userId : props.slug}
     />
   );
 }

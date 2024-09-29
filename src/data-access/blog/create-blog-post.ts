@@ -1,11 +1,12 @@
-"use server";
+'use server';
 
-import { api } from "../../../convex/_generated/api";
-import { none, Option, some } from "fp-ts/lib/Option";
-import { fetchMutation } from "convex/nextjs";
-import { createBlogPostSchema, CreatedBlogPostDto } from "./blog-post-dto";
-import { z } from "zod";
-import { BlogPostDto } from "./get-blog-post";
+import { fetchMutation } from 'convex/nextjs';
+import { none, Option, some } from 'fp-ts/lib/Option';
+import { z } from 'zod';
+
+import { api } from '../../../convex/_generated/api';
+import { createBlogPostSchema, CreatedBlogPostDto } from './blog-post-dto';
+import { BlogPostDto } from './get-blog-post';
 
 // Function to create a blog post
 export async function createBlogPost(
@@ -19,7 +20,7 @@ export async function createBlogPost(
     const postId = await fetchMutation(api.blog.createBlogPost, validatedInput);
 
     if (!postId) {
-      console.error("Failed to create blog post");
+      console.error('Failed to create blog post');
       return none;
     }
 
@@ -34,14 +35,14 @@ export async function createBlogPost(
       authorId: validatedInput.authorId,
       createdAt: Date.now(),
       updatedAt: Date.now(),
-      authorName: validatedInput.authorName || "",
+      authorName: validatedInput.authorName || '',
       image: validatedInput.image,
     });
   } catch (error) {
     if (error instanceof z.ZodError) {
-      console.error("Validation error:", error.errors);
+      console.error('Validation error:', error.errors);
     } else {
-      console.error("Error creating blog post:", error);
+      console.error('Error creating blog post:', error);
     }
     return none;
   }
@@ -51,7 +52,7 @@ export async function createBlogPost(
 export async function createBlogPostAction(
   post: CreatedBlogPostDto
 ): Promise<BlogPostDto | { message: string }> {
-  "use server";
+  'use server';
   try {
     const validatedData = createBlogPostSchema.parse({
       ...post,
@@ -63,17 +64,17 @@ export async function createBlogPostAction(
     const postId = await fetchMutation(api.blog.createBlogPost, validatedData);
 
     if (!postId) {
-      throw new Error("Failed to create blog post");
+      throw new Error('Failed to create blog post');
     }
 
     return {
       ...validatedData,
       id: postId,
 
-      message: "Article publié avec succès !",
+      message: 'Article publié avec succès !',
     };
   } catch (error) {
-    console.error("Error creating blog post:", error);
+    console.error('Error creating blog post:', error);
     return {
       message: "Échec de l'enregistrement de l'article. Veuillez réessayer.",
     };

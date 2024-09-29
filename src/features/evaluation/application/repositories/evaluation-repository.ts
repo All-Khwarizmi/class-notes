@@ -1,5 +1,7 @@
-import { convexDatabase } from "@/core/data/convex/convex-impl";
-import IDatabase from "@/core/data/idatabase";
+import { convexDatabase } from '@/core/data/convex/convex-impl';
+import { getAppDataBase } from '@/core/data/get-app-db';
+import IDatabase from '@/core/data/idatabase';
+
 import {
   AssignEvaluationOptions,
   CreateEvaluationOptions,
@@ -12,8 +14,7 @@ import {
   GetEvaluationsWithGradesByEvalauationBaseIdOptions,
   UpdateEvaluationBaseOptions,
   UpdateGradeOptions,
-} from "../../domain/entities/evaluation-types";
-import { getAppDataBase } from "@/core/data/get-app-db";
+} from '../../domain/entities/evaluation-types';
 
 export default class EvaluatioRepository {
   private readonly _db: IDatabase;

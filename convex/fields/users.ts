@@ -1,5 +1,5 @@
-import { defineSchema, defineTable } from "convex/server";
-import { v } from "convex/values";
+import { defineSchema, defineTable } from 'convex/server';
+import { v } from 'convex/values';
 
 export const userSchema = defineTable({
   userId: v.string(),
@@ -20,5 +20,5 @@ export const userSchema = defineTable({
   endsOn: v.optional(v.number()),
   credits: v.optional(v.number()),
 })
-  .index("by_userId", ["userId"])
-  .index("by_subscriptionId", ["subscriptionId"]);
+  .index('by_userId', ['userId'])
+  .index('by_subscriptionId', ['subscriptionId']);

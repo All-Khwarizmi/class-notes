@@ -1,12 +1,13 @@
-import { useEffect, useState } from "react";
-import TemplateEntity from "../../domain/entities/template-entity";
-import { api } from "../../../../../convex/_generated/api";
-import { useQuery } from "convex/react";
-import TemplateDto from "../dto/template-dto";
-import { isLeft } from "fp-ts/lib/Either";
+import { useQuery } from 'convex/react';
+import { isLeft } from 'fp-ts/lib/Either';
+import { useEffect, useState } from 'react';
+
+import { api } from '../../../../../convex/_generated/api';
+import TemplateEntity from '../../domain/entities/template-entity';
+import TemplateDto from '../dto/template-dto';
 
 export type GetTemplatesByCreatorPayload = {
-  templates: TemplateEntity[] | false | "NO DATA";
+  templates: TemplateEntity[] | false | 'NO DATA';
   error: boolean;
 } | null;
 export default function useGetEvaluationsByCreatorInfra({
@@ -22,7 +23,7 @@ export default function useGetEvaluationsByCreatorInfra({
 
   const getTemplatesByCreatorId = useQuery(
     api.template.listTemplatesByCreator,
-    { userId: userId || "" }
+    { userId: userId || '' }
   );
 
   useEffect(() => {
@@ -60,7 +61,7 @@ export default function useGetEvaluationsByCreatorInfra({
         });
       } else if (eitherTemplates.length === 0) {
         setGetTemplatesByCreatorPayload({
-          templates: "NO DATA",
+          templates: 'NO DATA',
           error: false,
         });
       }

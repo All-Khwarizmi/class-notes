@@ -1,3 +1,5 @@
+import EditIcon from '@/core/components/icons/EditIcon';
+import { Button } from '@/core/components/ui/button';
 import {
   Card,
   CardContent,
@@ -5,15 +7,14 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/core/components/ui/card";
-import { twMerge } from "tailwind-merge";
-import EditIcon from "@/core/components/icons/EditIcon";
-import { Button } from "@/core/components/ui/button";
-import { useRouter } from "next/navigation";
-import { templatesRepository } from "../../application/repository/templates-repository";
-import { useEffect } from "react";
-import { is } from "immutable";
-import { isRight } from "fp-ts/lib/Either";
+} from '@/core/components/ui/card';
+import { isRight } from 'fp-ts/lib/Either';
+import { is } from 'immutable';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
+import { twMerge } from 'tailwind-merge';
+
+import { templatesRepository } from '../../application/repository/templates-repository';
 
 //! Remove any type when refactoring
 export default function EvaluationGrid({ userId }: { userId: string }) {
@@ -23,7 +24,7 @@ export default function EvaluationGrid({ userId }: { userId: string }) {
   const router = useRouter();
 
   if (loading) return <div>Loading...</div>;
-  if (templates === "NO DATA")
+  if (templates === 'NO DATA')
     return (
       <div>
         <h1>Vous n&apos;avez pas encore d&apos;évaluations</h1>

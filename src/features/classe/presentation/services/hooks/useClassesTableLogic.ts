@@ -1,6 +1,7 @@
-import { useState } from "react";
-import useGetClasses from "./useGetClasses";
-import useDeleteClasse from "@/features/classe/application/adapters/services/useDeleteClasse";
+import useDeleteClasse from '@/features/classe/application/adapters/services/useDeleteClasse';
+import { useState } from 'react';
+
+import useGetClasses from './useGetClasses';
 
 export const useClassesTableLogic = (options: { userId: string }) => {
   const {

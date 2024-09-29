@@ -1,10 +1,14 @@
-"use server";
+'use server';
 
-import { fetchQuery } from "convex/nextjs";
-import { api } from "../../../../../../convex/_generated/api";
-import { Either, left, right } from "fp-ts/lib/Either";
-import Failure from "@/core/failures/failures";
-import { Student, StudentSchema } from "@/features/student/domain/entities/student-schema";
+import Failure from '@/core/failures/failures';
+import {
+  Student,
+  StudentSchema,
+} from '@/features/student/domain/entities/student-schema';
+import { fetchQuery } from 'convex/nextjs';
+import { Either, left, right } from 'fp-ts/lib/Either';
+
+import { api } from '../../../../../../convex/_generated/api';
 
 export default async function getStudents(options: {
   classeId: string;
@@ -23,9 +27,9 @@ export default async function getStudents(options: {
       if (validatedStudent.success === false) {
         return left(
           Failure.invalidValue({
-            message: "Invalid student data",
+            message: 'Invalid student data',
             invalidValue: student,
-            code: "APP203",
+            code: 'APP203',
           })
         );
       }
@@ -36,9 +40,9 @@ export default async function getStudents(options: {
   } catch (error) {
     return left(
       Failure.invalidValue({
-        message: "An unexpected error occurred",
+        message: 'An unexpected error occurred',
         invalidValue: error,
-        code: "APP201",
+        code: 'APP201',
       })
     );
   }

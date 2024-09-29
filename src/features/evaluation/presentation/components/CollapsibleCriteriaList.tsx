@@ -1,15 +1,16 @@
-import { cn } from "@/lib/utils";
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
-} from "@/core/components/ui/collapsible";
-import { Switch } from "@/core/components/ui/switch";
-import { ChevronDown, X } from "lucide-react";
-import { toast } from "sonner";
-import { EvaluationCriteriaType } from "../../domain/entities/evaluation-schema";
-import { FormLabel } from "@/core/components/ui/form";
-import { Input } from "@/core/components/ui/input";
+} from '@/core/components/ui/collapsible';
+import { FormLabel } from '@/core/components/ui/form';
+import { Input } from '@/core/components/ui/input';
+import { Switch } from '@/core/components/ui/switch';
+import { cn } from '@/lib/utils';
+import { ChevronDown, X } from 'lucide-react';
+import { toast } from 'sonner';
+
+import { EvaluationCriteriaType } from '../../domain/entities/evaluation-schema';
 
 function CollapsibleCriteriaList({
   criterias,
@@ -37,11 +38,11 @@ function CollapsibleCriteriaList({
         >
           <CollapsibleTrigger className="flex justify-between items-center">
             <div className="flex justify-between items-center gap-2 ">
-              <FormLabel>Criteria {index + 1}</FormLabel>{" "}
+              <FormLabel>Criteria {index + 1}</FormLabel>{' '}
               <span>
                 <ChevronDown
-                  className={cn("transform transition-transform duration-500", {
-                    "rotate-180": openArray[index],
+                  className={cn('transform transition-transform duration-500', {
+                    'rotate-180': openArray[index],
                   })}
                   size={16}
                 />
@@ -89,7 +90,7 @@ function CollapsibleCriteriaList({
                   onChange={(e) => {
                     // Check if the weight is at least 0.5
                     if (Number(e.target.value) < 0.5) {
-                      toast.info("Criteria weight must be at least 0.5", {
+                      toast.info('Criteria weight must be at least 0.5', {
                         description: ` Tip: Criteria weight is used to calculate the total score for the evaluation.
                         If you want to remove the criteria, click the delete button on the right side of the criteria box.
                         If you want to disable grading for this criteria, toggle the switch below the criteria name.`,

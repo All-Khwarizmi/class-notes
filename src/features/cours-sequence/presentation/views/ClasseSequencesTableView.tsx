@@ -1,13 +1,16 @@
-"use client";
+'use client';
 
-import React from "react";
-import { useRouter } from "next/navigation";
-import { isRight } from "fp-ts/lib/Either";
-import { Plus, Trash2, ChevronRight, Search } from "lucide-react";
-import { useClasseSequencesLogic } from "../hooks/useClasseSequencesLogic";
-import { cn } from "@/lib/utils";
-import { Button } from "@/core/components/ui/button";
-import { Input } from "@/core/components/ui/input";
+import { Button } from '@/core/components/ui/button';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/core/components/ui/card';
+import { Input } from '@/core/components/ui/input';
+import { ScrollArea } from '@/core/components/ui/scroll-area';
+import { Skeleton } from '@/core/components/ui/skeleton';
 import {
   Table,
   TableBody,
@@ -15,16 +18,14 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/core/components/ui/table";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/core/components/ui/card";
-import { ScrollArea } from "@/core/components/ui/scroll-area";
-import { Skeleton } from "@/core/components/ui/skeleton";
+} from '@/core/components/ui/table';
+import { cn } from '@/lib/utils';
+import { isRight } from 'fp-ts/lib/Either';
+import { Plus, Trash2, ChevronRight, Search } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import React from 'react';
+
+import { useClasseSequencesLogic } from '../hooks/useClasseSequencesLogic';
 
 function ClasseSequencesTableView({
   classeId,
@@ -45,7 +46,7 @@ function ClasseSequencesTableView({
     userId,
   });
 
-  const [searchTerm, setSearchTerm] = React.useState("");
+  const [searchTerm, setSearchTerm] = React.useState('');
 
   if (loading) {
     return (
@@ -137,7 +138,7 @@ function ClasseSequencesTableView({
                       {new Date(sequence.createdAt).toLocaleDateString()}
                     </TableCell>
                     <TableCell className="w-[200px]">
-                      <div className={cn("flex items-center gap-4")}>
+                      <div className={cn('flex items-center gap-4')}>
                         {classeSequence ? (
                           <Button
                             variant="ghost"

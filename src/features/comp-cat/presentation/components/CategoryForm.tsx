@@ -1,9 +1,13 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Category, categorySchema } from "../../domain/entities/schemas";
+import { Button } from '@/core/components/ui/button';
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/core/components/ui/card';
 import {
   Form,
   FormControl,
@@ -12,20 +16,17 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/core/components/ui/form";
-import { Input } from "@/core/components/ui/input";
-import { Button } from "@/core/components/ui/button";
-import { Textarea } from "@/core/components/ui/textarea";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/core/components/ui/card";
-import { Loader2 } from "lucide-react";
-import useCreateCategory from "../../application/usecases/services/useCreateCategory";
-import { toastWrapper } from "@/core/utils/toast-wrapper";
+} from '@/core/components/ui/form';
+import { Input } from '@/core/components/ui/input';
+import { Textarea } from '@/core/components/ui/textarea';
+import { toastWrapper } from '@/core/utils/toast-wrapper';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Loader2 } from 'lucide-react';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+
+import useCreateCategory from '../../application/usecases/services/useCreateCategory';
+import { Category, categorySchema } from '../../domain/entities/schemas';
 
 interface CategoryFormProps {
   userId: string;
@@ -36,15 +37,15 @@ export default function CategoryForm({ userId, refetch }: CategoryFormProps) {
   const { mutate: createCategory, isPending } = useCreateCategory();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const form = useForm<Pick<Category, "name" | "description">>({
+  const form = useForm<Pick<Category, 'name' | 'description'>>({
     resolver: zodResolver(categorySchema),
     defaultValues: {
-      name: "",
-      description: "",
+      name: '',
+      description: '',
     },
   });
 
-  async function onSubmit(data: Pick<Category, "name" | "description">) {
+  async function onSubmit(data: Pick<Category, 'name' | 'description'>) {
     setIsSubmitting(true);
     createCategory(
       {
@@ -54,12 +55,12 @@ export default function CategoryForm({ userId, refetch }: CategoryFormProps) {
       {
         onSuccess: async () => {
           await refetch();
-          toastWrapper.success("Category created");
+          toastWrapper.success('Category created');
           form.reset();
         },
         onError: () => {
           toastWrapper.error(
-            "There was an error creating the category. Please try again."
+            'There was an error creating the category. Please try again.'
           );
         },
         onSettled: () => {
@@ -126,7 +127,7 @@ export default function CategoryForm({ userId, refetch }: CategoryFormProps) {
                   Creating...
                 </>
               ) : (
-                "Create Category"
+                'Create Category'
               )}
             </Button>
           </CardFooter>

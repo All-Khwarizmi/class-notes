@@ -1,29 +1,30 @@
-import getStudents from "@/features/classe/application/adapters/actions/get-students";
-import { StudentsEvaluationTableView } from "@/features/classe/presentation/components/StudentsEvaluationTableView";
-import { coursUsecases } from "@/features/cours-sequence/application/usecases/cours-usecases";
-import getEvaluationCompoundList from "@/features/evaluation/application/adapters/actions/get-evaluation-compound-list";
-import { isLeft } from "fp-ts/lib/Either";
-import React, { Suspense } from "react";
-import {
-  dehydrate,
-  HydrationBoundary,
-  QueryClient,
-} from "@tanstack/react-query";
+import NotesServerLayer from '@/app/profile/notes/[slug]/NotesServerLayer';
+import AIServerLayer from '@/app/sequences/[slug]/AIServerLayer';
+import ErrorDialog from '@/core/components/common/ErrorDialog';
+import LoadingSkeleton from '@/core/components/common/LoadingSkeleton';
+import { TypographyH1 } from '@/core/components/common/Typography';
 import {
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
-} from "@/core/components/ui/tabs";
-import LoadingSkeleton from "@/core/components/common/LoadingSkeleton";
-import NotesServerLayer from "@/app/profile/notes/[slug]/NotesServerLayer";
-import { QUERY_KEYS } from "@/core/query/ query-keys";
-import ClasseSequencesTableView from "@/features/cours-sequence/presentation/views/ClasseSequencesTableView";
-import { classeUsecases } from "@/features/classe/application";
-import ErrorDialog from "@/core/components/common/ErrorDialog";
-import { TypographyH1 } from "@/core/components/common/Typography";
-import AIServerLayer from "@/app/sequences/[slug]/AIServerLayer";
-import checkAuthAndRedirect from "@/data-access/auth/check-and-redirect";
+} from '@/core/components/ui/tabs';
+import { QUERY_KEYS } from '@/core/query/ query-keys';
+import checkAuthAndRedirect from '@/data-access/auth/check-and-redirect';
+import { classeUsecases } from '@/features/classe/application';
+import getStudents from '@/features/classe/application/adapters/actions/get-students';
+import { StudentsEvaluationTableView } from '@/features/classe/presentation/components/StudentsEvaluationTableView';
+import { coursUsecases } from '@/features/cours-sequence/application/usecases/cours-usecases';
+import ClasseSequencesTableView from '@/features/cours-sequence/presentation/views/ClasseSequencesTableView';
+import getEvaluationCompoundList from '@/features/evaluation/application/adapters/actions/get-evaluation-compound-list';
+import {
+  dehydrate,
+  HydrationBoundary,
+  QueryClient,
+} from '@tanstack/react-query';
+import { isLeft } from 'fp-ts/lib/Either';
+import React, { Suspense } from 'react';
+
 async function ClasseLayout(props: { slug: string }) {
   const { userId } = await checkAuthAndRedirect();
   const queryClient = new QueryClient();

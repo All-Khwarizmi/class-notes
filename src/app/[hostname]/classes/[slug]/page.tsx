@@ -1,7 +1,8 @@
-import LoadingSkeleton from "@/core/components/common/LoadingSkeleton";
-import React, { Suspense } from "react";
-import SpacesClasseServerLayer from "./SpacesClasseServerLayer";
-import NotFound from "@/app/not-found";
+import NotFound from '@/app/not-found';
+import LoadingSkeleton from '@/core/components/common/LoadingSkeleton';
+import React, { Suspense } from 'react';
+
+import SpacesClasseServerLayer from './SpacesClasseServerLayer';
 
 async function Page({
   params,

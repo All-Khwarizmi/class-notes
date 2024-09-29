@@ -1,9 +1,9 @@
-import { UserType } from "../entities/user-schema";
+import { UserType } from '../entities/user-schema';
 
 export type SaveUserOptions = {
   userId: string;
   user: Pick<
     UserType,
-    "name" | "schoolSubject" | "country" | "educationSystem" | "hostname"
+    'name' | 'schoolSubject' | 'country' | 'educationSystem' | 'hostname'
   >;
 };

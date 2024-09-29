@@ -1,15 +1,15 @@
-import React from "react";
-import Link from "next/link";
-import { Settings, Trash, Eye } from "lucide-react";
+import { AspectRatio } from '@/core/components/ui/aspect-ratio';
+import { Badge } from '@/core/components/ui/badge';
+import { Button } from '@/core/components/ui/button';
 import {
   Card,
   CardContent,
   CardFooter,
   CardHeader,
-} from "@/core/components/ui/card";
-import { Button } from "@/core/components/ui/button";
-import { Badge } from "@/core/components/ui/badge";
-import { AspectRatio } from "@/core/components/ui/aspect-ratio";
+} from '@/core/components/ui/card';
+import { Settings, Trash, Eye } from 'lucide-react';
+import Link from 'next/link';
+import React from 'react';
 
 interface CoursSequenceCardProps {
   title: string;
@@ -53,7 +53,7 @@ export default function CoursSequenceCard({
           {description}
         </p>
         <div className="flex flex-wrap gap-1">
-          {tags.split(",").map((tag) => (
+          {tags.split(',').map((tag) => (
             <Badge key={tag} variant="secondary">
               {tag.trim()}
             </Badge>
@@ -63,7 +63,7 @@ export default function CoursSequenceCard({
       <CardFooter className="p-4 pt-0 flex justify-between items-center">
         {showViewButton && (
           <Button asChild variant="outline" size="sm">
-            <Link href={pathToView ?? "/sequences"}>
+            <Link href={pathToView ?? '/sequences'}>
               <Eye className="mr-2 h-4 w-4" />
               Voir
             </Link>

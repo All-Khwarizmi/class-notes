@@ -1,34 +1,33 @@
-"use client";
+'use client';
+
+import { Button } from '@/core/components/ui/button';
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
   FormLabel,
-} from "@/core/components/ui/form";
-import { api } from "../../../../../convex/_generated/api";
-import { useQuery } from "convex/react";
-import { useForm } from "react-hook-form";
+} from '@/core/components/ui/form';
+import { Input } from '@/core/components/ui/input';
+import { Textarea } from '@/core/components/ui/textarea';
 import {
   TemplateSchema,
   TemplateType,
-} from "@/features/template/domain/entities/template-schema";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Button } from "@/core/components/ui/button";
-import { Input } from "@/core/components/ui/input";
-import { Textarea } from "@/core/components/ui/textarea";
+} from '@/features/template/domain/entities/template-schema';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useQuery } from 'convex/react';
+import { useForm } from 'react-hook-form';
+
+import { api } from '../../../../../convex/_generated/api';
 
 export default function EditEvaluation({
   params,
 }: {
   params: { slug: string };
 }) {
-  const evaluationTemplate = useQuery(
-    api.template.getTemplateWithCriteria,
-    {
-      templateId: params.slug,
-    }
-  );
+  const evaluationTemplate = useQuery(api.template.getTemplateWithCriteria, {
+    templateId: params.slug,
+  });
   const templateForm = useForm<TemplateType>({
     resolver: zodResolver(TemplateSchema),
     defaultValues: {
@@ -37,15 +36,14 @@ export default function EditEvaluation({
     },
   });
   const criteria = evaluationTemplate?.criteria.map((c) => {
-    if (c.status === "fulfilled") {
+    if (c.status === 'fulfilled') {
       return c.value;
     } else {
       return null;
     }
   });
 
-  async function onSubmit(values: TemplateType) {
-  }
+  async function onSubmit(values: TemplateType) {}
   return (
     <section className="h-ful w-full p-8">
       <h1>Édition de l&apos;évaluation {evaluationTemplate?.name} </h1>

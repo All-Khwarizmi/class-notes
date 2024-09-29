@@ -1,13 +1,14 @@
-import IDatabase from "@/core/data/idatabase";
-import { Category } from "../../domain/entities/schemas";
-import { convexDatabase } from "@/core/data/convex/convex-impl";
-import { getAppDataBase } from "@/core/data/get-app-db";
+import { convexDatabase } from '@/core/data/convex/convex-impl';
+import { getAppDataBase } from '@/core/data/get-app-db';
+import IDatabase from '@/core/data/idatabase';
+
+import { Category } from '../../domain/entities/schemas';
 import {
   CreateCompetenceOptions,
   DeleteCompCatOptions,
   GetCompetenceOptions,
   UpdateCompCatOptions,
-} from "../../domain/types";
+} from '../../domain/types';
 
 export default class CompCatRepository {
   private readonly _db: IDatabase;
@@ -24,7 +25,7 @@ export default class CompCatRepository {
     category,
   }: {
     userId: string;
-    category: Omit<Category, "_id">;
+    category: Omit<Category, '_id'>;
   }) {
     return this._db.addCategory({ userId, category });
   }

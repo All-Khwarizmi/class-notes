@@ -1,17 +1,18 @@
-import IDatabase from "@/core/data/idatabase";
-import { isLeft } from "fp-ts/lib/Either";
-import { getAppDataBase } from "@/core/data/get-app-db";
-import {
-  CreateClasseOptions,
-  DeleteClasseOptions,
-} from "../../domain/classe-types";
+import { getAppDataBase } from '@/core/data/get-app-db';
+import IDatabase from '@/core/data/idatabase';
+import VisibilityRepository, {
+  visibilityRepository,
+} from '@/features/visibility/application/repositories/visibility-repository';
 import {
   GetVisibilityOptions,
   UpdateVisibilityOptions,
-} from "@/features/visibility/domain/types";
-import VisibilityRepository, {
-  visibilityRepository,
-} from "@/features/visibility/application/repositories/visibility-repository";
+} from '@/features/visibility/domain/types';
+import { isLeft } from 'fp-ts/lib/Either';
+
+import {
+  CreateClasseOptions,
+  DeleteClasseOptions,
+} from '../../domain/classe-types';
 
 export default class ClasseRepository {
   private readonly _db: IDatabase;
@@ -38,7 +39,7 @@ export default class ClasseRepository {
       entity: {
         id,
         name: options.name,
-        description: options.description ?? "",
+        description: options.description ?? '',
         publish: false,
       },
     });

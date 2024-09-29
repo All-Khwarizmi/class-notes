@@ -1,7 +1,8 @@
-import NotFound from "@/app/not-found";
-import LoadingSkeleton from "@/core/components/common/LoadingSkeleton";
-import React, { Suspense } from "react";
-import SequenceShowServerLayer from "./SequenceShowServerLayer";
+import NotFound from '@/app/not-found';
+import LoadingSkeleton from '@/core/components/common/LoadingSkeleton';
+import React, { Suspense } from 'react';
+
+import SequenceShowServerLayer from './SequenceShowServerLayer';
 
 async function Page({
   params,

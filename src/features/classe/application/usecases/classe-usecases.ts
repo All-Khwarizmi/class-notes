@@ -1,16 +1,17 @@
-import { Either, isLeft, left, right } from "fp-ts/lib/Either";
-import ClasseRepository, {
-  classeRepository,
-} from "../repository/classe-repository-refactor";
-import { ClassType } from "../../domain/class-schema";
-import ClassEntity from "../../domain/class-entity";
-import Failure from "@/core/failures/failures";
+import Failure from '@/core/failures/failures';
+import { UpdateVisibilityOptions } from '@/features/visibility/domain/types';
+import { Either, isLeft, left, right } from 'fp-ts/lib/Either';
+
+import ClassEntity from '../../domain/class-entity';
+import { ClassType } from '../../domain/class-schema';
+import { CreateClasseOptions } from '../../domain/classe-types';
 import {
   VisibilitySchema,
   VisibilityType,
-} from "../../domain/visibility-schema";
-import { CreateClasseOptions } from "../../domain/classe-types";
-import { UpdateVisibilityOptions } from "@/features/visibility/domain/types";
+} from '../../domain/visibility-schema';
+import ClasseRepository, {
+  classeRepository,
+} from '../repository/classe-repository-refactor';
 
 export default class ClasseUseCases {
   private readonly _repository: ClasseRepository;
@@ -34,13 +35,13 @@ export default class ClasseUseCases {
     ];
     const operationsResults = await Promise.allSettled(batchOperations);
     const failures = operationsResults.filter(
-      (result) => result.status === "rejected"
+      (result) => result.status === 'rejected'
     );
     if (failures.length > 0) {
       return left(
         Failure.invalidValue({
-          message: "Could not delete classe",
-          code: "APP204",
+          message: 'Could not delete classe',
+          code: 'APP204',
           invalidValue: failures,
         })
       );
@@ -87,8 +88,8 @@ export default class ClasseUseCases {
           return left(
             Failure.invalidValue({
               invalidValue: c,
-              message: "Invalid value",
-              code: "DOM201",
+              message: 'Invalid value',
+              code: 'DOM201',
             })
           );
         }
@@ -128,8 +129,8 @@ export default class ClasseUseCases {
       return left(
         Failure.invalidValue({
           invalidValue: eitherVibilityTable.right,
-          message: "Invalid value",
-          code: "DOM201",
+          message: 'Invalid value',
+          code: 'DOM201',
         })
       );
     }

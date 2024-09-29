@@ -1,5 +1,7 @@
-import { Editor } from "@tiptap/react";
-import React from "react";
+import MenuButton from '@/core/components/common/editor/MenuButton';
+import MenuTextAlign from '@/core/components/common/editor/MenuTextAlign';
+import { cn } from '@/lib/utils';
+import { Editor } from '@tiptap/react';
 import {
   Bold,
   Code,
@@ -14,20 +16,18 @@ import {
   Strikethrough,
   Undo,
   Video,
-} from "lucide-react";
+} from 'lucide-react';
+import React from 'react';
 
-import { HeadingMenuBar } from "./HeadingMenuBar";
-import MenuTextColor from "./MenuTextColor";
-import MenuImage from "./MenuImage";
-import MenuButton from "@/core/components/common/editor/MenuButton";
-import MenuTextAlign from "@/core/components/common/editor/MenuTextAlign";
-import { cn } from "@/lib/utils";
+import { HeadingMenuBar } from './HeadingMenuBar';
+import MenuImage from './MenuImage';
+import MenuTextColor from './MenuTextColor';
 
 function FloatingMenuBar({ editor }: { editor: Editor }) {
   return (
     <div
       className={cn(
-        "flex w-full gap-1  bg-secondary flex-wrap p-2 justify-center border rounded-tr-lg rounded-tl-lg"
+        'flex w-full gap-1  bg-secondary flex-wrap p-2 justify-center border rounded-tr-lg rounded-tl-lg'
       )}
     >
       <MenuButton
@@ -133,7 +133,7 @@ function FloatingMenuBar({ editor }: { editor: Editor }) {
       <MenuButton
         editor={editor}
         onClick={() => {
-          const videoUrl = prompt("Enter the video URL");
+          const videoUrl = prompt('Enter the video URL');
           if (!videoUrl) {
             return;
           }
@@ -149,7 +149,7 @@ function FloatingMenuBar({ editor }: { editor: Editor }) {
       <MenuButton
         editor={editor}
         onClick={() => {
-          const url = prompt("Enter the URL");
+          const url = prompt('Enter the URL');
           if (!url) {
             return;
           }

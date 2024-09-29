@@ -1,20 +1,23 @@
-import IDatabase from "../idatabase";
-import Failure from "@/core/failures/failures";
-import { Either, left, right } from "fp-ts/lib/Either";
-import { DocumentData } from "../database-types";
-import { api } from "../../../../convex/_generated/api";
-import { fetchQuery, fetchMutation } from "convex/nextjs";
-import { UserType } from "@/features/user/domain/entities/user-schema";
+import Failure from '@/core/failures/failures';
+import {
+  CreateClasseOptions,
+  DeleteClasseOptions,
+} from '@/features/classe/domain/classe-types';
 import {
   Category,
   Competence,
-} from "@/features/comp-cat/domain/entities/schemas";
+} from '@/features/comp-cat/domain/entities/schemas';
+import {
+  CreateCompetenceOptions,
+  DeleteCompCatOptions,
+  GetCompetenceOptions,
+  UpdateCompCatOptions,
+} from '@/features/comp-cat/domain/types';
+import { Complement } from '@/features/complement/domain/complement-schemas';
 import {
   Cours,
   Sequence,
-} from "@/features/cours-sequence/domain/entities/cours-schemas";
-import { Complement } from "@/features/complement/domain/complement-schemas";
-import { Note } from "@/features/notes/domain/notes-schemas";
+} from '@/features/cours-sequence/domain/entities/cours-schemas';
 import {
   AssignEvaluationOptions,
   CreateEvaluationOptions,
@@ -28,17 +31,15 @@ import {
   IsEvaluationAssigned,
   UpdateEvaluationBaseOptions,
   UpdateGradeOptions,
-} from "@/features/evaluation/domain/entities/evaluation-types";
+} from '@/features/evaluation/domain/entities/evaluation-types';
+import { Note } from '@/features/notes/domain/notes-schemas';
 import {
   CreateStudentOptions,
   DeleteStudentOptions,
   UpdateStudentOptions,
-} from "@/features/student/domain/entities/student-types";
-import {
-  CreateClasseOptions,
-  DeleteClasseOptions,
-} from "@/features/classe/domain/classe-types";
-import { SaveUserOptions } from "@/features/user/domain/types/types";
+} from '@/features/student/domain/entities/student-types';
+import { UserType } from '@/features/user/domain/entities/user-schema';
+import { SaveUserOptions } from '@/features/user/domain/types/types';
 import {
   AddClasseToVisibilityOptions,
   AddSequenceToVisibilityOptions,
@@ -46,13 +47,13 @@ import {
   AddComplementToVisibilityOptions,
   DeleteEntityFromVisibilityOptions,
   UpdateVisibilityOptions,
-} from "@/features/visibility/domain/types";
-import {
-  CreateCompetenceOptions,
-  DeleteCompCatOptions,
-  GetCompetenceOptions,
-  UpdateCompCatOptions,
-} from "@/features/comp-cat/domain/types";
+} from '@/features/visibility/domain/types';
+import { fetchQuery, fetchMutation } from 'convex/nextjs';
+import { Either, left, right } from 'fp-ts/lib/Either';
+
+import { api } from '../../../../convex/_generated/api';
+import { DocumentData } from '../database-types';
+import IDatabase from '../idatabase';
 
 export interface ConvexDatabaseOptions {
   db: typeof api;
@@ -101,7 +102,7 @@ export default class ConvexDatabase extends IDatabase {
         return left(
           Failure.invalidValue({
             invalidValue: user,
-            message: "Error saving user",
+            message: 'Error saving user',
           })
         );
       }
@@ -110,7 +111,7 @@ export default class ConvexDatabase extends IDatabase {
       return left(
         Failure.invalidValue({
           invalidValue: user,
-          message: "Error saving user",
+          message: 'Error saving user',
         })
       );
     }
@@ -121,7 +122,7 @@ export default class ConvexDatabase extends IDatabase {
     category,
   }: {
     userId: string;
-    category: Omit<Category, "id">;
+    category: Omit<Category, 'id'>;
   }): Promise<Either<Failure<string>, void>> {
     try {
       const result = await fetchMutation(this._db.category.createCategory, {
@@ -133,7 +134,7 @@ export default class ConvexDatabase extends IDatabase {
         return left(
           Failure.invalidValue({
             invalidValue: category,
-            message: "Error adding category",
+            message: 'Error adding category',
           })
         );
       }
@@ -142,7 +143,7 @@ export default class ConvexDatabase extends IDatabase {
       return left(
         Failure.invalidValue({
           invalidValue: category,
-          message: "Error adding category",
+          message: 'Error adding category',
         })
       );
     }
@@ -192,7 +193,7 @@ export default class ConvexDatabase extends IDatabase {
   ): Promise<Either<Failure<string>, void>> {
     try {
       let result;
-      if (options.type === "Category") {
+      if (options.type === 'Category') {
         result = await fetchMutation(this._db.category.updateCategory, {
           categoryId: options.id,
           name: options.name,
@@ -202,7 +203,7 @@ export default class ConvexDatabase extends IDatabase {
           return left(
             Failure.invalidValue({
               invalidValue: options,
-              message: "Error updating category",
+              message: 'Error updating category',
             })
           );
         }
@@ -217,7 +218,7 @@ export default class ConvexDatabase extends IDatabase {
         return left(
           Failure.invalidValue({
             invalidValue: options,
-            message: "Error updating category competence",
+            message: 'Error updating category competence',
           })
         );
       }
@@ -226,7 +227,7 @@ export default class ConvexDatabase extends IDatabase {
       return left(
         Failure.invalidValue({
           invalidValue: options,
-          message: "Error updating category competence",
+          message: 'Error updating category competence',
         })
       );
     }
@@ -234,7 +235,7 @@ export default class ConvexDatabase extends IDatabase {
   async deleteCompCat(options: DeleteCompCatOptions) {
     try {
       let result;
-      if (options.type === "Category") {
+      if (options.type === 'Category') {
         result = await fetchMutation(this._db.category.deleteCategory, {
           categoryId: options.id,
         });
@@ -242,7 +243,7 @@ export default class ConvexDatabase extends IDatabase {
           return left(
             Failure.invalidValue({
               invalidValue: options,
-              message: "Error deleting category",
+              message: 'Error deleting category',
             })
           );
         }
@@ -255,7 +256,7 @@ export default class ConvexDatabase extends IDatabase {
         return left(
           Failure.invalidValue({
             invalidValue: options,
-            message: "Error deleting category competence",
+            message: 'Error deleting category competence',
           })
         );
       }
@@ -264,7 +265,7 @@ export default class ConvexDatabase extends IDatabase {
       return left(
         Failure.invalidValue({
           invalidValue: options,
-          message: "Error deleting category competence",
+          message: 'Error deleting category competence',
         })
       );
     }
@@ -282,7 +283,7 @@ export default class ConvexDatabase extends IDatabase {
         return left(
           Failure.invalidValue({
             invalidValue: options,
-            message: "Error getting competence",
+            message: 'Error getting competence',
           })
         );
       }
@@ -291,7 +292,7 @@ export default class ConvexDatabase extends IDatabase {
       return left(
         Failure.invalidValue({
           invalidValue: options,
-          message: "Error getting competence",
+          message: 'Error getting competence',
         })
       );
     }
@@ -314,7 +315,7 @@ export default class ConvexDatabase extends IDatabase {
         return left(
           Failure.invalidValue({
             invalidValue: options,
-            message: "Error adding competence",
+            message: 'Error adding competence',
           })
         );
       }
@@ -323,7 +324,7 @@ export default class ConvexDatabase extends IDatabase {
       return left(
         Failure.invalidValue({
           invalidValue: options,
-          message: "Error adding competence",
+          message: 'Error adding competence',
         })
       );
     }
@@ -334,7 +335,7 @@ export default class ConvexDatabase extends IDatabase {
   }: {
     userId: string;
   }): Promise<Either<Failure<string>, DocumentData[]>> {
-    throw new Error("Method not implemented.");
+    throw new Error('Method not implemented.');
   }
   async getSingleCours({
     userId,
@@ -363,7 +364,7 @@ export default class ConvexDatabase extends IDatabase {
       return left(
         Failure.invalidValue({
           invalidValue: coursId,
-          message: "Error getting single cours",
+          message: 'Error getting single cours',
         })
       );
     }
@@ -373,7 +374,7 @@ export default class ConvexDatabase extends IDatabase {
     cours,
   }: {
     userId: string;
-    cours: Omit<Cours, "_id" | "createdAt">;
+    cours: Omit<Cours, '_id' | 'createdAt'>;
   }): Promise<Either<Failure<string>, string>> {
     try {
       const result = await fetchMutation(this._db.cours.createCours, {
@@ -393,7 +394,7 @@ export default class ConvexDatabase extends IDatabase {
         return left(
           Failure.invalidValue({
             invalidValue: cours,
-            message: "Error adding cours",
+            message: 'Error adding cours',
           })
         );
       }
@@ -402,7 +403,7 @@ export default class ConvexDatabase extends IDatabase {
       return left(
         Failure.invalidValue({
           invalidValue: cours,
-          message: "Error adding cours",
+          message: 'Error adding cours',
         })
       );
     }
@@ -431,8 +432,8 @@ export default class ConvexDatabase extends IDatabase {
       return left(
         Failure.invalidValue({
           invalidValue: cours,
-          message: "Error updating cours",
-          code: "INF101",
+          message: 'Error updating cours',
+          code: 'INF101',
         })
       );
     }
@@ -459,7 +460,7 @@ export default class ConvexDatabase extends IDatabase {
       return left(
         Failure.invalidValue({
           invalidValue: body,
-          message: "Error updating cours body: unknown",
+          message: 'Error updating cours body: unknown',
         })
       );
     }
@@ -479,8 +480,8 @@ export default class ConvexDatabase extends IDatabase {
       return left(
         Failure.invalidValue({
           invalidValue: coursId,
-          message: "Error deleting cours",
-          code: "INF101",
+          message: 'Error deleting cours',
+          code: 'INF101',
         })
       );
     }
@@ -491,7 +492,7 @@ export default class ConvexDatabase extends IDatabase {
     sequence,
   }: {
     userId: string;
-    sequence: Omit<Sequence, "createdAt" | "_id">;
+    sequence: Omit<Sequence, 'createdAt' | '_id'>;
   }): Promise<Either<Failure<string>, string>> {
     try {
       const result = await fetchMutation(this._db.sequence.createSequence, {
@@ -509,8 +510,8 @@ export default class ConvexDatabase extends IDatabase {
         return left(
           Failure.invalidValue({
             invalidValue: sequence,
-            message: "Error adding sequence",
-            code: "INF103",
+            message: 'Error adding sequence',
+            code: 'INF103',
           })
         );
       }
@@ -520,8 +521,8 @@ export default class ConvexDatabase extends IDatabase {
       return left(
         Failure.invalidValue({
           invalidValue: sequence,
-          message: "Error adding sequence",
-          code: "INF101",
+          message: 'Error adding sequence',
+          code: 'INF101',
         })
       );
     }
@@ -532,10 +533,10 @@ export default class ConvexDatabase extends IDatabase {
     type,
   }: {
     sequence: Sequence;
-    type?: "template" | "sequence";
+    type?: 'template' | 'sequence';
   }): Promise<Either<Failure<string>, void>> {
     try {
-      const defaultType = type === "sequence" ? "sequence" : undefined;
+      const defaultType = type === 'sequence' ? 'sequence' : undefined;
       await fetchMutation(this._db.sequence.updateSequence, {
         sequenceId: sequence._id,
         imageUrl: sequence.imageUrl,
@@ -553,8 +554,8 @@ export default class ConvexDatabase extends IDatabase {
       return left(
         Failure.invalidValue({
           invalidValue: sequence,
-          message: "Error updating sequence",
-          code: "INF101",
+          message: 'Error updating sequence',
+          code: 'INF101',
         })
       );
     }
@@ -573,8 +574,8 @@ export default class ConvexDatabase extends IDatabase {
         return left(
           Failure.invalidValue({
             invalidValue: userId,
-            message: "Error getting sequences",
-            code: "INF103",
+            message: 'Error getting sequences',
+            code: 'INF103',
           })
         );
       }
@@ -584,8 +585,8 @@ export default class ConvexDatabase extends IDatabase {
       return left(
         Failure.invalidValue({
           invalidValue: userId,
-          message: "Error getting sequences",
-          code: "INF101",
+          message: 'Error getting sequences',
+          code: 'INF101',
         })
       );
     }
@@ -597,10 +598,10 @@ export default class ConvexDatabase extends IDatabase {
   }: {
     userId: string;
     sequenceId: string;
-    type?: "template" | "sequence";
+    type?: 'template' | 'sequence';
   }): Promise<Either<Failure<string>, DocumentData>> {
     try {
-      if (!type || type === "template") {
+      if (!type || type === 'template') {
         const result = await fetchQuery(this._db.sequence.getSingleSequence, {
           userId,
           sequenceId,
@@ -609,14 +610,14 @@ export default class ConvexDatabase extends IDatabase {
           return left(
             Failure.invalidValue({
               invalidValue: sequenceId,
-              message: "Error getting single sequence",
-              code: "INF103",
+              message: 'Error getting single sequence',
+              code: 'INF103',
             })
           );
         }
         return right(result);
       } else {
-        if (type === "sequence") {
+        if (type === 'sequence') {
           const result = await fetchQuery(this._db.classes.getClassSequence, {
             id: sequenceId,
           });
@@ -624,8 +625,8 @@ export default class ConvexDatabase extends IDatabase {
             return left(
               Failure.invalidValue({
                 invalidValue: sequenceId,
-                message: "Error getting single sequence",
-                code: "INF103",
+                message: 'Error getting single sequence',
+                code: 'INF103',
               })
             );
           }
@@ -634,8 +635,8 @@ export default class ConvexDatabase extends IDatabase {
         return left(
           Failure.invalidValue({
             invalidValue: sequenceId,
-            message: "Error getting single sequence",
-            code: "INF103",
+            message: 'Error getting single sequence',
+            code: 'INF103',
           })
         );
       }
@@ -643,8 +644,8 @@ export default class ConvexDatabase extends IDatabase {
       return left(
         Failure.invalidValue({
           invalidValue: sequenceId,
-          message: "Error getting single sequence",
-          code: "INF101",
+          message: 'Error getting single sequence',
+          code: 'INF101',
         })
       );
     }
@@ -659,7 +660,7 @@ export default class ConvexDatabase extends IDatabase {
     sequenceId: string;
     coursId: string[];
   }): Promise<Either<Failure<string>, void>> {
-    throw new Error("Method not implemented.");
+    throw new Error('Method not implemented.');
   }
 
   async addClasseSequence({
@@ -678,8 +679,8 @@ export default class ConvexDatabase extends IDatabase {
         return left(
           Failure.invalidValue({
             invalidValue: sequenceId,
-            message: "Error adding sequence to class",
-            code: "INF103",
+            message: 'Error adding sequence to class',
+            code: 'INF103',
           })
         );
       }
@@ -688,8 +689,8 @@ export default class ConvexDatabase extends IDatabase {
       return left(
         Failure.invalidValue({
           invalidValue: sequenceId,
-          message: "Error adding sequence to class",
-          code: "INF101",
+          message: 'Error adding sequence to class',
+          code: 'INF101',
         })
       );
     }
@@ -708,8 +709,8 @@ export default class ConvexDatabase extends IDatabase {
         return left(
           Failure.invalidValue({
             invalidValue: classeId,
-            message: "Error getting class sequences",
-            code: "INF103",
+            message: 'Error getting class sequences',
+            code: 'INF103',
           })
         );
       }
@@ -718,8 +719,8 @@ export default class ConvexDatabase extends IDatabase {
       return left(
         Failure.invalidValue({
           invalidValue: classeId,
-          message: "Error getting class sequences",
-          code: "INF101",
+          message: 'Error getting class sequences',
+          code: 'INF101',
         })
       );
     }
@@ -734,10 +735,10 @@ export default class ConvexDatabase extends IDatabase {
     userId: string;
     sequenceId: string;
     body: string;
-    type?: "template" | "sequence";
+    type?: 'template' | 'sequence';
   }): Promise<Either<Failure<string>, void>> {
     try {
-      const defaultType = type === "sequence" ? "sequence" : undefined;
+      const defaultType = type === 'sequence' ? 'sequence' : undefined;
       await fetchMutation(this._db.sequence.addBodyToSequence, {
         userId,
         sequenceId,
@@ -749,8 +750,8 @@ export default class ConvexDatabase extends IDatabase {
       return left(
         Failure.invalidValue({
           invalidValue: body,
-          message: "Error adding body to sequence",
-          code: "INF101",
+          message: 'Error adding body to sequence',
+          code: 'INF101',
         })
       );
     }
@@ -761,7 +762,7 @@ export default class ConvexDatabase extends IDatabase {
     type,
   }: {
     sequenceId: string;
-    type: "template" | "sequence";
+    type: 'template' | 'sequence';
   }): Promise<Either<Failure<string>, void>> {
     try {
       const result = await fetchMutation(this._db.sequence.deleteSequence, {
@@ -774,8 +775,8 @@ export default class ConvexDatabase extends IDatabase {
       return left(
         Failure.invalidValue({
           invalidValue: sequenceId,
-          message: "Error deleting sequence",
-          code: "INF101",
+          message: 'Error deleting sequence',
+          code: 'INF101',
         })
       );
     }
@@ -788,10 +789,10 @@ export default class ConvexDatabase extends IDatabase {
   }: {
     userId: string;
     sequenceId: string;
-    type?: "template" | "sequence";
+    type?: 'template' | 'sequence';
   }): Promise<Either<Failure<string>, DocumentData[]>> {
     try {
-      const defaultType = type === "sequence" ? "sequence" : undefined;
+      const defaultType = type === 'sequence' ? 'sequence' : undefined;
       const result = await fetchQuery(this._db.sequence.getAllCoursInSequence, {
         userId,
         sequenceId,
@@ -801,8 +802,8 @@ export default class ConvexDatabase extends IDatabase {
         return left(
           Failure.invalidValue({
             invalidValue: sequenceId,
-            message: "Error getting all cours from sequence",
-            code: "INF103",
+            message: 'Error getting all cours from sequence',
+            code: 'INF103',
           })
         );
       }
@@ -811,8 +812,8 @@ export default class ConvexDatabase extends IDatabase {
       return left(
         Failure.invalidValue({
           invalidValue: sequenceId,
-          message: "Error getting all cours from sequence",
-          code: "INF101",
+          message: 'Error getting all cours from sequence',
+          code: 'INF101',
         })
       );
     }
@@ -823,7 +824,7 @@ export default class ConvexDatabase extends IDatabase {
     complement,
   }: {
     userId: string;
-    complement: Omit<Complement, "_id" | "createdAt">;
+    complement: Omit<Complement, '_id' | 'createdAt'>;
   }): Promise<Either<Failure<string>, string>> {
     try {
       const result = await fetchMutation(this._db.complement.createComplement, {
@@ -839,8 +840,8 @@ export default class ConvexDatabase extends IDatabase {
         return left(
           Failure.invalidValue({
             invalidValue: complement,
-            message: "Error adding complement",
-            code: "INF103",
+            message: 'Error adding complement',
+            code: 'INF103',
           })
         );
       }
@@ -849,8 +850,8 @@ export default class ConvexDatabase extends IDatabase {
       return left(
         Failure.invalidValue({
           invalidValue: complement,
-          message: "Error adding complement",
-          code: "INF101",
+          message: 'Error adding complement',
+          code: 'INF101',
         })
       );
     }
@@ -869,8 +870,8 @@ export default class ConvexDatabase extends IDatabase {
         return left(
           Failure.invalidValue({
             invalidValue: coursId,
-            message: "Error getting all cours complement",
-            code: "INF103",
+            message: 'Error getting all cours complement',
+            code: 'INF103',
           })
         );
       }
@@ -879,8 +880,8 @@ export default class ConvexDatabase extends IDatabase {
       return left(
         Failure.invalidValue({
           invalidValue: coursId,
-          message: "Error getting all cours complement",
-          code: "INF101",
+          message: 'Error getting all cours complement',
+          code: 'INF101',
         })
       );
     }
@@ -899,8 +900,8 @@ export default class ConvexDatabase extends IDatabase {
         return left(
           Failure.invalidValue({
             invalidValue: id,
-            message: "Error getting cours complement",
-            code: "INF103",
+            message: 'Error getting cours complement',
+            code: 'INF103',
           })
         );
       }
@@ -909,8 +910,8 @@ export default class ConvexDatabase extends IDatabase {
       return left(
         Failure.invalidValue({
           invalidValue: id,
-          message: "Error getting cours complement",
-          code: "INF101",
+          message: 'Error getting cours complement',
+          code: 'INF101',
         })
       );
     }
@@ -935,8 +936,8 @@ export default class ConvexDatabase extends IDatabase {
         return left(
           Failure.invalidValue({
             invalidValue: coursComplement,
-            message: "Error updating cours complement",
-            code: "INF103",
+            message: 'Error updating cours complement',
+            code: 'INF103',
           })
         );
       }
@@ -945,8 +946,8 @@ export default class ConvexDatabase extends IDatabase {
       return left(
         Failure.invalidValue({
           invalidValue: coursComplement,
-          message: "Error updating cours complement",
-          code: "INF101",
+          message: 'Error updating cours complement',
+          code: 'INF101',
         })
       );
     }
@@ -965,8 +966,8 @@ export default class ConvexDatabase extends IDatabase {
         return left(
           Failure.invalidValue({
             invalidValue: id,
-            message: "Error deleting cours complement",
-            code: "INF103",
+            message: 'Error deleting cours complement',
+            code: 'INF103',
           })
         );
       }
@@ -975,8 +976,8 @@ export default class ConvexDatabase extends IDatabase {
       return left(
         Failure.invalidValue({
           invalidValue: id,
-          message: "Error deleting cours complement",
-          code: "INF101",
+          message: 'Error deleting cours complement',
+          code: 'INF101',
         })
       );
     }
@@ -987,17 +988,17 @@ export default class ConvexDatabase extends IDatabase {
   }: {
     note: Pick<
       Note,
-      | "name"
-      | "description"
-      | "content"
-      | "fullPath"
-      | "pathDictionary"
-      | "folders"
-      | "createdBy"
-      | "keywords"
-      | "type"
-      | "parentId"
-      | "contentType"
+      | 'name'
+      | 'description'
+      | 'content'
+      | 'fullPath'
+      | 'pathDictionary'
+      | 'folders'
+      | 'createdBy'
+      | 'keywords'
+      | 'type'
+      | 'parentId'
+      | 'contentType'
     >;
   }): Promise<Either<Failure<string>, string>> {
     try {
@@ -1018,8 +1019,8 @@ export default class ConvexDatabase extends IDatabase {
         return left(
           Failure.invalidValue({
             invalidValue: note,
-            message: "Error creating note",
-            code: "INF103",
+            message: 'Error creating note',
+            code: 'INF103',
           })
         );
       }
@@ -1028,8 +1029,8 @@ export default class ConvexDatabase extends IDatabase {
       return left(
         Failure.invalidValue({
           invalidValue: note,
-          message: "Error creating note",
-          code: "INF101",
+          message: 'Error creating note',
+          code: 'INF101',
         })
       );
     }
@@ -1048,8 +1049,8 @@ export default class ConvexDatabase extends IDatabase {
         return left(
           Failure.invalidValue({
             invalidValue: parentId,
-            message: "Error getting notes",
-            code: "INF103",
+            message: 'Error getting notes',
+            code: 'INF103',
           })
         );
       }
@@ -1058,8 +1059,8 @@ export default class ConvexDatabase extends IDatabase {
       return left(
         Failure.invalidValue({
           invalidValue: parentId,
-          message: "Error getting notes",
-          code: "INF101",
+          message: 'Error getting notes',
+          code: 'INF101',
         })
       );
     }
@@ -1078,8 +1079,8 @@ export default class ConvexDatabase extends IDatabase {
         return left(
           Failure.invalidValue({
             invalidValue: id,
-            message: "Error getting note",
-            code: "INF103",
+            message: 'Error getting note',
+            code: 'INF103',
           })
         );
       }
@@ -1088,8 +1089,8 @@ export default class ConvexDatabase extends IDatabase {
       return left(
         Failure.invalidValue({
           invalidValue: id,
-          message: "Error getting note",
-          code: "INF101",
+          message: 'Error getting note',
+          code: 'INF101',
         })
       );
     }
@@ -1100,15 +1101,15 @@ export default class ConvexDatabase extends IDatabase {
   }: {
     note: Pick<
       Note,
-      | "id"
-      | "name"
-      | "description"
-      | "content"
-      | "fullPath"
-      | "pathDictionary"
-      | "folders"
-      | "createdBy"
-      | "keywords"
+      | 'id'
+      | 'name'
+      | 'description'
+      | 'content'
+      | 'fullPath'
+      | 'pathDictionary'
+      | 'folders'
+      | 'createdBy'
+      | 'keywords'
     >;
   }): Promise<Either<Failure<string>, void>> {
     try {
@@ -1126,8 +1127,8 @@ export default class ConvexDatabase extends IDatabase {
         return left(
           Failure.invalidValue({
             invalidValue: note,
-            message: "Error updating note",
-            code: "INF103",
+            message: 'Error updating note',
+            code: 'INF103',
           })
         );
       }
@@ -1136,8 +1137,8 @@ export default class ConvexDatabase extends IDatabase {
       return left(
         Failure.invalidValue({
           invalidValue: note,
-          message: "Error updating note",
-          code: "INF101",
+          message: 'Error updating note',
+          code: 'INF101',
         })
       );
     }
@@ -1156,8 +1157,8 @@ export default class ConvexDatabase extends IDatabase {
         return left(
           Failure.invalidValue({
             invalidValue: id,
-            message: "Error deleting note",
-            code: "INF103",
+            message: 'Error deleting note',
+            code: 'INF103',
           })
         );
       }
@@ -1166,8 +1167,8 @@ export default class ConvexDatabase extends IDatabase {
       return left(
         Failure.invalidValue({
           invalidValue: id,
-          message: "Error deleting note",
-          code: "INF101",
+          message: 'Error deleting note',
+          code: 'INF101',
         })
       );
     }
@@ -1182,17 +1183,17 @@ export default class ConvexDatabase extends IDatabase {
         return left(
           Failure.invalidValue({
             invalidValue: name,
-            message: "Error creating class",
-            code: "INF103",
+            message: 'Error creating class',
+            code: 'INF103',
           })
         );
       }
-      if (!result.id || typeof result.id !== "string") {
+      if (!result.id || typeof result.id !== 'string') {
         return left(
           Failure.invalidValue({
             invalidValue: name,
-            message: "Error creating class",
-            code: "INF103",
+            message: 'Error creating class',
+            code: 'INF103',
           })
         );
       }
@@ -1201,8 +1202,8 @@ export default class ConvexDatabase extends IDatabase {
       return left(
         Failure.invalidValue({
           invalidValue: name,
-          message: "Error creating class",
-          code: "INF101",
+          message: 'Error creating class',
+          code: 'INF101',
         })
       );
     }
@@ -1222,8 +1223,8 @@ export default class ConvexDatabase extends IDatabase {
       return left(
         Failure.invalidValue({
           invalidValue: id,
-          message: "Error deleting class",
-          code: "INF101",
+          message: 'Error deleting class',
+          code: 'INF101',
         })
       );
     }
@@ -1242,8 +1243,8 @@ export default class ConvexDatabase extends IDatabase {
         return left(
           Failure.invalidValue({
             invalidValue: id,
-            message: "Error getting classes",
-            code: "INF103",
+            message: 'Error getting classes',
+            code: 'INF103',
           })
         );
       }
@@ -1252,8 +1253,8 @@ export default class ConvexDatabase extends IDatabase {
       return left(
         Failure.invalidValue({
           invalidValue: id,
-          message: "Error getting classes",
-          code: "INF101",
+          message: 'Error getting classes',
+          code: 'INF101',
         })
       );
     }
@@ -1272,8 +1273,8 @@ export default class ConvexDatabase extends IDatabase {
         return left(
           Failure.invalidValue({
             invalidValue: id,
-            message: "Error getting class",
-            code: "INF103",
+            message: 'Error getting class',
+            code: 'INF103',
           })
         );
       }
@@ -1282,8 +1283,8 @@ export default class ConvexDatabase extends IDatabase {
       return left(
         Failure.invalidValue({
           invalidValue: id,
-          message: "Error getting class",
-          code: "INF101",
+          message: 'Error getting class',
+          code: 'INF101',
         })
       );
     }
@@ -1338,8 +1339,8 @@ export default class ConvexDatabase extends IDatabase {
       return left(
         Failure.invalidValue({
           invalidValue: options,
-          message: "Error adding class to visibility",
-          code: "INF101",
+          message: 'Error adding class to visibility',
+          code: 'INF101',
         })
       );
     }
@@ -1358,8 +1359,8 @@ export default class ConvexDatabase extends IDatabase {
       return left(
         Failure.invalidValue({
           invalidValue: options,
-          message: "Error adding sequence to visibility",
-          code: "INF101",
+          message: 'Error adding sequence to visibility',
+          code: 'INF101',
         })
       );
     }
@@ -1377,8 +1378,8 @@ export default class ConvexDatabase extends IDatabase {
       return left(
         Failure.invalidValue({
           invalidValue: options,
-          message: "Error adding cours to visibility",
-          code: "INF101",
+          message: 'Error adding cours to visibility',
+          code: 'INF101',
         })
       );
     }
@@ -1396,8 +1397,8 @@ export default class ConvexDatabase extends IDatabase {
       return left(
         Failure.invalidValue({
           invalidValue: options,
-          message: "Error adding complement to visibility",
-          code: "INF101",
+          message: 'Error adding complement to visibility',
+          code: 'INF101',
         })
       );
     }
@@ -1417,8 +1418,8 @@ export default class ConvexDatabase extends IDatabase {
       return left(
         Failure.invalidValue({
           invalidValue: options,
-          message: "Error deleting entity from visibility",
-          code: "INF101",
+          message: 'Error deleting entity from visibility',
+          code: 'INF101',
         })
       );
     }
@@ -1437,8 +1438,8 @@ export default class ConvexDatabase extends IDatabase {
         return left(
           Failure.invalidValue({
             invalidValue: id,
-            message: "Error getting visibility",
-            code: "INF103",
+            message: 'Error getting visibility',
+            code: 'INF103',
           })
         );
       }
@@ -1447,8 +1448,8 @@ export default class ConvexDatabase extends IDatabase {
       return left(
         Failure.invalidValue({
           invalidValue: id,
-          message: "Error getting visibility",
-          code: "INF101",
+          message: 'Error getting visibility',
+          code: 'INF101',
         })
       );
     }
@@ -1468,8 +1469,8 @@ export default class ConvexDatabase extends IDatabase {
       return left(
         Failure.invalidValue({
           invalidValue: options.userId,
-          message: "Error updating visibility",
-          code: "INF101",
+          message: 'Error updating visibility',
+          code: 'INF101',
         })
       );
     }
@@ -1494,8 +1495,8 @@ export default class ConvexDatabase extends IDatabase {
         return left(
           Failure.invalidValue({
             invalidValue: options,
-            message: "Error creating evaluation base",
-            code: "INF103",
+            message: 'Error creating evaluation base',
+            code: 'INF103',
           })
         );
       }
@@ -1504,8 +1505,8 @@ export default class ConvexDatabase extends IDatabase {
       return left(
         Failure.invalidValue({
           invalidValue: options,
-          message: "Error creating evaluation base",
-          code: "INF101",
+          message: 'Error creating evaluation base',
+          code: 'INF101',
         })
       );
     }
@@ -1525,8 +1526,8 @@ export default class ConvexDatabase extends IDatabase {
         return left(
           Failure.invalidValue({
             invalidValue: options.evaluationId,
-            message: "Error getting evaluation base",
-            code: "INF103",
+            message: 'Error getting evaluation base',
+            code: 'INF103',
           })
         );
       }
@@ -1535,8 +1536,8 @@ export default class ConvexDatabase extends IDatabase {
       return left(
         Failure.invalidValue({
           invalidValue: options.evaluationId,
-          message: "Error getting evaluation base",
-          code: "INF101",
+          message: 'Error getting evaluation base',
+          code: 'INF101',
         })
       );
     }
@@ -1556,8 +1557,8 @@ export default class ConvexDatabase extends IDatabase {
         return left(
           Failure.invalidValue({
             invalidValue: options.createdBy,
-            message: "Error getting evaluation bases",
-            code: "INF103",
+            message: 'Error getting evaluation bases',
+            code: 'INF103',
           })
         );
       }
@@ -1566,8 +1567,8 @@ export default class ConvexDatabase extends IDatabase {
       return left(
         Failure.invalidValue({
           invalidValue: options.createdBy,
-          message: "Error getting evaluation bases",
-          code: "INF101",
+          message: 'Error getting evaluation bases',
+          code: 'INF101',
         })
       );
     }
@@ -1592,8 +1593,8 @@ export default class ConvexDatabase extends IDatabase {
       return left(
         Failure.invalidValue({
           invalidValue: options,
-          message: "Error updating evaluation base",
-          code: "INF101",
+          message: 'Error updating evaluation base',
+          code: 'INF101',
         })
       );
     }
@@ -1614,8 +1615,8 @@ export default class ConvexDatabase extends IDatabase {
         return left(
           Failure.invalidValue({
             invalidValue: options,
-            message: "Failed to assign evaluation to class",
-            code: "INF103",
+            message: 'Failed to assign evaluation to class',
+            code: 'INF103',
           })
         );
       }
@@ -1624,8 +1625,8 @@ export default class ConvexDatabase extends IDatabase {
       return left(
         Failure.invalidValue({
           invalidValue: options,
-          message: "Failed to create evaluation with grades",
-          code: "INF101",
+          message: 'Failed to create evaluation with grades',
+          code: 'INF101',
         })
       );
     }
@@ -1643,8 +1644,8 @@ export default class ConvexDatabase extends IDatabase {
         return left(
           Failure.invalidValue({
             invalidValue: options,
-            message: "Failed to check if evaluation is assigned to class",
-            code: "INF103",
+            message: 'Failed to check if evaluation is assigned to class',
+            code: 'INF103',
           })
         );
       }
@@ -1653,8 +1654,8 @@ export default class ConvexDatabase extends IDatabase {
       return left(
         Failure.invalidValue({
           invalidValue: options,
-          message: "Failed to check if evaluation is assigned to class",
-          code: "INF101",
+          message: 'Failed to check if evaluation is assigned to class',
+          code: 'INF101',
         })
       );
     }
@@ -1672,8 +1673,8 @@ export default class ConvexDatabase extends IDatabase {
       return left(
         Failure.invalidValue({
           invalidValue: options,
-          message: "Failed to delete evaluation base",
-          code: "INF101",
+          message: 'Failed to delete evaluation base',
+          code: 'INF101',
         })
       );
     }
@@ -1694,8 +1695,8 @@ export default class ConvexDatabase extends IDatabase {
         Failure.invalidValue({
           invalidValue: options,
           message:
-            "Failed to get evaluations with grades by evaluation base id",
-          code: "INF101",
+            'Failed to get evaluations with grades by evaluation base id',
+          code: 'INF101',
         })
       );
     }
@@ -1715,8 +1716,8 @@ export default class ConvexDatabase extends IDatabase {
       return left(
         Failure.invalidValue({
           invalidValue: options,
-          message: "Failed to delete evaluation with grades",
-          code: "INF101",
+          message: 'Failed to delete evaluation with grades',
+          code: 'INF101',
         })
       );
     }
@@ -1732,8 +1733,8 @@ export default class ConvexDatabase extends IDatabase {
       return left(
         Failure.invalidValue({
           invalidValue: options,
-          message: "Failed to update grade",
-          code: "INF101",
+          message: 'Failed to update grade',
+          code: 'INF101',
         })
       );
     }
@@ -1751,8 +1752,8 @@ export default class ConvexDatabase extends IDatabase {
         return left(
           Failure.invalidValue({
             invalidValue: options,
-            message: "Error getting evaluation with grade",
-            code: "INF103",
+            message: 'Error getting evaluation with grade',
+            code: 'INF103',
           })
         );
       }
@@ -1761,8 +1762,8 @@ export default class ConvexDatabase extends IDatabase {
       return left(
         Failure.invalidValue({
           invalidValue: options,
-          message: "Error getting evaluation with grade",
-          code: "INF101",
+          message: 'Error getting evaluation with grade',
+          code: 'INF101',
         })
       );
     }
@@ -1780,8 +1781,8 @@ export default class ConvexDatabase extends IDatabase {
         return left(
           Failure.invalidValue({
             invalidValue: options,
-            message: "Error getting evaluations with grades",
-            code: "INF103",
+            message: 'Error getting evaluations with grades',
+            code: 'INF103',
           })
         );
       }
@@ -1790,8 +1791,8 @@ export default class ConvexDatabase extends IDatabase {
       return left(
         Failure.invalidValue({
           invalidValue: options,
-          message: "Error getting evaluations with grades",
-          code: "INF101",
+          message: 'Error getting evaluations with grades',
+          code: 'INF101',
         })
       );
     }
@@ -1808,8 +1809,8 @@ export default class ConvexDatabase extends IDatabase {
         return left(
           Failure.invalidValue({
             invalidValue: options,
-            message: "Failed to create student",
-            code: "INF103",
+            message: 'Failed to create student',
+            code: 'INF103',
           })
         );
       }
@@ -1819,8 +1820,8 @@ export default class ConvexDatabase extends IDatabase {
       return left(
         Failure.invalidValue({
           invalidValue: options,
-          message: "Failed to create student",
-          code: "INF101",
+          message: 'Failed to create student',
+          code: 'INF101',
         })
       );
     }
@@ -1836,8 +1837,8 @@ export default class ConvexDatabase extends IDatabase {
       return left(
         Failure.invalidValue({
           invalidValue: options,
-          message: "Failed to delete student",
-          code: "INF101",
+          message: 'Failed to delete student',
+          code: 'INF101',
         })
       );
     }
@@ -1852,8 +1853,8 @@ export default class ConvexDatabase extends IDatabase {
       return left(
         Failure.invalidValue({
           invalidValue: options,
-          message: "Failed to update student",
-          code: "INF101",
+          message: 'Failed to update student',
+          code: 'INF101',
         })
       );
     }
@@ -1871,8 +1872,8 @@ export default class ConvexDatabase extends IDatabase {
       return left(
         Failure.invalidValue({
           invalidValue: options,
-          message: "Failed to delete classes sequence from class",
-          code: "INF101",
+          message: 'Failed to delete classes sequence from class',
+          code: 'INF101',
         })
       );
     }
@@ -1890,8 +1891,8 @@ export default class ConvexDatabase extends IDatabase {
       return left(
         Failure.invalidValue({
           invalidValue: options,
-          message: "Failed to delete evaluations with grades from class",
-          code: "INF101",
+          message: 'Failed to delete evaluations with grades from class',
+          code: 'INF101',
         })
       );
     }
@@ -1907,8 +1908,8 @@ export default class ConvexDatabase extends IDatabase {
       return left(
         Failure.invalidValue({
           invalidValue: options,
-          message: "Failed to delete students from class",
-          code: "INF101",
+          message: 'Failed to delete students from class',
+          code: 'INF101',
         })
       );
     }

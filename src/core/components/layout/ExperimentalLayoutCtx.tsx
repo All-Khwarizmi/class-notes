@@ -1,6 +1,8 @@
-import { PropsWithChildren, createContext, useContext } from "react";
-import { ErrorDialogProps } from "./LayoutWithProps";
-import { NavItem } from "@/lib/types";
+import { NavItem } from '@/lib/types';
+import { PropsWithChildren, createContext, useContext } from 'react';
+
+import { ErrorDialogProps } from './LayoutWithProps';
+
 export type LayoutWithPropsProps = PropsWithChildren & {
   readonly children?: React.ReactNode;
   readonly navItems: NavItem[];
@@ -24,7 +26,7 @@ const LayoutContext = createContext<LayoutWithPropsProps | null>(null);
 export const useLayoutContext = () => {
   const context = useContext(LayoutContext);
   if (!context) {
-    throw new Error("useLayoutContext must be used within a LayoutProvider");
+    throw new Error('useLayoutContext must be used within a LayoutProvider');
   }
   return context;
 };

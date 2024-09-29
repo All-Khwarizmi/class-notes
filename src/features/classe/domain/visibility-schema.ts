@@ -1,4 +1,5 @@
-import { z } from "zod";
+import { z } from 'zod';
+
 const VisibilitCourseSchema = z.object({
   id: z.string(),
   publish: z.boolean(),
@@ -100,8 +101,8 @@ export function flatVisibilityType(vt: VisibilityType): FlatVisibilityType {
 export function structuredVisibilityType(
   userId: string,
   vt: FlatVisibilityType
-): Omit<VisibilityType, "_id"> {
-  const visibility: Omit<VisibilityType, "_id"> = {
+): Omit<VisibilityType, '_id'> {
+  const visibility: Omit<VisibilityType, '_id'> = {
     userId,
     classe: [],
     sequences: [],
@@ -161,13 +162,13 @@ export function structuredVisibilityType(
 export function toggleVisibility(
   visibility: FlatVisibilityType,
   args: {
-    type: "classe" | "sequence" | "cours" | "complement";
+    type: 'classe' | 'sequence' | 'cours' | 'complement';
     typeId: string;
     publish: boolean;
   }
 ): FlatVisibilityType {
   const newVisibility = structuredClone(visibility);
-  if (args.type === "classe") {
+  if (args.type === 'classe') {
     const classe = newVisibility.classes.find((c) => c.id === args.typeId);
     if (classe) {
       classe.publish = args.publish;
@@ -259,7 +260,7 @@ export function toggleVisibility(
         });
       }
     }
-  } else if (args.type === "sequence") {
+  } else if (args.type === 'sequence') {
     // Get the classe that contains the sequence
     const classe = newVisibility.classes.find((c) =>
       c.sequences.some((s) => s.id === args.typeId)
@@ -334,7 +335,7 @@ export function toggleVisibility(
         }
       }
     }
-  } else if (args.type === "cours") {
+  } else if (args.type === 'cours') {
     // Get the classe that contains the course
     const classe = newVisibility.classes.find((c) =>
       c.sequences.some((s) => s.courses.some((c) => c.id === args.typeId))
@@ -402,7 +403,7 @@ export function toggleVisibility(
         }
       }
     }
-  } else if (args.type === "complement") {
+  } else if (args.type === 'complement') {
     // Get the classe that contains the complement
     const classe = newVisibility.classes.find((c) =>
       c.sequences.some((s) =>

@@ -3,7 +3,7 @@
  * @see https://v0.dev/t/hfDA3Lov2P7
  * Documentation: https://v0.dev/docs#integrating-generated-code-into-your-nextjs-app
  */
-import Link from "next/link";
+import Link from 'next/link';
 
 export default function NotFound() {
   return (

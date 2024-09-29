@@ -1,7 +1,7 @@
-import { cn } from "@/lib/utils";
-import { Ban, Plus } from "lucide-react";
-import Link from "next/link";
-import React, { ButtonHTMLAttributes } from "react";
+import { cn } from '@/lib/utils';
+import { Ban, Plus } from 'lucide-react';
+import Link from 'next/link';
+import React, { ButtonHTMLAttributes } from 'react';
 
 function AfterMenuButton(
   props: {
@@ -17,7 +17,7 @@ function AfterMenuButton(
       <button
         {...props.props}
         className={cn(
-          "bg-transparent rounded-md p-1 px-2 flex items-center ml-2 hover:bg-slate-400 border border-slate-400 hover:border-slate-400",
+          'bg-transparent rounded-md p-1 px-2 flex items-center ml-2 hover:bg-slate-400 border border-slate-400 hover:border-slate-400',
           props.props?.className
         )}
       >
@@ -31,7 +31,7 @@ function AfterMenuButton(
         disabled
         {...props.props}
         className={cn(
-          "bg-slate-400 rounded-md p-1 px-2 flex items-center",
+          'bg-slate-400 rounded-md p-1 px-2 flex items-center',
           props.props?.className
         )}
       >
@@ -42,7 +42,7 @@ function AfterMenuButton(
   return (
     <button
       {...props.props}
-      className={cn("bg-slate-400 rounded-md p-1 px-2", props.props?.className)}
+      className={cn('bg-slate-400 rounded-md p-1 px-2', props.props?.className)}
     >
       {props.children}
     </button>

@@ -1,31 +1,32 @@
-"use client";
+'use client';
 
-import React from "react";
-import dynamic from "next/dynamic";
-import { Cours, Sequence } from "../../domain/entities/cours-schemas";
-import { Complement } from "@/features/complement/domain/complement-schemas";
-import useUpdateSequenceBody from "../../application/adapters/services/useUpdateSequenceBody";
-import useUpdateCoursBody from "../../application/adapters/services/useUpdateCoursBody";
-import LoadingSkeleton from "@/core/components/common/LoadingSkeleton";
-import EmbedWithInput from "../components/Embed";
-import BlogEditor from "@/core/components/common/editor/BlogEditor";
+import LoadingSkeleton from '@/core/components/common/LoadingSkeleton';
+import BlogEditor from '@/core/components/common/editor/BlogEditor';
+import { Complement } from '@/features/complement/domain/complement-schemas';
+import dynamic from 'next/dynamic';
+import React from 'react';
+
+import useUpdateCoursBody from '../../application/adapters/services/useUpdateCoursBody';
+import useUpdateSequenceBody from '../../application/adapters/services/useUpdateSequenceBody';
+import { Cours, Sequence } from '../../domain/entities/cours-schemas';
+import EmbedWithInput from '../components/Embed';
 
 const ExcalidrawCanvas = dynamic(
   () =>
     import(
-      "@/features/complement/presentation/components/ExcalidrawCanvas"
+      '@/features/complement/presentation/components/ExcalidrawCanvas'
     ).then((mod) => mod.ExcalidrawCanvas),
   { ssr: false, loading: () => <LoadingSkeleton /> }
 );
 
 interface CoursSequenceViewProps {
-  type: "cours" | "sequence";
+  type: 'cours' | 'sequence';
   cours?: Cours;
   sequence?: Sequence;
   userId: string;
   coursFromSequence?: Cours[];
   complements?: Complement[];
-  sequenceType?: "template" | "sequence";
+  sequenceType?: 'template' | 'sequence';
 }
 
 export default function CoursSequenceView({
@@ -38,8 +39,8 @@ export default function CoursSequenceView({
   const { debounceUpdateSequenceBody } = useUpdateSequenceBody();
   const { debounceUpdateCoursBody } = useUpdateCoursBody();
 
-  if (type === "cours" && cours) {
-    if (cours.contentType === "Diagram") {
+  if (type === 'cours' && cours) {
+    if (cours.contentType === 'Diagram') {
       return (
         <ExcalidrawCanvas
           initialData={cours.body}
@@ -50,7 +51,7 @@ export default function CoursSequenceView({
         />
       );
     }
-    if (cours.contentType === "Embed") {
+    if (cours.contentType === 'Embed') {
       return (
         <EmbedWithInput
           onUrlUpdate={debounceUpdateCoursBody({
@@ -76,8 +77,8 @@ export default function CoursSequenceView({
     );
   }
 
-  if (type === "sequence" && sequence) {
-    if (sequence.contentType === "Diagram") {
+  if (type === 'sequence' && sequence) {
+    if (sequence.contentType === 'Diagram') {
       return (
         <ExcalidrawCanvas
           initialData={sequence.body}

@@ -1,6 +1,7 @@
-import { getAppDataBase } from "@/core/data/get-app-db";
-import IDatabase from "@/core/data/idatabase";
-import { Update } from "next/dist/build/swc";
+import { getAppDataBase } from '@/core/data/get-app-db';
+import IDatabase from '@/core/data/idatabase';
+import { Update } from 'next/dist/build/swc';
+
 import {
   AddClasseToVisibilityOptions,
   AddComplementToVisibilityOptions,
@@ -9,7 +10,7 @@ import {
   DeleteEntityFromVisibilityOptions,
   GetVisibilityOptions,
   UpdateVisibilityOptions,
-} from "../../domain/types";
+} from '../../domain/types';
 
 export default class VisibilityRepository {
   private readonly _db: IDatabase;

@@ -1,13 +1,12 @@
-import { cn } from "@/lib/utils";
-import { AlignCenter, AlignJustify, AlignLeft, AlignRight } from "lucide-react";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/core/components/ui/popover";
-
-import React from "react";
-import { Editor } from "@tiptap/react";
+} from '@/core/components/ui/popover';
+import { cn } from '@/lib/utils';
+import { Editor } from '@tiptap/react';
+import { AlignCenter, AlignJustify, AlignLeft, AlignRight } from 'lucide-react';
+import React from 'react';
 
 function MenuTextAlign(props: { editor: Editor }) {
   const editor = props.editor;
@@ -16,12 +15,12 @@ function MenuTextAlign(props: { editor: Editor }) {
   }
 
   function whichAlignement() {
-    switch (editor!.getAttributes("textAlign").alignment) {
-      case "center":
+    switch (editor!.getAttributes('textAlign').alignment) {
+      case 'center':
         return <AlignCenter size={12} />;
-      case "right":
+      case 'right':
         return <AlignRight size={12} />;
-      case "justify":
+      case 'justify':
         return <AlignJustify size={12} />;
       default:
         return <AlignLeft size={12} />;
@@ -40,41 +39,41 @@ function MenuTextAlign(props: { editor: Editor }) {
       </PopoverTrigger>
       <PopoverContent className="w-full flex gap-2">
         <button
-          onClick={() => setAlignement("left")}
+          onClick={() => setAlignement('left')}
           className={cn(
-            "text-left",
-            editor.isActive("textAlign", { alignment: "left" }) &&
-              "text-blue-500"
+            'text-left',
+            editor.isActive('textAlign', { alignment: 'left' }) &&
+              'text-blue-500'
           )}
         >
           <AlignLeft size={12} />
         </button>
         <button
-          onClick={() => setAlignement("center")}
+          onClick={() => setAlignement('center')}
           className={cn(
-            "text-center",
-            editor.isActive("textAlign", { alignment: "center" }) &&
-              "text-blue-500"
+            'text-center',
+            editor.isActive('textAlign', { alignment: 'center' }) &&
+              'text-blue-500'
           )}
         >
           <AlignCenter size={12} />
         </button>
         <button
-          onClick={() => setAlignement("right")}
+          onClick={() => setAlignement('right')}
           className={cn(
-            "text-right",
-            editor.isActive("textAlign", { alignment: "right" }) &&
-              "text-blue-500"
+            'text-right',
+            editor.isActive('textAlign', { alignment: 'right' }) &&
+              'text-blue-500'
           )}
         >
           <AlignRight size={12} />
         </button>
         <button
-          onClick={() => setAlignement("justify")}
+          onClick={() => setAlignement('justify')}
           className={cn(
-            "text-justify",
-            editor.isActive("textAlign", { alignment: "justify" }) &&
-              "text-blue-500"
+            'text-justify',
+            editor.isActive('textAlign', { alignment: 'justify' }) &&
+              'text-blue-500'
           )}
         >
           <AlignJustify size={12} />

@@ -1,10 +1,11 @@
 import {
   Grade,
   StudentGradeType,
-} from "@/features/evaluation/domain/entities/evaluation-with-grades-schema";
-import { mutation, query } from "./_generated/server";
-import { v } from "convex/values";
-import { gradeType } from "./fields/grade_type";
+} from '@/features/evaluation/domain/entities/evaluation-with-grades-schema';
+import { v } from 'convex/values';
+
+import { mutation, query } from './_generated/server';
+import { gradeType } from './fields/grade_type';
 
 export const assignEvaluationToClasse = mutation({
   args: {
@@ -13,33 +14,33 @@ export const assignEvaluationToClasse = mutation({
   },
   handler: async (ctx, args) => {
     const evaluationBase = await ctx.db
-      .query("EvaluationBase")
-      .filter((q) => q.eq(q.field("_id"), args.evaluationId))
+      .query('EvaluationBase')
+      .filter((q) => q.eq(q.field('_id'), args.evaluationId))
       .first();
 
     if (!evaluationBase) {
-      throw new Error("Evaluation base not found");
+      throw new Error('Evaluation base not found');
     }
     const students = await ctx.db
-      .query("Students")
-      .filter((q) => q.eq(q.field("classId"), args.classeId))
+      .query('Students')
+      .filter((q) => q.eq(q.field('classId'), args.classeId))
       .collect();
 
     if (!students) {
-      throw new Error("Students not found");
+      throw new Error('Students not found');
     }
     // Create default grades for each student
     const grades: StudentGradeType[] = students.map((student) => ({
       studentId: student._id,
-      feedback: "",
+      feedback: '',
       grades: evaluationBase.criterias.map((criteria) => ({
         criteriaId: criteria.id,
         gradeType: criteria.gradeType,
-        grade: "N/G",
+        grade: 'N/G',
       })),
     }));
     // Create the evaluation with grades
-    const resultId = await ctx.db.insert("EvaluationsWithGrades", {
+    const resultId = await ctx.db.insert('EvaluationsWithGrades', {
       publishDate: Date.now(),
       evaluationDate: Date.now(),
       classeId: args.classeId,
@@ -48,7 +49,7 @@ export const assignEvaluationToClasse = mutation({
     });
 
     if (!resultId) {
-      throw new Error("Failed to create evaluation with grades");
+      throw new Error('Failed to create evaluation with grades');
     }
 
     return resultId;
@@ -70,12 +71,12 @@ export const updateGrade = mutation({
   },
   handler: async (ctx, args) => {
     const evaluation = await ctx.db
-      .query("EvaluationsWithGrades")
-      .filter((q) => q.eq(q.field("_id"), args.evaluationId))
+      .query('EvaluationsWithGrades')
+      .filter((q) => q.eq(q.field('_id'), args.evaluationId))
       .first();
 
     if (!evaluation) {
-      throw new Error("Evaluation not found");
+      throw new Error('Evaluation not found');
     }
 
     const studentGrade = evaluation.grades.find(
@@ -83,7 +84,7 @@ export const updateGrade = mutation({
     );
 
     if (!studentGrade) {
-      throw new Error("Student not found");
+      throw new Error('Student not found');
     }
 
     studentGrade.grades = studentGrade.grades.map((grade) => {
@@ -122,12 +123,12 @@ export const getEvaluationWithGrade = query({
 
   handler: async (ctx, args) => {
     const evaluation = await ctx.db
-      .query("EvaluationsWithGrades")
-      .filter((q) => q.eq(q.field("_id"), args.evaluationId))
+      .query('EvaluationsWithGrades')
+      .filter((q) => q.eq(q.field('_id'), args.evaluationId))
       .first();
 
     if (!evaluation) {
-      throw new Error("Evaluation not found");
+      throw new Error('Evaluation not found');
     }
 
     return evaluation;
@@ -141,8 +142,8 @@ export const getEvaluationsWithGrades = query({
 
   handler: async (ctx, args) => {
     const evaluations = await ctx.db
-      .query("EvaluationsWithGrades")
-      .filter((q) => q.eq(q.field("classeId"), args.classeId))
+      .query('EvaluationsWithGrades')
+      .filter((q) => q.eq(q.field('classeId'), args.classeId))
       .collect();
 
     return evaluations;
@@ -154,8 +155,8 @@ export const getEvaluationsWithGradesByEvaluationBaseId = query({
 
   handler: async (ctx, args) => {
     const evaluations = await ctx.db
-      .query("EvaluationsWithGrades")
-      .filter((q) => q.eq(q.field("evaluationBaseId"), args.evaluationBaseId))
+      .query('EvaluationsWithGrades')
+      .filter((q) => q.eq(q.field('evaluationBaseId'), args.evaluationBaseId))
       .collect();
 
     return evaluations;
@@ -168,12 +169,12 @@ export const deleteEvaluationWithGrades = mutation({
   },
   handler: async (ctx, args) => {
     const evaluation = await ctx.db
-      .query("EvaluationsWithGrades")
-      .filter((q) => q.eq(q.field("_id"), args.evaluationId))
+      .query('EvaluationsWithGrades')
+      .filter((q) => q.eq(q.field('_id'), args.evaluationId))
       .first();
 
     if (!evaluation) {
-      throw new Error("Evaluation not found");
+      throw new Error('Evaluation not found');
     }
 
     await ctx.db.delete(evaluation._id);

@@ -1,25 +1,15 @@
-"use client";
+'use client';
 
-import React, { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import { Plus, X, Check, Search, File } from "lucide-react";
-import { toast } from "sonner";
-
-import { cn } from "@/lib/utils";
-import { Note } from "../../domain/notes-schemas";
-import useAddNote from "../../application/adapters/services/useAddProfileNote";
-import useDeleteNote from "../../application/adapters/services/useDeleteNote";
-
-import { Button } from "@/core/components/ui/button";
-import { Input } from "@/core/components/ui/input";
+import DeleteTableButton from '@/core/components/common/DeleteTableButton';
+import { Button } from '@/core/components/ui/button';
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/core/components/ui/table";
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from '@/core/components/ui/card';
+import { Input } from '@/core/components/ui/input';
+import { ScrollArea } from '@/core/components/ui/scroll-area';
 import {
   Select,
   SelectContent,
@@ -27,15 +17,24 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/core/components/ui/select";
+} from '@/core/components/ui/select';
 import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/core/components/ui/card";
-import { ScrollArea } from "@/core/components/ui/scroll-area";
-import DeleteTableButton from "@/core/components/common/DeleteTableButton";
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/core/components/ui/table';
+import { cn } from '@/lib/utils';
+import { Plus, X, Check, Search, File } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import React, { useEffect, useState } from 'react';
+import { toast } from 'sonner';
+
+import useAddNote from '../../application/adapters/services/useAddProfileNote';
+import useDeleteNote from '../../application/adapters/services/useDeleteNote';
+import { Note } from '../../domain/notes-schemas';
 
 function NotesTableView({
   notes,
@@ -46,7 +45,7 @@ function NotesTableView({
 }) {
   const [localNotes, setLocalNotes] = useState<Note[]>(notes);
   const [isFileFormVisible, setIsFileFormVisible] = useState(false);
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState('');
   const { setNoteOptions } = useAddNote();
   const {
     mutate: deleteNote,
@@ -59,7 +58,7 @@ function NotesTableView({
 
   useEffect(() => {
     if (isNoteDeleteError) {
-      toast.error("Error while deleting note", {
+      toast.error('Error while deleting note', {
         description: noteDeleteError.message,
       });
     }
@@ -69,7 +68,7 @@ function NotesTableView({
     note.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  function handleSubmit(note: Omit<Note, "id" | "createdBy">) {
+  function handleSubmit(note: Omit<Note, 'id' | 'createdBy'>) {
     const newNote = {
       ...note,
       parentId: parentId,
@@ -126,7 +125,10 @@ function NotesTableView({
                 </TableRow>
               ) : (
                 filteredNotes.map((note) => (
-                  <TableRow key={note.id} className="items-center justify-center">
+                  <TableRow
+                    key={note.id}
+                    className="items-center justify-center"
+                  >
                     <TableCell className="font-medium">{note.name}</TableCell>
                     <TableCell>{note.description}</TableCell>
                     <TableCell>
@@ -146,7 +148,7 @@ function NotesTableView({
                       <DeleteTableButton
                         onClick={() => {
                           if (
-                            confirm("Are you sure you want to delete this nte?")
+                            confirm('Are you sure you want to delete this nte?')
                           ) {
                             deleteNote({
                               noteId: note.id,
@@ -174,18 +176,18 @@ function NoteItemFormRow({
   handleSubmit,
   setOpen,
 }: {
-  handleSubmit: (note: Omit<Note, "id" | "createdBy">) => void;
+  handleSubmit: (note: Omit<Note, 'id' | 'createdBy'>) => void;
   setOpen: (value: boolean) => void;
 }) {
-  const [localNote, setLocalNote] = useState<Omit<Note, "id" | "createdBy">>({
-    name: "",
-    description: "",
-    type: "Item",
-    parentId: "1",
+  const [localNote, setLocalNote] = useState<Omit<Note, 'id' | 'createdBy'>>({
+    name: '',
+    description: '',
+    type: 'Item',
+    parentId: '1',
     createdAt: Date.now(),
-    content: "",
-    contentType: "Markup",
-    fullPath: "",
+    content: '',
+    contentType: 'Markup',
+    fullPath: '',
     pathDictionary: [],
     folders: [],
     keywords: [],
@@ -213,7 +215,7 @@ function NoteItemFormRow({
       <TableCell>
         <Select
           onValueChange={(value) =>
-            setLocalNote({ ...localNote, contentType: value as "Markup" })
+            setLocalNote({ ...localNote, contentType: value as 'Markup' })
           }
           value={localNote.contentType}
         >

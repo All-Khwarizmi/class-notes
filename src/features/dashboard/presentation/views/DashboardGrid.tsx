@@ -1,20 +1,19 @@
-"use client";
+'use client';
 
-import React, { useMemo } from "react";
+import { Button } from '@/core/components/ui/button';
 import {
   Card,
   CardContent,
   CardHeader,
   CardTitle,
-} from "@/core/components/ui/card";
-import { Button } from "@/core/components/ui/button";
+} from '@/core/components/ui/card';
+import { ScrollArea } from '@/core/components/ui/scroll-area';
 import {
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
-} from "@/core/components/ui/tabs";
-import { ScrollArea } from "@/core/components/ui/scroll-area";
+} from '@/core/components/ui/tabs';
 import {
   PlusCircle,
   BookOpen,
@@ -24,24 +23,26 @@ import {
   Rss,
   HelpCircle,
   Store,
-} from "lucide-react";
-import Link from "next/link";
-import VisibilityManagementComponent from "../components/VisibilityManagementPanel";
-import QuickLinksCard from "../components/QuickLinksCard";
-import RessourceLinksCard from "../components/RessourceLinksCard";
+} from 'lucide-react';
+import Link from 'next/link';
+import React, { useMemo } from 'react';
+
+import QuickLinksCard from '../components/QuickLinksCard';
+import RessourceLinksCard from '../components/RessourceLinksCard';
+import VisibilityManagementComponent from '../components/VisibilityManagementPanel';
 
 const externalLinks = [
   {
-    name: "Guide de démarrage",
-    href: "https://www.notion.so/Guide-Rapide-pour-Commencer-avec-La-Classe-10732b247fd3805ab0f2c63de6fd1451?pvs=21",
+    name: 'Guide de démarrage',
+    href: 'https://www.notion.so/Guide-Rapide-pour-Commencer-avec-La-Classe-10732b247fd3805ab0f2c63de6fd1451?pvs=21',
   },
   {
-    name: "Améliorer La Classe",
-    href: "https://www.notion.so/Participez-l-Am-lioration-de-La-Classe-10732b247fd3804480e7d1f2dc19d0dd?pvs=21",
+    name: 'Améliorer La Classe',
+    href: 'https://www.notion.so/Participez-l-Am-lioration-de-La-Classe-10732b247fd3804480e7d1f2dc19d0dd?pvs=21',
   },
   {
-    name: "Notre mission",
-    href: "https://www.notion.so/Notre-Mission-Notre-Histoire-Notre-Vision-10732b247fd380b2b951de6d2cd86b5f?pvs=21",
+    name: 'Notre mission',
+    href: 'https://www.notion.so/Notre-Mission-Notre-Histoire-Notre-Vision-10732b247fd380b2b951de6d2cd86b5f?pvs=21',
   },
 ];
 type DashboardProps = {
@@ -51,12 +52,12 @@ type DashboardProps = {
 export default function Dashboard({ userId, hostname }: DashboardProps) {
   const quickActions = useMemo(() => {
     return [
-      { name: "Nouvelle classe", icon: PlusCircle, href: "/classes/add" },
-      { name: "Nouvelle séquence", icon: FileText, href: "/sequences/add" },
-      { name: "Nouvelle évaluation", icon: BookOpen, href: "/evaluations/add" },
-      { name: "Gérer les élèves", icon: Users, href: "/classes" },
+      { name: 'Nouvelle classe', icon: PlusCircle, href: '/classes/add' },
+      { name: 'Nouvelle séquence', icon: FileText, href: '/sequences/add' },
+      { name: 'Nouvelle évaluation', icon: BookOpen, href: '/evaluations/add' },
+      { name: 'Gérer les élèves', icon: Users, href: '/classes' },
       // { name: "Mon Blog", icon: Rss, href: `/${hostname}/blog` },
-      { name: "Mon Espace", icon: Store, href: `/${hostname}` },
+      { name: 'Mon Espace', icon: Store, href: `/${hostname}` },
     ];
   }, [hostname]);
   return (

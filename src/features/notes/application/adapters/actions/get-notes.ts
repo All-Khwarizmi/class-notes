@@ -1,13 +1,13 @@
-"use server";
+'use server';
 
-import { notesUsecases } from "../../usecases/note-usecases";
+import { notesUsecases } from '../../usecases/note-usecases';
 
 export default async function getNotes(options: {
   slug: string;
   userId: string;
-  type: "profile" | "sequence" | "cours" | "class" | "student";
+  type: 'profile' | 'sequence' | 'cours' | 'class' | 'student';
 }) {
   return notesUsecases.getNotes({
-    parentId: options.type === "profile" ? options.userId : options.slug,
+    parentId: options.type === 'profile' ? options.userId : options.slug,
   });
 }

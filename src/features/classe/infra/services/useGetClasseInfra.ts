@@ -1,9 +1,11 @@
-import { useQuery } from "convex/react";
-import { useEffect, useState } from "react";
-import { api } from "../../../../../convex/_generated/api";
-import { ClasseEntityDto } from "@/features/classe/infra/dtos/classe-dto";
-import { isRight } from "fp-ts/lib/Either";
-import ClassEntity from "@/features/classe/domain/class-entity";
+import ClassEntity from '@/features/classe/domain/class-entity';
+import { ClasseEntityDto } from '@/features/classe/infra/dtos/classe-dto';
+import { useQuery } from 'convex/react';
+import { isRight } from 'fp-ts/lib/Either';
+import { useEffect, useState } from 'react';
+
+import { api } from '../../../../../convex/_generated/api';
+
 export type GetClassePayload = {
   classe: ClassEntity | null;
   error: boolean;

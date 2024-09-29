@@ -1,9 +1,9 @@
-import React from "react";
-import { coursUsecases } from "@/features/cours-sequence/application/usecases/cours-usecases";
-import { isLeft } from "fp-ts/lib/Either";
-import ErrorDialog from "@/core/components/common/ErrorDialog";
-import ClasseSequencesTableView from "@/features/cours-sequence/presentation/views/ClasseSequencesTableView";
-import checkAuthAndRedirect from "@/data-access/auth/check-and-redirect";
+import ErrorDialog from '@/core/components/common/ErrorDialog';
+import checkAuthAndRedirect from '@/data-access/auth/check-and-redirect';
+import { coursUsecases } from '@/features/cours-sequence/application/usecases/cours-usecases';
+import ClasseSequencesTableView from '@/features/cours-sequence/presentation/views/ClasseSequencesTableView';
+import { isLeft } from 'fp-ts/lib/Either';
+import React from 'react';
 
 async function ClasseSequencesServerLayer(props: { slug: string }) {
   const { userId } = await checkAuthAndRedirect();

@@ -1,9 +1,10 @@
-import { Either, isLeft, left, right } from "fp-ts/lib/Either";
-import { Note, NoteSchema } from "../../domain/notes-schemas";
+import Failure from '@/core/failures/failures';
+import { Either, isLeft, left, right } from 'fp-ts/lib/Either';
+
+import { Note, NoteSchema } from '../../domain/notes-schemas';
 import NoteRepository, {
   noteRepository,
-} from "../repositories/note-repository";
-import Failure from "@/core/failures/failures";
+} from '../repositories/note-repository';
 
 export default class NotesUsecases {
   private readonly _repository: NoteRepository;
@@ -19,9 +20,9 @@ export default class NotesUsecases {
   }): Promise<Either<Failure<string>, Note[]>> {
     const eitherNotes = await this._repository.getNotes({ parentId });
     if (isLeft(eitherNotes)) {
-      console.log("eitherNotes", eitherNotes);
+      console.log('eitherNotes', eitherNotes);
       return eitherNotes;
-    } 
+    }
     const validatedNotes: Note[] = [];
     for (const note of eitherNotes.right) {
       const parsedNote = {
@@ -34,8 +35,8 @@ export default class NotesUsecases {
         return left(
           Failure.invalidValue({
             invalidValue: parsedNote,
-            message: "Invalid notes",
-            code: "APP203",
+            message: 'Invalid notes',
+            code: 'APP203',
           })
         );
       }
@@ -49,7 +50,7 @@ export default class NotesUsecases {
     return this._repository.getNote({ id });
   }
 
-  async createNote({ note }: { note: Omit<Note, "id"> }) {
+  async createNote({ note }: { note: Omit<Note, 'id'> }) {
     return this._repository.createNote({
       note,
     });
@@ -60,17 +61,17 @@ export default class NotesUsecases {
   }: {
     note: Pick<
       Note,
-      | "id"
-      | "name"
-      | "description"
-      | "content"
-      | "fullPath"
-      | "pathDictionary"
-      | "folders"
-      | "createdBy"
-      | "keywords"
-      | "type"
-      | "contentType"
+      | 'id'
+      | 'name'
+      | 'description'
+      | 'content'
+      | 'fullPath'
+      | 'pathDictionary'
+      | 'folders'
+      | 'createdBy'
+      | 'keywords'
+      | 'type'
+      | 'contentType'
     >;
   }) {
     return this._repository.updateNote({

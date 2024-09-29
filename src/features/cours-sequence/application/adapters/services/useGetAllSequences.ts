@@ -1,6 +1,7 @@
-import { QUERY_KEYS } from "@/core/query/ query-keys";
-import { useQuery } from "@tanstack/react-query";
-import { coursUsecases } from "../../usecases/cours-usecases";
+import { QUERY_KEYS } from '@/core/query/ query-keys';
+import { useQuery } from '@tanstack/react-query';
+
+import { coursUsecases } from '../../usecases/cours-usecases';
 
 export default function useGetAllSequences(userId: string) {
   return useQuery({

@@ -1,6 +1,7 @@
-import { Competence } from "@/features/comp-cat/domain/entities/schemas";
-import { useState } from "react";
-import { Cours, Sequence } from "../../domain/entities/cours-schemas";
+import { Competence } from '@/features/comp-cat/domain/entities/schemas';
+import { useState } from 'react';
+
+import { Cours, Sequence } from '../../domain/entities/cours-schemas';
 
 /**
  * Retrieves the selected competences based on the provided options.
@@ -17,7 +18,7 @@ function useGetSelectedCompetences(options: {
   edit?: boolean;
   cours?: Cours;
   sequence?: Sequence;
-  type: "cours" | "sequence";
+  type: 'cours' | 'sequence';
   competences: Competence[];
 }) {
   const [selectedCompetences, setSelectedCompetences] = useState<Competence[]>(
@@ -27,11 +28,11 @@ function useGetSelectedCompetences(options: {
           selectedCompetences: options.cours!.competences,
         })
       : options.sequence !== undefined
-      ? filterCompetences({
-          competences: options.competences,
-          selectedCompetences: options.sequence!.competencesIds,
-        })
-      : []
+        ? filterCompetences({
+            competences: options.competences,
+            selectedCompetences: options.sequence!.competencesIds,
+          })
+        : []
   );
 
   /**

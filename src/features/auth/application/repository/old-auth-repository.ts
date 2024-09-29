@@ -1,5 +1,5 @@
-import useGetUserAuthInfra from "../../infra/useGetUserAuthInfra";
-import useGetUserAuthUsecase from "../usecases/useGetUserAuthUsecase";
+import useGetUserAuthInfra from '../../infra/useGetUserAuthInfra';
+import useGetUserAuthUsecase from '../usecases/useGetUserAuthUsecase';
 
 const oldAuthRepositoy = {
   useGetUserId: useGetUserAuthUsecase.bind(null, {

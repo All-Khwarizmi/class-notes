@@ -1,14 +1,15 @@
-"use server";
+'use server';
 
-import { fetchQuery } from "convex/nextjs";
-import { api } from "../../../convex/_generated/api";
-import { isSome, none, Option, some } from "fp-ts/lib/Option";
-import { blogPostSchema } from "./blog-schema";
+import { fetchQuery } from 'convex/nextjs';
+import { isSome, none, Option, some } from 'fp-ts/lib/Option';
+
+import { api } from '../../../convex/_generated/api';
+import { blogPostSchema } from './blog-schema';
 import {
   BlogPostDto,
   getBlogPostDto,
   GetBlogPostsResponseDto,
-} from "./get-blog-post";
+} from './get-blog-post';
 
 // Get blog posts
 export const getBlogPosts = async (
@@ -16,7 +17,7 @@ export const getBlogPosts = async (
   limit?: number,
   cursor?: string
 ): Promise<Option<GetBlogPostsResponseDto>> => {
-  "use server";
+  'use server';
   const result = await fetchQuery(api.blog.getBlogPosts, {
     authorId,
     limit,

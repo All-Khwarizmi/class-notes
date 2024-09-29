@@ -1,4 +1,4 @@
-import { ScrollArea } from "@/core/components/ui/scroll-area";
+import { ScrollArea } from '@/core/components/ui/scroll-area';
 
 export default function Evaluations() {
   return (

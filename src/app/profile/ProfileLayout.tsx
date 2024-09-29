@@ -1,17 +1,19 @@
-import React, { Suspense } from "react";
+import LoadingSkeleton from '@/core/components/common/LoadingSkeleton';
 import {
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
-} from "@/core/components/ui/tabs";
-import NotesServerLayer from "./notes/[slug]/NotesServerLayer";
-import UserProfile from "@/features/profile/presentation/views/UserProfile";
-import LoadingSkeleton from "@/core/components/common/LoadingSkeleton";
-import NotFound from "../not-found";
-import checkAuthAndRedirect from "@/data-access/auth/check-and-redirect";
-import { getCurrentUser } from "@/data-access/user/get-current-user";
-import { isNone,  } from "fp-ts/lib/Option";
+} from '@/core/components/ui/tabs';
+import checkAuthAndRedirect from '@/data-access/auth/check-and-redirect';
+import { getCurrentUser } from '@/data-access/user/get-current-user';
+import UserProfile from '@/features/profile/presentation/views/UserProfile';
+import { isNone } from 'fp-ts/lib/Option';
+import React, { Suspense } from 'react';
+
+import NotFound from '../not-found';
+import NotesServerLayer from './notes/[slug]/NotesServerLayer';
+
 async function ProfileLayout() {
   const { userId } = await checkAuthAndRedirect();
 

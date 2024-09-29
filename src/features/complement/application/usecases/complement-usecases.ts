@@ -1,9 +1,10 @@
-import { Either, isLeft, left, right } from "fp-ts/lib/Either";
-import { Complement, ComplementSchema } from "../../domain/complement-schemas";
+import Failure from '@/core/failures/failures';
+import { Either, isLeft, left, right } from 'fp-ts/lib/Either';
+
+import { Complement, ComplementSchema } from '../../domain/complement-schemas';
 import ComplementRepository, {
   complementRepository,
-} from "../repositories/complement-repository";
-import Failure from "@/core/failures/failures";
+} from '../repositories/complement-repository';
 
 export default class ComplementUsecases {
   private readonly _repository: ComplementRepository;
@@ -19,13 +20,13 @@ export default class ComplementUsecases {
     userId: string;
     complement: Pick<
       Complement,
-      | "name"
-      | "description"
-      | "type"
-      | "publish"
-      | "coursId"
-      | "body"
-      | "contentType"
+      | 'name'
+      | 'description'
+      | 'type'
+      | 'publish'
+      | 'coursId'
+      | 'body'
+      | 'contentType'
     >;
   }) {
     return this._repository.addComplement({
@@ -74,8 +75,8 @@ export default class ComplementUsecases {
       return left(
         Failure.invalidValue({
           invalidValue: failures,
-          message: " Could not validate complements ",
-          code: "APP203",
+          message: ' Could not validate complements ',
+          code: 'APP203',
         })
       );
     }
@@ -103,7 +104,7 @@ export default class ComplementUsecases {
           ${JSON.stringify(validatedComplement.error)}
           
           `,
-          code: "APP203",
+          code: 'APP203',
         })
       );
     }

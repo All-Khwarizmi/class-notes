@@ -1,7 +1,8 @@
-import { Id } from "./_generated/dataModel";
-import { mutation, query } from "./_generated/server";
-import { v } from "convex/values";
-import { contentType } from "./fields/content_type";
+import { v } from 'convex/values';
+
+import { Id } from './_generated/dataModel';
+import { mutation, query } from './_generated/server';
+import { contentType } from './fields/content_type';
 
 export const createSequence = mutation({
   args: {
@@ -17,17 +18,17 @@ export const createSequence = mutation({
   },
   handler: async (ctx, args) => {
     const existingUser = await ctx.db
-      .query("Users")
-      .filter((q) => q.eq(q.field("userId"), args.userId))
+      .query('Users')
+      .filter((q) => q.eq(q.field('userId'), args.userId))
       .first();
 
     if (existingUser) {
-      const categoryId = await ctx.db.insert("Sequences", {
+      const categoryId = await ctx.db.insert('Sequences', {
         imageUrl: args.imageUrl,
         name: args.name,
         body: args.body,
         coursIds: [],
-        competencesIds: args.competencesIds as Id<"Competences">[],
+        competencesIds: args.competencesIds as Id<'Competences'>[],
         description: args.description,
         createdBy: existingUser!._id,
         createdAt: Date.now(),
@@ -37,13 +38,13 @@ export const createSequence = mutation({
       });
 
       if (!categoryId) {
-        throw new Error("Could not create sequence");
+        throw new Error('Could not create sequence');
       }
 
       // Add the sequence to the visibility table
       const visibilityTable = await ctx.db
-        .query("VisibilityTable")
-        .filter((q) => q.eq(q.field("userId"), existingUser!._id))
+        .query('VisibilityTable')
+        .filter((q) => q.eq(q.field('userId'), existingUser!._id))
         .first();
 
       if (visibilityTable) {
@@ -55,7 +56,7 @@ export const createSequence = mutation({
               id: categoryId,
               publish: args.publish ?? false,
               classe: true,
-              classeId: "",
+              classeId: '',
               name: args.name,
               description: args.description,
             },
@@ -76,17 +77,17 @@ export const addCoursToSequence = mutation({
   },
   handler: async (ctx, args) => {
     const sequence = await ctx.db
-      .query("Sequences")
-      .filter((q) => q.eq(q.field("_id"), args.sequenceId))
+      .query('Sequences')
+      .filter((q) => q.eq(q.field('_id'), args.sequenceId))
       .first();
 
     if (sequence) {
       const allCours = await ctx.db
-        .query("Cours")
-        .filter((q) => q.eq(q.field("createdBy"), sequence.createdBy))
+        .query('Cours')
+        .filter((q) => q.eq(q.field('createdBy'), sequence.createdBy))
         .collect();
 
-      const coursIds: Id<"Cours">[] = [];
+      const coursIds: Id<'Cours'>[] = [];
       for (const cours of allCours) {
         if (args.coursIds.includes(cours.name)) {
           coursIds.push(cours._id);
@@ -106,14 +107,14 @@ export const getAllSequences = query({
   },
   handler: async (ctx, args) => {
     const user = await ctx.db
-      .query("Users")
-      .filter((q) => q.eq(q.field("userId"), args.userId))
+      .query('Users')
+      .filter((q) => q.eq(q.field('userId'), args.userId))
       .first();
 
     if (user) {
       const sequences = await ctx.db
-        .query("Sequences")
-        .filter((q) => q.eq(q.field("createdBy"), user!._id))
+        .query('Sequences')
+        .filter((q) => q.eq(q.field('createdBy'), user!._id))
         .collect();
       return sequences;
     }
@@ -127,8 +128,8 @@ export const getSingleSequence = query({
   },
   handler: async (ctx, args) => {
     const sequence = await ctx.db
-      .query("Sequences")
-      .filter((q) => q.eq(q.field("_id"), args.sequenceId))
+      .query('Sequences')
+      .filter((q) => q.eq(q.field('_id'), args.sequenceId))
       .first();
     return sequence;
   },
@@ -143,20 +144,20 @@ export const updateSequence = mutation({
     description: v.string(),
     category: v.string(),
     imageUrl: v.string(),
-    type: v.optional(v.literal("sequence")),
+    type: v.optional(v.literal('sequence')),
     publish: v.optional(v.boolean()),
   },
   handler: async (ctx, args) => {
-    if (args.type === "sequence") {
+    if (args.type === 'sequence') {
       const classeSequence = await ctx.db
-        .query("ClasseSequence")
-        .filter((q) => q.eq(q.field("_id"), args.sequenceId))
+        .query('ClasseSequence')
+        .filter((q) => q.eq(q.field('_id'), args.sequenceId))
         .first();
 
       if (classeSequence) {
         const userComptences = await ctx.db
-          .query("Competences")
-          .filter((q) => q.eq(q.field("createdBy"), classeSequence.createdBy))
+          .query('Competences')
+          .filter((q) => q.eq(q.field('createdBy'), classeSequence.createdBy))
           .collect();
 
         // Check the publish status
@@ -216,14 +217,14 @@ export const updateSequence = mutation({
       return;
     } else {
       const existingSequence = await ctx.db
-        .query("Sequences")
-        .filter((q) => q.eq(q.field("_id"), args.sequenceId))
+        .query('Sequences')
+        .filter((q) => q.eq(q.field('_id'), args.sequenceId))
         .first();
 
       if (existingSequence) {
         const userComptences = await ctx.db
-          .query("Competences")
-          .filter((q) => q.eq(q.field("createdBy"), existingSequence.createdBy))
+          .query('Competences')
+          .filter((q) => q.eq(q.field('createdBy'), existingSequence.createdBy))
           .collect();
         const updateSequence = {
           name: args.name,
@@ -249,13 +250,13 @@ export const addBodyToSequence = mutation({
     userId: v.string(),
     sequenceId: v.string(),
     body: v.string(),
-    type: v.optional(v.literal("sequence")),
+    type: v.optional(v.literal('sequence')),
   },
   handler: async (ctx, args) => {
-    if (args.type === "sequence") {
+    if (args.type === 'sequence') {
       const classeSequence = await ctx.db
-        .query("ClasseSequence")
-        .filter((q) => q.eq(q.field("_id"), args.sequenceId))
+        .query('ClasseSequence')
+        .filter((q) => q.eq(q.field('_id'), args.sequenceId))
         .first();
 
       if (classeSequence) {
@@ -265,8 +266,8 @@ export const addBodyToSequence = mutation({
       }
     } else {
       const existingSequence = await ctx.db
-        .query("Sequences")
-        .filter((q) => q.eq(q.field("_id"), args.sequenceId))
+        .query('Sequences')
+        .filter((q) => q.eq(q.field('_id'), args.sequenceId))
         .first();
 
       if (existingSequence) {
@@ -282,29 +283,29 @@ export const getAllCoursInSequence = query({
   args: {
     userId: v.string(),
     sequenceId: v.string(),
-    type: v.optional(v.literal("sequence")),
+    type: v.optional(v.literal('sequence')),
   },
   handler: async (ctx, args) => {
-    if (args.type === "sequence") {
+    if (args.type === 'sequence') {
       const classeSequence = await ctx.db
-        .query("ClasseSequence")
-        .filter((q) => q.eq(q.field("_id"), args.sequenceId))
+        .query('ClasseSequence')
+        .filter((q) => q.eq(q.field('_id'), args.sequenceId))
         .first();
 
       if (classeSequence) {
         const cours = await ctx.db
-          .query("Cours")
-          .withIndex("by_sequenceId")
-          .filter((q) => q.eq(q.field("sequenceId"), args.sequenceId))
+          .query('Cours')
+          .withIndex('by_sequenceId')
+          .filter((q) => q.eq(q.field('sequenceId'), args.sequenceId))
           .collect();
         return cours;
       }
     }
 
     const cours = await ctx.db
-      .query("Cours")
-      .withIndex("by_sequenceId")
-      .filter((q) => q.eq(q.field("sequenceId"), args.sequenceId))
+      .query('Cours')
+      .withIndex('by_sequenceId')
+      .filter((q) => q.eq(q.field('sequenceId'), args.sequenceId))
       .collect();
     return cours;
   },
@@ -313,17 +314,17 @@ export const getAllCoursInSequence = query({
 export const deleteSequence = mutation({
   args: {
     sequenceId: v.string(),
-    type: v.union(v.literal("sequence"), v.literal("template")),
+    type: v.union(v.literal('sequence'), v.literal('template')),
   },
   handler: async (ctx, args) => {
     console.log(`
       Deleting sequence ${args.sequenceId}
       Type: ${args.type}
     `);
-    if (args.type === "sequence") {
+    if (args.type === 'sequence') {
       const classeSequence = await ctx.db
-        .query("ClasseSequence")
-        .filter((q) => q.eq(q.field("_id"), args.sequenceId))
+        .query('ClasseSequence')
+        .filter((q) => q.eq(q.field('_id'), args.sequenceId))
         .first();
 
       if (classeSequence) {
@@ -331,8 +332,8 @@ export const deleteSequence = mutation({
       }
     } else {
       const existingSequence = await ctx.db
-        .query("Sequences")
-        .filter((q) => q.eq(q.field("_id"), args.sequenceId))
+        .query('Sequences')
+        .filter((q) => q.eq(q.field('_id'), args.sequenceId))
         .first();
 
       if (existingSequence) {

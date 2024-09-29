@@ -1,32 +1,5 @@
-"use client";
+'use client';
 
-import React, { useState } from "react";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { Plus, Trash2, ChevronRight, Search } from "lucide-react";
-import { Complement } from "@/features/complement/domain/complement-schemas";
-import useDeleteComplement from "@/features/complement/application/adapters/services/useDeleteComplement";
-import { Button } from "@/core/components/ui/button";
-import { Input } from "@/core/components/ui/input";
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/core/components/ui/table";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/core/components/ui/card";
-import { ScrollArea } from "@/core/components/ui/scroll-area";
-import { Badge } from "@/core/components/ui/badge";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -37,13 +10,40 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/core/components/ui/alert-dialog";
+} from '@/core/components/ui/alert-dialog';
+import { Badge } from '@/core/components/ui/badge';
+import { Button } from '@/core/components/ui/button';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/core/components/ui/card';
+import { Input } from '@/core/components/ui/input';
+import { ScrollArea } from '@/core/components/ui/scroll-area';
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/core/components/ui/table';
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@/core/components/ui/tooltip";
+} from '@/core/components/ui/tooltip';
+import useDeleteComplement from '@/features/complement/application/adapters/services/useDeleteComplement';
+import { Complement } from '@/features/complement/domain/complement-schemas';
+import { Plus, Trash2, ChevronRight, Search } from 'lucide-react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import React, { useState } from 'react';
 
 function ComplementsTable({
   complements,
@@ -57,7 +57,7 @@ function ComplementsTable({
   const router = useRouter();
   const { mutate: deleteComplement, isPending: isDeleting } =
     useDeleteComplement();
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState('');
 
   const filteredComplements = complements.filter((complement) =>
     complement.name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -160,7 +160,7 @@ function ComplementsTable({
                               }
                               disabled={isDeleting}
                             >
-                              {isDeleting ? "Suppression..." : "Supprimer"}
+                              {isDeleting ? 'Suppression...' : 'Supprimer'}
                             </AlertDialogAction>
                           </AlertDialogFooter>
                         </AlertDialogContent>

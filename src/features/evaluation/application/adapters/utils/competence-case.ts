@@ -1,18 +1,19 @@
 import {
-  Grade,
-  GradeSchema,
-  StudentGradeSchema,
-} from "@/features/evaluation/domain/entities/evaluation-with-grades-schema";
-import {
   CompetenceEvaluationSchema,
   CompetenceLevelSchema,
   EvaluationCriteriaType,
-} from "@/features/evaluation/domain/entities/evaluation-schema";
+} from '@/features/evaluation/domain/entities/evaluation-schema';
+import {
+  Grade,
+  GradeSchema,
+  StudentGradeSchema,
+} from '@/features/evaluation/domain/entities/evaluation-with-grades-schema';
+import { z } from 'zod';
+
 import checkSpecialGradeType, {
   SpecialGradeType,
   SpecialGradeTypes,
-} from "./checkSpecialGradeType";
-import { z } from "zod";
+} from './checkSpecialGradeType';
 
 export type CompetenceLevel = z.infer<typeof CompetenceLevelSchema>;
 // Calculate the overall grade for a student in a competence evaluation
@@ -34,7 +35,7 @@ export function evaluateCompetence(
     const criteriaItem = criteria.find(
       (criteria) => criteria.id === grade.criteriaId
     );
-    if (!criteriaItem) throw new Error("Criteria item not found");
+    if (!criteriaItem) throw new Error('Criteria item not found');
 
     if (isCompetenceGradeType(grade)) {
       const competenceGrade = grade as Grade & { grade: CompetenceLevel };
@@ -43,7 +44,7 @@ export function evaluateCompetence(
       );
       totalGrade = [...totalGrade, ...weightedGrade];
     } else {
-      return "Error";
+      return 'Error';
     }
   }
   return averageCompetence(totalGrade);
@@ -51,16 +52,16 @@ export function evaluateCompetence(
 
 // a helper function to transform a maitrise type to a number ranging from 0 to 3 for the purpose of calculating the overall grade
 export function competenceToNumber(
-  competence: Omit<CompetenceLevel, "N/A" | "Error" | "M" | "N/G" | "N/D">
+  competence: Omit<CompetenceLevel, 'N/A' | 'Error' | 'M' | 'N/G' | 'N/D'>
 ): 0 | 1 | 2 | 3 {
   switch (competence) {
-    case "Expertise":
+    case 'Expertise':
       return 3;
-    case "Proficiency":
+    case 'Proficiency':
       return 2;
-    case "To be developed":
+    case 'To be developed':
       return 1;
-    case "To be acquired":
+    case 'To be acquired':
       return 0;
   }
   return 0;
@@ -69,10 +70,10 @@ export function competenceToNumber(
 // A helper function that maps over a list of numbers in a 0 to 3 range and returns the average in Matrise type
 export function averageCompetence(grades: number[]): CompetenceLevel {
   const average = grades.reduce((acc, curr) => acc + curr, 0) / grades.length;
-  if (average >= 2.5) return "Expertise";
-  if (average >= 1.5) return "Proficiency";
-  if (average >= 0.5) return "To be developed";
-  return "To be acquired";
+  if (average >= 2.5) return 'Expertise';
+  if (average >= 1.5) return 'Proficiency';
+  if (average >= 0.5) return 'To be developed';
+  return 'To be acquired';
 }
 
 export const CompetenceGradeSchemaExtension = GradeSchema.extend({

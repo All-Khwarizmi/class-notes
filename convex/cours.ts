@@ -1,6 +1,7 @@
-import { mutation, query } from "./_generated/server";
-import { v } from "convex/values";
-import { contentType } from "./fields/content_type";
+import { v } from 'convex/values';
+
+import { mutation, query } from './_generated/server';
+import { contentType } from './fields/content_type';
 
 export const createCours = mutation({
   args: {
@@ -18,38 +19,38 @@ export const createCours = mutation({
   },
   handler: async (ctx, args) => {
     const existingUser = await ctx.db
-      .query("Users")
-      .filter((q) => q.eq(q.field("userId"), args.userId))
+      .query('Users')
+      .filter((q) => q.eq(q.field('userId'), args.userId))
       .first();
 
     if (!existingUser) {
-      throw new Error("User not found");
+      throw new Error('User not found');
     }
 
     const existingSequence = await ctx.db
-      .query("Sequences")
-      .filter((q) => q.eq(q.field("_id"), args.sequenceId))
+      .query('Sequences')
+      .filter((q) => q.eq(q.field('_id'), args.sequenceId))
       .first();
 
     if (!existingSequence) {
       // Use the Classe Sequence table to get the sequence
       const existingClasseSequence = await ctx.db
-        .query("ClasseSequence")
-        .filter((q) => q.eq(q.field("_id"), args.sequenceId))
+        .query('ClasseSequence')
+        .filter((q) => q.eq(q.field('_id'), args.sequenceId))
         .first();
 
       if (!existingClasseSequence) {
-        throw new Error("Sequence not found");
+        throw new Error('Sequence not found');
       }
 
       // get all competences
 
       const competences = await ctx.db
-        .query("Competences")
-        .filter((q) => q.eq(q.field("createdBy"), existingUser!._id))
+        .query('Competences')
+        .filter((q) => q.eq(q.field('createdBy'), existingUser!._id))
         .collect();
 
-      const categoryId = await ctx.db.insert("Cours", {
+      const categoryId = await ctx.db.insert('Cours', {
         imageUrl: args.imageUrl,
         sequenceId: existingClasseSequence.originalSequenceId,
         name: args.name,
@@ -64,7 +65,7 @@ export const createCours = mutation({
       });
 
       if (!categoryId) {
-        throw new Error("Could not create cours");
+        throw new Error('Could not create cours');
       }
 
       // Add the cours to the sequence
@@ -77,11 +78,11 @@ export const createCours = mutation({
 
     // get all competences
     const competences = await ctx.db
-      .query("Competences")
-      .filter((q) => q.eq(q.field("createdBy"), existingUser!._id))
+      .query('Competences')
+      .filter((q) => q.eq(q.field('createdBy'), existingUser!._id))
       .collect();
 
-    const categoryId = await ctx.db.insert("Cours", {
+    const categoryId = await ctx.db.insert('Cours', {
       imageUrl: args.imageUrl,
       sequenceId: existingSequence!._id,
       name: args.name,
@@ -96,7 +97,7 @@ export const createCours = mutation({
     });
 
     if (!categoryId) {
-      throw new Error("Could not create cours");
+      throw new Error('Could not create cours');
     }
 
     // Add the cours to the sequence
@@ -114,14 +115,14 @@ export const getAllCours = query({
   },
   handler: async (ctx, args) => {
     const user = await ctx.db
-      .query("Users")
-      .filter((q) => q.eq(q.field("userId"), args.userId))
+      .query('Users')
+      .filter((q) => q.eq(q.field('userId'), args.userId))
       .first();
 
     if (user) {
       const cours = await ctx.db
-        .query("Cours")
-        .filter((q) => q.eq(q.field("createdBy"), user!._id))
+        .query('Cours')
+        .filter((q) => q.eq(q.field('createdBy'), user!._id))
         .collect();
       return cours;
     }
@@ -135,8 +136,8 @@ export const getSingleCours = query({
   },
   handler: async (ctx, args) => {
     const cours = await ctx.db
-      .query("Cours")
-      .filter((q) => q.eq(q.field("_id"), args.coursId))
+      .query('Cours')
+      .filter((q) => q.eq(q.field('_id'), args.coursId))
       .first();
     return cours;
   },
@@ -156,34 +157,34 @@ export const updateCours = mutation({
   },
   handler: async (ctx, args) => {
     const existingCours = await ctx.db
-      .query("Cours")
-      .filter((q) => q.eq(q.field("_id"), args.coursId))
+      .query('Cours')
+      .filter((q) => q.eq(q.field('_id'), args.coursId))
       .first();
 
     if (!existingCours) {
-      throw new Error("Cours not found");
+      throw new Error('Cours not found');
     }
 
     const userComptences = await ctx.db
-      .query("Competences")
-      .filter((q) => q.eq(q.field("createdBy"), existingCours.createdBy))
+      .query('Competences')
+      .filter((q) => q.eq(q.field('createdBy'), existingCours.createdBy))
       .collect();
 
     const visibilityTable = await ctx.db
-      .query("VisibilityTable")
-      .withIndex("by_userId")
-      .filter((q) => q.eq(q.field("userId"), existingCours.createdBy))
+      .query('VisibilityTable')
+      .withIndex('by_userId')
+      .filter((q) => q.eq(q.field('userId'), existingCours.createdBy))
       .first();
 
     if (!visibilityTable) {
-      throw new Error("Visibility table not found");
+      throw new Error('Visibility table not found');
     }
 
     const vivibilityCours = visibilityTable.cours.find(
       (c) => c.id === existingCours._id
     );
     if (!vivibilityCours) {
-      throw new Error("Cours not found in visibility table");
+      throw new Error('Cours not found in visibility table');
     }
 
     // update the cours in the visibility table
@@ -224,14 +225,14 @@ export const updateCoursBody = mutation({
   handler: async (ctx, args) => {
     try {
       const user = await ctx.db
-        .query("Users")
-        .filter((q) => q.eq(q.field("userId"), args.userId))
+        .query('Users')
+        .filter((q) => q.eq(q.field('userId'), args.userId))
         .first();
 
       if (user) {
         const existingCours = await ctx.db
-          .query("Cours")
-          .filter((q) => q.eq(q.field("_id"), args.coursId))
+          .query('Cours')
+          .filter((q) => q.eq(q.field('_id'), args.coursId))
           .first();
 
         if (existingCours) {
@@ -253,12 +254,12 @@ export const deleteCours = mutation({
   handler: async (ctx, args) => {
     try {
       const cours = await ctx.db
-        .query("Cours")
-        .filter((q) => q.eq(q.field("_id"), args.coursId))
+        .query('Cours')
+        .filter((q) => q.eq(q.field('_id'), args.coursId))
         .first();
 
       if (!cours) {
-        throw new Error("Cours not found");
+        throw new Error('Cours not found');
       }
 
       await ctx.db.delete(cours._id);

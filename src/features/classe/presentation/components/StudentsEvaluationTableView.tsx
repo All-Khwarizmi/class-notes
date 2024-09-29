@@ -1,6 +1,21 @@
-"use client";
+'use client';
 
-import React, { useState } from "react";
+import { Button } from '@/core/components/ui/button';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from '@/core/components/ui/card';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/core/components/ui/dialog';
+import { ScrollArea } from '@/core/components/ui/scroll-area';
+import { Skeleton } from '@/core/components/ui/skeleton';
 import {
   Table,
   TableBody,
@@ -9,27 +24,18 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/core/components/ui/table";
-import { Button } from "@/core/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/core/components/ui/dialog";
-import { Card, CardContent, CardHeader, CardTitle } from "@/core/components/ui/card";
-import { ScrollArea } from "@/core/components/ui/scroll-area";
-import { Settings, UserPlus, FileSpreadsheet } from "lucide-react";
-import AssignEvaluation from "./AssignEvaluation";
-import UpdateStudentGradeForm from "./UpdateStudentGradeForm";
-import calculateOverallGrade from "@/features/evaluation/application/adapters/utils/calculate-overall-grade";
-import AddStudentForm from "../../../student/presentation/components/AddStudentForm";
-import { Id } from "../../../../../convex/_generated/dataModel";
-import useGetStudentTableData from "@/features/evaluation/application/adapters/services/useGetStudentTableData";
-import CSVReader from "./StudentCsvLoader";
-import StudentUpdateForm from "@/features/student/presentation/components/StudentUpdateForm";
-import { Skeleton } from "@/core/components/ui/skeleton";
+} from '@/core/components/ui/table';
+import useGetStudentTableData from '@/features/evaluation/application/adapters/services/useGetStudentTableData';
+import calculateOverallGrade from '@/features/evaluation/application/adapters/utils/calculate-overall-grade';
+import StudentUpdateForm from '@/features/student/presentation/components/StudentUpdateForm';
+import { Settings, UserPlus, FileSpreadsheet } from 'lucide-react';
+import React, { useState } from 'react';
+
+import { Id } from '../../../../../convex/_generated/dataModel';
+import AddStudentForm from '../../../student/presentation/components/AddStudentForm';
+import AssignEvaluation from './AssignEvaluation';
+import CSVReader from './StudentCsvLoader';
+import UpdateStudentGradeForm from './UpdateStudentGradeForm';
 
 interface StudentsEvaluationTableViewProps {
   classeId: string;
@@ -130,7 +136,7 @@ export function StudentsEvaluationTableView({
                           criteria: evaluation.base.criterias,
                           gradeType: evaluation.base.gradeType,
                         })
-                      : "N/A";
+                      : 'N/A';
                     const dialogKey = `${student.id}-${evaluation.grade.id}`;
 
                     return (
@@ -173,7 +179,7 @@ export function StudentsEvaluationTableView({
                             </DialogContent>
                           </Dialog>
                         ) : (
-                          "N/A"
+                          'N/A'
                         )}
                       </TableCell>
                     );
@@ -210,7 +216,7 @@ export function StudentsEvaluationTableView({
                 <DialogTitle>Ajouter un étudiant</DialogTitle>
               </DialogHeader>
               <AddStudentForm
-                classId={classeId as Id<"Classes">}
+                classId={classeId as Id<'Classes'>}
                 refetch={() => {
                   refetchStudents();
                   refetchCompoundEvaluations();

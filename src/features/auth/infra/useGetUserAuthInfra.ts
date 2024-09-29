@@ -1,5 +1,5 @@
-import { useUser } from "@clerk/nextjs";
-import { useEffect, useState } from "react";
+import { useUser } from '@clerk/nextjs';
+import { useEffect, useState } from 'react';
 
 export default function useGetUserAuthInfra() {
   const { user } = useUser();

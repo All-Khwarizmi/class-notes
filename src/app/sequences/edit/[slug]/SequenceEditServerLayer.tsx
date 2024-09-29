@@ -1,8 +1,8 @@
-import React from "react";
-import AddUpdateCoursSequenceView from "@/features/cours-sequence/presentation/views/AddCoursView";
-import ErrorDialog from "@/core/components/common/ErrorDialog";
-import editSequence from "@/features/cours-sequence/application/adapters/actions/edit-sequence";
-import checkAuthAndRedirect from "@/data-access/auth/check-and-redirect";
+import ErrorDialog from '@/core/components/common/ErrorDialog';
+import checkAuthAndRedirect from '@/data-access/auth/check-and-redirect';
+import editSequence from '@/features/cours-sequence/application/adapters/actions/edit-sequence';
+import AddUpdateCoursSequenceView from '@/features/cours-sequence/presentation/views/AddCoursView';
+import React from 'react';
 
 async function SequenceEditServerLayer(props: {
   slug: string;
@@ -12,7 +12,7 @@ async function SequenceEditServerLayer(props: {
 
   //! TODO: @DATA-ACCESS
   const type =
-    props.searchParams?.type === "sequence" ? "sequence" : "template";
+    props.searchParams?.type === 'sequence' ? 'sequence' : 'template';
 
   const { competences, sequence, failures, isFailure } = await editSequence({
     userId,

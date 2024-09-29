@@ -1,6 +1,6 @@
-import React from "react";
-import { Container, Typography, Box } from "@mui/material";
-import Link from "next/link";
+import { Container, Typography, Box } from '@mui/material';
+import Link from 'next/link';
+import React from 'react';
 
 const PrivacyPolicy: React.FC = () => {
   return (

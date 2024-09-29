@@ -1,6 +1,6 @@
-"use server";
+'use server';
 
-import { coursUsecases } from "../../usecases/cours-usecases";
+import { coursUsecases } from '../../usecases/cours-usecases';
 
 export default async function updateCourseBody(options: {
   userId: string;

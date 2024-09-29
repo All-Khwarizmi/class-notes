@@ -1,7 +1,8 @@
-import React, { useState } from "react";
-import { Input } from "@/core/components/ui/input";
-import { Button } from "@/core/components/ui/button";
-import { toast } from "sonner";
+import { Button } from '@/core/components/ui/button';
+import { Input } from '@/core/components/ui/input';
+import React, { useState } from 'react';
+import { toast } from 'sonner';
+
 interface EmbedWithInputProps {
   initialUrl: string;
   title: string;
@@ -14,8 +15,8 @@ interface EmbedWithInputProps {
 const EmbedWithInput: React.FC<EmbedWithInputProps> = ({
   initialUrl,
   title,
-  width = "100%",
-  height = "100%",
+  width = '100%',
+  height = '100%',
   allowFullScreen = true,
   onUrlUpdate,
 }) => {
@@ -50,7 +51,7 @@ const EmbedWithInput: React.FC<EmbedWithInputProps> = ({
         height={height}
         allowFullScreen={allowFullScreen}
         loading="lazy"
-        style={{ border: "none" }}
+        style={{ border: 'none' }}
       />
     </div>
   );

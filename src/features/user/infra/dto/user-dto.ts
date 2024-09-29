@@ -1,10 +1,11 @@
-import useGetUserInfra from "../services/useGetUserInfra";
-import { Either, left, right } from "fp-ts/Either";
-import Failure from "@/core/failures/failures";
-import type { UserType } from "../../domain/entities/user-schema";
-import { User } from "@clerk/clerk-sdk-node";
+import Failure from '@/core/failures/failures';
+import { User } from '@clerk/clerk-sdk-node';
+import { Either, left, right } from 'fp-ts/Either';
 
-export type UserInfra = ReturnType<typeof useGetUserInfra>["user"];
+import type { UserType } from '../../domain/entities/user-schema';
+import useGetUserInfra from '../services/useGetUserInfra';
+
+export type UserInfra = ReturnType<typeof useGetUserInfra>['user'];
 
 export default class UserDto {
   static fromInfra({
@@ -12,17 +13,17 @@ export default class UserDto {
   }: {
     userInfra: UserInfra;
   }): Either<Failure<string>, UserType> {
-    if (userInfra === "NO USER") {
+    if (userInfra === 'NO USER') {
       return left(
         Failure.invalidValue({
           invalidValue: userInfra,
-          message: "User not found",
+          message: 'User not found',
         })
       );
     } else if (userInfra) {
       return right({
         _id: userInfra._id,
-        schoolSubject: userInfra.schoolSubject ?? "",
+        schoolSubject: userInfra.schoolSubject ?? '',
         name: userInfra.name,
         onboarding: userInfra.onboarding,
         userId: userInfra.userId,
@@ -33,15 +34,15 @@ export default class UserDto {
         email: userInfra.email,
         hostname: userInfra.hostname,
         educationSystem:
-          (userInfra.educationSystem as UserType["educationSystem"]) ??
-          "French",
-        country: (userInfra.country as UserType["country"]) ?? "France",
+          (userInfra.educationSystem as UserType['educationSystem']) ??
+          'French',
+        country: (userInfra.country as UserType['country']) ?? 'France',
       });
     }
     return left(
       Failure.invalidValue({
         invalidValue: userInfra,
-        message: "User not found",
+        message: 'User not found',
       })
     );
   } // Add the User type

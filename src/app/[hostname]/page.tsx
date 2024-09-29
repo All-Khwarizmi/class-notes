@@ -1,12 +1,14 @@
-import { getUserByHostname } from "@/data-access/hostname/get-user-by-hostname";
-import { isNone } from "fp-ts/lib/Option";
-import { checkParams } from "./helpers/check-params";
-import NotFound from "../not-found";
-import LoadingSkeleton from "@/core/components/common/LoadingSkeleton";
-import { Suspense } from "react";
-import HostSpaceServerLayer from "./HostSpaceServerLayer";
-import type { Metadata, ResolvingMetadata } from "next";
-export const dynamic = "force-dynamic";
+import LoadingSkeleton from '@/core/components/common/LoadingSkeleton';
+import { getUserByHostname } from '@/data-access/hostname/get-user-by-hostname';
+import { isNone } from 'fp-ts/lib/Option';
+import type { Metadata, ResolvingMetadata } from 'next';
+import { Suspense } from 'react';
+
+import NotFound from '../not-found';
+import HostSpaceServerLayer from './HostSpaceServerLayer';
+import { checkParams } from './helpers/check-params';
+
+export const dynamic = 'force-dynamic';
 type Props = {
   params: { hostname: string };
   searchParams: { [key: string]: string | string[] | undefined };
@@ -17,11 +19,11 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   const isValid = checkParams({
     params,
-    requiredParams: ["hostname"],
+    requiredParams: ['hostname'],
   });
   if (!isValid) {
     return {
-      title: "Page non trouvée | LaClasse.app",
+      title: 'Page non trouvée | LaClasse.app',
       description: "La page que vous recherchez n'existe pas sur LaClasse.app.",
     };
   }
@@ -31,7 +33,7 @@ export async function generateMetadata(
 
   if (isNone(user)) {
     return {
-      title: "Page non trouvée | LaClasse.app",
+      title: 'Page non trouvée | LaClasse.app',
       description: "La page que vous recherchez n'existe pas sur LaClasse.app.",
     };
   }
@@ -46,23 +48,23 @@ export async function generateMetadata(
       title: createPageTitle(name, additionalInfo),
       description: createPageDescription(name, additionalInfo),
       url: `https://laclasse.app/${hostname}`,
-      siteName: "LaClasse.app",
+      siteName: 'LaClasse.app',
       images: [
         {
-          url: "https://laclasse.app/default-profile-image.jpg",
+          url: 'https://laclasse.app/default-profile-image.jpg',
           width: 1200,
           height: 630,
           alt: `Photo de profil de ${name}`,
         },
       ],
-      locale: "fr_FR",
-      type: "profile",
+      locale: 'fr_FR',
+      type: 'profile',
     },
     twitter: {
-      card: "summary_large_image",
+      card: 'summary_large_image',
       title: createPageTitle(name, additionalInfo),
       description: createPageDescription(name, additionalInfo),
-      images: ["https://laclasse.app/default-profile-image.jpg"],
+      images: ['https://laclasse.app/default-profile-image.jpg'],
     },
   };
 }
@@ -76,7 +78,7 @@ export default async function Page({
 }) {
   const isValid = checkParams({
     params,
-    requiredParams: ["hostname"],
+    requiredParams: ['hostname'],
   });
   if (!isValid) {
     return <NotFound />;
@@ -98,9 +100,9 @@ export default async function Page({
 }
 
 function createPageTitle(user: string | undefined, additionalInfo?: string) {
-  const baseName = user ? `${user}` : "Espace hôte";
-  const siteName = "LaClasse.app";
-  const additionalPart = additionalInfo ? ` - ${additionalInfo}` : "";
+  const baseName = user ? `${user}` : 'Espace hôte';
+  const siteName = 'LaClasse.app';
+  const additionalPart = additionalInfo ? ` - ${additionalInfo}` : '';
   return `${baseName}${additionalPart} | ${siteName}`;
 }
 
@@ -110,7 +112,7 @@ function createPageDescription(
 ) {
   const baseDescription = user
     ? `Découvrez l'espace pédagogique de ${user} sur LaClasse.app. `
-    : "Explorez un espace pédagogique innovant sur LaClasse.app. ";
-  const additionalPart = additionalInfo ? `${additionalInfo}. ` : "";
+    : 'Explorez un espace pédagogique innovant sur LaClasse.app. ';
+  const additionalPart = additionalInfo ? `${additionalInfo}. ` : '';
   return `${baseDescription}${additionalPart} Ressources éducatives, cours interactifs et outils d'apprentissage personnalisés.`;
 }

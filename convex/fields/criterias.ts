@@ -1,5 +1,6 @@
-import { v } from "convex/values";
-import { gradeType } from "./grade_type";
+import { v } from 'convex/values';
+
+import { gradeType } from './grade_type';
 
 export const criterias = v.array(
   v.object({

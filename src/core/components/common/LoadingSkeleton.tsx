@@ -3,7 +3,7 @@
  * @see https://v0.dev/t/4WedxmrWR8b
  * Documentation: https://v0.dev/docs#integrating-generated-code-into-your-nextjs-app
  */
-import { Skeleton } from "@/core/components/ui/skeleton";
+import { Skeleton } from '@/core/components/ui/skeleton';
 
 export default function LoadingSkeleton() {
   return (

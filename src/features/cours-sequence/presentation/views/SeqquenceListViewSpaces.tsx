@@ -1,27 +1,28 @@
-"use client";
+'use client';
 
-import React, { useEffect, useState } from "react";
-import Link from "next/link";
-import { Sequence } from "../../domain/entities/cours-schemas";
-import { NavItem } from "@/lib/types";
-import CoursSequenceCard from "../components/CoursSequenceCard";
-import { Button } from "@/core/components/ui/button";
-import { Input } from "@/core/components/ui/input";
+import { useSpacesLayoutContext } from '@/core/components/layout/SpacesLayoutCtx';
+import { Button } from '@/core/components/ui/button';
 import {
   Card,
   CardContent,
   CardHeader,
   CardTitle,
-} from "@/core/components/ui/card";
-import { ScrollArea, ScrollBar } from "@/core/components/ui/scroll-area";
+} from '@/core/components/ui/card';
+import { Input } from '@/core/components/ui/input';
+import { ScrollArea, ScrollBar } from '@/core/components/ui/scroll-area';
 import {
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
-} from "@/core/components/ui/tabs";
-import { Search, Filter, BookOpen } from "lucide-react";
-import { useSpacesLayoutContext } from "@/core/components/layout/SpacesLayoutCtx";
+} from '@/core/components/ui/tabs';
+import { NavItem } from '@/lib/types';
+import { Search, Filter, BookOpen } from 'lucide-react';
+import Link from 'next/link';
+import React, { useEffect, useState } from 'react';
+
+import { Sequence } from '../../domain/entities/cours-schemas';
+import CoursSequenceCard from '../components/CoursSequenceCard';
 
 interface SequencesListViewSpacesProps {
   sequences: Sequence[];
@@ -39,8 +40,8 @@ export default function SequencesListViewSpaces({
   userName,
 }: SequencesListViewSpacesProps) {
   const { setSpacesNavItems } = useSpacesLayoutContext();
-  const [searchTerm, setSearchTerm] = useState("");
-  const [activeTab, setActiveTab] = useState("all");
+  const [searchTerm, setSearchTerm] = useState('');
+  const [activeTab, setActiveTab] = useState('all');
 
   useEffect(() => {
     if (setSpacesNavItems) {
@@ -86,25 +87,25 @@ export default function SequencesListViewSpaces({
 
       <Tabs defaultValue="all" className="mb-6">
         <TabsList>
-          <TabsTrigger value="all" onClick={() => setActiveTab("all")}>
+          <TabsTrigger value="all" onClick={() => setActiveTab('all')}>
             Toutes les séquences
           </TabsTrigger>
-          <TabsTrigger value="recent" onClick={() => setActiveTab("recent")}>
+          <TabsTrigger value="recent" onClick={() => setActiveTab('recent')}>
             Récentes
           </TabsTrigger>
-          <TabsTrigger value="popular" onClick={() => setActiveTab("popular")}>
+          <TabsTrigger value="popular" onClick={() => setActiveTab('popular')}>
             Populaires
           </TabsTrigger>
         </TabsList>
       </Tabs>
 
       <h2 className="text-2xl font-semibold mb-6">
-        Séquences{" "}
-        {activeTab === "all"
-          ? "disponibles"
-          : activeTab === "recent"
-          ? "récentes"
-          : "populaires"}
+        Séquences{' '}
+        {activeTab === 'all'
+          ? 'disponibles'
+          : activeTab === 'recent'
+            ? 'récentes'
+            : 'populaires'}
       </h2>
 
       {filteredSequences.length > 0 ? (

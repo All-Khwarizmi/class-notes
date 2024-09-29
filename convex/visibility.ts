@@ -1,14 +1,15 @@
+import { VisibilityType } from '@/features/classe/domain/visibility-schema';
+import { VisibilityEntityTypes } from '@/features/visibility/domain/types';
+import { v } from 'convex/values';
+
+import { Id } from './_generated/dataModel';
 import {
   mutation,
   query,
   internalQuery,
   internalMutation,
-} from "./_generated/server";
-import { v } from "convex/values";
-import { visibilityTableConvexSchema } from "./fields/visibility";
-import { VisibilityEntityTypes } from "@/features/visibility/domain/types";
-import { Id } from "./_generated/dataModel";
-import { VisibilityType } from "@/features/classe/domain/visibility-schema";
+} from './_generated/server';
+import { visibilityTableConvexSchema } from './fields/visibility';
 
 export const isVisibilityTable = internalQuery({
   args: {
@@ -16,8 +17,8 @@ export const isVisibilityTable = internalQuery({
   },
   handler: async (ctx, args) => {
     const visibility = await ctx.db
-      .query("VisibilityTable")
-      .filter((q) => q.eq(q.field("userId"), args.userId))
+      .query('VisibilityTable')
+      .filter((q) => q.eq(q.field('userId'), args.userId))
       .first();
     return !!visibility;
   },
@@ -35,7 +36,7 @@ export const createVisibilityTable = internalMutation({
       cours: [],
       complement: [],
     };
-    await ctx.db.insert("VisibilityTable", visibility);
+    await ctx.db.insert('VisibilityTable', visibility);
     return visibility;
   },
 });
@@ -46,22 +47,22 @@ export const getVisibility = mutation({
   },
   handler: async (ctx, args) => {
     const visibility = await ctx.db
-      .query("VisibilityTable")
-      .filter((q) => q.eq(q.field("userId"), args.userId))
+      .query('VisibilityTable')
+      .filter((q) => q.eq(q.field('userId'), args.userId))
       .first()!;
     if (!visibility) {
       // Fetch all classes and add them to the visibility table
       const classes = await ctx.db
-        .query("Classes")
-        .filter((q) => q.eq(q.field("userId"), args.userId))
+        .query('Classes')
+        .filter((q) => q.eq(q.field('userId'), args.userId))
         .collect();
-      const visibility: Omit<VisibilityType, "_id" | "_creationTime"> = {
-        userId: args.userId as Id<"Users">,
+      const visibility: Omit<VisibilityType, '_id' | '_creationTime'> = {
+        userId: args.userId as Id<'Users'>,
         classe: classes.map((c) => ({
           id: c._id,
           publish: false,
           name: c.name,
-          description: c.description ?? "",
+          description: c.description ?? '',
         })),
 
         cours: [],
@@ -72,39 +73,39 @@ export const getVisibility = mutation({
       // Then add them to the visibility
       for (const classe of classes) {
         const classeSequences = await ctx.db
-          .query("ClasseSequence")
-          .filter((q) => q.eq(q.field("classeId"), classe._id))
+          .query('ClasseSequence')
+          .filter((q) => q.eq(q.field('classeId'), classe._id))
           .collect();
         visibility.classe.push({
           id: classe._id,
           publish: false,
           name: classe.name,
-          description: classe.description ?? "",
+          description: classe.description ?? '',
         });
         for (const classeSequence of classeSequences) {
           const courses = await ctx.db
-            .query("Cours")
-            .filter((q) => q.eq(q.field("sequenceId"), classeSequence._id))
+            .query('Cours')
+            .filter((q) => q.eq(q.field('sequenceId'), classeSequence._id))
             .collect();
           visibility.sequences.push({
             id: classeSequence._id,
             publish: false,
             name: classeSequence.name,
-            description: classeSequence.description ?? "",
+            description: classeSequence.description ?? '',
             classe: false,
             classeId: classe._id,
           });
           for (const cours of courses) {
             const complements = await ctx.db
-              .query("Complement")
-              .filter((q) => q.eq(q.field("coursId"), cours._id))
+              .query('Complement')
+              .filter((q) => q.eq(q.field('coursId'), cours._id))
               .collect();
 
             visibility.cours.push({
               id: cours._id,
               publish: false,
               name: cours.name,
-              description: cours.description ?? "",
+              description: cours.description ?? '',
               classe: false,
               classeId: classe._id,
               sequence: false,
@@ -115,7 +116,7 @@ export const getVisibility = mutation({
                 id: complement._id,
                 publish: false,
                 name: complement.name,
-                description: complement.description ?? "",
+                description: complement.description ?? '',
                 classe: false,
                 classeId: classe._id,
                 sequence: false,
@@ -127,10 +128,10 @@ export const getVisibility = mutation({
           }
         }
       }
-      const visibilityId = await ctx.db.insert("VisibilityTable", visibility);
+      const visibilityId = await ctx.db.insert('VisibilityTable', visibility);
       const newVisibility = await ctx.db
-        .query("VisibilityTable")
-        .filter((q) => q.eq(q.field("_id"), visibilityId))
+        .query('VisibilityTable')
+        .filter((q) => q.eq(q.field('_id'), visibilityId))
         .first();
       return newVisibility;
     }
@@ -143,26 +144,26 @@ export const isEntityInVisibilityTable = query({
   args: {
     userId: v.string(),
     type: v.union(
-      v.literal("classe"),
-      v.literal("sequence"),
-      v.literal("cours"),
-      v.literal("complement")
+      v.literal('classe'),
+      v.literal('sequence'),
+      v.literal('cours'),
+      v.literal('complement')
     ),
     typeId: v.string(),
   },
   handler: async (ctx, args) => {
     const visibility = await ctx.db
-      .query("VisibilityTable")
-      .filter((q) => q.eq(q.field("userId"), args.userId))
+      .query('VisibilityTable')
+      .filter((q) => q.eq(q.field('userId'), args.userId))
       .first();
     if (visibility) {
-      if (args.type === "classe") {
+      if (args.type === 'classe') {
         return !!visibility.classe.find((c) => c.id === args.typeId);
-      } else if (args.type === "sequence") {
+      } else if (args.type === 'sequence') {
         return !!visibility.sequences.find((s) => s.id === args.typeId);
-      } else if (args.type === "cours") {
+      } else if (args.type === 'cours') {
         return !!visibility.cours.find((c) => c.id === args.typeId);
-      } else if (args.type === "complement") {
+      } else if (args.type === 'complement') {
         return !!visibility.complement.find((c) => c.id === args.typeId);
       }
     }
@@ -183,8 +184,8 @@ export const addClasseToVisibilityTable = mutation({
   },
   handler: async (ctx, args) => {
     const visibility = await ctx.db
-      .query("VisibilityTable")
-      .filter((q) => q.eq(q.field("userId"), args.userId))
+      .query('VisibilityTable')
+      .filter((q) => q.eq(q.field('userId'), args.userId))
       .first();
     console.log(visibility);
     if (visibility) {
@@ -217,8 +218,8 @@ export const addSequenceToVisibilityTable = mutation({
   handler: async (ctx, args) => {
     console.log(args);
     const visibility = await ctx.db
-      .query("VisibilityTable")
-      .filter((q) => q.eq(q.field("userId"), args.userId))
+      .query('VisibilityTable')
+      .filter((q) => q.eq(q.field('userId'), args.userId))
       .first();
     console.log(visibility);
     if (visibility) {
@@ -233,17 +234,17 @@ export const addSequenceToVisibilityTable = mutation({
         classe: args.entity.classe,
       });
       const classe = await ctx.db
-        .query("Classes")
-        .filter((q) => q.eq(q.field("_id"), args.entity.classeId))
+        .query('Classes')
+        .filter((q) => q.eq(q.field('_id'), args.entity.classeId))
         .first();
 
       if (!classe) {
-        throw new Error("Classe not found");
+        throw new Error('Classe not found');
       }
 
       const courses = await ctx.db
-        .query("Cours")
-        .filter((q) => q.eq(q.field("sequenceId"), args.entity.id))
+        .query('Cours')
+        .filter((q) => q.eq(q.field('sequenceId'), args.entity.id))
         .collect();
 
       console.log(
@@ -262,8 +263,8 @@ export const addSequenceToVisibilityTable = mutation({
         });
 
         const complements = await ctx.db
-          .query("Complement")
-          .filter((q) => q.eq(q.field("coursId"), course._id))
+          .query('Complement')
+          .filter((q) => q.eq(q.field('coursId'), course._id))
           .collect();
 
         for (const complement of complements) {
@@ -271,7 +272,7 @@ export const addSequenceToVisibilityTable = mutation({
             id: complement._id,
             publish: args.entity.publish,
             name: complement.name,
-            description: complement.description ?? "",
+            description: complement.description ?? '',
             classeId: args.entity.classeId,
             sequenceId: args.entity.id,
             coursId: course._id,
@@ -304,8 +305,8 @@ export const addCoursToVisibilityTable = mutation({
   },
   handler: async (ctx, args) => {
     const visibility = await ctx.db
-      .query("VisibilityTable")
-      .filter((q) => q.eq(q.field("userId"), args.userId))
+      .query('VisibilityTable')
+      .filter((q) => q.eq(q.field('userId'), args.userId))
       .first();
     if (visibility) {
       const newVisibility = { ...visibility };
@@ -342,8 +343,8 @@ export const addComplementToVisibilityTable = mutation({
   },
   handler: async (ctx, args) => {
     const visibility = await ctx.db
-      .query("VisibilityTable")
-      .filter((q) => q.eq(q.field("userId"), args.userId))
+      .query('VisibilityTable')
+      .filter((q) => q.eq(q.field('userId'), args.userId))
       .first();
     if (visibility) {
       const newVisibility = { ...visibility };
@@ -367,22 +368,22 @@ export const updateVisibility = mutation({
   args: {
     userId: v.string(),
     type: v.union(
-      v.literal("classe"),
-      v.literal("sequence"),
-      v.literal("cours"),
-      v.literal("complement")
+      v.literal('classe'),
+      v.literal('sequence'),
+      v.literal('cours'),
+      v.literal('complement')
     ),
     typeId: v.string(),
     publish: v.boolean(),
   },
   handler: async (ctx, args) => {
     const visibility = await ctx.db
-      .query("VisibilityTable")
-      .filter((q) => q.eq(q.field("userId"), args.userId))
+      .query('VisibilityTable')
+      .filter((q) => q.eq(q.field('userId'), args.userId))
       .first();
     if (visibility) {
       const newVisibility = { ...visibility };
-      if (args.type === "classe") {
+      if (args.type === 'classe') {
         const classe = visibility.classe.find((c) => c.id === args.typeId);
 
         if (classe) {
@@ -415,7 +416,7 @@ export const updateVisibility = mutation({
               : c
           );
         }
-      } else if (args.type === "sequence") {
+      } else if (args.type === 'sequence') {
         const sequence = visibility.sequences.find((s) => s.id === args.typeId);
         if (sequence) {
           sequence.publish = args.publish;
@@ -439,7 +440,7 @@ export const updateVisibility = mutation({
               : c
           );
         }
-      } else if (args.type === "cours") {
+      } else if (args.type === 'cours') {
         const cours = visibility.cours.find((c) => c.id === args.typeId);
         if (cours) {
           cours.publish = args.publish;
@@ -455,7 +456,7 @@ export const updateVisibility = mutation({
               : c
           );
         }
-      } else if (args.type === "complement") {
+      } else if (args.type === 'complement') {
         const complement = visibility.complement.find(
           (c) => c.id === args.typeId
         );
@@ -475,8 +476,8 @@ export const updateAllVisibilityTable = mutation({
   args: visibilityTableConvexSchema,
   handler: async (ctx, args) => {
     const visibility = await ctx.db
-      .query("VisibilityTable")
-      .filter((q) => q.eq(q.field("userId"), args.userId))
+      .query('VisibilityTable')
+      .filter((q) => q.eq(q.field('userId'), args.userId))
       .first();
     if (visibility) {
       await ctx.db.patch(visibility._id, args);
@@ -487,21 +488,21 @@ export const deleteEntityFromVisibilityTable = mutation({
   args: {
     userId: v.string(),
     type: v.union(
-      v.literal("classe"),
-      v.literal("sequence"),
-      v.literal("cours"),
-      v.literal("complement")
+      v.literal('classe'),
+      v.literal('sequence'),
+      v.literal('cours'),
+      v.literal('complement')
     ),
     typeId: v.string(),
   },
   handler: async (ctx, args) => {
     const visibility = await ctx.db
-      .query("VisibilityTable")
-      .filter((q) => q.eq(q.field("userId"), args.userId))
+      .query('VisibilityTable')
+      .filter((q) => q.eq(q.field('userId'), args.userId))
       .first();
     if (visibility) {
       const newVisibility = { ...visibility };
-      if (args.type === "classe") {
+      if (args.type === 'classe') {
         newVisibility.classe = visibility.classe.filter(
           (c) => c.id !== args.typeId
         );
@@ -514,7 +515,7 @@ export const deleteEntityFromVisibilityTable = mutation({
         newVisibility.complement = visibility.complement.filter(
           (c) => c.classeId !== args.typeId
         );
-      } else if (args.type === "sequence") {
+      } else if (args.type === 'sequence') {
         newVisibility.sequences = visibility.sequences.filter(
           (s) => s.id !== args.typeId
         );
@@ -524,14 +525,14 @@ export const deleteEntityFromVisibilityTable = mutation({
         newVisibility.complement = visibility.complement.filter(
           (c) => c.sequenceId !== args.typeId
         );
-      } else if (args.type === "cours") {
+      } else if (args.type === 'cours') {
         newVisibility.cours = visibility.cours.filter(
           (c) => c.id !== args.typeId
         );
         newVisibility.complement = visibility.complement.filter(
           (c) => c.coursId !== args.typeId
         );
-      } else if (args.type === "complement") {
+      } else if (args.type === 'complement') {
         newVisibility.complement = visibility.complement.filter(
           (c) => c.id !== args.typeId
         );

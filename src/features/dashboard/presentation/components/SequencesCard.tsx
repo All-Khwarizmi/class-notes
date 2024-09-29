@@ -1,5 +1,5 @@
-import React from "react";
-import { Button } from "@/core/components/ui/button";
+import { Badge } from '@/core/components/ui/badge';
+import { Button } from '@/core/components/ui/button';
 import {
   Card,
   CardHeader,
@@ -7,7 +7,7 @@ import {
   CardDescription,
   CardContent,
   CardFooter,
-} from "@/core/components/ui/card";
+} from '@/core/components/ui/card';
 import {
   Table,
   TableHeader,
@@ -15,8 +15,8 @@ import {
   TableHead,
   TableBody,
   TableCell,
-} from "@/core/components/ui/table";
-import { Badge } from "@/core/components/ui/badge";
+} from '@/core/components/ui/table';
+import React from 'react';
 
 function SequencesCard() {
   return (

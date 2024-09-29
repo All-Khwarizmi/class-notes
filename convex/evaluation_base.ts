@@ -1,6 +1,7 @@
-import { mutation, query } from "./_generated/server";
-import { v } from "convex/values";
-import { gradeType } from "./fields/grade_type";
+import { v } from 'convex/values';
+
+import { mutation, query } from './_generated/server';
+import { gradeType } from './fields/grade_type';
 
 export const createEvaluationBase = mutation({
   args: {
@@ -22,7 +23,7 @@ export const createEvaluationBase = mutation({
     ),
   },
   handler: async (ctx, args) => {
-    const evaluationId = await ctx.db.insert("EvaluationBase", {
+    const evaluationId = await ctx.db.insert('EvaluationBase', {
       name: args.name,
       description: args.description,
       createdBy: args.createdBy,
@@ -32,7 +33,7 @@ export const createEvaluationBase = mutation({
       isGraded: args.isGraded,
     });
     if (evaluationId === null) {
-      throw new Error("Failed to create evaluation");
+      throw new Error('Failed to create evaluation');
     }
     return evaluationId;
   },
@@ -61,12 +62,12 @@ export const updateEvaluationBase = mutation({
   },
   handler: async (ctx, args) => {
     const evaluation = await ctx.db
-      .query("EvaluationBase")
-      .filter((q) => q.eq(q.field("_id"), args.evaluationId))
+      .query('EvaluationBase')
+      .filter((q) => q.eq(q.field('_id'), args.evaluationId))
       .first();
 
     if (!evaluation) {
-      throw new Error("Evaluation not found");
+      throw new Error('Evaluation not found');
     }
 
     await ctx.db.patch(evaluation._id, {
@@ -86,9 +87,9 @@ export const listEvaluationsBase = query({
     createdBy: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
-    let query = ctx.db.query("EvaluationBase");
+    let query = ctx.db.query('EvaluationBase');
 
-    query = query.filter((q) => q.eq(q.field("createdBy"), args.createdBy));
+    query = query.filter((q) => q.eq(q.field('createdBy'), args.createdBy));
 
     return query.collect();
   },
@@ -100,8 +101,8 @@ export const getEvaluationBase = query({
   },
   handler: async (ctx, args) => {
     return ctx.db
-      .query("EvaluationBase")
-      .filter((q) => q.eq(q.field("_id"), args.evaluationId))
+      .query('EvaluationBase')
+      .filter((q) => q.eq(q.field('_id'), args.evaluationId))
       .first();
   },
 });
@@ -112,12 +113,12 @@ export const deleteEvaluationBase = mutation({
   },
   handler: async (ctx, args) => {
     const evaluation = await ctx.db
-      .query("EvaluationBase")
-      .filter((q) => q.eq(q.field("_id"), args.evaluationId))
+      .query('EvaluationBase')
+      .filter((q) => q.eq(q.field('_id'), args.evaluationId))
       .first();
 
     if (!evaluation) {
-      throw new Error("Evaluation not found");
+      throw new Error('Evaluation not found');
     }
 
     await ctx.db.delete(evaluation._id);
@@ -130,8 +131,8 @@ export const isEvaluationAssigned = query({
   },
   handler: async (ctx, args) => {
     const evaluationExist = await ctx.db
-      .query("EvaluationsWithGrades")
-      .filter((q) => q.eq(q.field("evaluationBaseId"), args.evaluationId))
+      .query('EvaluationsWithGrades')
+      .filter((q) => q.eq(q.field('evaluationBaseId'), args.evaluationId))
       .first();
     return !!evaluationExist;
   },

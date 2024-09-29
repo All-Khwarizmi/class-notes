@@ -1,19 +1,20 @@
-import CustomDialog from "@/core/components/common/CustomDialog";
-import { FormItem, FormLabel } from "@/core/components/ui/form";
-import {
-  Competence,
-  groupCompetencesByCategory,
-} from "@/features/comp-cat/domain/entities/schemas";
-import { Trash2 } from "lucide-react";
+import CustomDialog from '@/core/components/common/CustomDialog';
+import { TypographyP } from '@/core/components/common/Typography';
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "@/core/components/ui/accordion";
-import { Switch } from "@/core/components/ui/switch";
-import { TypographyP } from "@/core/components/common/Typography";
-import { useMemo } from "react";
+} from '@/core/components/ui/accordion';
+import { FormItem, FormLabel } from '@/core/components/ui/form';
+import { Switch } from '@/core/components/ui/switch';
+import {
+  Competence,
+  groupCompetencesByCategory,
+} from '@/features/comp-cat/domain/entities/schemas';
+import { Trash2 } from 'lucide-react';
+import { useMemo } from 'react';
+
 export default function CompetenceSelectorAccordion({
   competences,
   selectedCompetences,
@@ -74,9 +75,9 @@ export default function CompetenceSelectorAccordion({
                               checked={isChecked}
                               style={
                                 isChecked
-                                  ? { backgroundColor: "#10B981" }
+                                  ? { backgroundColor: '#10B981' }
                                   : {
-                                      backgroundColor: "#EF4444",
+                                      backgroundColor: '#EF4444',
                                     }
                               }
                               onCheckedChange={() => {

@@ -1,21 +1,22 @@
-import { Competence } from "@/features/comp-cat/domain/entities/schemas";
-import useSaveCoursMetadata from "../../application/adapters/services/useSaveCoursMetadata";
-import useSaveSequenceMetadata from "../../application/adapters/services/useSaveSequenceMetadata";
-import useUpdateCoursMetadata from "../../application/adapters/services/useUpdateCoursMetadata";
-import { Cours, Sequence } from "../../domain/entities/cours-schemas";
-import { CoursSequenceForm } from "../views/AddCoursView";
-import { UserAuth } from "@/core/auth/i-auth";
-import useUpdateSequenceMetadata from "../../application/adapters/services/useUpdateSequenceMetadata";
+import { UserAuth } from '@/core/auth/i-auth';
+import { Competence } from '@/features/comp-cat/domain/entities/schemas';
+
+import useSaveCoursMetadata from '../../application/adapters/services/useSaveCoursMetadata';
+import useSaveSequenceMetadata from '../../application/adapters/services/useSaveSequenceMetadata';
+import useUpdateCoursMetadata from '../../application/adapters/services/useUpdateCoursMetadata';
+import useUpdateSequenceMetadata from '../../application/adapters/services/useUpdateSequenceMetadata';
+import { Cours, Sequence } from '../../domain/entities/cours-schemas';
+import { CoursSequenceForm } from '../views/AddCoursView';
 
 function useGetSubmitFunction(options: {
   edit?: boolean;
-  type: "cours" | "sequence";
+  type: 'cours' | 'sequence';
   sequenceId?: string;
   cours?: Cours;
   sequence?: Sequence;
   selectedCompetences: Competence[];
   userId: string;
-  sequenceType: "template" | "sequence";
+  sequenceType: 'template' | 'sequence';
 }) {
   const { mutate: setSaveCoursMetadata } = useSaveCoursMetadata();
   const { mutate: setSaveSequenceMetadata } = useSaveSequenceMetadata();
@@ -27,7 +28,7 @@ function useGetSubmitFunction(options: {
       ...data,
       competences: data.competences,
     };
-    console.log("In onSubmitCours", newData);
+    console.log('In onSubmitCours', newData);
     setSaveCoursMetadata({
       sequenceId: options.sequenceId!,
       cours: newData,
@@ -75,10 +76,10 @@ function useGetSubmitFunction(options: {
       options.edit && options.cours !== undefined
         ? onEditCours
         : options.sequence !== undefined
-        ? onEditSequence
-        : options.type === "cours"
-        ? onSubmitCours
-        : onSubmitSequence,
+          ? onEditSequence
+          : options.type === 'cours'
+            ? onSubmitCours
+            : onSubmitSequence,
   };
 }
 

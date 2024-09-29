@@ -1,6 +1,7 @@
-import { useQuery } from "@tanstack/react-query";
-import { classeUsecases } from "../../usecases/classe-usecases";
-import { QUERY_KEYS } from "@/core/query/ query-keys";
+import { QUERY_KEYS } from '@/core/query/ query-keys';
+import { useQuery } from '@tanstack/react-query';
+
+import { classeUsecases } from '../../usecases/classe-usecases';
 
 export default function useGetVisibility({ userId }: { userId: string }) {
   return useQuery({

@@ -1,11 +1,11 @@
-"use node";
+'use node';
 
-import { v } from "convex/values";
-import Stripe from "stripe";
+import { v } from 'convex/values';
+import { cons } from 'fp-ts/lib/ReadonlyNonEmptyArray';
+import Stripe from 'stripe';
 
-import { action, internalAction } from "./_generated/server";
-import { internal } from "./_generated/api";
-import { cons } from "fp-ts/lib/ReadonlyNonEmptyArray";
+import { internal } from './_generated/api';
+import { action, internalAction } from './_generated/server';
 
 type Metadata = {
   userId: string;
@@ -16,18 +16,18 @@ export const pay = action({
   handler: async (ctx) => {
     const user = await ctx.auth.getUserIdentity();
     if (!user) {
-      throw new Error("you must be logged in to subscribe");
+      throw new Error('you must be logged in to subscribe');
     }
 
     if (!user.emailVerified) {
-      throw new Error("you must have a verified email to subscribe");
+      throw new Error('you must have a verified email to subscribe');
     }
 
-    const domain = process.env.HOSTING_URL ?? "http://localhost:3000";
+    const domain = process.env.HOSTING_URL ?? 'http://localhost:3000';
 
     const STRIPE_KEY = process.env.STRIPE_KEY;
     const stripe = new Stripe(STRIPE_KEY!, {
-      apiVersion: "2024-06-20",
+      apiVersion: '2024-06-20',
     });
     const PRICE_ID = process.env.PRICE_ID;
     const session = await stripe.checkout.sessions.create({
@@ -36,7 +36,7 @@ export const pay = action({
       metadata: {
         userId: user.subject,
       },
-      mode: "subscription",
+      mode: 'subscription',
       success_url: `${domain}`,
       cancel_url: `${domain}`,
     });
@@ -49,7 +49,7 @@ export const fulfill = internalAction({
   args: { signature: v.string(), payload: v.string() },
   handler: async (ctx, args) => {
     const stripe = new Stripe(process.env.STRIPE_KEY!, {
-      apiVersion: "2024-06-20",
+      apiVersion: '2024-06-20',
     });
 
     const webhookSecret = process.env.STRIPE_WEBHOOKS_SECRET!;
@@ -64,7 +64,7 @@ export const fulfill = internalAction({
         metadata: Metadata;
       };
 
-      if (event.type === "checkout.session.completed") {
+      if (event.type === 'checkout.session.completed') {
         const subscription = await stripe.subscriptions.retrieve(
           completedEvent.subscription as string
         );
@@ -78,7 +78,7 @@ export const fulfill = internalAction({
         });
       }
 
-      if (event.type === "invoice.payment_succeeded") {
+      if (event.type === 'invoice.payment_succeeded') {
         const subscription = await stripe.subscriptions.retrieve(
           completedEvent.subscription as string
         );

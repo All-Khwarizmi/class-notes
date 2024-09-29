@@ -1,6 +1,6 @@
-import React, { Suspense } from "react";
-import LoadingSkeleton from "@/core/components/common/LoadingSkeleton";
-import NotesServerLayer from "@/app/profile/notes/[slug]/NotesServerLayer";
+import NotesServerLayer from '@/app/profile/notes/[slug]/NotesServerLayer';
+import LoadingSkeleton from '@/core/components/common/LoadingSkeleton';
+import React, { Suspense } from 'react';
 
 async function Page({
   params,

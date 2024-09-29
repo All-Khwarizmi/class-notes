@@ -1,19 +1,20 @@
-"use client";
+'use client';
 
-import { useEffect, useMemo, useState } from "react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { ChevronDownIcon } from "@radix-ui/react-icons";
-import { cn } from "@/lib/utils";
-import { useSidebar } from "@/core/application/common/useSidebar";
-import { buttonVariants } from "@/core/components/ui/button";
+import { useSidebar } from '@/core/application/common/useSidebar';
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "@/core/components/layout/SubNavAccordion";
-import { useSpacesLayoutContext } from "./SpacesLayoutCtx";
+} from '@/core/components/layout/SubNavAccordion';
+import { buttonVariants } from '@/core/components/ui/button';
+import { cn } from '@/lib/utils';
+import { ChevronDownIcon } from '@radix-ui/react-icons';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { useEffect, useMemo, useState } from 'react';
+
+import { useSpacesLayoutContext } from './SpacesLayoutCtx';
 
 interface SideNavProps {
   setOpen?: (open: boolean) => void;
@@ -26,8 +27,8 @@ export function SpacesSideNav({ setOpen, className }: SideNavProps) {
 
   const path = usePathname();
   const { isOpen, toggle } = useSidebar();
-  const [openItem, setOpenItem] = useState("");
-  const [lastOpenItem, setLastOpenItem] = useState("");
+  const [openItem, setOpenItem] = useState('');
+  const [lastOpenItem, setLastOpenItem] = useState('');
   const [liveHref, setLiveHref] = useState(path);
 
   useEffect(() => {
@@ -35,7 +36,7 @@ export function SpacesSideNav({ setOpen, className }: SideNavProps) {
       setOpenItem(lastOpenItem);
     } else {
       setLastOpenItem(openItem);
-      setOpenItem("");
+      setOpenItem('');
     }
   }, [isOpen, lastOpenItem, openItem]);
 
@@ -63,13 +64,13 @@ export function SpacesSideNav({ setOpen, className }: SideNavProps) {
   function pathIsActive(props: { path: string; liveHref: string }) {
     let { path, liveHref } = props;
 
-    if (path.split("/").length > 2) return false;
+    if (path.split('/').length > 2) return false;
 
-    if (path.includes("?")) {
-      path = path.split("?")[0];
+    if (path.includes('?')) {
+      path = path.split('?')[0];
     }
 
-    return liveHref.split("/")[1] === path.split("/")[1];
+    return liveHref.split('/')[1] === path.split('/')[1];
   }
 
   return (
@@ -87,22 +88,22 @@ export function SpacesSideNav({ setOpen, className }: SideNavProps) {
             <AccordionItem value={item.title} className="border-none">
               <AccordionTrigger
                 className={cn(
-                  buttonVariants({ variant: "ghost" }),
-                  pathIsActive({ path: item.href, liveHref }) && "bg-muted",
+                  buttonVariants({ variant: 'ghost' }),
+                  pathIsActive({ path: item.href, liveHref }) && 'bg-muted',
                   `dark:${item.color} hover:bg-muted`,
-                  "group relative flex h-12 justify-between px-4 py-2 text-base duration-200 hover:bg-muted hover:no-underline"
+                  'group relative flex h-12 justify-between px-4 py-2 text-base duration-200 hover:bg-muted hover:no-underline'
                 )}
               >
                 <div
                   className={cn(
-                    "flex items-center",
-                    !isOpen && "w-full justify-center"
+                    'flex items-center',
+                    !isOpen && 'w-full justify-center'
                   )}
                 >
                   <span className="flex-shrink-0 w-6 h-6 mr-3">
                     {item.icon}
                   </span>
-                  <span className={cn("flex-grow", !isOpen && "sr-only")}>
+                  <span className={cn('flex-grow', !isOpen && 'sr-only')}>
                     {item.title}
                   </span>
                 </div>
@@ -117,15 +118,15 @@ export function SpacesSideNav({ setOpen, className }: SideNavProps) {
                     href={child.href}
                     onClick={() => setOpen?.(false)}
                     className={cn(
-                      buttonVariants({ variant: "ghost" }),
-                      "group relative flex h-12 items-center justify-start gap-x-3 ml-4",
+                      buttonVariants({ variant: 'ghost' }),
+                      'group relative flex h-12 items-center justify-start gap-x-3 ml-4',
                       `dark:${child.color} hover:bg-muted`,
                       pathIsActive({ path: child.href, liveHref }) &&
-                        "bg-muted font-bold hover:bg-muted"
+                        'bg-muted font-bold hover:bg-muted'
                     )}
                   >
                     <span className="flex-shrink-0 w-6 h-6">{child.icon}</span>
-                    <span className={cn("flex-grow", !isOpen && "sr-only")}>
+                    <span className={cn('flex-grow', !isOpen && 'sr-only')}>
                       {child.title}
                     </span>
                   </Link>
@@ -139,21 +140,21 @@ export function SpacesSideNav({ setOpen, className }: SideNavProps) {
             href={item.href}
             onClick={() => setOpen?.(false)}
             className={cn(
-              buttonVariants({ variant: "ghost" }),
-              "group relative flex h-12 items-center justify-start",
+              buttonVariants({ variant: 'ghost' }),
+              'group relative flex h-12 items-center justify-start',
               `dark:${item.color} hover:bg-muted`,
               pathIsActive({ path: item.href, liveHref: liveHref }) &&
-                "bg-secondary font-bold hover:bg-muted"
+                'bg-secondary font-bold hover:bg-muted'
             )}
           >
             <div
               className={cn(
-                "flex items-center w-full",
-                !isOpen && "justify-center"
+                'flex items-center w-full',
+                !isOpen && 'justify-center'
               )}
             >
               <span className="flex-shrink-0 w-6 h-6 mr-3">{item.icon}</span>
-              <span className={cn("flex-grow", !isOpen && "sr-only")}>
+              <span className={cn('flex-grow', !isOpen && 'sr-only')}>
                 {item.title}
               </span>
             </div>

@@ -1,18 +1,19 @@
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { toastWrapper } from '@/core/utils/toast-wrapper';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+
+import useCreateBaseEvaluation from '../../application/adapters/services/useCreateBaseEvaluation';
+import useUpdateBaseEvaluation from '../../application/adapters/services/useUpdateBaseEvaluation';
+import { getGradeTypeByName } from '../../application/adapters/utils/grade-helpers';
 import {
   EvaluationBaseType,
   EvaluationBaseTypeForm,
   EvaluationBaseTypeFormSchema,
   EvaluationCriteriaType,
   GradeTypeUnionType,
-} from "../../domain/entities/evaluation-schema";
-import { useEffect, useState } from "react";
-import { getGradeTypeByName } from "../../application/adapters/utils/grade-helpers";
-import useCreateBaseEvaluation from "../../application/adapters/services/useCreateBaseEvaluation";
-import useUpdateBaseEvaluation from "../../application/adapters/services/useUpdateBaseEvaluation";
-import { toastWrapper } from "@/core/utils/toast-wrapper";
-import { useRouter } from "next/navigation";
+} from '../../domain/entities/evaluation-schema';
 
 function useCreateEvaluationBaseFormLogic(props: {
   userId: string;
@@ -21,9 +22,9 @@ function useCreateEvaluationBaseFormLogic(props: {
   const form = useForm({
     resolver: zodResolver(EvaluationBaseTypeFormSchema),
     defaultValues: {
-      name: props.evaluation?.name || "",
-      description: props.evaluation?.description || "",
-      gradeType: props.evaluation?.gradeType.name || "10-point Scale",
+      name: props.evaluation?.name || '',
+      description: props.evaluation?.description || '',
+      gradeType: props.evaluation?.gradeType.name || '10-point Scale',
       isGraded: props.evaluation?.isGraded || true,
     },
   });
@@ -61,23 +62,23 @@ function useCreateEvaluationBaseFormLogic(props: {
   // Handler to add a new criteria
   const addCriteria = (options?: { name: string; description: string }) => {
     // If the gradeType is not selected, show an error message
-    if (!form.getValues("gradeType")) {
+    if (!form.getValues('gradeType')) {
       toastWrapper.error(
         "Veuillez sélectionner un type de notation avant d'ajouter des critères"
       );
       return;
     }
-    const gradeVal = form.getValues("gradeType") as unknown;
+    const gradeVal = form.getValues('gradeType') as unknown;
     const gradeType = getGradeTypeByName(
-      gradeVal as GradeTypeUnionType["name"]
+      gradeVal as GradeTypeUnionType['name']
     );
     setCriterias([
       ...criterias,
       {
         id: crypto.randomUUID(),
         weight: 1,
-        name: options?.name || "",
-        description: options?.description || "",
+        name: options?.name || '',
+        description: options?.description || '',
         isGraded: true,
         gradeType,
         createdBy: props.userId,
@@ -88,11 +89,11 @@ function useCreateEvaluationBaseFormLogic(props: {
 
   function onSubmit(values: EvaluationBaseTypeForm) {
     if (isPending || isUpdatePending) return;
-    const gradeVal = form.getValues("gradeType") as unknown;
+    const gradeVal = form.getValues('gradeType') as unknown;
     const gradeType = getGradeTypeByName(
-      gradeVal as GradeTypeUnionType["name"]
+      gradeVal as GradeTypeUnionType['name']
     );
-    const evaluation: Omit<EvaluationBaseType, "id" | "createdAt"> = {
+    const evaluation: Omit<EvaluationBaseType, 'id' | 'createdAt'> = {
       ...values,
       gradeType,
       criterias,
@@ -100,7 +101,7 @@ function useCreateEvaluationBaseFormLogic(props: {
     };
     const isValid = EvaluationBaseTypeFormSchema.safeParse(evaluation);
     if (!isValid.success) {
-      toastWrapper.error("Données d&apos;évaluation de base invalides");
+      toastWrapper.error('Données d&apos;évaluation de base invalides');
       return;
     }
     // Check if all the criteria gradeTypes are the same as the evaluation gradeType
@@ -121,7 +122,7 @@ function useCreateEvaluationBaseFormLogic(props: {
     );
 
     if (!isValidWeights) {
-      toastWrapper.error("Le poids des critères doit être au moins de 0.5");
+      toastWrapper.error('Le poids des critères doit être au moins de 0.5');
       return;
     }
 
@@ -134,7 +135,7 @@ function useCreateEvaluationBaseFormLogic(props: {
     );
     if (!isValidCriterias) {
       toastWrapper.error(
-        "Les critères doivent avoir des noms et descriptions uniques et non vides"
+        'Les critères doivent avoir des noms et descriptions uniques et non vides'
       );
       return;
     }

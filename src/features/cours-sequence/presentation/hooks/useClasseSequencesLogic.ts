@@ -1,9 +1,10 @@
-import useDeleteSequence from "@/features/complement/application/adapters/services/useDeleteSequence";
-import { useEffect, useMemo, useState } from "react";
-import useAddClasseSequence from "../../application/adapters/services/useAddClasseSequence";
-import useGetAllSequences from "../../application/adapters/services/useGetAllSequences";
-import { useGetAllClasseSequences } from "./useGetAllClasseSequences";
-import { isLeft } from "fp-ts/lib/Either";
+import useDeleteSequence from '@/features/complement/application/adapters/services/useDeleteSequence';
+import { isLeft } from 'fp-ts/lib/Either';
+import { useEffect, useMemo, useState } from 'react';
+
+import useAddClasseSequence from '../../application/adapters/services/useAddClasseSequence';
+import useGetAllSequences from '../../application/adapters/services/useGetAllSequences';
+import { useGetAllClasseSequences } from './useGetAllClasseSequences';
 
 export const useClasseSequencesLogic = (options: {
   userId: string;
@@ -15,8 +16,8 @@ export const useClasseSequencesLogic = (options: {
     description: string;
     error: boolean;
   }>({
-    message: "",
-    description: "",
+    message: '',
+    description: '',
     error: false,
   });
   const { mutate } = useAddClasseSequence();
@@ -49,7 +50,7 @@ export const useClasseSequencesLogic = (options: {
     deleteSequence(
       {
         sequenceId,
-        type: "sequence",
+        type: 'sequence',
         userId: options.userId,
       },
       {
@@ -76,14 +77,14 @@ export const useClasseSequencesLogic = (options: {
       (classeSequences && isLeft(classeSequences))
     ) {
       setError({
-        message: "An error occurred",
-        description: "An error occurred while fetching sequences",
+        message: 'An error occurred',
+        description: 'An error occurred while fetching sequences',
         error: true,
       });
     } else {
       setError({
-        message: "",
-        description: "",
+        message: '',
+        description: '',
         error: false,
       });
     }

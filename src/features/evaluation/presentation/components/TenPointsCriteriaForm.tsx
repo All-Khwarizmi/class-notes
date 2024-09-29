@@ -1,11 +1,13 @@
-"use client";
+'use client';
 
-import React from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Button } from "@/core/components/ui/button";
-import { Input } from "@/core/components/ui/input";
-import { Textarea } from "@/core/components/ui/textarea";
+import { Button } from '@/core/components/ui/button';
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/core/components/ui/card';
 import {
   Form,
   FormControl,
@@ -14,23 +16,22 @@ import {
   FormLabel,
   FormMessage,
   FormDescription,
-} from "@/core/components/ui/form";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/core/components/ui/card";
-import { Loader2, Save } from "lucide-react";
+} from '@/core/components/ui/form';
+import { Input } from '@/core/components/ui/input';
+import { Textarea } from '@/core/components/ui/textarea';
+import { toastWrapper } from '@/core/utils/toast-wrapper';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Loader2, Save } from 'lucide-react';
+import React from 'react';
+import { useForm } from 'react-hook-form';
+
+import useUpdateGrade from '../../application/adapters/services/useUpdateGrade';
 import {
   StudentGradeTenPointsExtension,
   StudentGradeTenPointsSchemaExtension,
-} from "../../application/adapters/utils/ten-points-scale-case";
-import { EvaluationBaseType } from "../../domain/entities/evaluation-schema";
-import useUpdateGrade from "../../application/adapters/services/useUpdateGrade";
-import { UpdateGradeOptions } from "../../domain/entities/evaluation-types";
-import { toastWrapper } from "@/core/utils/toast-wrapper";
+} from '../../application/adapters/utils/ten-points-scale-case';
+import { EvaluationBaseType } from '../../domain/entities/evaluation-schema';
+import { UpdateGradeOptions } from '../../domain/entities/evaluation-types';
 
 interface TenPointsCriteriaFormProps {
   studentGrade: StudentGradeTenPointsExtension;
@@ -74,11 +75,11 @@ export default function TenPointsCriteriaForm({
         onSuccess: () => {
           refetch();
           setIsDialogOpen(false);
-          toastWrapper.success("Note mise à jour");
+          toastWrapper.success('Note mise à jour');
         },
         onError: () => {
           toastWrapper.error(
-            "Une erreur est survenue lors de la mise à jour de la note."
+            'Une erreur est survenue lors de la mise à jour de la note.'
           );
         },
       }

@@ -1,5 +1,6 @@
-import { mutation, query } from "./_generated/server";
-import { v } from "convex/values";
+import { v } from 'convex/values';
+
+import { mutation, query } from './_generated/server';
 
 export const createClass = mutation({
   args: {
@@ -12,12 +13,12 @@ export const createClass = mutation({
   },
   handler: async (ctx, args) => {
     const existingUser = await ctx.db
-      .query("Users")
-      .filter((q) => q.eq(q.field("userId"), args.userId))
+      .query('Users')
+      .filter((q) => q.eq(q.field('userId'), args.userId))
       .first();
 
     if (existingUser) {
-      const id = await ctx.db.insert("Classes", {
+      const id = await ctx.db.insert('Classes', {
         userId: existingUser!._id,
         name: args.name,
         description: args.description,
@@ -40,8 +41,8 @@ export const deleteClass = mutation({
   },
   handler: async (ctx, args) => {
     const classe = await ctx.db
-      .query("Classes")
-      .filter((q) => q.eq(q.field("_id"), args.id))
+      .query('Classes')
+      .filter((q) => q.eq(q.field('_id'), args.id))
       .first();
     if (classe) {
       ctx.db.delete(classe._id);
@@ -57,13 +58,13 @@ export const getClasses = query({
   },
   handler: async (ctx, args) => {
     const user = await ctx.db
-      .query("Users")
-      .filter((q) => q.eq(q.field("userId"), args.id))
+      .query('Users')
+      .filter((q) => q.eq(q.field('userId'), args.id))
       .first();
     if (user) {
       const classes = await ctx.db
-        .query("Classes")
-        .filter((q) => q.eq(q.field("userId"), user._id))
+        .query('Classes')
+        .filter((q) => q.eq(q.field('userId'), user._id))
         .collect();
       if (classes) {
         return classes;
@@ -80,8 +81,8 @@ export const getClass = query({
   },
   handler: async (ctx, args) => {
     return ctx.db
-      .query("Classes")
-      .filter((q) => q.eq(q.field("_id"), args.id))
+      .query('Classes')
+      .filter((q) => q.eq(q.field('_id'), args.id))
       .first();
   },
 });
@@ -93,18 +94,18 @@ export const addSequenceClass = mutation({
   },
   handler: async (ctx, args) => {
     const sequence = await ctx.db
-      .query("Sequences")
-      .filter((q) => q.eq(q.field("_id"), args.sequenceId))
+      .query('Sequences')
+      .filter((q) => q.eq(q.field('_id'), args.sequenceId))
       .first();
 
     const classe = await ctx.db
-      .query("Classes")
-      .filter((q) => q.eq(q.field("_id"), args.classId))
+      .query('Classes')
+      .filter((q) => q.eq(q.field('_id'), args.classId))
       .first();
 
     if (sequence && classe) {
       // Get the cours and create new ones to add to the new sequence
-      const result = await ctx.db.insert("ClasseSequence", {
+      const result = await ctx.db.insert('ClasseSequence', {
         originalSequenceId: sequence._id,
         name: sequence.name,
         body: sequence.body,
@@ -128,8 +129,8 @@ export const addSequenceClass = mutation({
   Creating cours ${coursId} for class ${classe.name}
   `);
         const cours = await ctx.db
-          .query("Cours")
-          .filter((q) => q.eq(q.field("_id"), coursId))
+          .query('Cours')
+          .filter((q) => q.eq(q.field('_id'), coursId))
           .first();
         if (!cours) {
           console.log(`
@@ -140,7 +141,7 @@ export const addSequenceClass = mutation({
         console.log(`
   Creating cours ${cours.name} for class ${classe.name}
   `);
-        const newCours = await ctx.db.insert("Cours", {
+        const newCours = await ctx.db.insert('Cours', {
           name: cours.name,
           body: cours.body,
           imageUrl: cours.imageUrl,
@@ -159,8 +160,8 @@ export const addSequenceClass = mutation({
 
         // Get the cours complement and create new ones to add to the new cours
         const coursComplements = await ctx.db
-          .query("Complement")
-          .filter((q) => q.eq(q.field("coursId"), cours._id))
+          .query('Complement')
+          .filter((q) => q.eq(q.field('coursId'), cours._id))
           .collect();
         if (!coursComplements) {
           console.log(`
@@ -172,7 +173,7 @@ export const addSequenceClass = mutation({
           console.log(`
   Creating complement ${coursComplement.name} for cours ${cours.name}
   `);
-          await ctx.db.insert("Complement", {
+          await ctx.db.insert('Complement', {
             sequenceId: coursComplement.sequenceId,
             name: coursComplement.name,
             body: coursComplement.body,
@@ -193,7 +194,7 @@ export const addSequenceClass = mutation({
       }
       return result;
     } else {
-      throw new Error("Sequence or class not found");
+      throw new Error('Sequence or class not found');
     }
   },
 });
@@ -204,8 +205,8 @@ export const getClassSequences = query({
   },
   handler: async (ctx, args) => {
     return ctx.db
-      .query("ClasseSequence")
-      .filter((q) => q.eq(q.field("classeId"), args.classId))
+      .query('ClasseSequence')
+      .filter((q) => q.eq(q.field('classeId'), args.classId))
       .collect();
   },
 });
@@ -216,8 +217,8 @@ export const deleteSequenceClass = mutation({
   },
   handler: async (ctx, args) => {
     const sequence = await ctx.db
-      .query("ClasseSequence")
-      .filter((q) => q.eq(q.field("_id"), args.id))
+      .query('ClasseSequence')
+      .filter((q) => q.eq(q.field('_id'), args.id))
       .first();
     if (sequence) {
       ctx.db.delete(sequence._id);
@@ -233,8 +234,8 @@ export const getClassSequence = query({
   },
   handler: async (ctx, args) => {
     const result = await ctx.db
-      .query("ClasseSequence")
-      .filter((q) => q.eq(q.field("_id"), args.id))
+      .query('ClasseSequence')
+      .filter((q) => q.eq(q.field('_id'), args.id))
       .first();
     if (result) {
       return result;
@@ -287,8 +288,8 @@ export const deleteClasseSequencesFromClasseId = mutation({
   },
   handler: async (ctx, args) => {
     const sequences = await ctx.db
-      .query("ClasseSequence")
-      .filter((q) => q.eq(q.field("classeId"), args.classeId))
+      .query('ClasseSequence')
+      .filter((q) => q.eq(q.field('classeId'), args.classeId))
       .collect();
     if (sequences) {
       for (const sequence of sequences) {
@@ -306,8 +307,8 @@ export const deleteEvualuationsWithGradesFromClasseId = mutation({
   },
   handler: async (ctx, args) => {
     const evaluations = await ctx.db
-      .query("EvaluationsWithGrades")
-      .filter((q) => q.eq(q.field("classeId"), args.classeId))
+      .query('EvaluationsWithGrades')
+      .filter((q) => q.eq(q.field('classeId'), args.classeId))
       .collect();
     if (evaluations) {
       for (const evaluation of evaluations) {
@@ -325,8 +326,8 @@ export const deleteStudentsFromClasseId = mutation({
   },
   handler: async (ctx, args) => {
     const students = await ctx.db
-      .query("Students")
-      .filter((q) => q.eq(q.field("classId"), args.classeId))
+      .query('Students')
+      .filter((q) => q.eq(q.field('classId'), args.classeId))
       .collect();
     if (students) {
       for (const student of students) {

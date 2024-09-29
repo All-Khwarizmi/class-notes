@@ -1,34 +1,39 @@
-import React from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/core/components/ui/card";
-import { Button } from "@/core/components/ui/button";
+import { Button } from '@/core/components/ui/button';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from '@/core/components/ui/card';
 import {
   ExternalLink,
   BookOpen,
   MessageCircle,
   Mail,
   Info,
-} from "lucide-react";
-import Link from "next/link";
+} from 'lucide-react';
+import Link from 'next/link';
+import React from 'react';
 
 const externalLinks = [
   {
-    title: "Guide Rapide pour Commencer",
-    href: "https://www.notion.so/Guide-Rapide-pour-Commencer-avec-La-Classe-10732b247fd3805ab0f2c63de6fd1451?pvs=21",
+    title: 'Guide Rapide pour Commencer',
+    href: 'https://www.notion.so/Guide-Rapide-pour-Commencer-avec-La-Classe-10732b247fd3805ab0f2c63de6fd1451?pvs=21',
     icon: BookOpen,
   },
   {
-    title: "Comment commencer avec La Classe",
-    href: "https://www.notion.so/Comment-commencer-avec-La-Classe-10732b247fd380a7adbee274e3d12c51?pvs=21",
+    title: 'Comment commencer avec La Classe',
+    href: 'https://www.notion.so/Comment-commencer-avec-La-Classe-10732b247fd380a7adbee274e3d12c51?pvs=21',
     icon: Info,
   },
   {
     title: "Participez à l'Amélioration",
-    href: "https://www.notion.so/Participez-l-Am-lioration-de-La-Classe-10732b247fd3804480e7d1f2dc19d0dd?pvs=21",
+    href: 'https://www.notion.so/Participez-l-Am-lioration-de-La-Classe-10732b247fd3804480e7d1f2dc19d0dd?pvs=21',
     icon: MessageCircle,
   },
   {
-    title: "Notre Mission et Vision",
-    href: "https://www.notion.so/Notre-Mission-Notre-Histoire-Notre-Vision-10732b247fd380b2b951de6d2cd86b5f?pvs=21",
+    title: 'Notre Mission et Vision',
+    href: 'https://www.notion.so/Notre-Mission-Notre-Histoire-Notre-Vision-10732b247fd380b2b951de6d2cd86b5f?pvs=21',
     icon: Info,
   },
 ];

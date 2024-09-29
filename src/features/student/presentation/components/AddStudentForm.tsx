@@ -1,7 +1,4 @@
-import { Id } from "../../../../../convex/_generated/dataModel";
-import { Student, StudentSchema } from "../../domain/entities/student-schema";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { Button } from '@/core/components/ui/button';
 import {
   Form,
   FormControl,
@@ -10,16 +7,21 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/core/components/ui/form";
-import { Input } from "@/core/components/ui/input";
-import { Button } from "@/core/components/ui/button";
-import { toast } from "sonner";
-import useAddStudent from "../../../classe/application/adapters/services/useAddStudent";
+} from '@/core/components/ui/form';
+import { Input } from '@/core/components/ui/input';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
+
+import { Id } from '../../../../../convex/_generated/dataModel';
+import useAddStudent from '../../../classe/application/adapters/services/useAddStudent';
+import { Student, StudentSchema } from '../../domain/entities/student-schema';
+
 export default function AddStudentForm({
   classId,
   refetch,
 }: {
-  classId: Id<"Classes">;
+  classId: Id<'Classes'>;
   refetch: () => void;
 }) {
   const { mutate: addStudent } = useAddStudent();
@@ -27,7 +29,7 @@ export default function AddStudentForm({
   const form = useForm<Student>({
     resolver: zodResolver(StudentSchema),
     defaultValues: {
-      name: "",
+      name: '',
       classId,
     },
   });
@@ -38,7 +40,7 @@ export default function AddStudentForm({
       {
         onSuccess: () => {
           refetch();
-          toast.success("Élève ajouté avec succès");
+          toast.success('Élève ajouté avec succès');
         },
         onError: () => {
           toast.error("Erreur lors de l'ajout de l'élève");
@@ -66,7 +68,7 @@ export default function AddStudentForm({
             )}
           />
           <div className="py-2 flex justify-end">
-            {" "}
+            {' '}
             <Button
               onClick={async () => {
                 const values = form.getValues();
@@ -76,7 +78,7 @@ export default function AddStudentForm({
                   {
                     onSuccess: () => {
                       refetch();
-                      toast.success("Élève ajouté avec succès");
+                      toast.success('Élève ajouté avec succès');
                     },
                     onError: () => {
                       toast.error("Erreur lors de l'ajout de l'élève");

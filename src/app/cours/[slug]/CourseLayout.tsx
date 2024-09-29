@@ -1,22 +1,22 @@
-import React from "react";
-import { authUseCases } from "@/features/auth/application/usecases/auth-usecases";
-import { coursUsecases } from "@/features/cours-sequence/application/usecases/cours-usecases";
-import CoursSequenceView from "@/features/cours-sequence/presentation/views/CoursSequenceView";
-import { isLeft } from "fp-ts/lib/Either";
-import { redirect } from "next/navigation";
-import { Suspense } from "react";
+import ComplementsServerLayer from '@/app/cours/complements/[slug]/ComplementsServerLayer';
+import ErrorDialog from '@/core/components/common/ErrorDialog';
+import LoadingSkeleton from '@/core/components/common/LoadingSkeleton';
+import { TypographyH3 } from '@/core/components/common/Typography';
+import Layout from '@/core/components/layout/Layout';
 import {
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
-} from "@/core/components/ui/tabs";
-import ErrorDialog from "@/core/components/common/ErrorDialog";
-import Layout from "@/core/components/layout/Layout";
-import LoadingSkeleton from "@/core/components/common/LoadingSkeleton";
-import ComplementsServerLayer from "@/app/cours/complements/[slug]/ComplementsServerLayer";
-import { TypographyH3 } from "@/core/components/common/Typography";
-import checkAuthAndRedirect from "@/data-access/auth/check-and-redirect";
+} from '@/core/components/ui/tabs';
+import checkAuthAndRedirect from '@/data-access/auth/check-and-redirect';
+import { authUseCases } from '@/features/auth/application/usecases/auth-usecases';
+import { coursUsecases } from '@/features/cours-sequence/application/usecases/cours-usecases';
+import CoursSequenceView from '@/features/cours-sequence/presentation/views/CoursSequenceView';
+import { isLeft } from 'fp-ts/lib/Either';
+import { redirect } from 'next/navigation';
+import React from 'react';
+import { Suspense } from 'react';
 
 async function CourseLayout(props: { slug: string }) {
   const { userId } = await checkAuthAndRedirect();

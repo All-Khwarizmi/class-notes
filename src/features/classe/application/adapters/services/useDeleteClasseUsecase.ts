@@ -1,6 +1,6 @@
-import { UseDeleteClasseInfraReturn } from "@/features/classe/infra/services/useDeleteClasseInfra";
-import { useEffect } from "react";
-import { toast } from "sonner";
+import { UseDeleteClasseInfraReturn } from '@/features/classe/infra/services/useDeleteClasseInfra';
+import { useEffect } from 'react';
+import { toast } from 'sonner';
 
 export default function useDeleteClasseUsecase({
   useDeleteClasseInfra,
@@ -15,7 +15,7 @@ export default function useDeleteClasseUsecase({
     }
     if (deleteClassePayload?.success) {
       window.location.reload();
-      toast.success("La classe a été supprimée avec succès");
+      toast.success('La classe a été supprimée avec succès');
     }
   }, [deleteClassePayload]);
 

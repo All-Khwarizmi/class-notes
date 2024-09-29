@@ -1,9 +1,10 @@
-import AfterMenuButton from "@/core/components/common/editor/AfterMenuButton";
-import { useCurrentEditor } from "@tiptap/react";
-import { Save } from "lucide-react";
-import React from "react";
-import useUpdateComplement from "../../application/adapters/services/useUpdateComplement";
-import { Complement } from "../../domain/complement-schemas";
+import AfterMenuButton from '@/core/components/common/editor/AfterMenuButton';
+import { useCurrentEditor } from '@tiptap/react';
+import { Save } from 'lucide-react';
+import React from 'react';
+
+import useUpdateComplement from '../../application/adapters/services/useUpdateComplement';
+import { Complement } from '../../domain/complement-schemas';
 
 function UpdateComplement(props: { complement: Complement }) {
   const { debounceUpdateComplement } = useUpdateComplement();
@@ -19,7 +20,7 @@ function UpdateComplement(props: { complement: Complement }) {
           const prevContent = props.complement.body;
           const currentContent = editor.getHTML();
           if (prevContent === currentContent) {
-            return alert("No changes to save");
+            return alert('No changes to save');
           }
           debounceUpdateComplement(props.complement)(currentContent);
         },

@@ -1,9 +1,10 @@
-import { QUERY_KEYS } from "@/core/query/ query-keys";
-import { CreateClasseOptions } from "@/features/classe/domain/classe-types";
-import { useMutation } from "@tanstack/react-query";
-import { classeUsecases } from "../../usecases";
-import { isLeft } from "fp-ts/lib/Either";
-import { toastWrapper } from "@/core/utils/toast-wrapper";
+import { QUERY_KEYS } from '@/core/query/ query-keys';
+import { toastWrapper } from '@/core/utils/toast-wrapper';
+import { CreateClasseOptions } from '@/features/classe/domain/classe-types';
+import { useMutation } from '@tanstack/react-query';
+import { isLeft } from 'fp-ts/lib/Either';
+
+import { classeUsecases } from '../../usecases';
 
 export default function useAddClasse() {
   return useMutation({
@@ -13,7 +14,7 @@ export default function useAddClasse() {
       if (isLeft(operationResult)) {
         return toastWrapper.error("La classe n'a pas pu être créée");
       }
-      toastWrapper.success("La classe a été créée");
+      toastWrapper.success('La classe a été créée');
     },
   });
 }

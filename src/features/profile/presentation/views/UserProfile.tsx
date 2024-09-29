@@ -1,6 +1,45 @@
-"use client";
-import React, { useEffect, useState } from "react";
-import { UserButton } from "@clerk/nextjs";
+'use client';
+
+import { TypographySmall } from '@/core/components/common/Typography';
+import { Button } from '@/core/components/ui/button';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from '@/core/components/ui/card';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/core/components/ui/form';
+import { Input } from '@/core/components/ui/input';
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/core/components/ui/select';
+import { Separator } from '@/core/components/ui/separator';
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from '@/core/components/ui/tabs';
+import { educationSystemOptions } from '@/features/user/domain/entities/education-systems/education-system';
+import {
+  UserType,
+  userSchema,
+} from '@/features/user/domain/entities/user-schema';
+import { countryOptions } from '@/features/user/domain/entities/user-schema';
+import { useUserOnboarding } from '@/features/user/presentation/hooks/useUserOnboarding';
+import { UserButton } from '@clerk/nextjs';
 import {
   CalendarDaysIcon,
   CoinsIcon,
@@ -9,66 +48,30 @@ import {
   CreditCard,
   CheckCircle,
   XCircle,
-} from "lucide-react";
-import {
-  UserType,
-  userSchema,
-} from "@/features/user/domain/entities/user-schema";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/core/components/ui/form";
-import { Input } from "@/core/components/ui/input";
-import { Button } from "@/core/components/ui/button";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/core/components/ui/select";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/core/components/ui/card";
-import { Separator } from "@/core/components/ui/separator";
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from "@/core/components/ui/tabs";
-import { countryOptions } from "@/features/user/domain/entities/user-schema";
-import { educationSystemOptions } from "@/features/user/domain/entities/education-systems/education-system";
-import { checkUserCredits } from "../helpers/helpers";
-import { useUserOnboarding } from "@/features/user/presentation/hooks/useUserOnboarding";
-import { TypographySmall } from "@/core/components/common/Typography";
+} from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+
+import { checkUserCredits } from '../helpers/helpers';
+
 const tabs = [
   {
-    id: "personal",
-    label: "Informations personnelles",
+    id: 'personal',
+    label: 'Informations personnelles',
     icon: User,
   },
   {
-    id: "education",
+    id: 'education',
     label: "Détails de l'éducation",
     icon: BookOpen,
   },
   {
-    id: "subscription",
-    label: "Abonnement",
+    id: 'subscription',
+    label: 'Abonnement',
     icon: CreditCard,
   },
 ];
 export default function UserProfile({ user }: { user: UserType }) {
-  const [currentTab, setCurrentTab] = useState("personal");
+  const [currentTab, setCurrentTab] = useState('personal');
   const {
     data: {
       steps,
@@ -92,7 +95,7 @@ export default function UserProfile({ user }: { user: UserType }) {
     <div className="container mx-auto py-10">
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-3xl font-bold">Profil utilisateur</h1>
-        <UserButton appearance={{ elements: { rootBox: "w-16 h-16" } }} />
+        <UserButton appearance={{ elements: { rootBox: 'w-16 h-16' } }} />
       </div>
       <div className="">
         <Tabs defaultValue={currentTab} className="w-full">
@@ -220,7 +223,7 @@ export default function UserProfile({ user }: { user: UserType }) {
                           })
                         }
                       >
-                        {isPending ? "Mise à jour..." : "Mettre à jour"}
+                        {isPending ? 'Mise à jour...' : 'Mettre à jour'}
                       </Button>
                     </form>
                   </Form>
@@ -302,7 +305,7 @@ export default function UserProfile({ user }: { user: UserType }) {
                           })
                         }
                       >
-                        {isPending ? "Mise à jour..." : "Mettre à jour"}
+                        {isPending ? 'Mise à jour...' : 'Mettre à jour'}
                       </Button>
                     </form>
                   </Form>
@@ -317,7 +320,7 @@ export default function UserProfile({ user }: { user: UserType }) {
                         <p className="text-2xl font-semibold flex items-center">
                           <CalendarDaysIcon className="w-5 h-5 mr-2" />
                           {user.endsOn
-                            ? new Date(user.endsOn).toLocaleDateString("fr-FR")
+                            ? new Date(user.endsOn).toLocaleDateString('fr-FR')
                             : "Pas d'abonnement"}
                         </p>
                       </div>

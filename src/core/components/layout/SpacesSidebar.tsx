@@ -1,12 +1,13 @@
-"use client";
-import React, { useState } from "react";
-import { cn } from "@/lib/utils";
-import { useSidebar } from "@/core/application/common/useSidebar";
-import ArrowLeft from "../icons/ArrowLeft";
+'use client';
 
-import { SpacesSideNav } from "./SpacesSideNav";
-import { NavItem } from "@/lib/types";
-import { SpacesMobileSidebarNavigation } from "./SpacesMobileSidebar";
+import { useSidebar } from '@/core/application/common/useSidebar';
+import { NavItem } from '@/lib/types';
+import { cn } from '@/lib/utils';
+import React, { useState } from 'react';
+
+import ArrowLeft from '../icons/ArrowLeft';
+import { SpacesMobileSidebarNavigation } from './SpacesMobileSidebar';
+import { SpacesSideNav } from './SpacesSideNav';
 
 export interface SidebarProps {
   className?: string;
@@ -26,15 +27,15 @@ export default function SpacesSidebar({ className }: SidebarProps) {
     <nav
       className={cn(
         `relative hidden h-screen border-r pt-20 md:block`,
-        status && "duration-500",
-        isOpen ? "w-60" : "w-[78px]",
+        status && 'duration-500',
+        isOpen ? 'w-60' : 'w-[78px]',
         className
       )}
     >
       <ArrowLeft
         className={cn(
-          "absolute -right-3 top-20 cursor-pointer rounded-full border bg-background text-3xl text-foreground",
-          !isOpen && "rotate-180"
+          'absolute -right-3 top-20 cursor-pointer rounded-full border bg-background text-3xl text-foreground',
+          !isOpen && 'rotate-180'
         )}
         onClick={handleToggle}
       />

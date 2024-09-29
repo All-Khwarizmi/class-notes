@@ -1,28 +1,29 @@
-"use client";
+'use client';
 
-import React from "react";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { Plus, Loader2 } from "lucide-react";
-import { isLeft } from "fp-ts/lib/Either";
+import {
+  Alert,
+  AlertDescription,
+  AlertTitle,
+} from '@/core/components/ui/alert';
+import { Button } from '@/core/components/ui/button';
 import {
   Card,
   CardContent,
   CardHeader,
   CardTitle,
-} from "@/core/components/ui/card";
-import {
-  Alert,
-  AlertDescription,
-  AlertTitle,
-} from "@/core/components/ui/alert";
-import { EvaluationBaseType } from "../../domain/entities/evaluation-schema";
-import useDeleteEvaluationBase from "../../application/adapters/services/useDeleteEvaluationBase";
-import useIsEvaluationAssigned from "../../application/adapters/services/useIsEvaluationAssigned";
-import useGetEvaluationsBaseList from "../../application/adapters/services/useGetEvaluationsBaseList";
-import { toastWrapper } from "@/core/utils/toast-wrapper";
-import EvaluationCard from "../components/EvaluationCard";
-import { Button } from "@/core/components/ui/button";
+} from '@/core/components/ui/card';
+import { toastWrapper } from '@/core/utils/toast-wrapper';
+import { isLeft } from 'fp-ts/lib/Either';
+import { Plus, Loader2 } from 'lucide-react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import React from 'react';
+
+import useDeleteEvaluationBase from '../../application/adapters/services/useDeleteEvaluationBase';
+import useGetEvaluationsBaseList from '../../application/adapters/services/useGetEvaluationsBaseList';
+import useIsEvaluationAssigned from '../../application/adapters/services/useIsEvaluationAssigned';
+import { EvaluationBaseType } from '../../domain/entities/evaluation-schema';
+import EvaluationCard from '../components/EvaluationCard';
 
 interface EvaluationTableViewProps {
   userId: string;
@@ -54,8 +55,8 @@ export default function EvaluationTableView({
           }
 
           const confirmMessage = data.right
-            ? "Cette évaluation est assignée à au moins une classe. La supprimer effacera également toutes les notes associées. Êtes-vous sûr de vouloir continuer ?"
-            : "Êtes-vous sûr de vouloir supprimer cette évaluation ? Cette action est irréversible.";
+            ? 'Cette évaluation est assignée à au moins une classe. La supprimer effacera également toutes les notes associées. Êtes-vous sûr de vouloir continuer ?'
+            : 'Êtes-vous sûr de vouloir supprimer cette évaluation ? Cette action est irréversible.';
 
           if (window.confirm(confirmMessage)) {
             deleteEvaluationBase(
@@ -109,7 +110,7 @@ export default function EvaluationTableView({
             <EvaluationCard
               key={evaluation.id}
               name={evaluation.name}
-              description={evaluation.description ?? ""}
+              description={evaluation.description ?? ''}
               isGraded={evaluation.isGraded}
               onView={() => router.push(`/evaluations/${evaluation.id}`)}
               deleteEvaluation={() => handleDelete(evaluation.id)}

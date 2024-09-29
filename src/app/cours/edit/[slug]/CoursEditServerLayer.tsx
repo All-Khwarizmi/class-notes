@@ -1,16 +1,16 @@
-import React from "react";
-import AddUpdateCoursSequenceView from "@/features/cours-sequence/presentation/views/AddCoursView";
-import { compCatUsecases } from "@/features/comp-cat/application/usecases/comp-cat-usecases";
-import { Either, isLeft } from "fp-ts/lib/Either";
-import { Competence } from "@/features/comp-cat/domain/entities/schemas";
-import { coursUsecases } from "@/features/cours-sequence/application/usecases/cours-usecases";
-import ErrorDialog from "@/core/components/common/ErrorDialog";
+import ErrorDialog from '@/core/components/common/ErrorDialog';
+import Failure from '@/core/failures/failures';
+import checkAuthAndRedirect from '@/data-access/auth/check-and-redirect';
+import { compCatUsecases } from '@/features/comp-cat/application/usecases/comp-cat-usecases';
+import { Competence } from '@/features/comp-cat/domain/entities/schemas';
+import { coursUsecases } from '@/features/cours-sequence/application/usecases/cours-usecases';
 import {
   Cours,
   CoursSchema,
-} from "@/features/cours-sequence/domain/entities/cours-schemas";
-import Failure from "@/core/failures/failures";
-import checkAuthAndRedirect from "@/data-access/auth/check-and-redirect";
+} from '@/features/cours-sequence/domain/entities/cours-schemas';
+import AddUpdateCoursSequenceView from '@/features/cours-sequence/presentation/views/AddCoursView';
+import { Either, isLeft } from 'fp-ts/lib/Either';
+import React from 'react';
 
 async function CoursEditServerLayer(props: { slug: string }) {
   const { userId } = await checkAuthAndRedirect();
@@ -29,7 +29,7 @@ async function CoursEditServerLayer(props: { slug: string }) {
   let cours: Cours | null = null;
   let failures: Failure<string>[] = [];
   const isFailure = batch.some((result, index) => {
-    if (result.status === "rejected") {
+    if (result.status === 'rejected') {
       failures.push(result.reason);
       return true;
     }
@@ -71,14 +71,14 @@ async function CoursEditServerLayer(props: { slug: string }) {
       <ErrorDialog
         message={`
         Failed to fetch data for the cours edit page.
-        ${failures.map((failure) => failure.message).join("\n")}
+        ${failures.map((failure) => failure.message).join('\n')}
         Code: PRE303
     `}
         code="PRE303"
         description={
-          process.env.NODE_ENV === "development"
+          process.env.NODE_ENV === 'development'
             ? failures[0].message
-            : "An error occurred while fetching data for the cours edit page."
+            : 'An error occurred while fetching data for the cours edit page.'
         }
       />
     );
@@ -93,9 +93,9 @@ async function CoursEditServerLayer(props: { slug: string }) {
     `}
         code="PRE303"
         description={
-          process.env.NODE_ENV === "development"
+          process.env.NODE_ENV === 'development'
             ? failures[0].message
-            : "An error occurred while fetching data for the cours edit page."
+            : 'An error occurred while fetching data for the cours edit page.'
         }
       />
     );

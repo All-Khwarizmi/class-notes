@@ -1,22 +1,22 @@
-import React from "react";
-import { isLeft } from "fp-ts/lib/Either";
-import { BookOpen, BookCopy } from "lucide-react";
-import Layout from "@/core/components/layout/ExperimentalLayout";
-import ContentViewer from "@/features/cours-sequence/presentation/views/ContentViewer";
-import { coursUsecases } from "@/features/cours-sequence/application/usecases/cours-usecases";
-import getVisibility from "@/features/classe/application/adapters/actions/get-visibility";
-import { NavItem } from "@/lib/types";
-import EmptyUserSpace from "@/features/spaces/presentation/components/EmptyUserSpace";
-import { authUseCases } from "@/features/auth/application/usecases/auth-usecases";
-import { getCurrentUser as getUser } from "@/data-access/user/get-current-user";
-import { isNone } from "fp-ts/lib/Option";
+import Layout from '@/core/components/layout/ExperimentalLayout';
+import { getCurrentUser as getUser } from '@/data-access/user/get-current-user';
+import { authUseCases } from '@/features/auth/application/usecases/auth-usecases';
+import getVisibility from '@/features/classe/application/adapters/actions/get-visibility';
+import { coursUsecases } from '@/features/cours-sequence/application/usecases/cours-usecases';
+import ContentViewer from '@/features/cours-sequence/presentation/views/ContentViewer';
+import EmptyUserSpace from '@/features/spaces/presentation/components/EmptyUserSpace';
+import { NavItem } from '@/lib/types';
+import { isLeft } from 'fp-ts/lib/Either';
+import { isNone } from 'fp-ts/lib/Option';
+import { BookOpen, BookCopy } from 'lucide-react';
+import React from 'react';
 
 async function SpacesSequenceServerLayer(props: {
   slug: string;
   searchParams: { [key: string]: string | undefined };
 }) {
   const sequenceType =
-    props.searchParams.type === "template" ? "template" : "sequence";
+    props.searchParams.type === 'template' ? 'template' : 'sequence';
   const userId = props.searchParams.user;
 
   if (!userId) {
@@ -31,7 +31,7 @@ async function SpacesSequenceServerLayer(props: {
   const isOwner = await authUseCases.isCurrentUser(userId);
 
   const eitherSequence = await coursUsecases.getSingleSequence({
-    userId: "",
+    userId: '',
     sequenceId: props.slug,
     type: sequenceType,
   });
@@ -52,7 +52,7 @@ async function SpacesSequenceServerLayer(props: {
     return (
       <EmptyUserSpace
         isOwner={isOwner}
-        userName={user.value.name ?? "Utilisateur inconnu"}
+        userName={user.value.name ?? 'Utilisateur inconnu'}
         userEmail={user.value.email}
         contentType="séquence"
       />
@@ -60,9 +60,9 @@ async function SpacesSequenceServerLayer(props: {
   }
 
   const eitherCours = await coursUsecases.getAllCoursFromSequence({
-    userId: "",
+    userId: '',
     sequenceId: props.slug,
-    type: "sequence",
+    type: 'sequence',
   });
 
   if (isLeft(eitherCours)) {
@@ -84,15 +84,15 @@ async function SpacesSequenceServerLayer(props: {
       title: cours.name,
       href: `/${user.value.hostname}/cours/${cours._id}?user=${userId}`,
       icon: <BookOpen size={16} className="text-orange-500" />,
-      color: "text-blue-300",
+      color: 'text-blue-300',
     }));
 
   const sequenceNavItems: NavItem[] = [
     {
-      title: "Cours",
+      title: 'Cours',
       href: `#`,
       icon: <BookCopy size={16} className="text-orange-500" />,
-      color: "text-blue-300",
+      color: 'text-blue-300',
       isChidren: true,
       children: coursesNavItems,
     },
@@ -102,7 +102,7 @@ async function SpacesSequenceServerLayer(props: {
     return (
       <EmptyUserSpace
         isOwner={isOwner}
-        userName={user.value.name ?? "Utilisateur inconnu"}
+        userName={user.value.name ?? 'Utilisateur inconnu'}
         userEmail={user.value.email}
         contentType="cours"
       />

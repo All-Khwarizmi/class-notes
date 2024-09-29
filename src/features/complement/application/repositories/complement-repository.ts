@@ -1,7 +1,8 @@
-import IDatabase from "@/core/data/idatabase";
-import { Complement } from "../../domain/complement-schemas";
-import { convexDatabase } from "@/core/data/convex/convex-impl";
-import { getAppDataBase } from "@/core/data/get-app-db";
+import { convexDatabase } from '@/core/data/convex/convex-impl';
+import { getAppDataBase } from '@/core/data/get-app-db';
+import IDatabase from '@/core/data/idatabase';
+
+import { Complement } from '../../domain/complement-schemas';
 
 export default class ComplementRepository {
   private readonly _db: IDatabase;
@@ -17,13 +18,13 @@ export default class ComplementRepository {
     userId: string;
     complement: Pick<
       Complement,
-      | "name"
-      | "description"
-      | "type"
-      | "publish"
-      | "coursId"
-      | "body"
-      | "contentType"
+      | 'name'
+      | 'description'
+      | 'type'
+      | 'publish'
+      | 'coursId'
+      | 'body'
+      | 'contentType'
     >;
   }) {
     return this._db.addComplement({ complement, userId });

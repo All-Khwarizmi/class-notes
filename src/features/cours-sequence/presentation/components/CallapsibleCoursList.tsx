@@ -1,15 +1,16 @@
-import { CaretSortIcon } from "@radix-ui/react-icons";
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
-} from "@/core/components/ui/collapsible";
-import { Cours } from "../../domain/entities/cours-schemas";
-import { useState } from "react";
-import CoursSequenceCard from "./CoursSequenceCard";
-import Link from "next/link";
-import { Plus } from "lucide-react";
-import { cn } from "@/lib/utils";
+} from '@/core/components/ui/collapsible';
+import { cn } from '@/lib/utils';
+import { CaretSortIcon } from '@radix-ui/react-icons';
+import { Plus } from 'lucide-react';
+import Link from 'next/link';
+import { useState } from 'react';
+
+import { Cours } from '../../domain/entities/cours-schemas';
+import CoursSequenceCard from './CoursSequenceCard';
 
 function CallapsibleCoursList(props: { cours: Cours[]; sequenceId: string }) {
   const [open, setOpen] = useState(false);
@@ -25,7 +26,7 @@ function CallapsibleCoursList(props: { cours: Cours[]; sequenceId: string }) {
           <Link
             href={`/cours/add/${props.sequenceId}`}
             className={cn(
-              "bg-transparent rounded-md p-1 px-2 flex items-center ml-2 hover:bg-slate-400 border border-slate-400 hover:border-slate-400"
+              'bg-transparent rounded-md p-1 px-2 flex items-center ml-2 hover:bg-slate-400 border border-slate-400 hover:border-slate-400'
             )}
           >
             <Plus size={12} />

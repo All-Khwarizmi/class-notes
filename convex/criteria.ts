@@ -1,5 +1,6 @@
-import { mutation, query } from "./_generated/server";
-import { v } from "convex/values";
+import { v } from 'convex/values';
+
+import { mutation, query } from './_generated/server';
 
 export const createCriterion = mutation({
   args: {
@@ -8,10 +9,10 @@ export const createCriterion = mutation({
     isGraded: v.boolean(),
     gradeType: v.optional(v.string()),
     feedback: v.string(),
-    createdBy: v.id("Users"),
+    createdBy: v.id('Users'),
   },
   handler: async (ctx, args) => {
-    const criterionId = await ctx.db.insert("Criteria", {
+    const criterionId = await ctx.db.insert('Criteria', {
       name: args.name,
       wheight: 1,
       description: args.description,
@@ -26,7 +27,7 @@ export const createCriterion = mutation({
 
 export const updateCriterion = mutation({
   args: {
-    criterionId: v.id("Criteria"),
+    criterionId: v.id('Criteria'),
     updates: v.object({
       name: v.optional(v.string()),
       description: v.optional(v.string()),
@@ -46,23 +47,23 @@ export const listCriteriaByCreator = query({
   },
   handler: async (ctx, args) => {
     const user = await ctx.db
-      .query("Users")
-      .filter((q) => q.eq(q.field("userId"), args.userId))
+      .query('Users')
+      .filter((q) => q.eq(q.field('userId'), args.userId))
       .first();
 
     if (!user) {
-      throw new Error("User not found");
+      throw new Error('User not found');
     }
     const criteria = await ctx.db
-      .query("Criteria")
-      .filter((q) => q.eq(q.field("createdBy"), user?._id))
+      .query('Criteria')
+      .filter((q) => q.eq(q.field('createdBy'), user?._id))
       .collect();
     return criteria;
   },
 });
 
 export const deleteCriterion = mutation({
-  args: { criterionId: v.id("Criteria") },
+  args: { criterionId: v.id('Criteria') },
   handler: async (ctx, args) => {
     await ctx.db.delete(args.criterionId);
   },

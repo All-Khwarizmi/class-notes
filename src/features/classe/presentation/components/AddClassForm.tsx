@@ -1,10 +1,13 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Button } from "@/core/components/ui/button";
+import { GoBackButton } from '@/core/components/common/navigation/GoBackButton';
+import { Button } from '@/core/components/ui/button';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from '@/core/components/ui/card';
 import {
   Form,
   FormControl,
@@ -13,7 +16,8 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/core/components/ui/form";
+} from '@/core/components/ui/form';
+import { Input } from '@/core/components/ui/input';
 import {
   Select,
   SelectContent,
@@ -21,30 +25,27 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/core/components/ui/select";
-import { Input } from "@/core/components/ui/input";
-import { Textarea } from "@/core/components/ui/textarea";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/core/components/ui/card";
-import { ArrowLeft, Loader2 } from "lucide-react";
-import classSchema, { ClassType } from "@/features/classe/domain/class-schema";
-import useAddClasse from "../../application/adapters/services/useAddClasse";
-import { educationSystemOptions } from "@/features/user/domain/entities/education-systems/education-system";
+} from '@/core/components/ui/select';
+import { Textarea } from '@/core/components/ui/textarea';
+import { BASE_IMAGE_URL } from '@/core/constants/image';
+import { toastWrapper } from '@/core/utils/toast-wrapper';
+import classSchema, { ClassType } from '@/features/classe/domain/class-schema';
+import { educationSystemOptions } from '@/features/user/domain/entities/education-systems/education-system';
 import {
   getEducationLevelOptions,
   getHumanReadableGrade,
-} from "@/features/user/domain/entities/education-systems/niveaux/niveaux";
-import { toastWrapper } from "@/core/utils/toast-wrapper";
-import { BASE_IMAGE_URL } from "@/core/constants/image";
-import { GoBackButton } from "@/core/components/common/navigation/GoBackButton";
+} from '@/features/user/domain/entities/education-systems/niveaux/niveaux';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { ArrowLeft, Loader2 } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+
+import useAddClasse from '../../application/adapters/services/useAddClasse';
 
 type FormValues = Pick<
   ClassType,
-  "description" | "name" | "imageUrl" | "educationLevel" | "educationSystem"
+  'description' | 'name' | 'imageUrl' | 'educationLevel' | 'educationSystem'
 >;
 
 export default function AddClassForm({ userId }: { userId: string }) {
@@ -55,23 +56,23 @@ export default function AddClassForm({ userId }: { userId: string }) {
   const form = useForm<FormValues>({
     resolver: zodResolver(classSchema),
     defaultValues: {
-      name: "",
+      name: '',
       description: `${new Date().getFullYear()} - ${
         new Date().getFullYear() + 1
       }`,
       imageUrl: BASE_IMAGE_URL,
-      educationLevel: "Cinquieme",
-      educationSystem: "French",
+      educationLevel: 'Cinquieme',
+      educationSystem: 'French',
     },
   });
 
-  const selectedSystem = form.watch("educationSystem");
+  const selectedSystem = form.watch('educationSystem');
   const educationLevelOptions = getEducationLevelOptions(selectedSystem);
 
   async function onSubmit(values: FormValues) {
     setIsSubmitting(true);
     if (Object.values(values).some((value) => !value)) {
-      toastWrapper.error("Tous les champs sont obligatoires");
+      toastWrapper.error('Tous les champs sont obligatoires');
       setIsSubmitting(false);
       return;
     }
@@ -79,7 +80,7 @@ export default function AddClassForm({ userId }: { userId: string }) {
       values;
     if (name.length < 3) {
       toastWrapper.error(
-        "Le nom de la classe doit contenir au moins 3 caractères"
+        'Le nom de la classe doit contenir au moins 3 caractères'
       );
       setIsSubmitting(false);
       return;
@@ -97,7 +98,7 @@ export default function AddClassForm({ userId }: { userId: string }) {
     );
   }
   const goToClasses = () => {
-    router.push("/classes");
+    router.push('/classes');
   };
   return (
     <div className="container mx-auto py-6">
@@ -249,7 +250,7 @@ export default function AddClassForm({ userId }: { userId: string }) {
                     Création en cours...
                   </>
                 ) : (
-                  "Créer la classe"
+                  'Créer la classe'
                 )}
               </Button>
             </form>

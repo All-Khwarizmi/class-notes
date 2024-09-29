@@ -1,10 +1,10 @@
-import React from "react";
-import { isLeft } from "fp-ts/lib/Either";
-import ErrorDialog from "@/core/components/common/ErrorDialog";
-import Layout from "@/core/components/layout/ExperimentalLayout";
-import { notesUsecases } from "@/features/notes/application/usecases/note-usecases";
-import { NoteSchema } from "@/features/notes/domain/notes-schemas";
-import NoteEditorView from "@/features/notes/presentation/views/NoteEditorView";
+import ErrorDialog from '@/core/components/common/ErrorDialog';
+import Layout from '@/core/components/layout/ExperimentalLayout';
+import { notesUsecases } from '@/features/notes/application/usecases/note-usecases';
+import { NoteSchema } from '@/features/notes/domain/notes-schemas';
+import NoteEditorView from '@/features/notes/presentation/views/NoteEditorView';
+import { isLeft } from 'fp-ts/lib/Either';
+import React from 'react';
 
 async function NoteServerLayer({ slug }: { slug: string }) {
   if (!slug) {

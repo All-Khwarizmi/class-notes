@@ -1,7 +1,8 @@
-import { Extension } from "@tiptap/core";
-import { InputRule } from "@tiptap/core";
-import { TextSelection } from "prosemirror-state";
-import { findParentNode } from "@tiptap/core";
+import { Extension } from '@tiptap/core';
+import { InputRule } from '@tiptap/core';
+import { findParentNode } from '@tiptap/core';
+import { TextSelection } from 'prosemirror-state';
+
 // Helper function to create input rules for automatic completion
 
 // Helper function to create input rules for automatic completion
@@ -45,14 +46,14 @@ const createAutoCompleteInputRule = ({
 };
 
 export const AutoCompleteExtension = Extension.create({
-  name: "doubleBrakets",
+  name: 'doubleBrakets',
 
   addInputRule() {
     return [
       createAutoCompleteInputRule({
-        startSequence: "[",
-        endSequence: "[]",
-        types: ["paragraph", "codeBlock"],
+        startSequence: '[',
+        endSequence: '[]',
+        types: ['paragraph', 'codeBlock'],
       }),
     ];
   },

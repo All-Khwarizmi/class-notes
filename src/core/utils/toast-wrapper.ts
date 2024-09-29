@@ -1,8 +1,8 @@
-import { ToasterProps, toast } from "sonner";
+import { ToasterProps, toast } from 'sonner';
 
 export const TOAST_SHORT_DURATION = 2000;
 export const TOAST_LONG_DURATION = 5000;
-export const TOAST_POSITION = "top-right";
+export const TOAST_POSITION = 'top-right';
 
 /**
  * A wrapper object for displaying toast messages.

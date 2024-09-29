@@ -5,8 +5,8 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
   NavigationMenuTrigger,
-} from "@/core/components/ui/navigation-menu";
-import Link from "next/link";
+} from '@/core/components/ui/navigation-menu';
+import Link from 'next/link';
 
 export default function Navigation() {
   return (
@@ -16,7 +16,7 @@ export default function Navigation() {
           <NavigationMenuTrigger>Naviguer</NavigationMenuTrigger>
           <NavigationMenuContent>
             <NavigationMenuLink asChild>
-              <Link className=" mt-2 py-4 px-4" href={"/"}>
+              <Link className=" mt-2 py-4 px-4" href={'/'}>
                 Accueil
               </Link>
             </NavigationMenuLink>

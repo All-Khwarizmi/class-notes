@@ -1,9 +1,9 @@
-import ErrorDialog from "@/core/components/common/ErrorDialog";
-import checkAuthAndRedirect from "@/data-access/auth/check-and-redirect";
-import { coursUsecases } from "@/features/cours-sequence/application/usecases/cours-usecases";
-import CoursesTable from "@/features/cours-sequence/presentation/components/CoursesTable";
-import { isLeft } from "fp-ts/lib/Either";
-import React from "react";
+import ErrorDialog from '@/core/components/common/ErrorDialog';
+import checkAuthAndRedirect from '@/data-access/auth/check-and-redirect';
+import { coursUsecases } from '@/features/cours-sequence/application/usecases/cours-usecases';
+import CoursesTable from '@/features/cours-sequence/presentation/components/CoursesTable';
+import { isLeft } from 'fp-ts/lib/Either';
+import React from 'react';
 
 async function CoursesServerLayer({
   params,
@@ -14,7 +14,7 @@ async function CoursesServerLayer({
 }) {
   const { slug } = params;
   const { type } = searchParams;
-  if (!slug || !type || (type !== "template" && type !== "sequence")) {
+  if (!slug || !type || (type !== 'template' && type !== 'sequence')) {
     return (
       <ErrorDialog
         code="PRE301"
@@ -39,9 +39,9 @@ async function CoursesServerLayer({
         `}
         code={eitherCourses.left.code}
         description={
-          process.env.NODE_ENV === "development"
+          process.env.NODE_ENV === 'development'
             ? eitherCourses.left.message
-            : "An error occurred while fetching courses."
+            : 'An error occurred while fetching courses.'
         }
       />
     );

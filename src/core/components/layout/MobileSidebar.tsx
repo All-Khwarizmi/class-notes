@@ -1,10 +1,11 @@
-import { useState, useEffect, useMemo } from "react";
-import { Sheet, SheetContent, SheetTrigger } from "@/core/components/ui/sheet";
-import { SideNav } from "@/core/components/layout/SideNav";
-import MenuIcon from "../icons/MenuIcon";
-import { NavItem } from "@/lib/types";
-import { ModeToggle } from "../common/ModeToggle";
-import { SpacesMobileSidebarNavigation } from "./SpacesMobileSidebar";
+import { SideNav } from '@/core/components/layout/SideNav';
+import { Sheet, SheetContent, SheetTrigger } from '@/core/components/ui/sheet';
+import { NavItem } from '@/lib/types';
+import { useState, useEffect, useMemo } from 'react';
+
+import { ModeToggle } from '../common/ModeToggle';
+import MenuIcon from '../icons/MenuIcon';
+import { SpacesMobileSidebarNavigation } from './SpacesMobileSidebar';
 
 export const MobileSidebar = (props: { navItems?: NavItem[] }) => {
   const [open, setOpen] = useState(false);

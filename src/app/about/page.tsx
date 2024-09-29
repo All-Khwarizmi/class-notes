@@ -1,6 +1,6 @@
-import React from "react";
-import { Container, Typography, Box, Grid } from "@mui/material";
-import Link from "next/link";
+import { Container, Typography, Box, Grid } from '@mui/material';
+import Link from 'next/link';
+import React from 'react';
 
 const AboutPage: React.FC = () => {
   return (
@@ -44,24 +44,24 @@ const AboutPage: React.FC = () => {
         <Grid container spacing={3}>
           {[
             {
-              title: "Innovation",
+              title: 'Innovation',
               description:
-                "Nous repoussons constamment les limites de ce qui est possible dans l&apos;éducation assistée par l&apos;IA.",
+                'Nous repoussons constamment les limites de ce qui est possible dans l&apos;éducation assistée par l&apos;IA.',
             },
             {
-              title: "Accessibilité",
+              title: 'Accessibilité',
               description:
-                "Nous nous efforçons de rendre nos outils accessibles à tous les enseignants, quelle que soit leur expérience technologique.",
+                'Nous nous efforçons de rendre nos outils accessibles à tous les enseignants, quelle que soit leur expérience technologique.',
             },
             {
-              title: "Confidentialité",
+              title: 'Confidentialité',
               description:
-                "La protection des données de nos utilisateurs est au cœur de tout ce que nous faisons.",
+                'La protection des données de nos utilisateurs est au cœur de tout ce que nous faisons.',
             },
             {
-              title: "Collaboration",
+              title: 'Collaboration',
               description:
-                "Nous croyons en la puissance de la communauté éducative et favorisons la collaboration entre les enseignants.",
+                'Nous croyons en la puissance de la communauté éducative et favorisons la collaboration entre les enseignants.',
             },
           ].map((value, index) => (
             <Grid item xs={12} sm={6} key={index}>

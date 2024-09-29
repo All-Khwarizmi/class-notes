@@ -1,6 +1,6 @@
-import { GradeType } from "@/core/domain/grades/grade-schema";
-import { create } from "zustand";
-import { persist } from "zustand/middleware";
+import { GradeType } from '@/core/domain/grades/grade-schema';
+import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 
 export type TemplateCreation = {
   name: string;
@@ -19,16 +19,16 @@ export const useTemplateCreationStore = create<TemplateCreationState>()(
     (set, get) => ({
       isCreating: false,
       templateCreation: {
-        name: "",
-        description: "",
-        gradeType: "ungraded",
+        name: '',
+        description: '',
+        gradeType: 'ungraded',
       },
       setTemplateCreation: (template) =>
         set(() => ({ templateCreation: template })),
       setIsCreating: ({ isCreating }) => set((state) => ({ isCreating })),
     }),
     {
-      name: "template-creation",
+      name: 'template-creation',
       skipHydration: false,
     }
   )

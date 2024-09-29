@@ -1,5 +1,8 @@
-import { EducationsSystemsType } from "@/features/user/domain/entities/education-systems/education-system";
-import { EducationLevelsType, EducationLevelsTypeUnion } from "@/features/user/domain/entities/education-systems/niveaux/niveaux";
+import { EducationsSystemsType } from '@/features/user/domain/entities/education-systems/education-system';
+import {
+  EducationLevelsType,
+  EducationLevelsTypeUnion,
+} from '@/features/user/domain/entities/education-systems/niveaux/niveaux';
 
 export interface DeleteClasseOptions {
   classeId: string;

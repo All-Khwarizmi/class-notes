@@ -1,5 +1,6 @@
-import { defineSchema, defineTable } from "convex/server";
-import { v } from "convex/values";
+import { defineSchema, defineTable } from 'convex/server';
+import { v } from 'convex/values';
+
 export const classeVisibility = v.array(
   v.object({
     id: v.string(),
@@ -58,4 +59,4 @@ export const visibilityTable = defineTable({
   sequences: sequenceVisibility,
   cours: coursVisibility,
   complement: complementVisibility,
-}).index("by_userId", ["userId"]);
+}).index('by_userId', ['userId']);

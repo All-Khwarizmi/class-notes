@@ -1,10 +1,13 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { Button } from "@/core/components/ui/button";
+import { GoBackButton } from '@/core/components/common/navigation/GoBackButton';
+import { Button } from '@/core/components/ui/button';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from '@/core/components/ui/card';
 import {
   Form,
   FormControl,
@@ -13,8 +16,8 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/core/components/ui/form";
-import { Input } from "@/core/components/ui/input";
+} from '@/core/components/ui/form';
+import { Input } from '@/core/components/ui/input';
 import {
   Select,
   SelectContent,
@@ -22,24 +25,22 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/core/components/ui/select";
-import { Switch } from "@/core/components/ui/switch";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/core/components/ui/card";
-import useAddRessource from "../../application/adapters/services/useAddRessource";
-import { toastWrapper } from "@/core/utils/toast-wrapper";
-import { GoBackButton } from "@/core/components/common/navigation/GoBackButton";
+} from '@/core/components/ui/select';
+import { Switch } from '@/core/components/ui/switch';
+import { toastWrapper } from '@/core/utils/toast-wrapper';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+
+import useAddRessource from '../../application/adapters/services/useAddRessource';
 
 const ComplementBaseSchema = z.object({
-  name: z.string().min(3, "Le nom doit contenir au moins 3 caractères"),
+  name: z.string().min(3, 'Le nom doit contenir au moins 3 caractères'),
   description: z.string().optional(),
   publish: z.boolean().optional(),
-  type: z.enum(["Lesson", "Exercise", "Additional"]).default("Lesson"),
-  contentType: z.enum(["Embed", "Diagram", "Markup"]).default("Markup"),
+  type: z.enum(['Lesson', 'Exercise', 'Additional']).default('Lesson'),
+  contentType: z.enum(['Embed', 'Diagram', 'Markup']).default('Markup'),
 });
 
 type ComplementBaseType = z.infer<typeof ComplementBaseSchema>;
@@ -55,11 +56,11 @@ function ComplementAddBaseForm({ slug }: ComplementAddBaseFormProps) {
   const form = useForm<ComplementBaseType>({
     resolver: zodResolver(ComplementBaseSchema),
     defaultValues: {
-      name: "",
-      description: "",
+      name: '',
+      description: '',
       publish: false,
-      type: "Lesson",
-      contentType: "Markup",
+      type: 'Lesson',
+      contentType: 'Markup',
     },
   });
 
@@ -75,7 +76,7 @@ function ComplementAddBaseForm({ slug }: ComplementAddBaseFormProps) {
       },
       {
         onSuccess: () => {
-          toastWrapper.success("Ressource ajoutée", { duration: 1000 });
+          toastWrapper.success('Ressource ajoutée', { duration: 1000 });
         },
         onError: () => {
           toastWrapper.error("Erreur lors de l'ajout de la ressource", {
@@ -210,7 +211,7 @@ function ComplementAddBaseForm({ slug }: ComplementAddBaseFormProps) {
                 )}
               />
               <Button type="submit" className="w-full" disabled={isPending}>
-                {isPending ? "Ajout en cours..." : "Ajouter la ressource"}
+                {isPending ? 'Ajout en cours...' : 'Ajouter la ressource'}
               </Button>
             </form>
           </Form>

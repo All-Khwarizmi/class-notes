@@ -1,9 +1,11 @@
-"use client";
+'use client';
 
-import React from "react";
-import Link from "next/link";
-import { AlertCircle, Home, RotateCcw, MessageCircle } from "lucide-react";
-import { Button } from "@/core/components/ui/button";
+import {
+  Alert,
+  AlertDescription,
+  AlertTitle,
+} from '@/core/components/ui/alert';
+import { Button } from '@/core/components/ui/button';
 import {
   Card,
   CardContent,
@@ -11,13 +13,12 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/core/components/ui/card";
-import {
-  Alert,
-  AlertDescription,
-  AlertTitle,
-} from "@/core/components/ui/alert";
-import { SUPPORT_EMAIL } from "../constants/support";
+} from '@/core/components/ui/card';
+import { AlertCircle, Home, RotateCcw, MessageCircle } from 'lucide-react';
+import Link from 'next/link';
+import React from 'react';
+
+import { SUPPORT_EMAIL } from '../constants/support';
 
 interface ErrorDialogProps {
   message: string;

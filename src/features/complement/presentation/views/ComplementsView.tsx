@@ -1,7 +1,9 @@
-"use client";
-import React from "react";
-import { Complement } from "../../domain/complement-schemas";
-import ComplementsTable from "@/features/cours-sequence/presentation/components/ComplementsTable";
+'use client';
+
+import ComplementsTable from '@/features/cours-sequence/presentation/components/ComplementsTable';
+import React from 'react';
+
+import { Complement } from '../../domain/complement-schemas';
 
 function ComplementsView(props: {
   complements: Complement[];

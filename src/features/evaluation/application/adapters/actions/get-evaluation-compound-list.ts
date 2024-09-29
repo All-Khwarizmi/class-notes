@@ -1,6 +1,6 @@
-"use server";
+'use server';
 
-import { evaluationUsecases } from "../../usecases/evaluation-usecases";
+import { evaluationUsecases } from '../../usecases/evaluation-usecases';
 
 export default async function getEvaluationCompoundList(options: {
   classeId: string;

@@ -1,6 +1,6 @@
-import React from "react";
-import { Editor } from "@tiptap/react";
-import { cn } from "@/lib/utils";
+import { cn } from '@/lib/utils';
+import { Editor } from '@tiptap/react';
+import React from 'react';
 
 interface AfterMenuBarProps {
   children?: React.ReactNode;
@@ -11,8 +11,8 @@ function AfterMenuBar({ children, editor }: AfterMenuBarProps) {
   return (
     <div
       className={cn(
-        "flex flex-wrap justify-center gap-2 p-3 bg-muted rounded-b-lg transition-colors duration-200",
-        editor.isFocused ? "ring-2 ring-primary" : "border border-border"
+        'flex flex-wrap justify-center gap-2 p-3 bg-muted rounded-b-lg transition-colors duration-200',
+        editor.isFocused ? 'ring-2 ring-primary' : 'border border-border'
       )}
       role="toolbar"
       aria-label="Additional editor controls"

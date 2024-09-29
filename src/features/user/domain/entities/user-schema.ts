@@ -1,13 +1,15 @@
-import { z } from "zod";
-import { GlobalEducationSubjectsSchema } from "./education-systems/global";
-import { EducationsSystemsEnum } from "./education-systems/education-system";
+import { z } from 'zod';
+
+import { EducationsSystemsEnum } from './education-systems/education-system';
+import { GlobalEducationSubjectsSchema } from './education-systems/global';
+
 // Définition de l'enum pour les pays
 export const CountrySchema = z.enum([
-  "USA",
-  "France",
-  "Spain",
-  "Germany",
-  "UK",
+  'USA',
+  'France',
+  'Spain',
+  'Germany',
+  'UK',
 ]);
 
 export type CountryType = z.infer<typeof CountrySchema>;
@@ -20,9 +22,9 @@ export const countryOptions = CountrySchema.options.map((option) => ({
 
 export const userSchema = z.object({
   _id: z.string(),
-  schoolSubject: GlobalEducationSubjectsSchema.default("Arts"),
-  country: CountrySchema.default("USA"),
-  educationSystem: EducationsSystemsEnum.default("US"),
+  schoolSubject: GlobalEducationSubjectsSchema.default('Arts'),
+  country: CountrySchema.default('USA'),
+  educationSystem: EducationsSystemsEnum.default('US'),
   name: z.string().optional(),
   onboarding: z.boolean().optional(),
   image: z.string().optional(),

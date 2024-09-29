@@ -1,9 +1,17 @@
-import React from "react";
 import {
-  Category,
-  Competence,
-  CompetenceByCategory,
-} from "../../domain/entities/schemas";
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@/core/components/ui/accordion';
+import { Button } from '@/core/components/ui/button';
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/core/components/ui/card';
 import {
   Dialog,
   DialogContent,
@@ -11,24 +19,17 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/core/components/ui/dialog";
+} from '@/core/components/ui/dialog';
+import { Input } from '@/core/components/ui/input';
+import { ScrollArea } from '@/core/components/ui/scroll-area';
+import { Search } from 'lucide-react';
+import React from 'react';
+
 import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/core/components/ui/accordion";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/core/components/ui/card";
-import { Button } from "@/core/components/ui/button";
-import { ScrollArea } from "@/core/components/ui/scroll-area";
-import { Search } from "lucide-react";
-import { Input } from "@/core/components/ui/input";
+  Category,
+  Competence,
+  CompetenceByCategory,
+} from '../../domain/entities/schemas';
 
 interface CompetenceAccordionListModalProps {
   competencesByCategory: CompetenceByCategory[];
@@ -42,7 +43,7 @@ export default function CompetenceAccordionListModal({
   addCriteria,
 }: CompetenceAccordionListModalProps) {
   const [open, setOpen] = React.useState(false);
-  const [searchTerm, setSearchTerm] = React.useState("");
+  const [searchTerm, setSearchTerm] = React.useState('');
 
   const filteredCompetences = React.useMemo(() => {
     if (!searchTerm) return competencesByCategory;

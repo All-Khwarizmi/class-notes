@@ -1,11 +1,26 @@
-"use client";
+'use client';
 
-import React, { useEffect, useMemo, useState } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { isRight } from "fp-ts/lib/Either";
-import { Check, Plus, ArrowLeft } from "lucide-react";
-import { Competence, competenceSchema } from "../../domain/entities/schemas";
+import {
+  Alert,
+  AlertDescription,
+  AlertTitle,
+} from '@/core/components/ui/alert';
+import { Button } from '@/core/components/ui/button';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardFooter,
+} from '@/core/components/ui/card';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/core/components/ui/dialog';
 import {
   Form,
   FormControl,
@@ -14,9 +29,8 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/core/components/ui/form";
-import { Input } from "@/core/components/ui/input";
-import { Button } from "@/core/components/ui/button";
+} from '@/core/components/ui/form';
+import { Input } from '@/core/components/ui/input';
 import {
   Select,
   SelectContent,
@@ -24,34 +38,21 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/core/components/ui/select";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/core/components/ui/dialog";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  CardFooter,
-} from "@/core/components/ui/card";
-import { Textarea } from "@/core/components/ui/textarea";
-import {
-  Alert,
-  AlertDescription,
-  AlertTitle,
-} from "@/core/components/ui/alert";
-import { Separator } from "@/core/components/ui/separator";
-import useCreateCompetence from "../../application/usecases/services/useCreateCompetence";
-import CategoryForm from "../components/CategoryForm";
-import { toastWrapper } from "@/core/utils/toast-wrapper";
-import { useGetCategories } from "../../application/usecases/services/useGetCategories";
-import { useRouter } from "next/navigation";
+} from '@/core/components/ui/select';
+import { Separator } from '@/core/components/ui/separator';
+import { Textarea } from '@/core/components/ui/textarea';
+import { toastWrapper } from '@/core/utils/toast-wrapper';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { isRight } from 'fp-ts/lib/Either';
+import { Check, Plus, ArrowLeft } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import React, { useEffect, useMemo, useState } from 'react';
+import { useForm } from 'react-hook-form';
+
+import useCreateCompetence from '../../application/usecases/services/useCreateCompetence';
+import { useGetCategories } from '../../application/usecases/services/useGetCategories';
+import { Competence, competenceSchema } from '../../domain/entities/schemas';
+import CategoryForm from '../components/CategoryForm';
 
 export default function CompetenceForm({ userId }: { userId: string }) {
   const router = useRouter();
@@ -61,21 +62,21 @@ export default function CompetenceForm({ userId }: { userId: string }) {
     isLoading,
     isError,
   } = useGetCategories({ userId });
-  const [category, setCategory] = useState<string>("");
+  const [category, setCategory] = useState<string>('');
   const [open, setOpen] = useState(false);
   const { mutate: createCompetence, isPending } = useCreateCompetence();
 
   const form = useForm<Competence>({
     resolver: zodResolver(competenceSchema),
     defaultValues: {
-      name: "",
-      description: "",
-      category: "",
+      name: '',
+      description: '',
+      category: '',
     },
   });
 
   function goToCompetences() {
-    router.push("/competences");
+    router.push('/competences');
   }
 
   const categories = useMemo(() => {
@@ -86,13 +87,13 @@ export default function CompetenceForm({ userId }: { userId: string }) {
   useEffect(() => {
     if (categories.length > 0) {
       setCategory(categories[0].name);
-      form.setValue("category", categories[0].name);
+      form.setValue('category', categories[0].name);
     }
   }, [categories, form]);
 
   function onSubmit(data: Competence) {
-    if (data.name === "" || data.description === "" || data.category === "") {
-      return toastWrapper.error("Veuillez remplir tous les champs");
+    if (data.name === '' || data.description === '' || data.category === '') {
+      return toastWrapper.error('Veuillez remplir tous les champs');
     }
 
     createCompetence(
@@ -105,7 +106,7 @@ export default function CompetenceForm({ userId }: { userId: string }) {
       {
         onSuccess: () => {
           form.reset();
-          toastWrapper.success("Compétence créée avec succès");
+          toastWrapper.success('Compétence créée avec succès');
         },
       }
     );

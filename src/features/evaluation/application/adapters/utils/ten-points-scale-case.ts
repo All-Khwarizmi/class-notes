@@ -1,17 +1,18 @@
 import {
+  EvaluationCriteriaType,
+  TenPointScaleSchema,
+} from '@/features/evaluation/domain/entities/evaluation-schema';
+import {
   Grade,
   GradeSchema,
   StudentGradeSchema,
-} from "@/features/evaluation/domain/entities/evaluation-with-grades-schema";
-import {
-  EvaluationCriteriaType,
-  TenPointScaleSchema,
-} from "@/features/evaluation/domain/entities/evaluation-schema";
+} from '@/features/evaluation/domain/entities/evaluation-with-grades-schema';
+import { z } from 'zod';
+
 import checkSpecialGradeType, {
   SpecialGradeType,
   SpecialGradeTypes,
-} from "./checkSpecialGradeType";
-import { z } from "zod";
+} from './checkSpecialGradeType';
 
 export function spanishGradingCalc({
   grade,
@@ -23,7 +24,7 @@ export function spanishGradingCalc({
     return check.returnValue;
   }
   const isNumber = z.number().safeParse(check.returnValue);
-  if (!isNumber.success) return "Error";
+  if (!isNumber.success) return 'Error';
   return isNumber.data;
 }
 
@@ -42,20 +43,20 @@ export function tenPointsScaleCase(
     const gradeWeight = studentCriterias.find(
       (criteria) => criteria.id === grade.criteriaId
     )?.weight;
-    if (!gradeWeight) return "Error";
+    if (!gradeWeight) return 'Error';
     totalWeight += gradeWeight;
     if (validatedGrade.success) {
       const result = spanishGradingCalc({
         grade,
       });
-      if (typeof result === "string") return result;
-      if (result < 0 || result > 10) return "Error";
+      if (typeof result === 'string') return result;
+      if (result < 0 || result > 10) return 'Error';
       // Check if grades do not exceed the wheight of the criterias
-      if (result > gradeWeight) return "Error";
+      if (result > gradeWeight) return 'Error';
 
       totalPoints += result;
     } else {
-      return "Error";
+      return 'Error';
     }
   }
   const isWeighted = totalWeight > grades.length;

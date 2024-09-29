@@ -1,7 +1,8 @@
-import { useMutation } from "@tanstack/react-query";
-import { fetchMutation } from "convex/nextjs";
-import { api } from "../../../../../convex/_generated/api";
-import { QUERY_KEYS } from "@/core/query/ query-keys";
+import { QUERY_KEYS } from '@/core/query/ query-keys';
+import { useMutation } from '@tanstack/react-query';
+import { fetchMutation } from 'convex/nextjs';
+
+import { api } from '../../../../../convex/_generated/api';
 
 export const useCheckHostnameAvailabilityQuery = () => {
   return useMutation({

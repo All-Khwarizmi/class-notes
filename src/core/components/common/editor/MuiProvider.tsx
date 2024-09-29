@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { useEditor } from "@tiptap/react";
-import StarterKit from "@tiptap/starter-kit";
+import { useEditor } from '@tiptap/react';
+import StarterKit from '@tiptap/starter-kit';
 import {
   MenuButtonBold,
   MenuButtonItalic,
@@ -12,7 +12,7 @@ import {
   RichTextField,
   MenuButtonColorPicker,
   RichTextEditor,
-} from "mui-tiptap";
+} from 'mui-tiptap';
 
 export default function EditorProviderWrapper({
   children,
@@ -21,7 +21,7 @@ export default function EditorProviderWrapper({
 }) {
   const editor = useEditor({
     extensions: [StarterKit],
-    content: "<p>Hello <b>world</b>!</p>",
+    content: '<p>Hello <b>world</b>!</p>',
   });
   if (!editor) {
     return null;
@@ -41,12 +41,12 @@ export default function EditorProviderWrapper({
                 editor.commands.setColor(color);
               }}
               swatchColors={[
-                "#000000",
-                "#333333",
-                "#666666",
-                "#999999",
+                '#000000',
+                '#333333',
+                '#666666',
+                '#999999',
 
-                "#ffcc33",
+                '#ffcc33',
               ]}
               value="#ffcc00"
             />

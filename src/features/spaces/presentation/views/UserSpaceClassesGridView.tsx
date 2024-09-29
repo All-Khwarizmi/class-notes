@@ -1,18 +1,19 @@
-"use client";
+'use client';
 
-import React, { useState } from "react";
-import { ClassType } from "@/features/classe/domain/class-schema";
-import { NavItem } from "@/lib/types";
-import UserSpaceClasseCard from "../components/UserSpaceClasseCard";
+import { Button } from '@/core/components/ui/button';
 import {
   Card,
   CardContent,
   CardHeader,
   CardTitle,
-} from "@/core/components/ui/card";
-import { Button } from "@/core/components/ui/button";
-import { Input } from "@/core/components/ui/input";
-import { Search, Filter } from "lucide-react";
+} from '@/core/components/ui/card';
+import { Input } from '@/core/components/ui/input';
+import { ClassType } from '@/features/classe/domain/class-schema';
+import { NavItem } from '@/lib/types';
+import { Search, Filter } from 'lucide-react';
+import React, { useState } from 'react';
+
+import UserSpaceClasseCard from '../components/UserSpaceClasseCard';
 
 interface UserSpaceClassesGridViewProps {
   classes: ClassType[];
@@ -29,7 +30,7 @@ export default function UserSpaceClassesGridView({
   userName,
   hostname,
 }: UserSpaceClassesGridViewProps) {
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState('');
   const filteredClasses = classes.filter((classe) =>
     classe.name.toLowerCase().includes(search.toLowerCase())
   );

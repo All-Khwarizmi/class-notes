@@ -1,5 +1,5 @@
-import { Button } from "@/core/components/ui/button";
-import Link from "next/link";
+import { Button } from '@/core/components/ui/button';
+import Link from 'next/link';
 
 export default async function AllCoursView() {
   return (
@@ -7,7 +7,7 @@ export default async function AllCoursView() {
       <h1>Cours</h1>
 
       <Button>
-        <Link href={"/cours/add"}> Add Cours</Link>{" "}
+        <Link href={'/cours/add'}> Add Cours</Link>{' '}
       </Button>
     </div>
   );

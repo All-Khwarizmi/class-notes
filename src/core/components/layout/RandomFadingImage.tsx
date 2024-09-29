@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 
 const RandomFadingImage = ({ src, alt }: { src: string; alt: string }) => {
   const [opacity, setOpacity] = useState(() => Math.random() * 0.7);
@@ -50,10 +50,10 @@ const RandomFadingImage = ({ src, alt }: { src: string; alt: string }) => {
             hsla(var(--background), 0.7) 100%),
           url(${src})
         `,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
         opacity: opacity,
-        transition: "opacity 1s ease-in-out",
+        transition: 'opacity 1s ease-in-out',
         filter: filter,
       }}
       role="img"

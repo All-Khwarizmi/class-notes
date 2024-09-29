@@ -1,5 +1,6 @@
-"use clent";
-import { useCurrentEditor } from "@tiptap/react";
+'use clent';
+
+import { useCurrentEditor } from '@tiptap/react';
 
 export default function EditorChild({
   children,

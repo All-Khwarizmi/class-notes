@@ -1,8 +1,8 @@
-import { Section, Container } from "@/core/components/common/Craft";
-import Balancer from "react-wrap-balancer";
-import Link from "next/link";
-import { Book, Pen, Layers, User, Folder, BookOpen } from "lucide-react";
-import { Typography } from "@mui/material";
+import { Section, Container } from '@/core/components/common/Craft';
+import { Typography } from '@mui/material';
+import { Book, Pen, Layers, User, Folder, BookOpen } from 'lucide-react';
+import Link from 'next/link';
+import Balancer from 'react-wrap-balancer';
 
 type UserSpaceLandingPageProps = {
   hostname: string;

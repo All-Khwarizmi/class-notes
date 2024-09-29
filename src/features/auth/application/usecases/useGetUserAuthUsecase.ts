@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
-import { GetUserAuthInfraType } from "../../infra/useGetUserAuthInfra";
+import { useEffect, useState } from 'react';
+
+import { GetUserAuthInfraType } from '../../infra/useGetUserAuthInfra';
 
 export default function useGetUserAuthUsecase({
   useGetUserAuthInfra,

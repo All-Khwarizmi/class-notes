@@ -1,8 +1,9 @@
-import { Either, getOrElseW, isRight } from "fp-ts/lib/Either";
-import Failure from "../../failures/failures";
-import { pipe } from "fp-ts/lib/function";
-import { CustomError } from "../../errors/error";
-import { isEqual } from "lodash";
+import { Either, getOrElseW, isRight } from 'fp-ts/lib/Either';
+import { pipe } from 'fp-ts/lib/function';
+import { isEqual } from 'lodash';
+
+import { CustomError } from '../../errors/error';
+import Failure from '../../failures/failures';
 
 /**
  * @description An immutable type that is distinguishable only by the state of its properties
@@ -36,9 +37,9 @@ export abstract class Entity<T> {
       getOrElseW(() => {
         throw new CustomError(
           this.values,
-          "Crash",
-          "Unexpected error occured accessing value object value",
-          "Value object"
+          'Crash',
+          'Unexpected error occured accessing value object value',
+          'Value object'
         );
       })
     );

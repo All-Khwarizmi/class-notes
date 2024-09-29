@@ -1,8 +1,9 @@
-import { profileUseCases } from "@/features/profile/application/usecases/profile-usecases";
+import { profileUseCases } from '@/features/profile/application/usecases/profile-usecases';
+
 import {
   getCurrentUserDto,
   GetCurrentUserResponse,
-} from "./get-current-user-dto";
+} from './get-current-user-dto';
 
 export const getCurrentUser = async (
   userId: string

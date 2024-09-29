@@ -1,14 +1,15 @@
-import { Either, isLeft, left, right } from "fp-ts/lib/Either";
-import {
-  ProfileRepository,
-  profileRepository,
-} from "../repositories/profile-repository";
-import Failure from "@/core/failures/failures";
+import Failure from '@/core/failures/failures';
 import {
   UserType,
   userSchema,
-} from "@/features/user/domain/entities/user-schema";
-import { SaveUserOptions } from "@/features/user/domain/types/types";
+} from '@/features/user/domain/entities/user-schema';
+import { SaveUserOptions } from '@/features/user/domain/types/types';
+import { Either, isLeft, left, right } from 'fp-ts/lib/Either';
+
+import {
+  ProfileRepository,
+  profileRepository,
+} from '../repositories/profile-repository';
 
 export interface ProfileUseCasesOptions {
   repository: ProfileRepository;
@@ -36,7 +37,7 @@ export default class ProfileUseCases {
       return left(
         Failure.invalidValue({
           invalidValue: user.error.errors.toString(),
-          message: "User data is invalid",
+          message: 'User data is invalid',
         })
       );
     }

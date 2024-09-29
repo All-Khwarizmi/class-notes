@@ -7,7 +7,7 @@ interface UseCaseSuccess<T> {
    * The state of the use case result.
    * @type {"success"}
    */
-  state: "success";
+  state: 'success';
   /**
    * The data returned by the use case.
    * @type {T}
@@ -23,7 +23,7 @@ interface UseCaseFailure {
    * The state of the use case result.
    * @type {"failure"}
    */
-  state: "failure";
+  state: 'failure';
   /**
    * The error message.
    * @type {string}

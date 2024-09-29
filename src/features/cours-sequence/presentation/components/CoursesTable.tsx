@@ -1,31 +1,5 @@
-"use client";
+'use client';
 
-import React, { useState } from "react";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { Plus, Trash2, ChevronRight, Search } from "lucide-react";
-import { Cours } from "../../domain/entities/cours-schemas";
-import useDeleteCourse from "../../application/adapters/services/useDeleteCourse";
-import { Button } from "@/core/components/ui/button";
-import { Input } from "@/core/components/ui/input";
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/core/components/ui/table";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/core/components/ui/card";
-import { ScrollArea } from "@/core/components/ui/scroll-area";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -36,7 +10,34 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/core/components/ui/alert-dialog";
+} from '@/core/components/ui/alert-dialog';
+import { Button } from '@/core/components/ui/button';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/core/components/ui/card';
+import { Input } from '@/core/components/ui/input';
+import { ScrollArea } from '@/core/components/ui/scroll-area';
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/core/components/ui/table';
+import { Plus, Trash2, ChevronRight, Search } from 'lucide-react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import React, { useState } from 'react';
+
+import useDeleteCourse from '../../application/adapters/services/useDeleteCourse';
+import { Cours } from '../../domain/entities/cours-schemas';
 
 function CoursesTable({
   courses,
@@ -49,7 +50,7 @@ function CoursesTable({
 }) {
   const router = useRouter();
   const { mutate: deleteCourse } = useDeleteCourse();
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState('');
 
   const filteredCourses = courses.filter((course) =>
     course.name.toLowerCase().includes(searchTerm.toLowerCase())

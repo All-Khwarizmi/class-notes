@@ -2,8 +2,8 @@ import {
   SelectGroup,
   SelectItem,
   SelectLabel,
-} from "@/core/components/ui/select";
-import React from "react";
+} from '@/core/components/ui/select';
+import React from 'react';
 
 function GradeTypeSelectGroup() {
   return (

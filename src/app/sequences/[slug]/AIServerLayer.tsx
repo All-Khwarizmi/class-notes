@@ -1,16 +1,13 @@
-"use client";
+'use client';
 
-import React from "react";
-import { motion } from "framer-motion";
 import {
-  Book,
-  Zap,
-  Brain,
-  CheckCircle,
-  XCircle,
-  ChevronRight,
-} from "lucide-react";
-import { Button } from "@/core/components/ui/button";
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@/core/components/ui/accordion';
+import { Badge } from '@/core/components/ui/badge';
+import { Button } from '@/core/components/ui/button';
 import {
   Card,
   CardContent,
@@ -18,30 +15,33 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/core/components/ui/card";
-import { Badge } from "@/core/components/ui/badge";
+} from '@/core/components/ui/card';
+import { motion } from 'framer-motion';
 import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/core/components/ui/accordion";
-import { useTheme } from "next-themes";
-import Link from "next/link";
+  Book,
+  Zap,
+  Brain,
+  CheckCircle,
+  XCircle,
+  ChevronRight,
+} from 'lucide-react';
+import { useTheme } from 'next-themes';
+import Link from 'next/link';
+import React from 'react';
 
 const AIServerLayer: React.FC = () => {
   const { theme } = useTheme();
 
   const features = [
-    { name: "Création de contenu", essential: true, expert: true },
-    { name: "Accès à la plateforme", essential: true, expert: true },
-    { name: "Résumés IA", essential: "Illimité", expert: "Illimité" },
-    { name: "Rapports élèves IA", essential: "Illimité", expert: "Illimité" },
-    { name: "Rapports de classe IA", essential: "10/mois", expert: "Illimité" },
-    { name: "Quiz IA", essential: "20/mois", expert: "Illimité" },
-    { name: "Analyses avancées", essential: "Limitées", expert: true },
+    { name: 'Création de contenu', essential: true, expert: true },
+    { name: 'Accès à la plateforme', essential: true, expert: true },
+    { name: 'Résumés IA', essential: 'Illimité', expert: 'Illimité' },
+    { name: 'Rapports élèves IA', essential: 'Illimité', expert: 'Illimité' },
+    { name: 'Rapports de classe IA', essential: '10/mois', expert: 'Illimité' },
+    { name: 'Quiz IA', essential: '20/mois', expert: 'Illimité' },
+    { name: 'Analyses avancées', essential: 'Limitées', expert: true },
     {
-      name: "Création auto. de contenu",
+      name: 'Création auto. de contenu',
       essential: false,
       expert: true,
       new: true,
@@ -86,11 +86,11 @@ const AIServerLayer: React.FC = () => {
                     )}
                     <span>{feature.name}: </span>
                     <span className="ml-1 font-semibold">
-                      {typeof feature.essential === "string"
+                      {typeof feature.essential === 'string'
                         ? feature.essential
                         : feature.essential
-                        ? "Oui"
-                        : "Non"}
+                          ? 'Oui'
+                          : 'Non'}
                     </span>
                   </motion.li>
                 ))}
@@ -118,9 +118,9 @@ const AIServerLayer: React.FC = () => {
                     <CheckCircle className="mr-2 h-5 w-5 text-green-500" />
                     <span>{feature.name}: </span>
                     <span className="ml-1 font-semibold">
-                      {typeof feature.expert === "string"
+                      {typeof feature.expert === 'string'
                         ? feature.expert
-                        : "Oui"}
+                        : 'Oui'}
                     </span>
                     {feature.new && (
                       <Badge variant="default" className="ml-2">

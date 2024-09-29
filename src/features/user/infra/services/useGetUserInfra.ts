@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
-import { useMutation } from "convex/react";
-import { api } from "../../../../../convex/_generated/api";
+import { useMutation } from 'convex/react';
+import { useEffect, useState } from 'react';
+
+import { api } from '../../../../../convex/_generated/api';
 
 export default function useGetUserInfra() {
   const [id, setId] = useState<string | null>(null);
@@ -8,13 +9,13 @@ export default function useGetUserInfra() {
   type UserExistReturnType = Awaited<ReturnType<typeof getUser>>;
 
   const [error, setError] = useState<string | null>(null);
-  const [user, setUser] = useState<UserExistReturnType | "NO USER">(null);
+  const [user, setUser] = useState<UserExistReturnType | 'NO USER'>(null);
   useEffect(() => {
     if (id) {
       getUser({ userId: id })
         .then((user) => {
           if (!user) {
-            setUser("NO USER");
+            setUser('NO USER');
           } else {
             setUser(user);
           }

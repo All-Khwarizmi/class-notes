@@ -1,10 +1,10 @@
-import ErrorDialog from "@/core/components/common/ErrorDialog";
-import { TypographyH3 } from "@/core/components/common/Typography";
-import checkAuthAndRedirect from "@/data-access/auth/check-and-redirect";
-import { complementUsecases } from "@/features/complement/application/usecases/complement-usecases";
-import ComplementView from "@/features/complement/presentation/views/ComplementView";
-import { isLeft } from "fp-ts/lib/Either";
-import React from "react";
+import ErrorDialog from '@/core/components/common/ErrorDialog';
+import { TypographyH3 } from '@/core/components/common/Typography';
+import checkAuthAndRedirect from '@/data-access/auth/check-and-redirect';
+import { complementUsecases } from '@/features/complement/application/usecases/complement-usecases';
+import ComplementView from '@/features/complement/presentation/views/ComplementView';
+import { isLeft } from 'fp-ts/lib/Either';
+import React from 'react';
 
 async function ComplementServerLayer(props: { slug: string }) {
   const { userId } = await checkAuthAndRedirect();
@@ -25,7 +25,6 @@ async function ComplementServerLayer(props: { slug: string }) {
 
   return (
     <div className=" space-y-4 px-4">
-
       <ComplementView
         slug={props.slug}
         complement={complement.right}

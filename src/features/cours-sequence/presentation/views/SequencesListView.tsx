@@ -1,31 +1,32 @@
-"use client";
+'use client';
 
-import React from "react";
-import Link from "next/link";
-import { Plus, Loader2, BookOpen, Search } from "lucide-react";
-import { isRight } from "fp-ts/lib/Either";
-import { Button } from "@/core/components/ui/button";
+import {
+  Alert,
+  AlertDescription,
+  AlertTitle,
+} from '@/core/components/ui/alert';
+import { Button } from '@/core/components/ui/button';
 import {
   Card,
   CardContent,
   CardHeader,
   CardTitle,
-} from "@/core/components/ui/card";
-import {
-  Alert,
-  AlertDescription,
-  AlertTitle,
-} from "@/core/components/ui/alert";
-import { Input } from "@/core/components/ui/input";
-import { ScrollArea } from "@/core/components/ui/scroll-area";
-import useDeleteSequence from "@/features/complement/application/adapters/services/useDeleteSequence";
-import useGetAllSequences from "../../application/adapters/services/useGetAllSequences";
-import CoursSequenceCard from "../components/CoursSequenceCard";
+} from '@/core/components/ui/card';
+import { Input } from '@/core/components/ui/input';
+import { ScrollArea } from '@/core/components/ui/scroll-area';
+import useDeleteSequence from '@/features/complement/application/adapters/services/useDeleteSequence';
+import { isRight } from 'fp-ts/lib/Either';
+import { Plus, Loader2, BookOpen, Search } from 'lucide-react';
+import Link from 'next/link';
+import React from 'react';
+
+import useGetAllSequences from '../../application/adapters/services/useGetAllSequences';
+import CoursSequenceCard from '../components/CoursSequenceCard';
 
 interface SequencesListViewProps {
   spacesMode?: boolean;
   userId: string;
-  sequenceType: "template" | "sequence";
+  sequenceType: 'template' | 'sequence';
   sequenceId?: string;
 }
 
@@ -37,7 +38,7 @@ export default function SequencesListView({
 }: SequencesListViewProps) {
   const { data: sequences, isLoading, isError } = useGetAllSequences(userId);
   const { mutate: deleteSequence } = useDeleteSequence();
-  const [searchTerm, setSearchTerm] = React.useState("");
+  const [searchTerm, setSearchTerm] = React.useState('');
 
   const filteredSequences = React.useMemo(() => {
     if (!sequences || !isRight(sequences)) return [];
@@ -47,7 +48,7 @@ export default function SequencesListView({
   }, [sequences, searchTerm]);
 
   const handleDeleteSequence = (id: string) => {
-    if (window.confirm("Êtes-vous sûr de vouloir supprimer cette séquence ?")) {
+    if (window.confirm('Êtes-vous sûr de vouloir supprimer cette séquence ?')) {
       deleteSequence({
         sequenceId: id,
         userId,
@@ -85,15 +86,15 @@ export default function SequencesListView({
         <Button asChild>
           <Link
             href={
-              sequenceType === "sequence"
+              sequenceType === 'sequence'
                 ? `/classes/sequences/${sequenceId}`
-                : "/sequences/add"
+                : '/sequences/add'
             }
           >
             <Plus className="mr-2 h-4 w-4" />
-            {sequenceType === "sequence"
-              ? "Ajouter une séquence"
-              : "Ajouter un modèle"}
+            {sequenceType === 'sequence'
+              ? 'Ajouter une séquence'
+              : 'Ajouter un modèle'}
           </Link>
         </Button>
       </div>
@@ -123,15 +124,15 @@ export default function SequencesListView({
               <BookOpen className="h-16 w-16 text-gray-400 mb-4" />
               <p className="text-lg text-gray-600 mb-4">
                 {searchTerm
-                  ? "Aucune séquence ne correspond à votre recherche."
+                  ? 'Aucune séquence ne correspond à votre recherche.'
                   : "Vous n'avez pas encore créé de séquence."}
               </p>
               <Button asChild>
                 <Link
                   href={
-                    sequenceType === "sequence"
+                    sequenceType === 'sequence'
                       ? `/classes/sequences/${sequenceId}`
-                      : "/sequences/add"
+                      : '/sequences/add'
                   }
                 >
                   <Plus className="mr-2 h-4 w-4" />

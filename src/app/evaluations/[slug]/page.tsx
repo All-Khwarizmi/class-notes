@@ -1,6 +1,7 @@
-import React, { Suspense } from "react";
-import EvaluationServerLayer from "./EvaluationServerLayer";
-import LoadingSkeleton from "@/core/components/common/LoadingSkeleton";
+import LoadingSkeleton from '@/core/components/common/LoadingSkeleton';
+import React, { Suspense } from 'react';
+
+import EvaluationServerLayer from './EvaluationServerLayer';
 
 function Page({ params }: { params: { slug: string } }) {
   return (

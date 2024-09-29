@@ -1,9 +1,10 @@
-import { useQuery } from "convex/react";
-import { api } from "../../../../../convex/_generated/api";
-import { ClasseEntityDto } from "@/features/classe/infra/dtos/classe-dto";
-import { isRight } from "fp-ts/lib/Either";
-import ClassEntity from "@/features/classe/domain/class-entity";
-import { useEffect, useState } from "react";
+import ClassEntity from '@/features/classe/domain/class-entity';
+import { ClasseEntityDto } from '@/features/classe/infra/dtos/classe-dto';
+import { useQuery } from 'convex/react';
+import { isRight } from 'fp-ts/lib/Either';
+import { useEffect, useState } from 'react';
+
+import { api } from '../../../../../convex/_generated/api';
 
 export type GetClassesPayload = {
   classes: ClassEntity[] | null;
@@ -29,12 +30,12 @@ export default function useGetClassesInfra({ id }: { id: string }) {
           return classEntity.right;
         }
         return ClassEntity.create({
-          id: "Invalid",
-          name: "Invalid",
-          description: "Invalid",
-          imageUrl: "Invalid",
-          educationLevel: "Bachillerato1",
-          educationSystem: "Chinese",
+          id: 'Invalid',
+          name: 'Invalid',
+          description: 'Invalid',
+          imageUrl: 'Invalid',
+          educationLevel: 'Bachillerato1',
+          educationSystem: 'Chinese',
         });
       });
       setGetClassesPayloadInfra({ classes: classeEntities, error: false });

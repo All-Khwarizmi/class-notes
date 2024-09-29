@@ -1,13 +1,13 @@
-import React from "react";
-import { Trash2 } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { Button } from "@/core/components/ui/button";
+import { Button } from '@/core/components/ui/button';
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@/core/components/ui/tooltip";
+} from '@/core/components/ui/tooltip';
+import { cn } from '@/lib/utils';
+import { Trash2 } from 'lucide-react';
+import React from 'react';
 
 interface DeleteTableButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -16,7 +16,7 @@ interface DeleteTableButtonProps
 
 const DeleteTableButton: React.FC<DeleteTableButtonProps> = ({
   className,
-  tooltipContent = "Supprimer",
+  tooltipContent = 'Supprimer',
   ...props
 }) => {
   return (
@@ -26,7 +26,7 @@ const DeleteTableButton: React.FC<DeleteTableButtonProps> = ({
           <Button
             variant="destructive"
             size="icon"
-            className={cn("h-8 w-8", className)}
+            className={cn('h-8 w-8', className)}
             {...props}
           >
             <Trash2 className="h-4 w-4" />

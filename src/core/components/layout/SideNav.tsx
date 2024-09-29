@@ -1,18 +1,20 @@
-"use client";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { cn } from "@/lib/utils";
-import { useSidebar } from "@/core/application/common/useSidebar";
-import { buttonVariants } from "@/core/components/ui/button";
+'use client';
+
+import { useSidebar } from '@/core/application/common/useSidebar';
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "@/core/components/layout/SubNavAccordion";
-import { useEffect, useMemo, useState } from "react";
-import { ChevronDownIcon } from "@radix-ui/react-icons";
-import { useLayoutContext } from "./ExperimentalLayoutCtx";
+} from '@/core/components/layout/SubNavAccordion';
+import { buttonVariants } from '@/core/components/ui/button';
+import { cn } from '@/lib/utils';
+import { ChevronDownIcon } from '@radix-ui/react-icons';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { useEffect, useMemo, useState } from 'react';
+
+import { useLayoutContext } from './ExperimentalLayoutCtx';
 
 interface SideNavProps {
   setOpen?: (open: boolean) => void;
@@ -31,15 +33,15 @@ export function SideNav({ setOpen, className }: SideNavProps) {
 
   const path = usePathname();
   const { isOpen, toggle } = useSidebar();
-  const [openItem, setOpenItem] = useState("");
-  const [lastOpenItem, setLastOpenItem] = useState("");
+  const [openItem, setOpenItem] = useState('');
+  const [lastOpenItem, setLastOpenItem] = useState('');
   const [liveHref, setLiveHref] = useState(path);
   useEffect(() => {
     if (isOpen) {
       setOpenItem(lastOpenItem);
     } else {
       setLastOpenItem(openItem);
-      setOpenItem("");
+      setOpenItem('');
     }
   }, [isOpen]);
 
@@ -62,14 +64,14 @@ export function SideNav({ setOpen, className }: SideNavProps) {
     let { path, liveHref } = props;
 
     // Check if the path is nested and return false if it is
-    if (path.split("/").length > 2) return false;
+    if (path.split('/').length > 2) return false;
 
     // Check if there are search params in the path and remove them
-    if (path.includes("?")) {
-      path = path.split("?")[0];
+    if (path.includes('?')) {
+      path = path.split('?')[0];
     }
 
-    return liveHref.split("/")[1] === path.split("/")[1];
+    return liveHref.split('/')[1] === path.split('/')[1];
   }
   return (
     <nav className=" ">
@@ -86,23 +88,23 @@ export function SideNav({ setOpen, className }: SideNavProps) {
             <AccordionItem value={item.title} className="border-none ">
               <AccordionTrigger
                 className={cn(
-                  "p-0 m-0",
-                  buttonVariants({ variant: "ghost" }),
-                  pathIsActive({ path: item.href, liveHref }) && "bg-muted",
+                  'p-0 m-0',
+                  buttonVariants({ variant: 'ghost' }),
+                  pathIsActive({ path: item.href, liveHref }) && 'bg-muted',
                   `dark:${item.color} hover:bg-muted`,
-                  "group relative flex  justify-between w-full px-4 text-base duration-200 hover:bg-muted hover:no-underline"
+                  'group relative flex  justify-between w-full px-4 text-base duration-200 hover:bg-muted hover:no-underline'
                 )}
               >
                 <div
                   className={cn(
-                    !isOpen && "flex w-full justify-center items-center"
+                    !isOpen && 'flex w-full justify-center items-center'
                   )}
                 >
                   {/* {item.icon} */}
                 </div>
                 <div
                   className={cn(
-                    "absolute left-12 text-base duration-200 ",
+                    'absolute left-12 text-base duration-200 ',
                     !isOpen && className
                   )}
                 >
@@ -114,7 +116,7 @@ export function SideNav({ setOpen, className }: SideNavProps) {
                 )}
               </AccordionTrigger>
               <AccordionContent className=" ">
-                {" "}
+                {' '}
                 {item.children?.map((child) => (
                   <Link
                     key={child.title}
@@ -123,17 +125,17 @@ export function SideNav({ setOpen, className }: SideNavProps) {
                       if (setOpen) setOpen(false);
                     }}
                     className={cn(
-                      buttonVariants({ variant: "ghost" }),
-                      "group relative flex h-12 justify-start gap-x-3 ml-4",
+                      buttonVariants({ variant: 'ghost' }),
+                      'group relative flex h-12 justify-start gap-x-3 ml-4',
                       `dark:${child.color} hover:bg-muted`,
                       pathIsActive({ path: child.href, liveHref }) &&
-                        "bg-muted font-bold hover:bg-muted"
+                        'bg-muted font-bold hover:bg-muted'
                     )}
                   >
                     {/* {child.icon} */}
                     <div
                       className={cn(
-                        "absolute left-12 text-base duration-200",
+                        'absolute left-12 text-base duration-200',
                         !isOpen && className
                       )}
                     >
@@ -152,24 +154,24 @@ export function SideNav({ setOpen, className }: SideNavProps) {
               if (setOpen) setOpen(false);
             }}
             className={cn(
-              buttonVariants({ variant: "ghost" }),
-              "group relative flex w-full gap-1 h-12 justify-start",
+              buttonVariants({ variant: 'ghost' }),
+              'group relative flex w-full gap-1 h-12 justify-start',
               `dark:${item.color} hover:bg-muted`,
 
               pathIsActive({ path: item.href, liveHref: liveHref }) &&
-                "bg-secondary font-bold hover:bg-muted"
+                'bg-secondary font-bold hover:bg-muted'
             )}
           >
             <div
               className={cn(
-                !isOpen && "flex w-full justify-center items-center"
+                !isOpen && 'flex w-full justify-center items-center'
               )}
             >
               {/* {item.icon} */}
             </div>
             <span
               className={cn(
-                "absolute left-12 text-base duration-200 ",
+                'absolute left-12 text-base duration-200 ',
                 !isOpen && className
               )}
             >

@@ -1,7 +1,7 @@
-import { z } from "zod";
+import { z } from 'zod';
 
 export const EvaluationBaseTypeFormSchema = z.object({
-  name: z.string().min(3, "Name must be at least 3 characters long"),
+  name: z.string().min(3, 'Name must be at least 3 characters long'),
   description: z.string().optional(),
   isGraded: z.boolean(),
 
@@ -14,295 +14,295 @@ export type EvaluationBaseTypeForm = z.infer<
 
 // Numeric Grading Schemas
 export const NumericGradeSchema = z.object({
-  name: z.literal("Numeric"),
-  type: z.literal("Numeric"),
+  name: z.literal('Numeric'),
+  type: z.literal('Numeric'),
   range: z.union([
-    z.literal("1-4"),
-    z.literal("1-5"),
-    z.literal("1-10"),
-    z.literal("1-20"),
-    z.literal("0-100"),
+    z.literal('1-4'),
+    z.literal('1-5'),
+    z.literal('1-10'),
+    z.literal('1-20'),
+    z.literal('0-100'),
   ]),
   grade: z.union([
     z.number(), // Numerical grade value
-    z.literal("N/G"), // Not Graded
-    z.literal("M"), // Missing
-    z.literal("N/D"), // Not Done
+    z.literal('N/G'), // Not Graded
+    z.literal('M'), // Missing
+    z.literal('N/D'), // Not Done
   ]),
 });
 
 // Percentage Grading Schema
 export const PercentageGradeSchema = z.object({
-  name: z.literal("Percentage"),
-  type: z.literal("Percentage"),
+  name: z.literal('Percentage'),
+  type: z.literal('Percentage'),
   grade: z.union([
     z.number(), // Percentage grade value
-    z.literal("N/G"), // Not Graded
-    z.literal("M"), // Missing
-    z.literal("N/D"), // Not Done
+    z.literal('N/G'), // Not Graded
+    z.literal('M'), // Missing
+    z.literal('N/D'), // Not Done
   ]),
 });
 
 // US Letter Grades
 export const USLetterGradeSchema = z.object({
-  name: z.literal("US Letter Grades"),
-  type: z.literal("A/B/C/D/F"),
+  name: z.literal('US Letter Grades'),
+  type: z.literal('A/B/C/D/F'),
   grade: z.union([
-    z.literal("A"),
-    z.literal("B"),
-    z.literal("C"),
-    z.literal("D"),
-    z.literal("F"),
-    z.literal("N/G"), // Not Graded
-    z.literal("M"), // Missing
-    z.literal("N/D"), // Not Done
+    z.literal('A'),
+    z.literal('B'),
+    z.literal('C'),
+    z.literal('D'),
+    z.literal('F'),
+    z.literal('N/G'), // Not Graded
+    z.literal('M'), // Missing
+    z.literal('N/D'), // Not Done
   ]),
 });
 
 // US Letter Grades with Pass/Fail
 export const USLetterGradePassFailSchema = z.object({
-  name: z.literal("US Letter Grades with Pass/Fail"),
-  type: z.literal("A/B/C/D/F/Pass/Fail"),
+  name: z.literal('US Letter Grades with Pass/Fail'),
+  type: z.literal('A/B/C/D/F/Pass/Fail'),
   grade: z.union([
-    z.literal("A"),
-    z.literal("B"),
-    z.literal("C"),
-    z.literal("D"),
-    z.literal("F"),
-    z.literal("Pass"),
-    z.literal("Fail"),
-    z.literal("N/G"), // Not Graded
-    z.literal("M"), // Missing
-    z.literal("N/D"), // Not Done
+    z.literal('A'),
+    z.literal('B'),
+    z.literal('C'),
+    z.literal('D'),
+    z.literal('F'),
+    z.literal('Pass'),
+    z.literal('Fail'),
+    z.literal('N/G'), // Not Graded
+    z.literal('M'), // Missing
+    z.literal('N/D'), // Not Done
   ]),
 });
 
 // US Letter Grades with Pass/Fail/None
 export const USLetterGradePassFailNoneSchema = z.object({
-  name: z.literal("US Letter Grades with Pass/Fail/None"),
-  type: z.literal("A/B/C/D/F/Pass/Fail/None"),
+  name: z.literal('US Letter Grades with Pass/Fail/None'),
+  type: z.literal('A/B/C/D/F/Pass/Fail/None'),
   grade: z.union([
-    z.literal("A"),
-    z.literal("B"),
-    z.literal("C"),
-    z.literal("D"),
-    z.literal("F"),
-    z.literal("Pass"),
-    z.literal("Fail"),
-    z.literal("None"),
-    z.literal("N/G"), // Not Graded
-    z.literal("M"), // Missing
-    z.literal("N/D"), // Not Done
+    z.literal('A'),
+    z.literal('B'),
+    z.literal('C'),
+    z.literal('D'),
+    z.literal('F'),
+    z.literal('Pass'),
+    z.literal('Fail'),
+    z.literal('None'),
+    z.literal('N/G'), // Not Graded
+    z.literal('M'), // Missing
+    z.literal('N/D'), // Not Done
   ]),
 });
 
 // Pass/Fail Schema
 export const PassFailSchema = z.object({
-  name: z.literal("Pass/Fail"),
-  type: z.literal("Pass/Fail"),
+  name: z.literal('Pass/Fail'),
+  type: z.literal('Pass/Fail'),
   grade: z.union([
-    z.literal("Pass"),
-    z.literal("Fail"),
-    z.literal("N/G"), // Not Graded
-    z.literal("M"), // Missing
-    z.literal("N/D"), // Not Done
+    z.literal('Pass'),
+    z.literal('Fail'),
+    z.literal('N/G'), // Not Graded
+    z.literal('M'), // Missing
+    z.literal('N/D'), // Not Done
   ]),
 });
 
 // Descriptive Grades Schema
 export const DescriptiveGradeSchema = z.object({
-  name: z.literal("Descriptive Grades"),
-  type: z.literal("Excellent/Good/Satisfactory/Needs Improvement"),
+  name: z.literal('Descriptive Grades'),
+  type: z.literal('Excellent/Good/Satisfactory/Needs Improvement'),
   grade: z.union([
-    z.literal("Excellent"),
-    z.literal("Good"),
-    z.literal("Satisfactory"),
-    z.literal("Needs Improvement"),
-    z.literal("N/G"), // Not Graded
-    z.literal("M"), // Missing
-    z.literal("N/D"), // Not Done
+    z.literal('Excellent'),
+    z.literal('Good'),
+    z.literal('Satisfactory'),
+    z.literal('Needs Improvement'),
+    z.literal('N/G'), // Not Graded
+    z.literal('M'), // Missing
+    z.literal('N/D'), // Not Done
   ]),
 });
 
 // US 4.0 Scale Schema
 export const USScale4Schema = z.object({
-  name: z.literal("US 4.0 Scale"),
-  type: z.literal("4.0 Scale"),
+  name: z.literal('US 4.0 Scale'),
+  type: z.literal('4.0 Scale'),
   grade: z.union([
     z.number(), // Grade on a 4.0 scale
-    z.literal("N/G"), // Not Graded
-    z.literal("M"), // Missing
-    z.literal("N/D"), // Not Done
+    z.literal('N/G'), // Not Graded
+    z.literal('M'), // Missing
+    z.literal('N/D'), // Not Done
   ]),
 });
 
 // Grade Points Schema
 export const GradePointsSchema = z.object({
-  name: z.literal("Grade Points"),
-  type: z.literal("Grade Points"),
+  name: z.literal('Grade Points'),
+  type: z.literal('Grade Points'),
   grade: z.union([
     z.number(), // General grade points
-    z.literal("N/G"), // Not Graded
-    z.literal("M"), // Missing
-    z.literal("N/D"), // Not Done
+    z.literal('N/G'), // Not Graded
+    z.literal('M'), // Missing
+    z.literal('N/D'), // Not Done
   ]),
 });
 
 // Custom Grading Schema
 export const CustomGradeSchema = z.object({
-  name: z.literal("Custom"),
-  type: z.literal("Other"),
+  name: z.literal('Custom'),
+  type: z.literal('Other'),
   grade: z.union([
     z.string(), // Flexible grade value as string
-    z.literal("N/G"), // Not Graded
-    z.literal("M"), // Missing
-    z.literal("N/D"), // Not Done
+    z.literal('N/G'), // Not Graded
+    z.literal('M'), // Missing
+    z.literal('N/D'), // Not Done
   ]),
 });
 
 // French Grading Schema (out of 20)
 export const FrenchGradingSchema = z.object({
-  name: z.literal("French Grading"),
-  type: z.literal("20-point Scale"),
+  name: z.literal('French Grading'),
+  type: z.literal('20-point Scale'),
   grade: z.union([
     z.number(), // French grades are typically on a 0-20 scale
-    z.literal("N/G"), // Not Graded
-    z.literal("M"), // Missing
-    z.literal("N/D"), // Not Done
+    z.literal('N/G'), // Not Graded
+    z.literal('M'), // Missing
+    z.literal('N/D'), // Not Done
   ]),
 });
 
 // German Grading Schema (1.0 to 5.0)
 export const GermanGradingSchema = z.object({
-  name: z.literal("German Grading"),
-  type: z.literal("Numeric"),
-  range: z.literal("1-5"),
+  name: z.literal('German Grading'),
+  type: z.literal('Numeric'),
+  range: z.literal('1-5'),
   grade: z.union([
     z.number(), // German grades are typically 1.0 to 5.0, sometimes to 6.0
-    z.literal("N/G"), // Not Graded
-    z.literal("M"), // Missing
-    z.literal("N/D"), // Not Done
+    z.literal('N/G'), // Not Graded
+    z.literal('M'), // Missing
+    z.literal('N/D'), // Not Done
   ]),
 });
 
 // Spanish Grading Schema (0-10 scale)
 export const SpanishGradingSchema = z.object({
-  name: z.literal("Spanish Grading"),
-  type: z.literal("10-point Scale"),
+  name: z.literal('Spanish Grading'),
+  type: z.literal('10-point Scale'),
   grade: z.union([
     z.number(), // Spanish grades are typically on a 0-10 scale
-    z.literal("N/G"), // Not Graded
-    z.literal("M"), // Missing
-    z.literal("N/D"), // Not Done
+    z.literal('N/G'), // Not Graded
+    z.literal('M'), // Missing
+    z.literal('N/D'), // Not Done
   ]),
 });
 
 // Sport Points System Schema
 export const SportPointsSchema = z.object({
-  name: z.literal("Sport Points"),
-  type: z.literal("Points"),
+  name: z.literal('Sport Points'),
+  type: z.literal('Points'),
   range: z.union([
-    z.literal("0-10"),
-    z.literal("0-20"),
-    z.literal("0-100"),
-    z.literal("0-1000"),
+    z.literal('0-10'),
+    z.literal('0-20'),
+    z.literal('0-100'),
+    z.literal('0-1000'),
   ]),
   grade: z.union([
     z.number(), // Numeric points score
-    z.literal("N/G"), // Not Graded
-    z.literal("M"), // Missing
-    z.literal("N/D"), // Not Done
+    z.literal('N/G'), // Not Graded
+    z.literal('M'), // Missing
+    z.literal('N/D'), // Not Done
   ]),
 });
 
 // Sport Ranking System Schema
 export const SportRankingSchema = z.object({
-  name: z.literal("Sport Ranking"),
-  type: z.literal("Ranking"),
+  name: z.literal('Sport Ranking'),
+  type: z.literal('Ranking'),
   grade: z.union([
-    z.literal("1st"),
-    z.literal("2nd"),
-    z.literal("3rd"),
-    z.literal("4th"),
-    z.literal("5th"),
-    z.literal("6th"),
-    z.literal("7th"),
-    z.literal("8th"),
-    z.literal("9th"),
-    z.literal("10th"),
-    z.literal("N/G"), // Not Graded
-    z.literal("M"), // Missing
-    z.literal("N/D"), // Not Done
+    z.literal('1st'),
+    z.literal('2nd'),
+    z.literal('3rd'),
+    z.literal('4th'),
+    z.literal('5th'),
+    z.literal('6th'),
+    z.literal('7th'),
+    z.literal('8th'),
+    z.literal('9th'),
+    z.literal('10th'),
+    z.literal('N/G'), // Not Graded
+    z.literal('M'), // Missing
+    z.literal('N/D'), // Not Done
   ]),
 });
 
 // Sport Win/Loss/Tie Schema
 export const SportResultSchema = z.object({
-  name: z.literal("Sport Result"),
-  type: z.literal("Win/Loss/Tie"),
+  name: z.literal('Sport Result'),
+  type: z.literal('Win/Loss/Tie'),
   grade: z.union([
-    z.literal("Win"),
-    z.literal("Loss"),
-    z.literal("Tie"),
-    z.literal("N/G"), // Not Graded
-    z.literal("M"), // Missing
-    z.literal("N/D"), // Not Done
+    z.literal('Win'),
+    z.literal('Loss'),
+    z.literal('Tie'),
+    z.literal('N/G'), // Not Graded
+    z.literal('M'), // Missing
+    z.literal('N/D'), // Not Done
   ]),
 });
 
 // Sport Performance Level Schema
 export const SportPerformanceSchema = z.object({
-  name: z.literal("Sport Performance"),
-  type: z.literal("Performance Level"),
+  name: z.literal('Sport Performance'),
+  type: z.literal('Performance Level'),
   grade: z.union([
-    z.literal("Excellent"),
-    z.literal("Good"),
-    z.literal("Average"),
-    z.literal("Poor"),
-    z.literal("N/G"), // Not Graded
-    z.literal("M"), // Missing
-    z.literal("N/D"), // Not Done
+    z.literal('Excellent'),
+    z.literal('Good'),
+    z.literal('Average'),
+    z.literal('Poor'),
+    z.literal('N/G'), // Not Graded
+    z.literal('M'), // Missing
+    z.literal('N/D'), // Not Done
   ]),
 });
 
 export const CompetenceLevelSchema = z.union([
-  z.literal("Expertise"), // the competence is mastered in all professional situations that require it.
-  z.literal("Proficiency"), // the competence is mastered in professional situations that require it, with significant autonomy.
-  z.literal("To be developed"), // the competence is observable in some professional situations, but still needs effort to be mastered.
-  z.literal("To be acquired"), // the competence is not implemented or is implemented incompletely.
-  z.literal("N/G"), // Not Graded
-  z.literal("M"), // Missing
-  z.literal("N/D"),
+  z.literal('Expertise'), // the competence is mastered in all professional situations that require it.
+  z.literal('Proficiency'), // the competence is mastered in professional situations that require it, with significant autonomy.
+  z.literal('To be developed'), // the competence is observable in some professional situations, but still needs effort to be mastered.
+  z.literal('To be acquired'), // the competence is not implemented or is implemented incompletely.
+  z.literal('N/G'), // Not Graded
+  z.literal('M'), // Missing
+  z.literal('N/D'),
 ]);
 
 // 10-point Scale Schema
 export const TenPointScaleSchema = z.object({
-  name: z.literal("10-point Scale"),
-  type: z.literal("10-point Scale"),
+  name: z.literal('10-point Scale'),
+  type: z.literal('10-point Scale'),
   grade: z.union([
     z.number(), // Grade on a 10-point scale
-    z.literal("N/G"), // Not Graded
-    z.literal("M"), // Missing
-    z.literal("N/D"), // Not Done
+    z.literal('N/G'), // Not Graded
+    z.literal('M'), // Missing
+    z.literal('N/D'), // Not Done
   ]),
 });
 
 // Competence-Based Evaluation Schema
 export const CompetenceEvaluationSchema = z.object({
-  name: z.literal("Competence-Based Evaluation"),
-  type: z.literal("Competence"),
+  name: z.literal('Competence-Based Evaluation'),
+  type: z.literal('Competence'),
   grade: CompetenceLevelSchema,
 });
 
 // 20-point Scale Schema
 export const TwentyPointScaleSchema = z.object({
-  name: z.literal("20-point Scale"),
-  type: z.literal("20-point Scale"),
+  name: z.literal('20-point Scale'),
+  type: z.literal('20-point Scale'),
   grade: z.union([
     z.number(), // Grade on a 20-point scale
-    z.literal("N/G"), // Not Graded
-    z.literal("M"), // Missing
-    z.literal("N/D"), // Not Done
+    z.literal('N/G'), // Not Graded
+    z.literal('M'), // Missing
+    z.literal('N/D'), // Not Done
   ]),
 });
 

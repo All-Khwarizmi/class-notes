@@ -1,10 +1,11 @@
-import { useMutation } from "convex/react";
-import { api } from "../../../../../convex/_generated/api";
-import { ClassType } from "@/features/classe/domain/class-schema";
-import { useEffect, useState } from "react";
-import { Id } from "../../../../../convex/_generated/dataModel";
+import { ClassType } from '@/features/classe/domain/class-schema';
+import { useMutation } from 'convex/react';
+import { useEffect, useState } from 'react';
 
-export type IdCustom = Id<"Classes">;
+import { api } from '../../../../../convex/_generated/api';
+import { Id } from '../../../../../convex/_generated/dataModel';
+
+export type IdCustom = Id<'Classes'>;
 export type ICreateClasseInfraPayload =
   | {
       id: IdCustom;
@@ -43,7 +44,7 @@ export default function useCreateClasseInfra() {
           setCreateClasseInfraPayload({ id: true, error: false });
         })
         .catch((error) => {
-          console.error("error", error);
+          console.error('error', error);
           setCreateClasseInfraPayload({ id: false, error: true });
         });
     }

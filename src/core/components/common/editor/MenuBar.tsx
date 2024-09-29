@@ -1,4 +1,7 @@
-import { useCurrentEditor } from "@tiptap/react";
+import MenuButton from '@/core/components/common/editor/MenuButton';
+import MenuTextAlign from '@/core/components/common/editor/MenuTextAlign';
+import { cn } from '@/lib/utils';
+import { useCurrentEditor } from '@tiptap/react';
 import {
   Bold,
   Code,
@@ -13,14 +16,11 @@ import {
   Strikethrough,
   Undo,
   Video,
-} from "lucide-react";
+} from 'lucide-react';
 
-import { HeadingMenuBar } from "./HeadingMenuBar";
-import MenuTextColor from "./MenuTextColor";
-import MenuImage from "./MenuImage";
-import MenuButton from "@/core/components/common/editor/MenuButton";
-import MenuTextAlign from "@/core/components/common/editor/MenuTextAlign";
-import { cn } from "@/lib/utils";
+import { HeadingMenuBar } from './HeadingMenuBar';
+import MenuImage from './MenuImage';
+import MenuTextColor from './MenuTextColor';
 
 export const MenuBar = () => {
   const { editor } = useCurrentEditor();
@@ -32,8 +32,8 @@ export const MenuBar = () => {
   return (
     <div
       className={cn(
-        "flex gap-1 flex-wrap p-2 bg-muted justify-center border rounded-tr-lg rounded-tl-lg",
-        `${editor.isFocused ? "border-blue-300 border-2" : "border-gray-600"}`
+        'flex gap-1 flex-wrap p-2 bg-muted justify-center border rounded-tr-lg rounded-tl-lg',
+        `${editor.isFocused ? 'border-blue-300 border-2' : 'border-gray-600'}`
       )}
     >
       <MenuButton
@@ -139,7 +139,7 @@ export const MenuBar = () => {
       <MenuButton
         editor={editor}
         onClick={() => {
-          const videoUrl = prompt("Enter the video URL");
+          const videoUrl = prompt('Enter the video URL');
           if (!videoUrl) {
             return;
           }
@@ -155,7 +155,7 @@ export const MenuBar = () => {
       <MenuButton
         editor={editor}
         onClick={() => {
-          const url = prompt("Enter the URL");
+          const url = prompt('Enter the URL');
           if (!url) {
             return;
           }

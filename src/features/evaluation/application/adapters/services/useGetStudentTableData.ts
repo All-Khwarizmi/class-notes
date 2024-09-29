@@ -1,12 +1,13 @@
-import getStudents from "@/features/classe/application/adapters/actions/get-students";
-import { useQuery } from "@tanstack/react-query";
-import getEvaluationCompoundList from "../actions/get-evaluation-compound-list";
-import getClassNavItems from "../utils/get-classe-nav-items";
-import { coursUsecases } from "@/features/cours-sequence/application/usecases/cours-usecases";
-import { useEffect, useState } from "react";
-import { NavItem } from "@/lib/types";
-import { isRight } from "fp-ts/lib/Either";
-import { ClasseTableType } from "@/features/classe/domain/class-schema";
+import getStudents from '@/features/classe/application/adapters/actions/get-students';
+import { ClasseTableType } from '@/features/classe/domain/class-schema';
+import { coursUsecases } from '@/features/cours-sequence/application/usecases/cours-usecases';
+import { NavItem } from '@/lib/types';
+import { useQuery } from '@tanstack/react-query';
+import { isRight } from 'fp-ts/lib/Either';
+import { useEffect, useState } from 'react';
+
+import getEvaluationCompoundList from '../actions/get-evaluation-compound-list';
+import getClassNavItems from '../utils/get-classe-nav-items';
 
 export default function useGetStudentTableData(options: { classeId: string }) {
   const {
@@ -14,7 +15,7 @@ export default function useGetStudentTableData(options: { classeId: string }) {
     isPending: isStudentsPending,
     refetch: refetchStudents,
   } = useQuery({
-    queryKey: ["students"],
+    queryKey: ['students'],
     queryFn: async () => {
       return getStudents(options);
     },
@@ -24,7 +25,7 @@ export default function useGetStudentTableData(options: { classeId: string }) {
     isPending: isSequencesPending,
     refetch: refetchSequences,
   } = useQuery({
-    queryKey: ["classe-sequences", options.classeId],
+    queryKey: ['classe-sequences', options.classeId],
     queryFn: async () => {
       return coursUsecases.getClasseSequences(options);
     },
@@ -35,7 +36,7 @@ export default function useGetStudentTableData(options: { classeId: string }) {
     isPending: isCompoundEvaluationsPending,
     refetch: refetchCompoundEvaluations,
   } = useQuery({
-    queryKey: ["compound-evaluations"],
+    queryKey: ['compound-evaluations'],
     queryFn: () => getEvaluationCompoundList(options),
   });
   const [classeNavItems, setClasseNavItems] = useState<NavItem[]>([]);

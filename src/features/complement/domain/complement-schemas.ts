@@ -1,9 +1,9 @@
-import { z } from "zod";
+import { z } from 'zod';
 
 export const contentType = z.union([
-  z.literal("Diagram"),
-  z.literal("Embed"),
-  z.literal("Markup"),
+  z.literal('Diagram'),
+  z.literal('Embed'),
+  z.literal('Markup'),
 ]);
 export const ComplementSchema = z.object({
   id: z.string(),
@@ -17,9 +17,9 @@ export const ComplementSchema = z.object({
   publishDate: z.number().optional(),
   body: z.string(),
   type: z.union([
-    z.literal("Lesson"),
-    z.literal("Exercise"),
-    z.literal("Additional"),
+    z.literal('Lesson'),
+    z.literal('Exercise'),
+    z.literal('Additional'),
   ]),
   contentType,
 });

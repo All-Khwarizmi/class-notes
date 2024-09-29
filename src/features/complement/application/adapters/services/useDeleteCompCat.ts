@@ -1,9 +1,9 @@
-import { QUERY_KEYS } from "@/core/query/ query-keys";
-import { toastWrapper } from "@/core/utils/toast-wrapper";
-import { compCatUsecases } from "@/features/comp-cat/application/usecases/comp-cat-usecases";
-import { DeleteCompCatOptions } from "@/features/comp-cat/domain/types";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { isLeft } from "fp-ts/lib/Either";
+import { QUERY_KEYS } from '@/core/query/ query-keys';
+import { toastWrapper } from '@/core/utils/toast-wrapper';
+import { compCatUsecases } from '@/features/comp-cat/application/usecases/comp-cat-usecases';
+import { DeleteCompCatOptions } from '@/features/comp-cat/domain/types';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { isLeft } from 'fp-ts/lib/Either';
 
 export const useDeleteCompCat = () => {
   const queryClient = useQueryClient();
@@ -15,7 +15,7 @@ export const useDeleteCompCat = () => {
     },
     onSuccess: async (either, variables) => {
       if (isLeft(either)) {
-        return toastWrapper.error("An error occurred");
+        return toastWrapper.error('An error occurred');
       }
       toastWrapper.success(`${variables.type} deleted successfully`);
       await queryClient.invalidateQueries({

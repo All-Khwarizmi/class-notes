@@ -1,6 +1,7 @@
-import React, { Suspense } from "react";
-import ClasseSequencesServerLayer from "./ClasseSequencesServerLayer";
-import LoadingSkeleton from "@/core/components/common/LoadingSkeleton";
+import LoadingSkeleton from '@/core/components/common/LoadingSkeleton';
+import React, { Suspense } from 'react';
+
+import ClasseSequencesServerLayer from './ClasseSequencesServerLayer';
 
 async function Page({ params }: { params: { slug: string } }) {
   return (

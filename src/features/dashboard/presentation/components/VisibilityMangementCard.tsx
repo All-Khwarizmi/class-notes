@@ -1,4 +1,4 @@
-import React from "react";
+import { Button } from '@/core/components/ui/button';
 import {
   Card,
   CardHeader,
@@ -6,9 +6,9 @@ import {
   CardDescription,
   CardContent,
   CardFooter,
-} from "@/core/components/ui/card";
-import { Switch } from "@/core/components/ui/switch";
-import { Button } from "@/core/components/ui/button";
+} from '@/core/components/ui/card';
+import { Switch } from '@/core/components/ui/switch';
+import React from 'react';
 
 function VisibilityManagementCard() {
   return (

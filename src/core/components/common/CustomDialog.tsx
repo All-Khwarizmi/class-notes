@@ -1,6 +1,3 @@
-import { cn } from "@/lib/utils";
-
-import { PlusIcon } from "@radix-ui/react-icons";
 import {
   Dialog,
   DialogContent,
@@ -8,9 +5,12 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/core/components/ui/dialog";
-import { Button, buttonVariants } from "../ui/button";
-import { TypographyH1, TypographyP } from "./Typography";
+} from '@/core/components/ui/dialog';
+import { cn } from '@/lib/utils';
+import { PlusIcon } from '@radix-ui/react-icons';
+
+import { Button, buttonVariants } from '../ui/button';
+import { TypographyH1, TypographyP } from './Typography';
 
 /**
  * CustomDialog component displays a dialog with a title, description, and optional button.
@@ -24,8 +24,8 @@ import { TypographyH1, TypographyP } from "./Typography";
 export default function CustomDialog({
   displayButton = true,
   open,
-  title = "",
-  description = "",
+  title = '',
+  description = '',
   icon = <PlusIcon />,
   children,
   testId,
@@ -78,16 +78,16 @@ export default function CustomDialog({
    * The variant of the button. Can be one of: "link", "default", "destructive", "outline", "secondary", "ghost". Default is "default".
    */
   buttonVariant?:
-    | "link"
-    | "default"
-    | "destructive"
-    | "outline"
-    | "secondary"
-    | "ghost";
+    | 'link'
+    | 'default'
+    | 'destructive'
+    | 'outline'
+    | 'secondary'
+    | 'ghost';
   /**
    * The size of the button. Can be one of: "default", "icon", "sm", "lg". Default is null.
    */
-  buttonSize?: "default" | "icon" | "sm" | "lg" | null | undefined;
+  buttonSize?: 'default' | 'icon' | 'sm' | 'lg' | null | undefined;
   /**
    * The class name for the button.
    */
@@ -106,14 +106,14 @@ export default function CustomDialog({
           {displayButton ? (
             <div
               className={cn(
-                "flex items-center justify-start gap-2",
+                'flex items-center justify-start gap-2',
                 ` ${buttonContainerClassName}`
               )}
             >
               <div
                 className={cn(
-                  "py-1 px-2 gap-2 inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50",
-                  "border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground",
+                  'py-1 px-2 gap-2 inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50',
+                  'border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground',
                   ` ${buttonClassName}`
                 )}
                 data-testid={testId}

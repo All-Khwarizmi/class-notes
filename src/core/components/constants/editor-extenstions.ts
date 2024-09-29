@@ -1,54 +1,55 @@
-import StarterKit from "@tiptap/starter-kit";
-import { Color } from "@tiptap/extension-color";
-import ListItem from "@tiptap/extension-list-item";
-import TextStyle from "@tiptap/extension-text-style";
-import { TextAlign } from "@tiptap/extension-text-align";
-import ResizableImageExtension from "../common/editor/ImageResize";
-import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight";
-import { common, createLowlight } from "lowlight";
-import { IndentExtension } from "../common/editor/Indent";
-import YouTube from "@tiptap/extension-youtube";
-import DoubleCurlyBracesExtension from "../common/editor/DoubleCurlyBracesExtension";
-import { DoubleBrakets } from "../common/editor/DoubleBrakets";
-import Link from "@tiptap/extension-link";
-import FloatingMenu from "@tiptap/extension-floating-menu";
+import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight';
+import { Color } from '@tiptap/extension-color';
+import FloatingMenu from '@tiptap/extension-floating-menu';
+import Link from '@tiptap/extension-link';
+import ListItem from '@tiptap/extension-list-item';
+import { TextAlign } from '@tiptap/extension-text-align';
+import TextStyle from '@tiptap/extension-text-style';
+import YouTube from '@tiptap/extension-youtube';
+import StarterKit from '@tiptap/starter-kit';
+import { common, createLowlight } from 'lowlight';
+
+import { DoubleBrakets } from '../common/editor/DoubleBrakets';
+import DoubleCurlyBracesExtension from '../common/editor/DoubleCurlyBracesExtension';
+import ResizableImageExtension from '../common/editor/ImageResize';
+import { IndentExtension } from '../common/editor/Indent';
+
 const lowlight = createLowlight(common);
 
 export const EXTENSIONS = [
-  
   Link.configure({
     HTMLAttributes: {
-      target: "_blank",
-      rel: "noopener noreferrer",
-      class: "link-class",
+      target: '_blank',
+      rel: 'noopener noreferrer',
+      class: 'link-class',
     },
   }),
   YouTube.configure({
     inline: true,
     HTMLAttributes: {
-      class: "youtube-embed",
+      class: 'youtube-embed',
     },
   }),
   IndentExtension,
   CodeBlockLowlight.configure({
     lowlight,
-    defaultLanguage: "typescript",
+    defaultLanguage: 'typescript',
   }),
   DoubleCurlyBracesExtension,
   DoubleBrakets,
 
   TextAlign.configure({
     types: [
-      "heading",
-      "paragraph",
-      "img",
-      "codeBlock",
-      "code",
-      "blockquote",
-      "pre",
+      'heading',
+      'paragraph',
+      'img',
+      'codeBlock',
+      'code',
+      'blockquote',
+      'pre',
     ],
-    alignments: ["left", "center", "right", "justify"],
-    defaultAlignment: "left",
+    alignments: ['left', 'center', 'right', 'justify'],
+    defaultAlignment: 'left',
   }),
   ResizableImageExtension.configure({
     inline: true,

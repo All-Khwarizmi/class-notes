@@ -1,7 +1,8 @@
-import IDatabase from "@/core/data/idatabase";
-import { Note } from "../../domain/notes-schemas";
-import { convexDatabase } from "@/core/data/convex/convex-impl";
-import { getAppDataBase } from "@/core/data/get-app-db";
+import { convexDatabase } from '@/core/data/convex/convex-impl';
+import { getAppDataBase } from '@/core/data/get-app-db';
+import IDatabase from '@/core/data/idatabase';
+
+import { Note } from '../../domain/notes-schemas';
 
 export default class NoteRepository {
   private readonly _db: IDatabase;
@@ -15,17 +16,17 @@ export default class NoteRepository {
   }: {
     note: Pick<
       Note,
-      | "name"
-      | "description"
-      | "content"
-      | "fullPath"
-      | "pathDictionary"
-      | "folders"
-      | "createdBy"
-      | "keywords"
-      | "type"
-      | "parentId"
-      | "contentType"
+      | 'name'
+      | 'description'
+      | 'content'
+      | 'fullPath'
+      | 'pathDictionary'
+      | 'folders'
+      | 'createdBy'
+      | 'keywords'
+      | 'type'
+      | 'parentId'
+      | 'contentType'
     >;
   }) {
     return this._db.createNote({
@@ -46,15 +47,15 @@ export default class NoteRepository {
   }: {
     note: Pick<
       Note,
-      | "id"
-      | "name"
-      | "description"
-      | "content"
-      | "fullPath"
-      | "pathDictionary"
-      | "folders"
-      | "createdBy"
-      | "keywords"
+      | 'id'
+      | 'name'
+      | 'description'
+      | 'content'
+      | 'fullPath'
+      | 'pathDictionary'
+      | 'folders'
+      | 'createdBy'
+      | 'keywords'
     >;
   }) {
     return this._db.updateNote({

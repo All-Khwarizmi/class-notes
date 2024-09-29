@@ -1,13 +1,14 @@
-import React, { PropsWithChildren } from "react";
-import Header from "@/core/components/layout/Header";
-import { NavItem } from "@/lib/types";
-import Sidebar from "./SpacesSidebar";
-import { not } from "fp-ts/lib/Predicate";
-import NotFound from "@/app/not-found";
-import NothingToShow from "../common/editor/NothingToShow";
-import ErrorDialog from "../common/ErrorDialog";
-import { Home } from "lucide-react";
-import LoadingSkeleton from "../common/LoadingSkeleton";
+import NotFound from '@/app/not-found';
+import Header from '@/core/components/layout/Header';
+import { NavItem } from '@/lib/types';
+import { not } from 'fp-ts/lib/Predicate';
+import { Home } from 'lucide-react';
+import React, { PropsWithChildren } from 'react';
+
+import ErrorDialog from '../common/ErrorDialog';
+import LoadingSkeleton from '../common/LoadingSkeleton';
+import NothingToShow from '../common/editor/NothingToShow';
+import Sidebar from './SpacesSidebar';
 
 export interface ErrorDialogProps {
   message: string;
@@ -38,8 +39,8 @@ function LayoutWithProps({
   isLoading,
 }: LayoutWithPropsProps) {
   const defaultNavItem: NavItem = {
-    title: "Home",
-    href: "/",
+    title: 'Home',
+    href: '/',
     icon: <Home size={16} />,
   };
   return (

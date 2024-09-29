@@ -1,19 +1,26 @@
-"use client";
+'use client';
 
-import React, { useState } from "react";
+import {
+  Alert,
+  AlertDescription,
+  AlertTitle,
+} from '@/core/components/ui/alert';
+import { Badge } from '@/core/components/ui/badge';
 import {
   Card,
   CardHeader,
   CardTitle,
   CardDescription,
   CardContent,
-} from "@/core/components/ui/card";
+} from '@/core/components/ui/card';
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
-} from "@/core/components/ui/collapsible";
-import { Switch } from "@/core/components/ui/switch";
+} from '@/core/components/ui/collapsible';
+import { ScrollArea } from '@/core/components/ui/scroll-area';
+import { Skeleton } from '@/core/components/ui/skeleton';
+import { Switch } from '@/core/components/ui/switch';
 import {
   BookOpen,
   BookText,
@@ -21,16 +28,10 @@ import {
   CheckSquare,
   ChevronRight,
   ChevronDown,
-} from "lucide-react";
-import { useVisibilityLogic } from "../../application/adapters/services/useVisibilityLogic";
-import { Skeleton } from "@/core/components/ui/skeleton";
-import {
-  Alert,
-  AlertDescription,
-  AlertTitle,
-} from "@/core/components/ui/alert";
-import { ScrollArea } from "@/core/components/ui/scroll-area";
-import { Badge } from "@/core/components/ui/badge";
+} from 'lucide-react';
+import React, { useState } from 'react';
+
+import { useVisibilityLogic } from '../../application/adapters/services/useVisibilityLogic';
 
 interface VisibilityManagementComponentProps {
   userId: string;
@@ -81,7 +82,7 @@ export default function VisibilityManagementComponent({
               isPublished={item.publish}
               onToggle={() =>
                 toggleStateVisibility({
-                  type: "classe",
+                  type: 'classe',
                   typeId: item.id,
                   publish: !item.publish,
                 })
@@ -97,7 +98,7 @@ export default function VisibilityManagementComponent({
                   isPublished={sequence.publish}
                   onToggle={() =>
                     toggleStateVisibility({
-                      type: "sequence",
+                      type: 'sequence',
                       typeId: sequence.id,
                       publish: !sequence.publish,
                     })
@@ -113,7 +114,7 @@ export default function VisibilityManagementComponent({
                       isPublished={course.publish}
                       onToggle={() =>
                         toggleStateVisibility({
-                          type: "cours",
+                          type: 'cours',
                           typeId: course.id,
                           publish: !course.publish,
                         })
@@ -131,7 +132,7 @@ export default function VisibilityManagementComponent({
                           isPublished={complement.publish}
                           onToggle={() =>
                             toggleStateVisibility({
-                              type: "complement",
+                              type: 'complement',
                               typeId: complement.id,
                               publish: !complement.publish,
                             })
@@ -192,8 +193,8 @@ function CollapsibleItem({
           </div>
         </CollapsibleTrigger>
         <div className="flex items-center space-x-2">
-          <Badge variant={isPublished ? "default" : "secondary"}>
-            {isPublished ? "Publié" : "Non publié"}
+          <Badge variant={isPublished ? 'default' : 'secondary'}>
+            {isPublished ? 'Publié' : 'Non publié'}
           </Badge>
           <Switch
             checked={isPublished}

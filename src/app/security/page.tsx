@@ -1,4 +1,4 @@
-import React from "react";
+import { Security, Lock, Shield, Visibility } from '@mui/icons-material';
 import {
   Container,
   Typography,
@@ -7,9 +7,9 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
-} from "@mui/material";
-import { Security, Lock, Shield, Visibility } from "@mui/icons-material";
-import Link from "next/link";
+} from '@mui/material';
+import Link from 'next/link';
+import React from 'react';
 
 const SecurityPage: React.FC = () => {
   return (
@@ -34,10 +34,10 @@ const SecurityPage: React.FC = () => {
         </Typography>
         <List>
           {[
-            { icon: <Lock />, text: "Chiffrement des données de bout en bout" },
-            { icon: <Security />, text: "Authentification à deux facteurs" },
-            { icon: <Shield />, text: "Audits de sécurité réguliers" },
-            { icon: <Visibility />, text: "Surveillance continue des menaces" },
+            { icon: <Lock />, text: 'Chiffrement des données de bout en bout' },
+            { icon: <Security />, text: 'Authentification à deux facteurs' },
+            { icon: <Shield />, text: 'Audits de sécurité réguliers' },
+            { icon: <Visibility />, text: 'Surveillance continue des menaces' },
           ].map((item, index) => (
             <ListItem key={index}>
               <ListItemIcon>{item.icon}</ListItemIcon>

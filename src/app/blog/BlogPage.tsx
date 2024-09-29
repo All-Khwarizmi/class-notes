@@ -1,25 +1,25 @@
-"use client";
+'use client';
 
-import React, { useState } from "react";
+import { Button } from '@/core/components/ui/button';
 import {
   Card,
   CardContent,
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/core/components/ui/card";
-import { Button } from "@/core/components/ui/button";
-import { Tabs, TabsList, TabsTrigger } from "@/core/components/ui/tabs";
+} from '@/core/components/ui/card';
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/core/components/ui/dialog";
-import { Share2, Calendar, User, FileX } from "lucide-react";
-import Image from "next/image";
-import Link from "next/link";
+} from '@/core/components/ui/dialog';
+import { Tabs, TabsList, TabsTrigger } from '@/core/components/ui/tabs';
+import { Share2, Calendar, User, FileX } from 'lucide-react';
+import Image from 'next/image';
+import Link from 'next/link';
+import React, { useState } from 'react';
 
 export type BlogPostDto = {
   id: string;
@@ -39,10 +39,10 @@ interface BlogMainPageProps {
   posts: BlogPostDto[];
 }
 
-const categories = ["Tous", "Technologie", "Éducation", "Science", "Culture"];
+const categories = ['Tous', 'Technologie', 'Éducation', 'Science', 'Culture'];
 
 const BlogMainPage: React.FC<BlogMainPageProps> = ({ posts }) => {
-  const [selectedCategory, setSelectedCategory] = useState("Tous");
+  const [selectedCategory, setSelectedCategory] = useState('Tous');
 
   const filteredPosts = posts;
   // selectedCategory === "Tous"
@@ -112,7 +112,7 @@ const BlogPostCard: React.FC<{ post: BlogPostDto }> = ({ post }) => {
     <Card className="flex flex-col h-full">
       <CardHeader>
         <img
-          src={post.image || "/placeholder.svg?height=200&width=400"}
+          src={post.image || '/placeholder.svg?height=200&width=400'}
           alt={post.title}
           width={400}
           height={200}
@@ -122,13 +122,13 @@ const BlogPostCard: React.FC<{ post: BlogPostDto }> = ({ post }) => {
       <CardContent className="flex-grow">
         <CardTitle className="mb-2">{post.title}</CardTitle>
         <p className="text-sm text-muted-foreground mb-4">
-          {post.excerpt || "Aucun extrait disponible"}
+          {post.excerpt || 'Aucun extrait disponible'}
         </p>
         <div className="flex items-center  truncate text-sm text-muted-foreground">
           <User className="w-4 h-4 mr-1" />
           {post.authorName}
           <Calendar className="w-4 h-4 ml-4 mr-1" />
-          {new Date(post.createdAt).toLocaleDateString("fr-FR")}
+          {new Date(post.createdAt).toLocaleDateString('fr-FR')}
         </div>
       </CardContent>
       <CardFooter className="flex justify-between">
@@ -154,7 +154,7 @@ const SharePreviewDialog: React.FC<{ post: BlogPostDto }> = ({ post }) => {
         <div className="mt-4">
           <div className="bg-muted p-4 rounded-lg">
             <img
-              src={post.image || "/placeholder.svg?height=200&width=400"}
+              src={post.image || '/placeholder.svg?height=200&width=400'}
               alt={post.title}
               width={400}
               height={200}
@@ -162,13 +162,13 @@ const SharePreviewDialog: React.FC<{ post: BlogPostDto }> = ({ post }) => {
             />
             <h3 className="font-bold mb-2">{post.title}</h3>
             <p className="text-sm text-muted-foreground mb-2">
-              {post.excerpt || "Aucun extrait disponible"}
+              {post.excerpt || 'Aucun extrait disponible'}
             </p>
             <div className="flex items-center text-sm text-muted-foreground">
               <User className="w-4 h-4 mr-1" />
               {post.authorName}
               <Calendar className="w-4 h-4 ml-4 mr-1" />
-              {new Date(post.createdAt).toLocaleDateString("fr-FR")}
+              {new Date(post.createdAt).toLocaleDateString('fr-FR')}
             </div>
           </div>
           <div className="mt-4 flex justify-between">
@@ -185,7 +185,7 @@ const SharePreviewDialog: React.FC<{ post: BlogPostDto }> = ({ post }) => {
               onClick={() => {
                 window.open(
                   `https://twitter.com/share?url=${window.location.href}/blog/article/${post.slug}`,
-                  "_blank"
+                  '_blank'
                 );
               }}
             >

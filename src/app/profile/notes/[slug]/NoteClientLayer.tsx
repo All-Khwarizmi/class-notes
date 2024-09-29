@@ -1,14 +1,12 @@
-"use client";
+'use client';
 
-import NotFound from "@/app/not-found";
-import ErrorDialog from "@/core/components/common/ErrorDialog";
-import LoadingSkeleton from "@/core/components/common/LoadingSkeleton";
-import useGetNotes from "@/features/notes/application/adapters/services/useGetNotes";
-
-import NotesTableView from "@/features/notes/presentation/views/NotesTableView";
-
-import { isLeft } from "fp-ts/lib/Either";
-import React from "react";
+import NotFound from '@/app/not-found';
+import ErrorDialog from '@/core/components/common/ErrorDialog';
+import LoadingSkeleton from '@/core/components/common/LoadingSkeleton';
+import useGetNotes from '@/features/notes/application/adapters/services/useGetNotes';
+import NotesTableView from '@/features/notes/presentation/views/NotesTableView';
+import { isLeft } from 'fp-ts/lib/Either';
+import React from 'react';
 
 function NotesClientLayer(props: { parentId: string }) {
   const {

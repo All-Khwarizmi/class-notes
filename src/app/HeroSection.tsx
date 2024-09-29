@@ -1,12 +1,13 @@
-import React from "react";
-import Link from "next/link";
-import Title from "../core/components/common/Title";
-import { SignInButton, SignedIn, SignedOut } from "@clerk/nextjs";
-import { Button } from "@/core/components/ui/button";
-import RandomFadingImage from "@/core/components/layout/RandomFadingImage";
-import Balancer from "react-wrap-balancer";
-import { ArrowRight } from "lucide-react";
-import { Section } from "@/core/components/common/Craft";
+import { Section } from '@/core/components/common/Craft';
+import RandomFadingImage from '@/core/components/layout/RandomFadingImage';
+import { Button } from '@/core/components/ui/button';
+import { SignInButton, SignedIn, SignedOut } from '@clerk/nextjs';
+import { ArrowRight } from 'lucide-react';
+import Link from 'next/link';
+import React from 'react';
+import Balancer from 'react-wrap-balancer';
+
+import Title from '../core/components/common/Title';
 
 export default function Hero() {
   return (
@@ -44,7 +45,7 @@ export default function Hero() {
                     size="lg"
                     className="w-full md:w-auto text-lg px-8 py-4"
                   >
-                    Créer mon site gratuitement{" "}
+                    Créer mon site gratuitement{' '}
                     <ArrowRight className="ml-2 h-5 w-5" />
                   </Button>
                 </SignInButton>

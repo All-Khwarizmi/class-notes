@@ -1,4 +1,4 @@
-import { Extension } from "@tiptap/core";
+import { Extension } from '@tiptap/core';
 
 export interface IndentOptions {
   types: string[];
@@ -6,7 +6,7 @@ export interface IndentOptions {
   max: number;
 }
 
-declare module "@tiptap/core" {
+declare module '@tiptap/core' {
   interface Commands<ReturnType> {
     indent: {
       decreaseIndent: (backspace?: boolean) => ReturnType;
@@ -17,11 +17,11 @@ declare module "@tiptap/core" {
 }
 
 export const IndentExtension = Extension.create<IndentOptions>({
-  name: "indent",
+  name: 'indent',
 
   addOptions() {
     return {
-      types: ["listItem", "heading", "paragraph", "blockquote"],
+      types: ['listItem', 'heading', 'paragraph', 'blockquote'],
       min: 0,
       max: Number.POSITIVE_INFINITY,
     };
@@ -55,7 +55,7 @@ export const IndentExtension = Extension.create<IndentOptions>({
           const { from, to, $from } = selection;
 
           // Check if we are dealing with an empty line
-          const isEmptyLine = $from.parent.textContent === "";
+          const isEmptyLine = $from.parent.textContent === '';
 
           // Only proceed with custom logic if not dealing with an empty line
           if (isEmptyLine && backspace) {
@@ -140,7 +140,7 @@ export const IndentExtension = Extension.create<IndentOptions>({
   addKeyboardShortcuts() {
     return {
       Tab: () => this.editor.commands.increaseIndent(),
-      "Shift-Tab": () => this.editor.commands.decreaseIndent(),
+      'Shift-Tab': () => this.editor.commands.decreaseIndent(),
       Backspace: () => {
         const { state, view } = this.editor;
         const { selection } = state;
@@ -149,7 +149,7 @@ export const IndentExtension = Extension.create<IndentOptions>({
         const currentIndent = currentNode.attrs.marginLeft || 0;
 
         // Check if the current line is empty or the cursor is at the start of a line
-        if ($from.parent.textContent === "" || $from.parentOffset === 0) {
+        if ($from.parent.textContent === '' || $from.parentOffset === 0) {
           // If there's an indent, decrease it, otherwise allow default backspace behavior
           if (currentIndent > 0) {
             return this.editor.commands.decreaseIndent(true);
@@ -174,14 +174,14 @@ function update({
   step = 1,
   min = 0,
   max = Number.POSITIVE_INFINITY,
-  unit = "",
+  unit = '',
 } = {}): (v: string | number, delta?: number) => string {
   return (last, delta = step) => {
     let n;
 
     if (last === undefined || last === null) {
       n = 0;
-    } else if (typeof last === "number") {
+    } else if (typeof last === 'number') {
       n = last;
     } else {
       n = parseFloat(last);

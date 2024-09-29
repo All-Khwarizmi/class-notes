@@ -1,0 +1,17 @@
+{
+  "semi": true,
+  "singleQuote": true,
+  "printWidth": 80,
+  "trailingComma": "es5",
+  "plugins": ["@trivago/prettier-plugin-sort-imports"],
+  "importOrder": [
+    "<THIRD_PARTY_MODULES>",
+    "^@lib/(.*)$",
+    "^@core/(.*)$",
+    "^@features/(.*)$",
+    "^@data-access/(.*)$",
+    "^@ui/(.*)$",
+    "^[./]"
+  ],
+  "importOrderSeparation": true
+}

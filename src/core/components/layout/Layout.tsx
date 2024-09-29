@@ -1,16 +1,17 @@
-"use client";
+'use client';
 
-import React from "react";
-import { LayoutWithPropsProps } from "./LayoutWithProps";
-import LayoutContext, { useLayoutContext } from "./LayoutContext";
-import Header from "@/core/components/layout/Header";
-import { NavItem } from "@/lib/types";
-import Sidebar from "./SpacesSidebar";
-import NotFound from "@/app/not-found";
-import NothingToShow from "../common/editor/NothingToShow";
-import ErrorDialog from "../common/ErrorDialog";
-import { Home } from "lucide-react";
-import LoadingSkeleton from "../common/LoadingSkeleton";
+import NotFound from '@/app/not-found';
+import Header from '@/core/components/layout/Header';
+import { NavItem } from '@/lib/types';
+import { Home } from 'lucide-react';
+import React from 'react';
+
+import ErrorDialog from '../common/ErrorDialog';
+import LoadingSkeleton from '../common/LoadingSkeleton';
+import NothingToShow from '../common/editor/NothingToShow';
+import LayoutContext, { useLayoutContext } from './LayoutContext';
+import { LayoutWithPropsProps } from './LayoutWithProps';
+import Sidebar from './SpacesSidebar';
 
 /**
  * Renders the layout component with the provided props.
@@ -36,8 +37,8 @@ function Layout({
   experimentalItems,
 }: LayoutWithPropsProps) {
   const defaultNavItem: NavItem = {
-    title: "Home",
-    href: "/",
+    title: 'Home',
+    href: '/',
     icon: <Home size={16} />,
   };
   return (
@@ -74,7 +75,7 @@ Layout.ErrorDialog = function LayoutErrorDialog() {
   const { isError } = useLayoutContext();
   if (!isError) {
     throw new Error(
-      "ErrorDialog must be used within a Layout component and have an error prop."
+      'ErrorDialog must be used within a Layout component and have an error prop.'
     );
   }
   return <ErrorDialog {...isError} />;
@@ -84,7 +85,7 @@ Layout.LoadingSkeleton = function LayoutLoadingSkeleton() {
   const { isLoading } = useLayoutContext();
   if (!isLoading) {
     throw new Error(
-      "LoadingSkeleton must be used within a Layout component and have an isLoading prop."
+      'LoadingSkeleton must be used within a Layout component and have an isLoading prop.'
     );
   }
   return <LoadingSkeleton />;

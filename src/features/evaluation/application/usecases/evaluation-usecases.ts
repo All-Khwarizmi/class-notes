@@ -1,4 +1,11 @@
-import { Either, isLeft, isRight, left, right } from "fp-ts/lib/Either";
+import Failure from '@/core/failures/failures';
+import { CompoundEvaluationType } from '@/features/classe/domain/class-schema';
+import { Either, isLeft, isRight, left, right } from 'fp-ts/lib/Either';
+
+import {
+  EvaluationBaseSchema,
+  EvaluationBaseType,
+} from '../../domain/entities/evaluation-schema';
 import {
   AssignEvaluationOptions,
   CreateEvaluationOptions,
@@ -10,17 +17,11 @@ import {
   GetEvaluationsWithGradesByEvalauationBaseIdOptions,
   UpdateEvaluationBaseOptions,
   UpdateGradeOptions,
-} from "../../domain/entities/evaluation-types";
+} from '../../domain/entities/evaluation-types';
+import { EvaluationWithGradeSchema } from '../../domain/entities/evaluation-with-grades-schema';
 import EvaluatioRepository, {
   evaluatioRepository,
-} from "../repositories/evaluation-repository";
-import {
-  EvaluationBaseSchema,
-  EvaluationBaseType,
-} from "../../domain/entities/evaluation-schema";
-import Failure from "@/core/failures/failures";
-import { EvaluationWithGradeSchema } from "../../domain/entities/evaluation-with-grades-schema";
-import { CompoundEvaluationType } from "@/features/classe/domain/class-schema";
+} from '../repositories/evaluation-repository';
 
 export default class EvaluationUsecases {
   private readonly _evaluationRepository: EvaluatioRepository;
@@ -36,9 +37,8 @@ export default class EvaluationUsecases {
   async getEvaluationBase(
     options: GetEvaluationBaseOptions
   ): Promise<Either<Failure<string>, EvaluationBaseType>> {
-    const eitherEval = await this._evaluationRepository.getEvaluationBase(
-      options
-    );
+    const eitherEval =
+      await this._evaluationRepository.getEvaluationBase(options);
     if (isLeft(eitherEval)) {
       return eitherEval;
     }
@@ -50,9 +50,9 @@ export default class EvaluationUsecases {
     if (!validatedEval.success) {
       return left(
         Failure.invalidValue({
-          message: "Invalid Evaluation Base",
+          message: 'Invalid Evaluation Base',
           invalidValue: eitherEval.right,
-          code: "APP203",
+          code: 'APP203',
         })
       );
     }
@@ -63,9 +63,8 @@ export default class EvaluationUsecases {
   async getEvaluationBaseList(
     options: GetEvaluationBasesOptions
   ): Promise<Either<Failure<string>, EvaluationBaseType[]>> {
-    const eitherEvals = await this._evaluationRepository.getEvaluationBases(
-      options
-    );
+    const eitherEvals =
+      await this._evaluationRepository.getEvaluationBases(options);
 
     if (isLeft(eitherEvals)) {
       return eitherEvals;
@@ -81,9 +80,9 @@ export default class EvaluationUsecases {
       if (validatedEval.success === false) {
         return left(
           Failure.invalidValue({
-            message: "Invalid Evaluation Base",
+            message: 'Invalid Evaluation Base',
             invalidValue: evaluation,
-            code: "APP203",
+            code: 'APP203',
           })
         );
       }
@@ -125,14 +124,14 @@ export default class EvaluationUsecases {
         assignedEvalsToDelete
       );
       const isAlldeleted = assignedEvalDeletions.every(
-        (deletion) => deletion.status === "fulfilled" && isRight(deletion.value)
+        (deletion) => deletion.status === 'fulfilled' && isRight(deletion.value)
       );
       if (!isAlldeleted) {
         return left(
           Failure.invalidValue({
-            message: "Failed to delete assigned evaluations",
+            message: 'Failed to delete assigned evaluations',
             invalidValue: assignedEvalDeletions,
-            code: "APP203",
+            code: 'APP203',
           })
         );
       }
@@ -173,9 +172,9 @@ export default class EvaluationUsecases {
     if (!validateEval.success) {
       return left(
         Failure.invalidValue({
-          message: "Invalid Evaluation",
+          message: 'Invalid Evaluation',
           invalidValue: eitherEval.right,
-          code: "APP203",
+          code: 'APP203',
         })
       );
     }
@@ -186,9 +185,8 @@ export default class EvaluationUsecases {
   async getEvaluationWithGradeList(
     options: GetEvaluationsListOptions
   ): Promise<Either<Failure<string>, CompoundEvaluationType[]>> {
-    const eitherEvals = await this._evaluationRepository.getEvaluationsList(
-      options
-    );
+    const eitherEvals =
+      await this._evaluationRepository.getEvaluationsList(options);
 
     if (isLeft(eitherEvals)) {
       return eitherEvals;
@@ -204,9 +202,9 @@ export default class EvaluationUsecases {
       if (validatedEval.success === false) {
         return left(
           Failure.invalidValue({
-            message: "Invalid Evaluation",
+            message: 'Invalid Evaluation',
             invalidValue: evaluation,
-            code: "APP203",
+            code: 'APP203',
           })
         );
       }

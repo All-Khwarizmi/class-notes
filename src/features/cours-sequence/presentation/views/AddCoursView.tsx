@@ -1,18 +1,26 @@
-"use client";
-import AddCoursOrSequenceForm from "../components/AddCoursOrSequenceForm";
-import { Competence } from "@/features/comp-cat/domain/entities/schemas";
-import { UserAuth } from "@/core/auth/i-auth";
-import { useState } from "react";
-import { Cours, Sequence } from "../../domain/entities/cours-schemas";
-import useGetSelectedCompetences from "../hooks/useGetSelectedCompetences";
-import useGetFormValues from "../hooks/useGetFormValues";
-import useGetSubmitFunction from "../hooks/useGetSubmitFunction";
-import ErrorDialog from "@/core/components/common/ErrorDialog";
+'use client';
+
+import { UserAuth } from '@/core/auth/i-auth';
+import ErrorDialog from '@/core/components/common/ErrorDialog';
+import { Competence } from '@/features/comp-cat/domain/entities/schemas';
+import { useState } from 'react';
+
+import { Cours, Sequence } from '../../domain/entities/cours-schemas';
+import AddCoursOrSequenceForm from '../components/AddCoursOrSequenceForm';
+import useGetFormValues from '../hooks/useGetFormValues';
+import useGetSelectedCompetences from '../hooks/useGetSelectedCompetences';
+import useGetSubmitFunction from '../hooks/useGetSubmitFunction';
 
 export interface CoursSequenceForm
   extends Pick<
     Cours,
-    "description" | "category" | "name" | "competences" | "imageUrl" | "publish" | "contentType"
+    | 'description'
+    | 'category'
+    | 'name'
+    | 'competences'
+    | 'imageUrl'
+    | 'publish'
+    | 'contentType'
   > {}
 export default function AddUpdateCoursSequenceView({
   competences,
@@ -27,13 +35,13 @@ export default function AddUpdateCoursSequenceView({
 }: {
   competences: Competence[];
   userId: string;
-  type: "cours" | "sequence";
+  type: 'cours' | 'sequence';
   edit?: boolean;
   cours?: Cours;
   sequence?: Sequence;
   title: string;
   sequenceId?: string;
-  sequenceType?: "sequence" | "template";
+  sequenceType?: 'sequence' | 'template';
 }) {
   const { selectedCompetences, setSelectedCompetences } =
     useGetSelectedCompetences({
@@ -60,7 +68,7 @@ export default function AddUpdateCoursSequenceView({
     sequence,
     selectedCompetences,
     userId,
-    sequenceType: sequenceType || "template",
+    sequenceType: sequenceType || 'template',
   });
 
   function selectCompetences({
@@ -101,11 +109,11 @@ export default function AddUpdateCoursSequenceView({
         onSubmit={onSubmit}
         title={title}
         imageUrl={
-          type === "cours"
+          type === 'cours'
             ? cours?.imageUrl
-            : type === "sequence"
-            ? sequence?.imageUrl
-            : undefined
+            : type === 'sequence'
+              ? sequence?.imageUrl
+              : undefined
         }
       />
     </div>

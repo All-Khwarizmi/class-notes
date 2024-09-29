@@ -1,10 +1,11 @@
-import IDatabase from "@/core/data/idatabase";
-import { Cours, Sequence } from "../../domain/entities/cours-schemas";
-import { getAppDataBase } from "@/core/data/get-app-db";
+import { getAppDataBase } from '@/core/data/get-app-db';
+import IDatabase from '@/core/data/idatabase';
 import VisibilityRepository, {
   visibilityRepository,
-} from "@/features/visibility/application/repositories/visibility-repository";
-import { isLeft } from "fp-ts/lib/Either";
+} from '@/features/visibility/application/repositories/visibility-repository';
+import { isLeft } from 'fp-ts/lib/Either';
+
+import { Cours, Sequence } from '../../domain/entities/cours-schemas';
 
 export default class CoursRepository {
   private readonly _db: IDatabase;
@@ -40,7 +41,7 @@ export default class CoursRepository {
     cours,
   }: {
     userId: string;
-    cours: Omit<Cours, "_id" | "createdAt">;
+    cours: Omit<Cours, '_id' | 'createdAt'>;
   }) {
     return this._db.addCours({ userId, cours });
   }
@@ -78,7 +79,7 @@ export default class CoursRepository {
     sequence,
   }: {
     userId: string;
-    sequence: Omit<Sequence, "_id" | "createdAt" | "coursIds">;
+    sequence: Omit<Sequence, '_id' | 'createdAt' | 'coursIds'>;
   }) {
     return this._db.addSequence({ userId, sequence });
   }
@@ -90,7 +91,7 @@ export default class CoursRepository {
   }: {
     userId: string;
     sequenceId: string;
-    type?: "template" | "sequence";
+    type?: 'template' | 'sequence';
   }) {
     return this._db.getSingleSequence({ userId, sequenceId, type });
   }
@@ -104,7 +105,7 @@ export default class CoursRepository {
     userId: string;
     sequenceId: string;
     body: string;
-    type?: "template" | "sequence";
+    type?: 'template' | 'sequence';
   }) {
     return this._db.addBodyToSequence({ userId, sequenceId, body, type });
   }
@@ -119,10 +120,10 @@ export default class CoursRepository {
     userId,
   }: {
     sequenceId: string;
-    type: "template" | "sequence";
+    type: 'template' | 'sequence';
     userId: string;
   }) {
-    if (type === "sequence") {
+    if (type === 'sequence') {
       await this._visibilityRepository.deleteClasseFromVisibility({
         userId,
         typeId: sequenceId,
@@ -141,7 +142,7 @@ export default class CoursRepository {
   }: {
     userId: string;
     sequenceId: string;
-    type?: "template" | "sequence";
+    type?: 'template' | 'sequence';
   }) {
     return this._db.getAllCoursFromSequence({ userId, sequenceId, type });
   }
@@ -154,7 +155,7 @@ export default class CoursRepository {
     type,
   }: {
     sequence: Sequence;
-    type?: "template" | "sequence";
+    type?: 'template' | 'sequence';
   }) {
     return this._db.updateSequence({ sequence, type });
   }
@@ -180,7 +181,7 @@ export default class CoursRepository {
     const sequence = await this.getSingleSequence({
       userId,
       sequenceId,
-      type: "template",
+      type: 'template',
     });
 
     if (isLeft(sequence)) {
@@ -193,7 +194,7 @@ export default class CoursRepository {
         entity: {
           id,
           name: sequence.right.name,
-          description: sequence.right.description ?? "",
+          description: sequence.right.description ?? '',
           publish: false,
           classeId,
           classe: false,

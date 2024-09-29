@@ -1,22 +1,23 @@
-"use client";
+'use client';
 
-import React, { useCallback, useState } from "react";
-import { debounce } from "lodash";
-import { Note } from "../../domain/notes-schemas";
-import useUpdateNote from "../../application/adapters/services/useUpdateNote";
-import FloatingEditor from "@/core/components/common/editor/FloatingEditor";
-import { EDITOR_DEBOUNCE_TIME } from "@/core/components/constants/editor-constants";
+import FloatingEditor from '@/core/components/common/editor/FloatingEditor';
+import { EDITOR_DEBOUNCE_TIME } from '@/core/components/constants/editor-constants';
+import { Button } from '@/core/components/ui/button';
 import {
   Card,
   CardContent,
   CardHeader,
   CardTitle,
-} from "@/core/components/ui/card";
-import { Input } from "@/core/components/ui/input";
-import { Button } from "@/core/components/ui/button";
-import { Save } from "lucide-react";
-import { toast } from "sonner";
-import { toastWrapper } from "@/core/utils/toast-wrapper";
+} from '@/core/components/ui/card';
+import { Input } from '@/core/components/ui/input';
+import { toastWrapper } from '@/core/utils/toast-wrapper';
+import { debounce } from 'lodash';
+import { Save } from 'lucide-react';
+import React, { useCallback, useState } from 'react';
+import { toast } from 'sonner';
+
+import useUpdateNote from '../../application/adapters/services/useUpdateNote';
+import { Note } from '../../domain/notes-schemas';
 
 function NoteEditorView({ note }: { note: Note }) {
   const [title, setTitle] = useState(note.name);
@@ -50,7 +51,7 @@ function NoteEditorView({ note }: { note: Note }) {
     });
     setContent(note.content);
     if (isSuccess) {
-      toast.success("Note sauvegardée avec succès");
+      toast.success('Note sauvegardée avec succès');
     }
   };
 

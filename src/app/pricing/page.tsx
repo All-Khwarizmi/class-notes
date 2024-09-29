@@ -1,5 +1,5 @@
-import EnhancedPricingTable from "@/core/components/layout/Pricing";
-import React from "react";
+import EnhancedPricingTable from '@/core/components/layout/Pricing';
+import React from 'react';
 
 const PricingPage = () => {
   return <EnhancedPricingTable />;

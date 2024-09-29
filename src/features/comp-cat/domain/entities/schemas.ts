@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z } from 'zod';
 
 export const categorySchema = z.object({
   _id: z.string(),
@@ -27,13 +27,16 @@ export type CompetenceByCategory = {
 export function groupCompetencesByCategory(
   competences: Competence[]
 ): CompetenceByCategory[] {
-  const categories = competences.reduce((acc, competence) => {
-    if (!acc[competence.category]) {
-      acc[competence.category] = [];
-    }
-    acc[competence.category].push(competence);
-    return acc;
-  }, {} as Record<string, Competence[]>);
+  const categories = competences.reduce(
+    (acc, competence) => {
+      if (!acc[competence.category]) {
+        acc[competence.category] = [];
+      }
+      acc[competence.category].push(competence);
+      return acc;
+    },
+    {} as Record<string, Competence[]>
+  );
 
   return Object.entries(categories).map(([category, competences]) => ({
     category,

@@ -1,7 +1,8 @@
-import { Entity } from "../../../../core/domain/entity/entity-generic-class";
-import { TemplateSchema, TemplateType } from "./template-schema";
-import { Either, left, right } from "fp-ts/lib/Either";
-import Failure from "../../../../core/failures/failures";
+import { Either, left, right } from 'fp-ts/lib/Either';
+
+import { Entity } from '../../../../core/domain/entity/entity-generic-class';
+import Failure from '../../../../core/failures/failures';
+import { TemplateSchema, TemplateType } from './template-schema';
 
 /**
  * Represents an EvaluationEntity, which is a subclass of the Entity class.
@@ -25,7 +26,7 @@ export default class TemplateEntity extends Entity<TemplateType> {
         left(
           Failure.invalidValue({
             invalidValue: props,
-            message: "Invalid Evaluation Properties",
+            message: 'Invalid Evaluation Properties',
           })
         )
       );

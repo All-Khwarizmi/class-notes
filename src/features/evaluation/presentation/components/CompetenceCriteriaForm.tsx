@@ -1,10 +1,13 @@
-"use client";
+'use client';
 
-import React from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Button } from "@/core/components/ui/button";
-import { Textarea } from "@/core/components/ui/textarea";
+import { Button } from '@/core/components/ui/button';
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/core/components/ui/card';
 import {
   Form,
   FormControl,
@@ -13,7 +16,7 @@ import {
   FormLabel,
   FormMessage,
   FormDescription,
-} from "@/core/components/ui/form";
+} from '@/core/components/ui/form';
 import {
   Select,
   SelectContent,
@@ -22,24 +25,22 @@ import {
   SelectLabel,
   SelectTrigger,
   SelectValue,
-} from "@/core/components/ui/select";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/core/components/ui/card";
-import { Loader2, Save } from "lucide-react";
-import { EvaluationBaseType } from "../../domain/entities/evaluation-schema";
-import useUpdateGrade from "../../application/adapters/services/useUpdateGrade";
-import { UpdateGradeOptions } from "../../domain/entities/evaluation-types";
+} from '@/core/components/ui/select';
+import { Textarea } from '@/core/components/ui/textarea';
+import { toastWrapper } from '@/core/utils/toast-wrapper';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Loader2, Save } from 'lucide-react';
+import React from 'react';
+import { useForm } from 'react-hook-form';
+
+import useUpdateGrade from '../../application/adapters/services/useUpdateGrade';
 import {
   CompetenceLevel,
   StudentGradeCompetenceExtension,
   StudentGradeCompetenceSchemaExtension,
-} from "../../application/adapters/utils/competence-case";
-import { toastWrapper } from "@/core/utils/toast-wrapper";
+} from '../../application/adapters/utils/competence-case';
+import { EvaluationBaseType } from '../../domain/entities/evaluation-schema';
+import { UpdateGradeOptions } from '../../domain/entities/evaluation-types';
 
 interface CompetenceCriteriaFormProps {
   studentGrade: StudentGradeCompetenceExtension;
@@ -83,11 +84,11 @@ export default function CompetenceCriteriaForm({
         onSuccess: () => {
           refetch();
           setIsDialogOpen(false);
-          toastWrapper.success("Note mise à jour");
+          toastWrapper.success('Note mise à jour');
         },
         onError: () => {
           toastWrapper.error(
-            "Une erreur est survenue lors de la mise à jour de la note."
+            'Une erreur est survenue lors de la mise à jour de la note.'
           );
         },
       }
@@ -96,16 +97,16 @@ export default function CompetenceCriteriaForm({
 
   function fromNumberToCompetenceGrade(value: string): CompetenceLevel {
     switch (value) {
-      case "1":
-        return "To be acquired";
-      case "2":
-        return "To be developed";
-      case "3":
-        return "Proficiency";
-      case "4":
-        return "Expertise";
+      case '1':
+        return 'To be acquired';
+      case '2':
+        return 'To be developed';
+      case '3':
+        return 'Proficiency';
+      case '4':
+        return 'Expertise';
       default:
-        return "To be acquired";
+        return 'To be acquired';
     }
   }
 
@@ -166,7 +167,6 @@ export default function CompetenceCriteriaForm({
                             );
                             return value;
                           }}
-                        
                         >
                           <SelectTrigger className="w-full">
                             <SelectValue placeholder="Sélectionnez un niveau de compétence" />

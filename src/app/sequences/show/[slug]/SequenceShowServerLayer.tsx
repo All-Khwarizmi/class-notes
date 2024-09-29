@@ -1,11 +1,11 @@
-import React from "react";
-import NotFound from "@/app/not-found";
-import { authUseCases } from "@/features/auth/application/usecases/auth-usecases";
-import { coursUsecases } from "@/features/cours-sequence/application/usecases/cours-usecases";
-import { isLeft } from "fp-ts/lib/Either";
-import { redirect } from "next/navigation";
-import ContentViewer from "@/features/cours-sequence/presentation/views/ContentViewer";
-import checkAuthAndRedirect from "@/data-access/auth/check-and-redirect";
+import NotFound from '@/app/not-found';
+import checkAuthAndRedirect from '@/data-access/auth/check-and-redirect';
+import { authUseCases } from '@/features/auth/application/usecases/auth-usecases';
+import { coursUsecases } from '@/features/cours-sequence/application/usecases/cours-usecases';
+import ContentViewer from '@/features/cours-sequence/presentation/views/ContentViewer';
+import { isLeft } from 'fp-ts/lib/Either';
+import { redirect } from 'next/navigation';
+import React from 'react';
 
 async function SequenceShowServerLayer(props: { slug: string }) {
   const { userId } = await checkAuthAndRedirect();
@@ -31,7 +31,7 @@ async function SequenceShowServerLayer(props: { slug: string }) {
     eitherSequence.right.body +
     eitherCours.right
       .map((c) => c.body)
-      .join(" ")
+      .join(' ')
       .toString();
   return <ContentViewer navItems={[]} content={content} />;
 }

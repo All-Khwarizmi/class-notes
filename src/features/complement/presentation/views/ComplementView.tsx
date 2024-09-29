@@ -1,18 +1,19 @@
-"use client";
+'use client';
 
-import React, { useEffect, useState } from "react";
-import dynamic from "next/dynamic";
-import { Complement } from "../../domain/complement-schemas";
-import UpdateComplement from "../components/UpdateComplement";
-import useUpdateComplement from "../../application/adapters/services/useUpdateComplement";
-import FloatingEditor from "@/core/components/common/editor/FloatingEditor";
-import LoadingSkeleton from "@/core/components/common/LoadingSkeleton";
-import EmbedWithInput from "@/features/cours-sequence/presentation/components/Embed";
-import { TypographyH3 } from "@/core/components/common/Typography";
+import LoadingSkeleton from '@/core/components/common/LoadingSkeleton';
+import { TypographyH3 } from '@/core/components/common/Typography';
+import FloatingEditor from '@/core/components/common/editor/FloatingEditor';
+import EmbedWithInput from '@/features/cours-sequence/presentation/components/Embed';
+import dynamic from 'next/dynamic';
+import React, { useEffect, useState } from 'react';
+
+import useUpdateComplement from '../../application/adapters/services/useUpdateComplement';
+import { Complement } from '../../domain/complement-schemas';
+import UpdateComplement from '../components/UpdateComplement';
 
 const ExcalidrawCanvas = dynamic(
   () =>
-    import("../components/ExcalidrawCanvas").then(
+    import('../components/ExcalidrawCanvas').then(
       (mod) => mod.ExcalidrawCanvas
     ),
   { ssr: false, loading: () => <LoadingSkeleton /> }
@@ -34,7 +35,7 @@ function ComplementView({ slug, complement, userId }: ComplementViewProps) {
 
   const renderContent = () => {
     switch (complement.contentType) {
-      case "Embed":
+      case 'Embed':
         return (
           <EmbedWithInput
             initialUrl={complement.body}
@@ -42,7 +43,7 @@ function ComplementView({ slug, complement, userId }: ComplementViewProps) {
             onUrlUpdate={debounceUpdateComplement(complement)}
           />
         );
-      case "Diagram":
+      case 'Diagram':
         if (!isClient) {
           return <LoadingSkeleton />;
         }

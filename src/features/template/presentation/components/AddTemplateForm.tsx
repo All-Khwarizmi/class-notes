@@ -1,16 +1,11 @@
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import {
-  TemplateSchema,
-  TemplateType,
-} from "../../domain/entities/template-schema";
+import { Button } from '@/core/components/ui/button';
 import {
   Form,
   FormField,
   FormItem,
   FormLabel,
-} from "@/core/components/ui/form";
-import { Input } from "@/core/components/ui/input";
+} from '@/core/components/ui/form';
+import { Input } from '@/core/components/ui/input';
 import {
   Select,
   SelectContent,
@@ -19,11 +14,18 @@ import {
   SelectLabel,
   SelectTrigger,
   SelectValue,
-} from "@/core/components/ui/select";
-import { GradeType } from "@/core/domain/grades/grade-schema";
-import { useEffect } from "react";
-import { useTemplateCreationStore } from "../../common/template-store";
-import { Button } from "@/core/components/ui/button";
+} from '@/core/components/ui/select';
+import { GradeType } from '@/core/domain/grades/grade-schema';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+
+import { useTemplateCreationStore } from '../../common/template-store';
+import {
+  TemplateSchema,
+  TemplateType,
+} from '../../domain/entities/template-schema';
+
 export default function AddTemplateForm() {
   const { setTemplateCreation, templateCreation, setIsCreating } =
     useTemplateCreationStore((state) => {
@@ -61,7 +63,7 @@ export default function AddTemplateForm() {
   }
 
   function hangleChangeGradeType(args: GradeType) {
-    form.setValue("gradeType", args);
+    form.setValue('gradeType', args);
   }
 
   return (

@@ -1,20 +1,21 @@
-"use client";
+'use client';
 
-import React, { useEffect, useState } from "react";
-import NotFound from "@/app/not-found";
-import NothingToShow from "../common/editor/NothingToShow";
-import ErrorDialog from "../common/ErrorDialog";
-import LoadingSkeleton from "../common/LoadingSkeleton";
-import Header from "./ExperimentalHeader";
-import Sidebar from "./ExperimentalSidebar";
-import useExperimentalLayoutLogic from "./useExperimentalLayoutLogic";
+import NotFound from '@/app/not-found';
+import { NavItem } from '@/lib/types';
+import { Loader } from 'lucide-react';
+import { usePathname } from 'next/navigation';
+import React, { useEffect, useState } from 'react';
+
+import ErrorDialog from '../common/ErrorDialog';
+import LoadingSkeleton from '../common/LoadingSkeleton';
+import NothingToShow from '../common/editor/NothingToShow';
+import Header from './ExperimentalHeader';
 import LayoutContext, {
   LayoutWithPropsProps,
   useLayoutContext,
-} from "./ExperimentalLayoutCtx";
-import { Loader } from "lucide-react";
-import { NavItem } from "@/lib/types";
-import { usePathname } from "next/navigation";
+} from './ExperimentalLayoutCtx';
+import Sidebar from './ExperimentalSidebar';
+import useExperimentalLayoutLogic from './useExperimentalLayoutLogic';
 
 /**
  * Renders the layout component with the provided props.
@@ -38,7 +39,7 @@ function Layout({
   isLoading,
   userId,
   hostname,
-}: Omit<LayoutWithPropsProps, "navItems">) {
+}: Omit<LayoutWithPropsProps, 'navItems'>) {
   const { navItems: experimentalNavItems, loading } =
     useExperimentalLayoutLogic(userId, hostname);
   const [navItems, setNavItems] = useState<NavItem[]>(experimentalNavItems);
@@ -47,7 +48,7 @@ function Layout({
   const [isSpaces, setIsSpaces] = useState(false);
   const path = usePathname();
   useEffect(() => {
-    const isLandingPage = path === "/";
+    const isLandingPage = path === '/';
     if (isLandingPage === true) {
       setIsLandingPage(true);
       setNavItems([]);
@@ -55,7 +56,7 @@ function Layout({
       setIsSpaces(false);
     } else {
       // Path contains /spaces/
-      if (path.includes("/spaces/")) {
+      if (path.includes('/spaces/')) {
         setIsLandingPage(false);
         setNavItems([]);
         setSpacesNavItems(experimentalNavItems);
@@ -124,7 +125,7 @@ Layout.ErrorDialog = function LayoutErrorDialog() {
   const { isError } = useLayoutContext();
   if (!isError) {
     throw new Error(
-      "ErrorDialog must be used within a Layout component and have an error prop."
+      'ErrorDialog must be used within a Layout component and have an error prop.'
     );
   }
   return <ErrorDialog {...isError} />;
@@ -134,7 +135,7 @@ Layout.LoadingSkeleton = function LayoutLoadingSkeleton() {
   const { isLoading } = useLayoutContext();
   if (!isLoading) {
     throw new Error(
-      "LoadingSkeleton must be used within a Layout component and have an isLoading prop."
+      'LoadingSkeleton must be used within a Layout component and have an isLoading prop.'
     );
   }
   return <LoadingSkeleton />;

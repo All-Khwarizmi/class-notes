@@ -1,10 +1,12 @@
-import { coursUsecases } from "../../usecases/cours-usecases";
-import { isLeft } from "fp-ts/lib/Either";
-import { useRouter } from "next/navigation";
-import { CoursSequenceForm } from "@/features/cours-sequence/presentation/views/AddCoursView";
-import { useQueryClient, useMutation } from "@tanstack/react-query";
-import { QUERY_KEYS } from "@/core/query/ query-keys";
-import { toastWrapper } from "@/core/utils/toast-wrapper";
+import { QUERY_KEYS } from '@/core/query/ query-keys';
+import { toastWrapper } from '@/core/utils/toast-wrapper';
+import { CoursSequenceForm } from '@/features/cours-sequence/presentation/views/AddCoursView';
+import { useQueryClient, useMutation } from '@tanstack/react-query';
+import { isLeft } from 'fp-ts/lib/Either';
+import { useRouter } from 'next/navigation';
+
+import { coursUsecases } from '../../usecases/cours-usecases';
+
 interface SequenceFormOptions extends CoursSequenceForm {
   competencesIds: string[];
 }
@@ -21,7 +23,7 @@ export default function useSaveSequenceMetadata() {
       return coursUsecases.addSequence({
         sequence: {
           ...saveSequenceMetadata.sequence,
-          body: "",
+          body: '',
           createdBy: saveSequenceMetadata.userId,
         },
         userId: saveSequenceMetadata.userId,
@@ -29,10 +31,10 @@ export default function useSaveSequenceMetadata() {
     },
     onSuccess: async (eitherSequence) => {
       if (isLeft(eitherSequence)) {
-        toastWrapper.error("An error occurred");
+        toastWrapper.error('An error occurred');
         return;
       }
-      toastWrapper.success("Sequence created successfully");
+      toastWrapper.success('Sequence created successfully');
       router.push(`/sequences/${eitherSequence.right}?type=template`);
       queryClient.invalidateQueries({
         queryKey: QUERY_KEYS.SEQUENCE.GET_ALL(),

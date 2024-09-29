@@ -1,17 +1,17 @@
-import React from "react";
-import { isLeft } from "fp-ts/lib/Either";
-import { CheckSquare } from "lucide-react";
-import ErrorDialog from "@/core/components/common/ErrorDialog";
-import EmptyUserSpace from "@/features/spaces/presentation/components/EmptyUserSpace";
-import getVisibility from "@/features/classe/application/adapters/actions/get-visibility";
-import { complementUsecases } from "@/features/complement/application/usecases/complement-usecases";
-import { Complement } from "@/features/complement/domain/complement-schemas";
-import { coursUsecases } from "@/features/cours-sequence/application/usecases/cours-usecases";
-import ContentViewer from "@/features/cours-sequence/presentation/views/ContentViewer";
-import { authUseCases } from "@/features/auth/application/usecases/auth-usecases";
-import { NavItem } from "@/lib/types";
-import { isNone } from "fp-ts/lib/Option";
-import { getCurrentUser } from "@/data-access/user/get-current-user";
+import ErrorDialog from '@/core/components/common/ErrorDialog';
+import { getCurrentUser } from '@/data-access/user/get-current-user';
+import { authUseCases } from '@/features/auth/application/usecases/auth-usecases';
+import getVisibility from '@/features/classe/application/adapters/actions/get-visibility';
+import { complementUsecases } from '@/features/complement/application/usecases/complement-usecases';
+import { Complement } from '@/features/complement/domain/complement-schemas';
+import { coursUsecases } from '@/features/cours-sequence/application/usecases/cours-usecases';
+import ContentViewer from '@/features/cours-sequence/presentation/views/ContentViewer';
+import EmptyUserSpace from '@/features/spaces/presentation/components/EmptyUserSpace';
+import { NavItem } from '@/lib/types';
+import { isLeft } from 'fp-ts/lib/Either';
+import { isNone } from 'fp-ts/lib/Option';
+import { CheckSquare } from 'lucide-react';
+import React from 'react';
 
 async function SpacesCoursServerLayer(props: {
   slug: string;
@@ -36,7 +36,7 @@ async function SpacesCoursServerLayer(props: {
         message="Une erreur s'est produite lors de la récupération des informations de l'utilisateur"
         code="USER_NOT_FOUND"
         description={
-          process.env.NODE_ENV === "development" ? "User not found" : ""
+          process.env.NODE_ENV === 'development' ? 'User not found' : ''
         }
       />
     );
@@ -45,7 +45,7 @@ async function SpacesCoursServerLayer(props: {
   const isOwner = await authUseCases.isCurrentUser(userId);
 
   const eitherCours = await coursUsecases.getSingleCours({
-    userId: "",
+    userId: '',
     coursId: slug,
   });
   if (isLeft(eitherCours)) {
@@ -54,7 +54,7 @@ async function SpacesCoursServerLayer(props: {
         message="Une erreur s'est produite lors de la récupération du cours"
         code={eitherCours.left.code}
         description={
-          process.env.NODE_ENV === "development" ? eitherCours.left.message : ""
+          process.env.NODE_ENV === 'development' ? eitherCours.left.message : ''
         }
       />
     );
@@ -67,9 +67,9 @@ async function SpacesCoursServerLayer(props: {
         message="Une erreur s'est produite lors de la récupération des paramètres de visibilité"
         code={eitherVisibility.left.code}
         description={
-          process.env.NODE_ENV === "development"
+          process.env.NODE_ENV === 'development'
             ? eitherVisibility.left.message
-            : ""
+            : ''
         }
       />
     );
@@ -87,7 +87,7 @@ async function SpacesCoursServerLayer(props: {
     return (
       <EmptyUserSpace
         isOwner={isOwner}
-        userName={user.value.name ?? "Utilisateur inconnu"}
+        userName={user.value.name ?? 'Utilisateur inconnu'}
         userEmail={user.value.email}
         contentType="cours"
       />
@@ -104,9 +104,9 @@ async function SpacesCoursServerLayer(props: {
         message="Une erreur s'est produite lors de la récupération des compléments"
         code={eitherComplements.left.code}
         description={
-          process.env.NODE_ENV === "development"
+          process.env.NODE_ENV === 'development'
             ? eitherComplements.left.message
-            : ""
+            : ''
         }
       />
     );
@@ -131,7 +131,7 @@ async function SpacesCoursServerLayer(props: {
         aria-hidden="true"
       />
     ),
-    color: "text-blue-300",
+    color: 'text-blue-300',
   }));
 
   return (

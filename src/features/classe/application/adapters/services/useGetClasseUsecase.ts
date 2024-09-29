@@ -1,5 +1,5 @@
-import { UseGetClasseInfra } from "@/features/classe/infra/services/useGetClasseInfra";
-import { useEffect, useState } from "react";
+import { UseGetClasseInfra } from '@/features/classe/infra/services/useGetClasseInfra';
+import { useEffect, useState } from 'react';
 
 export default function useGetClasseUsecase({
   useGetClasseInfra,
@@ -15,12 +15,11 @@ export default function useGetClasseUsecase({
     if (getClassePayloadInfra) {
       setLoading(false);
     }
-     if (getClassePayloadInfra?.error) {
-       setError("Une erreur est survenue lors de la récupération de la classe");
-       setLoading(false);
-     }
+    if (getClassePayloadInfra?.error) {
+      setError('Une erreur est survenue lors de la récupération de la classe');
+      setLoading(false);
+    }
   }, [getClassePayloadInfra]);
 
- 
   return { loading, classe: getClassePayloadInfra?.classe, error };
 }

@@ -1,15 +1,16 @@
-import NotFound from "@/app/not-found";
-import { classeUsecases } from "@/features/classe/application/usecases";
-import { isLeft } from "fp-ts/lib/Either";
-import { ClassType } from "@/features/classe/domain/class-schema";
-import ErrorDialog from "@/core/components/common/ErrorDialog";
-import UserSpaceClassesGridView from "@/features/spaces/presentation/views/UserSpaceClassesGridView";
-import { NavItem } from "@/lib/types";
-import { GraduationCap } from "lucide-react";
-import getVisibility from "@/features/classe/application/adapters/actions/get-visibility";
-import EmptyUserSpace from "@/features/spaces/presentation/components/EmptyUserSpace";
-import { authUseCases } from "@/features/auth/application/usecases/auth-usecases";
-import { profileUseCases } from "@/features/profile/application/usecases/profile-usecases";
+import NotFound from '@/app/not-found';
+import ErrorDialog from '@/core/components/common/ErrorDialog';
+import { authUseCases } from '@/features/auth/application/usecases/auth-usecases';
+import getVisibility from '@/features/classe/application/adapters/actions/get-visibility';
+import { classeUsecases } from '@/features/classe/application/usecases';
+import { ClassType } from '@/features/classe/domain/class-schema';
+import { profileUseCases } from '@/features/profile/application/usecases/profile-usecases';
+import EmptyUserSpace from '@/features/spaces/presentation/components/EmptyUserSpace';
+import UserSpaceClassesGridView from '@/features/spaces/presentation/views/UserSpaceClassesGridView';
+import { NavItem } from '@/lib/types';
+import { isLeft } from 'fp-ts/lib/Either';
+import { GraduationCap } from 'lucide-react';
+
 async function SpacesClassesServerLayer(props: {
   userId: string;
   hostname: string;
@@ -24,7 +25,7 @@ async function SpacesClassesServerLayer(props: {
         message="Une erreur s'est produite lors de la récupération des informations de l'utilisateur"
         code={user.left.code}
         description={
-          process.env.NODE_ENV === "development" ? user.left.message : ""
+          process.env.NODE_ENV === 'development' ? user.left.message : ''
         }
       />
     );
@@ -39,9 +40,9 @@ async function SpacesClassesServerLayer(props: {
         message="Une erreur s'est produite lors de la récupération de la visibilité des classes"
         code={eitherVisibility.left.code}
         description={
-          process.env.NODE_ENV === "development"
+          process.env.NODE_ENV === 'development'
             ? eitherVisibility.left.message
-            : ""
+            : ''
         }
       />
     );
@@ -56,9 +57,9 @@ async function SpacesClassesServerLayer(props: {
         message="Une erreur s'est produite lors de la récupération des classes"
         code={eitherClasses.left.code}
         description={
-          process.env.NODE_ENV === "development"
+          process.env.NODE_ENV === 'development'
             ? eitherClasses.left.message
-            : ""
+            : ''
         }
       />
     );
@@ -79,7 +80,7 @@ async function SpacesClassesServerLayer(props: {
     title: classe.name,
     href: `/${props.hostname}/classes/${classe.id}`,
     icon: <GraduationCap size={16} className="text-blue-500" />,
-    color: "text-blue-300",
+    color: 'text-blue-300',
   }));
 
   const isOwner = await authUseCases.isCurrentUser(props.userId);
@@ -88,7 +89,7 @@ async function SpacesClassesServerLayer(props: {
     return (
       <EmptyUserSpace
         isOwner={isOwner}
-        userName={user.right.name ?? "Utilisateur inconnu"}
+        userName={user.right.name ?? 'Utilisateur inconnu'}
         userEmail={user.right.email}
         contentType="classe"
       />
@@ -97,7 +98,7 @@ async function SpacesClassesServerLayer(props: {
 
   return (
     <UserSpaceClassesGridView
-      userName={user.right.name ?? "Utilisateur inconnu"}
+      userName={user.right.name ?? 'Utilisateur inconnu'}
       navItems={userSpaceNavItems}
       userId={props.userId}
       classes={classes}

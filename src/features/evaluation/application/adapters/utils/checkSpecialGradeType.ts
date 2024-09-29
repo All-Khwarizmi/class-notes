@@ -1,13 +1,13 @@
-import { Grade } from "@/features/evaluation/domain/entities/evaluation-with-grades-schema";
-import { z } from "zod";
+import { Grade } from '@/features/evaluation/domain/entities/evaluation-with-grades-schema';
+import { z } from 'zod';
 
 // Define the specific new grade types
 export const SpecialGradeTypes = z.union([
-  z.literal("N/G"), // Not Graded
-  z.literal("M"), // Missing
-  z.literal("N/D"), // Not Done
-  z.literal("N/A"), // Not Applicable
-  z.literal("Error"), // Error
+  z.literal('N/G'), // Not Graded
+  z.literal('M'), // Missing
+  z.literal('N/D'), // Not Done
+  z.literal('N/A'), // Not Applicable
+  z.literal('Error'), // Error
 ]);
 
 export type SpecialGradeType = z.infer<typeof SpecialGradeTypes>;
@@ -39,14 +39,14 @@ function checkSpecialGradeType(grades: Grade[]): GradeTypeUnion {
       } else {
         return {
           shouldReturn: true,
-          returnValue: "N/A",
+          returnValue: 'N/A',
         };
       }
     }
   }
   return {
     shouldReturn: true,
-    returnValue: "N/A",
+    returnValue: 'N/A',
   };
 }
 

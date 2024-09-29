@@ -1,7 +1,9 @@
-import LoadingSkeleton from "@/core/components/common/LoadingSkeleton";
-import React, { Suspense } from "react";
-import SpacesComplementServerLayer from "./SpacesComplementServerLayer";
-export const dynamic = "force-dynamic";
+import LoadingSkeleton from '@/core/components/common/LoadingSkeleton';
+import React, { Suspense } from 'react';
+
+import SpacesComplementServerLayer from './SpacesComplementServerLayer';
+
+export const dynamic = 'force-dynamic';
 
 function Page({
   params,

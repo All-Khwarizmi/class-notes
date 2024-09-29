@@ -1,5 +1,6 @@
-import { mutation, query } from "./_generated/server";
-import { v } from "convex/values";
+import { v } from 'convex/values';
+
+import { mutation, query } from './_generated/server';
 
 export const createNote = mutation({
   args: {
@@ -18,9 +19,9 @@ export const createNote = mutation({
         id: v.string(),
         name: v.string(),
         contentType: v.union(
-          v.literal("Diagram"),
-          v.literal("Flowchart"),
-          v.literal("Markup")
+          v.literal('Diagram'),
+          v.literal('Flowchart'),
+          v.literal('Markup')
         ),
         createdAt: v.number(),
       })
@@ -28,15 +29,15 @@ export const createNote = mutation({
     createdBy: v.string(),
     keywords: v.array(v.string()),
     content: v.string(),
-    type: v.union(v.literal("Folder"), v.literal("Item")),
+    type: v.union(v.literal('Folder'), v.literal('Item')),
     contentType: v.union(
-      v.literal("Diagram"),
-      v.literal("Flowchart"),
-      v.literal("Markup")
+      v.literal('Diagram'),
+      v.literal('Flowchart'),
+      v.literal('Markup')
     ),
   },
   handler: async (ctx, args) => {
-    const categoryId = await ctx.db.insert("Notes", {
+    const categoryId = await ctx.db.insert('Notes', {
       name: args.name,
       description: args.description,
       createdBy: args.createdBy,
@@ -60,8 +61,8 @@ export const getNotes = query({
   },
   handler: async (ctx, args) => {
     const notes = await ctx.db
-      .query("Notes")
-      .filter((q) => q.eq(q.field("parentId"), args.parentId))
+      .query('Notes')
+      .filter((q) => q.eq(q.field('parentId'), args.parentId))
       .collect();
     return notes;
   },
@@ -73,8 +74,8 @@ export const getNote = query({
   },
   handler: async (ctx, args) => {
     const note = await ctx.db
-      .query("Notes")
-      .filter((q) => q.eq(q.field("_id"), args.id))
+      .query('Notes')
+      .filter((q) => q.eq(q.field('_id'), args.id))
       .first();
     return note;
   },
@@ -101,9 +102,9 @@ export const updateNote = mutation({
           id: v.string(),
           name: v.string(),
           contentType: v.union(
-            v.literal("Diagram"),
-            v.literal("Flowchart"),
-            v.literal("Markup")
+            v.literal('Diagram'),
+            v.literal('Flowchart'),
+            v.literal('Markup')
           ),
           createdAt: v.number(),
         })
@@ -113,8 +114,8 @@ export const updateNote = mutation({
   },
   handler: async (ctx, args) => {
     const note = await ctx.db
-      .query("Notes")
-      .filter((q) => q.eq(q.field("_id"), args.id))
+      .query('Notes')
+      .filter((q) => q.eq(q.field('_id'), args.id))
       .first();
     if (note) {
       await ctx.db.patch(note?._id, {
@@ -140,8 +141,8 @@ export const deleteNote = mutation({
   },
   handler: async (ctx, args) => {
     const note = await ctx.db
-      .query("Notes")
-      .filter((q) => q.eq(q.field("_id"), args.id))
+      .query('Notes')
+      .filter((q) => q.eq(q.field('_id'), args.id))
       .first();
     if (note) {
       await ctx.db.delete(note?._id);

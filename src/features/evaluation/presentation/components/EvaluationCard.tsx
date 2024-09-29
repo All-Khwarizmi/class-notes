@@ -1,9 +1,9 @@
-import { Button } from "@/core/components/ui/button";
 import {
   TypographyH4,
   TypographyMuted,
-} from "@/core/components/common/Typography";
-import { Switch } from "@/core/components/ui/switch";
+} from '@/core/components/common/Typography';
+import { Button } from '@/core/components/ui/button';
+import { Switch } from '@/core/components/ui/switch';
 
 export default function EvaluationCard(props: {
   name: string;

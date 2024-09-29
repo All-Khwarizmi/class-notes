@@ -1,10 +1,11 @@
-import IDatabase from "@/core/data/idatabase";
+import { getAppDataBase } from '@/core/data/get-app-db';
+import IDatabase from '@/core/data/idatabase';
+
 import {
   CreateStudentOptions,
   DeleteStudentOptions,
   UpdateStudentOptions,
-} from "../../domain/entities/student-types";
-import { getAppDataBase } from "@/core/data/get-app-db";
+} from '../../domain/entities/student-types';
 
 export default class StudentRepository {
   private readonly _db: IDatabase;

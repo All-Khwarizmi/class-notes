@@ -1,7 +1,6 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { Button } from "@/core/components/ui/button";
+import { Button } from '@/core/components/ui/button';
 import {
   Dialog,
   DialogContent,
@@ -9,23 +8,24 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/core/components/ui/dialog";
-import { Label } from "@/core/components/ui/label";
-import { Input } from "@/core/components/ui/input";
-import { ScrollArea } from "@/core/components/ui/scroll-area";
-import { Check, Image as ImageIcon } from "lucide-react";
+} from '@/core/components/ui/dialog';
+import { Input } from '@/core/components/ui/input';
+import { Label } from '@/core/components/ui/label';
+import { ScrollArea } from '@/core/components/ui/scroll-area';
+import { Check, Image as ImageIcon } from 'lucide-react';
+import { useState } from 'react';
 
 const imagesUrls = [
-  "/images/fredrik-ohlander-s9NttXGehL4-unsplash.jpg",
-  "/images/joel-muniz-ltZBgG22fqk-unsplash.jpg",
-  "/images/lena-polishko-w8zJdG8R_LE-unsplash.jpg",
-  "/images/mos-design-Io433E805vo-unsplash.jpg",
-  "/images/mos-design-jzFbbG2WXv0-unsplash.jpg",
-  "/images/nisha-gurung-M6KJaQ54oB0-unsplash.jpg",
-  "/images/pascal-van-de-vendel-b4ps0846ScI-unsplash.jpg",
-  "/images/shelby-murphy-figueroa-FyH2_oRyfYA-unsplash.jpg",
-  "/images/thomas-de-luze-uFoKmskAUIE-unsplash.jpg",
-  "/images/venti-views-jlphfn0fk4A-unsplash.jpg",
+  '/images/fredrik-ohlander-s9NttXGehL4-unsplash.jpg',
+  '/images/joel-muniz-ltZBgG22fqk-unsplash.jpg',
+  '/images/lena-polishko-w8zJdG8R_LE-unsplash.jpg',
+  '/images/mos-design-Io433E805vo-unsplash.jpg',
+  '/images/mos-design-jzFbbG2WXv0-unsplash.jpg',
+  '/images/nisha-gurung-M6KJaQ54oB0-unsplash.jpg',
+  '/images/pascal-van-de-vendel-b4ps0846ScI-unsplash.jpg',
+  '/images/shelby-murphy-figueroa-FyH2_oRyfYA-unsplash.jpg',
+  '/images/thomas-de-luze-uFoKmskAUIE-unsplash.jpg',
+  '/images/venti-views-jlphfn0fk4A-unsplash.jpg',
 ];
 
 interface SelectImageUrlProps {
@@ -38,7 +38,7 @@ export default function SelectImageUrl({
   setImageUrl,
 }: SelectImageUrlProps) {
   const [open, setOpen] = useState(false);
-  const [userImageUrl, setUserImageUrl] = useState("");
+  const [userImageUrl, setUserImageUrl] = useState('');
 
   const handleImageSelect = (url: string) => {
     setImageUrl(url);
@@ -53,8 +53,8 @@ export default function SelectImageUrl({
           className="object-cover w-full h-48"
           src={imageUrl}
           style={{
-            aspectRatio: "16/9",
-            objectFit: "cover",
+            aspectRatio: '16/9',
+            objectFit: 'cover',
           }}
         />
         <div className="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
@@ -85,8 +85,8 @@ export default function SelectImageUrl({
                     className="object-cover w-full h-32"
                     src={url}
                     style={{
-                      aspectRatio: "16/9",
-                      objectFit: "cover",
+                      aspectRatio: '16/9',
+                      objectFit: 'cover',
                     }}
                   />
                   <div className="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
@@ -103,7 +103,7 @@ export default function SelectImageUrl({
                 id="file"
                 type="file"
                 disabled
-                onClick={() => alert("This feature is not yet implemented")}
+                onClick={() => alert('This feature is not yet implemented')}
               />
             </div>
             <div className="grid gap-2">

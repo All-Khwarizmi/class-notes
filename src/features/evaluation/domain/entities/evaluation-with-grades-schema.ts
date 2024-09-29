@@ -1,5 +1,6 @@
-import { z } from "zod";
-import { GradeTypeUnionSchema } from "./evaluation-schema";
+import { z } from 'zod';
+
+import { GradeTypeUnionSchema } from './evaluation-schema';
 
 // Individual grade schema for student
 export const GradeSchema = z.object({

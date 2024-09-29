@@ -1,21 +1,21 @@
-import useSaveUser from "@/features/profile/application/adapters/services/useSaveUser";
-import { useUpgradeSubscription } from "@/features/profile/presentation/helpers/useUpgradeSubscription";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { debounce } from "lodash";
-import { useRouter } from "next/navigation";
-import { useCallback, useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { getEducationSystemOptions } from "../../domain/entities/education-systems/global";
-import { UserType, userSchema } from "../../domain/entities/user-schema";
-import { useCheckHostnameAvailability } from "./useCheckHostnameAvailability";
-import { isValidHostname } from "@/core/constants/paths/get-reserved-path";
+import { isValidHostname } from '@/core/constants/paths/get-reserved-path';
+import useSaveUser from '@/features/profile/application/adapters/services/useSaveUser';
+import { useUpgradeSubscription } from '@/features/profile/presentation/helpers/useUpgradeSubscription';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { debounce } from 'lodash';
+import { useCallback, useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+
+import { getEducationSystemOptions } from '../../domain/entities/education-systems/global';
+import { UserType, userSchema } from '../../domain/entities/user-schema';
+import { useCheckHostnameAvailability } from './useCheckHostnameAvailability';
 
 const steps = [
-  { id: "personal", title: "Informations personnelles" },
-  { id: "education", title: "Détails de l'éducation" },
-  { id: "subscription", title: "Abonnement" },
-  { id: "complete", title: "Terminer" },
+  { id: 'personal', title: 'Informations personnelles' },
+  { id: 'education', title: "Détails de l'éducation" },
+  { id: 'subscription', title: 'Abonnement' },
+  { id: 'complete', title: 'Terminer' },
 ];
 
 export function useUserOnboarding({ user }: { user: UserType }) {
@@ -24,12 +24,11 @@ export function useUserOnboarding({ user }: { user: UserType }) {
   const [isHostnameAvailable, setIsHostnameAvailable] = useState<
     boolean | null
   >(null);
-  const { mutateAsync: saveUser, isPending: isSavingUser } = useSaveUser();
+  const { mutateAsync: saveUser } = useSaveUser();
   const { handleUpgradeClick, isUpdating: isUpdatingSubscription } =
     useUpgradeSubscription();
-  const router = useRouter();
 
-  const form = useForm<Omit<UserType, "_id" | "userId">>({
+  const form = useForm<Omit<UserType, '_id' | 'userId'>>({
     resolver: zodResolver(
       userSchema.omit({ _id: true, userId: true }).extend({
         hostname: z
@@ -41,12 +40,12 @@ export function useUserOnboarding({ user }: { user: UserType }) {
           ),
       })
     ),
-    defaultValues: { ...user, hostname: user.hostname ?? "" },
+    defaultValues: { ...user, hostname: user.hostname ?? '' },
   });
   const { checkHostnameAvailability, isLoading: isCheckingHostname } =
     useCheckHostnameAvailability();
 
-  const selectedSystem = form.watch("educationSystem");
+  const selectedSystem = form.watch('educationSystem');
   const subjectsOptions = getEducationSystemOptions(selectedSystem);
   const isPending = isUpdating || isUpdatingSubscription || isCheckingHostname;
 
@@ -57,7 +56,7 @@ export function useUserOnboarding({ user }: { user: UserType }) {
           hostname,
           userId: user.userId,
         });
-        console.log("available", available);
+        console.log('available', available);
         setIsHostnameAvailable(available);
       } else {
         setIsHostnameAvailable(false);
@@ -72,7 +71,7 @@ export function useUserOnboarding({ user }: { user: UserType }) {
     }
   }, []);
 
-  async function onSubmit(data: Omit<UserType, "_id" | "userId">) {
+  async function onSubmit(data: Omit<UserType, '_id' | 'userId'>) {
     if (currentStep === steps.length - 1) {
       setIsUpdating(true);
       await saveUser({

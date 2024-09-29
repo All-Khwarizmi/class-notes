@@ -1,13 +1,14 @@
-import { Competence } from "@/features/comp-cat/domain/entities/schemas";
-import { Cours, Sequence } from "../../domain/entities/cours-schemas";
-import { useForm } from "react-hook-form";
-import { CoursSequenceForm } from "../views/AddCoursView";
+import { Competence } from '@/features/comp-cat/domain/entities/schemas';
+import { useForm } from 'react-hook-form';
+
+import { Cours, Sequence } from '../../domain/entities/cours-schemas';
+import { CoursSequenceForm } from '../views/AddCoursView';
 
 function useGetFormValues(options: {
   edit?: boolean;
   cours?: Cours;
   sequence?: Sequence;
-  type: "cours" | "sequence";
+  type: 'cours' | 'sequence';
   competences: Competence[];
 }) {
   const form = useForm<CoursSequenceForm>({
@@ -23,24 +24,24 @@ function useGetFormValues(options: {
             contentType: options.cours?.contentType,
           }
         : options.sequence !== undefined
-        ? {
-            description: options.sequence?.description,
-            category: options.sequence?.category,
-            name: options.sequence?.name,
-            competences: options.sequence?.competencesIds || [],
-            imageUrl: options.sequence?.imageUrl,
-            publish: options.sequence?.publish,
-            contentType: options.sequence?.contentType,
-          }
-        : {
-            description: "",
-            category: "",
-            name: "",
-            contentType: "Markup",
-            competences: [],
-            imageUrl: "",
-            publish: false,
-          },
+          ? {
+              description: options.sequence?.description,
+              category: options.sequence?.category,
+              name: options.sequence?.name,
+              competences: options.sequence?.competencesIds || [],
+              imageUrl: options.sequence?.imageUrl,
+              publish: options.sequence?.publish,
+              contentType: options.sequence?.contentType,
+            }
+          : {
+              description: '',
+              category: '',
+              name: '',
+              contentType: 'Markup',
+              competences: [],
+              imageUrl: '',
+              publish: false,
+            },
   });
   return { form };
 }

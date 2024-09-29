@@ -1,5 +1,6 @@
-import { isLeft } from "fp-ts/lib/Either";
-import AuthRepository, { authRepository } from "../repository/auth-repository";
+import { isLeft } from 'fp-ts/lib/Either';
+
+import AuthRepository, { authRepository } from '../repository/auth-repository';
 
 export interface AuthUseCasesOptions {
   authRepository: AuthRepository;

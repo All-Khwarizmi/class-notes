@@ -1,4 +1,10 @@
-import { Either, isLeft, left } from "fp-ts/lib/Either";
+import Failure from '@/core/failures/failures';
+import ComplementUsecases, {
+  complementUsecases,
+} from '@/features/complement/application/usecases/complement-usecases';
+import { Either, isLeft, left } from 'fp-ts/lib/Either';
+import { right } from 'fp-ts/lib/Either';
+
 import {
   ClasseSequence,
   ClasseSequenceSchema,
@@ -6,15 +12,10 @@ import {
   CoursSchema,
   Sequence,
   SequenceSchema,
-} from "../../domain/entities/cours-schemas";
+} from '../../domain/entities/cours-schemas';
 import CoursRepository, {
   coursRepository,
-} from "../repositories/cours-repository";
-import { right } from "fp-ts/lib/Either";
-import Failure from "@/core/failures/failures";
-import ComplementUsecases, {
-  complementUsecases,
-} from "@/features/complement/application/usecases/complement-usecases";
+} from '../repositories/cours-repository';
 
 export default class CoursUsecases {
   private readonly _repository: CoursRepository;
@@ -71,7 +72,7 @@ export default class CoursUsecases {
     cours,
   }: {
     userId: string;
-    cours: Omit<Cours, "_id" | "createdAt">;
+    cours: Omit<Cours, '_id' | 'createdAt'>;
   }) {
     return this._repository.addCours({ userId, cours });
   }
@@ -99,19 +100,18 @@ export default class CoursUsecases {
     const complementsToDelete = courseComplements.right.map((complement) =>
       this._complementUsecases.deleteCoursComplement({ id: complement.id })
     );
-    const complementsDeletionResult = await Promise.allSettled(
-      complementsToDelete
-    );
+    const complementsDeletionResult =
+      await Promise.allSettled(complementsToDelete);
     // Check if all complements are deleted
     const complementsDeleted = complementsDeletionResult.every(
-      (complement) => complement.status === "fulfilled"
+      (complement) => complement.status === 'fulfilled'
     );
     if (!complementsDeleted) {
       return left(
         Failure.invalidValue({
           invalidValue: complementsDeletionResult,
-          message: "Unable to delete all complements",
-          code: "APP203",
+          message: 'Unable to delete all complements',
+          code: 'APP203',
         })
       );
     }
@@ -127,7 +127,7 @@ export default class CoursUsecases {
     sequence,
   }: {
     userId: string;
-    sequence: Omit<Sequence, "_id" | "createdAt" | "coursIds">;
+    sequence: Omit<Sequence, '_id' | 'createdAt' | 'coursIds'>;
   }) {
     return this._repository.addSequence({ userId, sequence });
   }
@@ -137,7 +137,7 @@ export default class CoursUsecases {
     type,
   }: {
     sequence: Sequence;
-    type?: "template" | "sequence";
+    type?: 'template' | 'sequence';
   }) {
     return this._repository.updateSequence({ sequence, type });
   }
@@ -149,7 +149,7 @@ export default class CoursUsecases {
   }: {
     userId: string;
     sequenceId: string;
-    type?: "template" | "sequence";
+    type?: 'template' | 'sequence';
   }): Promise<Either<Failure<string>, Sequence>> {
     const eitherSequence = await this._repository.getSingleSequence({
       userId,
@@ -170,7 +170,7 @@ export default class CoursUsecases {
           
             ${JSON.stringify(validateSequence.error)}
           `,
-          code: "APP203",
+          code: 'APP203',
         })
       );
     }
@@ -186,7 +186,7 @@ export default class CoursUsecases {
     userId: string;
     sequenceId: string;
     body: string;
-    type?: "template" | "sequence";
+    type?: 'template' | 'sequence';
   }) {
     return this._repository.addBodyToSequence({
       userId,
@@ -219,7 +219,7 @@ export default class CoursUsecases {
           
               ${JSON.stringify(validateSequence.error)}
             `,
-            code: "APP203",
+            code: 'APP203',
           })
         );
       }
@@ -234,11 +234,11 @@ export default class CoursUsecases {
     userId,
   }: {
     sequenceId: string;
-    type: "template" | "sequence";
+    type: 'template' | 'sequence';
     userId: string;
   }) {
     const coursFromSequence = await this.getAllCoursFromSequence({
-      userId: "",
+      userId: '',
       sequenceId,
       type,
     });
@@ -252,14 +252,14 @@ export default class CoursUsecases {
     const coursDeletionResult = await Promise.allSettled(coursToDelete);
 
     const coursDeleted = coursDeletionResult.every(
-      (cours) => cours.status === "fulfilled"
+      (cours) => cours.status === 'fulfilled'
     );
     if (!coursDeleted) {
       return left(
         Failure.invalidValue({
           invalidValue: coursDeletionResult,
-          message: "Unable to delete all cours",
-          code: "APP203",
+          message: 'Unable to delete all cours',
+          code: 'APP203',
         })
       );
     }
@@ -280,7 +280,7 @@ export default class CoursUsecases {
   }: {
     userId: string;
     sequenceId: string;
-    type?: "template" | "sequence";
+    type?: 'template' | 'sequence';
   }): Promise<Either<Failure<string>, Cours[]>> {
     const eitherSequencesCours = await this._repository.getAllCoursFromSequence(
       { userId, sequenceId, type }
@@ -300,7 +300,7 @@ export default class CoursUsecases {
           
               ${JSON.stringify(validateCoursSchema.error)}
             `,
-            code: "APP203",
+            code: 'APP203',
           })
         );
       }
@@ -348,7 +348,7 @@ export default class CoursUsecases {
           
               ${JSON.stringify(validateSequence.error)}
             `,
-            code: "APP203",
+            code: 'APP203',
           })
         );
       }

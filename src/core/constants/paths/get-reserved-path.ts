@@ -1,4 +1,4 @@
-import { RESERVED_PATHS } from "./paths";
+import { RESERVED_PATHS } from './paths';
 
 export function isValidHostname(hostname: string) {
   // Convert hostname to lowercase for case-insensitive comparison
@@ -21,12 +21,12 @@ export function isValidHostname(hostname: string) {
   }
 
   // Check that hostname doesn't start or end with a hyphen
-  if (hostname.startsWith("-") || hostname.endsWith("-")) {
+  if (hostname.startsWith('-') || hostname.endsWith('-')) {
     return false;
   }
 
   // Check for consecutive hyphens
-  if (hostname.includes("--")) {
+  if (hostname.includes('--')) {
     return false;
   }
 
@@ -62,7 +62,7 @@ export function isValidHostname(hostname: string) {
   }
 
   // Check for trademark infringement (example)
-  const trademarks = ["google", "facebook", "twitter", "linkedin", "github"];
+  const trademarks = ['google', 'facebook', 'twitter', 'linkedin', 'github'];
   if (trademarks.some((tm) => lowercaseHostname.includes(tm))) {
     return false;
   }

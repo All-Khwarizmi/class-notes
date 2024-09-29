@@ -1,7 +1,6 @@
-"use client";
+'use client';
 
-import { pricingTiers } from "../Pricing";
-import { Button } from "@/core/components/ui/button";
+import { Button } from '@/core/components/ui/button';
 import {
   Card,
   CardContent,
@@ -9,11 +8,13 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/core/components/ui/card";
-import { useUpgradeSubscription } from "@/features/profile/presentation/helpers/useUpgradeSubscription";
-import { SignedIn, SignedOut, SignInButton, useSession } from "@clerk/nextjs";
-import { ArrowRight } from "lucide-react";
-import { useRouter } from "next/navigation";
+} from '@/core/components/ui/card';
+import { useUpgradeSubscription } from '@/features/profile/presentation/helpers/useUpgradeSubscription';
+import { SignedIn, SignedOut, SignInButton, useSession } from '@clerk/nextjs';
+import { ArrowRight } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+
+import { pricingTiers } from '../Pricing';
 
 export const PricingCard: React.FC<{
   tier: (typeof pricingTiers)[0];
@@ -25,7 +26,7 @@ export const PricingCard: React.FC<{
   const router = useRouter();
   return (
     <Card
-      className={`flex flex-col h-full ${tier.highlighted ? "border-primary shadow-lg scale-105" : ""}`}
+      className={`flex flex-col h-full ${tier.highlighted ? 'border-primary shadow-lg scale-105' : ''}`}
     >
       <CardHeader>
         <div
@@ -37,7 +38,7 @@ export const PricingCard: React.FC<{
         <CardDescription className="text-lg">{tier.name}</CardDescription>
         <CardDescription>
           <span className="text-3xl font-bold">{price.toFixed(2)}€</span>
-          <span className="text-sm">/{isYearly ? "an" : "mois"}</span>
+          <span className="text-sm">/{isYearly ? 'an' : 'mois'}</span>
         </CardDescription>
       </CardHeader>
       <CardContent className="flex-grow">
@@ -46,15 +47,15 @@ export const PricingCard: React.FC<{
       <CardFooter>
         <SignedOut>
           <SignInButton
-            afterSignUpUrl={tier.price > 0 ? "/pricing" : "/dashboard"}
-            afterSignInUrl={tier.price > 0 ? "/pricing" : "/dashboard"}
+            afterSignUpUrl={tier.price > 0 ? '/pricing' : '/dashboard'}
+            afterSignInUrl={tier.price > 0 ? '/pricing' : '/dashboard'}
           >
             <Button
-              className={`w-full ${tier.highlighted ? "bg-primary hover:bg-primary/90" : ""}`}
-              variant={tier.highlighted ? "default" : "outline"}
+              className={`w-full ${tier.highlighted ? 'bg-primary hover:bg-primary/90' : ''}`}
+              variant={tier.highlighted ? 'default' : 'outline'}
               disabled={isUpdating}
             >
-              {tier.price > 0 ? "Connectez-vous" : tier.cta}
+              {tier.price > 0 ? 'Connectez-vous' : tier.cta}
               <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
           </SignInButton>
@@ -62,14 +63,14 @@ export const PricingCard: React.FC<{
 
         <SignedIn>
           <Button
-            className={`w-full ${tier.highlighted ? "bg-primary hover:bg-primary/90" : ""}`}
-            variant={tier.highlighted ? "default" : "outline"}
+            className={`w-full ${tier.highlighted ? 'bg-primary hover:bg-primary/90' : ''}`}
+            variant={tier.highlighted ? 'default' : 'outline'}
             disabled={isUpdating}
             onClick={async () => {
               if (tier.price > 0) {
                 return await handleUpgradeClick();
               } else {
-                router.push("/dashboard");
+                router.push('/dashboard');
               }
             }}
           >

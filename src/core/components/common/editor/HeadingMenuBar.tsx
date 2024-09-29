@@ -1,53 +1,53 @@
-import React from "react";
-import { Editor } from "@tiptap/react";
-import { Level } from "@tiptap/extension-heading";
-import { cn } from "@/lib/utils";
-import { Type } from "lucide-react";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/core/components/ui/popover";
+} from '@/core/components/ui/popover';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/core/components/ui/select";
+} from '@/core/components/ui/select';
+import { cn } from '@/lib/utils';
+import { Level } from '@tiptap/extension-heading';
+import { Editor } from '@tiptap/react';
+import { Type } from 'lucide-react';
+import React from 'react';
 
 interface HeadingOption {
   label: string;
-  value: Level | "paragraph";
+  value: Level | 'paragraph';
   className: string;
 }
 
 const headingOptions: HeadingOption[] = [
-  { label: "Paragraph", value: "paragraph", className: "text-base" },
-  { label: "Heading 1", value: 1, className: "text-3xl font-bold" },
-  { label: "Heading 2", value: 2, className: "text-2xl font-bold" },
-  { label: "Heading 3", value: 3, className: "text-xl font-bold" },
-  { label: "Heading 4", value: 4, className: "text-lg font-semibold" },
-  { label: "Heading 5", value: 5, className: "text-base font-semibold" },
-  { label: "Heading 6", value: 6, className: "text-sm font-semibold" },
+  { label: 'Paragraph', value: 'paragraph', className: 'text-base' },
+  { label: 'Heading 1', value: 1, className: 'text-3xl font-bold' },
+  { label: 'Heading 2', value: 2, className: 'text-2xl font-bold' },
+  { label: 'Heading 3', value: 3, className: 'text-xl font-bold' },
+  { label: 'Heading 4', value: 4, className: 'text-lg font-semibold' },
+  { label: 'Heading 5', value: 5, className: 'text-base font-semibold' },
+  { label: 'Heading 6', value: 6, className: 'text-sm font-semibold' },
 ];
 
 export function HeadingMenuBar({ editor }: { editor: Editor }) {
-  const setHeading = (value: Level | "paragraph") => {
-    if (value === "paragraph") {
+  const setHeading = (value: Level | 'paragraph') => {
+    if (value === 'paragraph') {
       editor.chain().focus().setParagraph().run();
     } else {
       editor.chain().focus().setHeading({ level: value }).run();
     }
   };
 
-  const getCurrentHeading = (): Level | "paragraph" => {
+  const getCurrentHeading = (): Level | 'paragraph' => {
     for (let i = 1; i <= 6; i++) {
-      if (editor.isActive("heading", { level: i as Level })) {
+      if (editor.isActive('heading', { level: i as Level })) {
         return i as Level;
       }
     }
-    return "paragraph";
+    return 'paragraph';
   };
 
   return (
@@ -65,7 +65,7 @@ export function HeadingMenuBar({ editor }: { editor: Editor }) {
           value={getCurrentHeading().toString()}
           onValueChange={(value) =>
             setHeading(
-              value === "paragraph" ? "paragraph" : (parseInt(value) as Level)
+              value === 'paragraph' ? 'paragraph' : (parseInt(value) as Level)
             )
           }
         >
@@ -77,7 +77,7 @@ export function HeadingMenuBar({ editor }: { editor: Editor }) {
               <SelectItem
                 key={option.value}
                 value={option.value.toString()}
-                className={cn("cursor-pointer", option.className)}
+                className={cn('cursor-pointer', option.className)}
               >
                 {option.label}
               </SelectItem>

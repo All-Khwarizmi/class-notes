@@ -1,17 +1,18 @@
-"use client";
+'use client';
 
-import React, { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { Check, X, Zap, Book, Brain, Info } from "lucide-react";
-import { PricingCard } from "./landing/PricingCard";
-import { Badge } from "@/core/components/ui/badge";
+import { Badge } from '@/core/components/ui/badge';
+import { Switch } from '@/core/components/ui/switch';
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@/core/components/ui/tooltip";
-import { Switch } from "@/core/components/ui/switch";
+} from '@/core/components/ui/tooltip';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Check, X, Zap, Book, Brain, Info } from 'lucide-react';
+import React, { useState } from 'react';
+
+import { PricingCard } from './landing/PricingCard';
 
 interface PricingFeature {
   name: string;
@@ -23,43 +24,43 @@ interface PricingFeature {
 
 const pricingFeatures: PricingFeature[] = [
   {
-    name: "Création de contenu",
-    description: "Créez des cours, séquences et évaluations",
+    name: 'Création de contenu',
+    description: 'Créez des cours, séquences et évaluations',
     tiers: { free: true, basic: true, premium: true },
   },
   {
-    name: "Accès à la plateforme",
-    description: "Utilisez la plateforme sans limite de temps",
+    name: 'Accès à la plateforme',
+    description: 'Utilisez la plateforme sans limite de temps',
     tiers: { free: true, basic: true, premium: true },
   },
   {
-    name: "Résumés IA",
-    description: "Générez des résumés de cours automatiquement",
-    tiers: { free: false, basic: "Illimité", premium: "Illimité" },
+    name: 'Résumés IA',
+    description: 'Générez des résumés de cours automatiquement',
+    tiers: { free: false, basic: 'Illimité', premium: 'Illimité' },
   },
   {
-    name: "Rapports élèves IA",
+    name: 'Rapports élèves IA',
     description:
-      "Obtenez des insights sur la performance individuelle des élèves",
-    tiers: { free: false, basic: "Illimité", premium: "Illimité" },
+      'Obtenez des insights sur la performance individuelle des élèves',
+    tiers: { free: false, basic: 'Illimité', premium: 'Illimité' },
   },
   {
-    name: "Rapports de classe IA",
-    description: "Analysez les performances globales de vos classes",
-    tiers: { free: false, basic: "10/mois", premium: "Illimité" },
+    name: 'Rapports de classe IA',
+    description: 'Analysez les performances globales de vos classes',
+    tiers: { free: false, basic: '10/mois', premium: 'Illimité' },
   },
   {
-    name: "Quiz IA",
+    name: 'Quiz IA',
     description: "Créez des quiz personnalisés avec l'IA",
-    tiers: { free: false, basic: "20/mois", premium: "Illimité" },
+    tiers: { free: false, basic: '20/mois', premium: 'Illimité' },
   },
   {
-    name: "Analyses avancées",
-    description: "Accédez à des analyses détaillées et des recommandations",
-    tiers: { free: false, basic: "Limitées", premium: true },
+    name: 'Analyses avancées',
+    description: 'Accédez à des analyses détaillées et des recommandations',
+    tiers: { free: false, basic: 'Limitées', premium: true },
   },
   {
-    name: "Création auto. de contenu",
+    name: 'Création auto. de contenu',
     description: "Générez du contenu pédagogique avec l'IA",
     tiers: { free: false, basic: false, premium: true },
   },
@@ -67,32 +68,32 @@ const pricingFeatures: PricingFeature[] = [
 
 export const pricingTiers = [
   {
-    name: "Découverte",
-    brandName: "ClasseStarter",
+    name: 'Découverte',
+    brandName: 'ClasseStarter',
     price: 0,
-    description: "Parfait pour découvrir les bases de La Classe",
-    cta: "Commencer gratuitement",
+    description: 'Parfait pour découvrir les bases de La Classe',
+    cta: 'Commencer gratuitement',
     icon: Book,
-    color: "text-blue-500",
+    color: 'text-blue-500',
   },
   {
-    name: "Essentiel",
-    brandName: "ClassePro",
+    name: 'Essentiel',
+    brandName: 'ClassePro',
     price: 5,
     description: "L'essentiel de l'IA pour optimiser votre enseignement",
-    cta: "Essayer ClassePro",
+    cta: 'Essayer ClassePro',
     icon: Zap,
-    color: "text-yellow-500",
+    color: 'text-yellow-500',
     highlighted: true,
   },
   {
-    name: "Expert",
-    brandName: "ClasseGenius",
+    name: 'Expert',
+    brandName: 'ClasseGenius',
     price: 15,
     description: "Exploitez tout le potentiel de l'IA dans votre enseignement",
-    cta: "Choisir ClasseGenius",
+    cta: 'Choisir ClasseGenius',
     icon: Brain,
-    color: "text-purple-500",
+    color: 'text-purple-500',
   },
 ];
 
@@ -114,7 +115,7 @@ const FeatureRow: React.FC<{ feature: PricingFeature }> = ({ feature }) => {
       </td>
       {Object.entries(feature.tiers).map(([tier, value]) => (
         <td key={tier} className="py-4 px-2 text-center">
-          {typeof value === "boolean" ? (
+          {typeof value === 'boolean' ? (
             value ? (
               <Check className="mx-auto h-5 w-5 text-green-500" />
             ) : (
@@ -146,11 +147,11 @@ const EnhancedPricingTable: React.FC = () => {
         </div>
 
         <div className="flex justify-center items-center space-x-4 mb-8">
-          <span className={`text-sm ${!isYearly ? "font-bold" : ""}`}>
+          <span className={`text-sm ${!isYearly ? 'font-bold' : ''}`}>
             Mensuel
           </span>
           <Switch checked={isYearly} onCheckedChange={setIsYearly} />
-          <span className={`text-sm ${isYearly ? "font-bold" : ""}`}>
+          <span className={`text-sm ${isYearly ? 'font-bold' : ''}`}>
             Annuel
           </span>
           {isYearly && (

@@ -1,11 +1,11 @@
-import { Image } from "lucide-react";
-import { Editor } from "@tiptap/react";
+import { Editor } from '@tiptap/react';
+import { Image } from 'lucide-react';
 
 export default function MenuImage(props: { editor: Editor }) {
   const editor = props.editor;
 
   function insertImage() {
-    const url = window.prompt("URL");
+    const url = window.prompt('URL');
 
     if (url) {
       editor!.chain().focus().setImage({ src: url }).run();

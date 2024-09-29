@@ -1,9 +1,10 @@
-"use client";
+'use client';
 
-import Link from "next/link";
-import Hero from "./HeroSection";
-import Features from "@/core/components/layout/Features";
-import EnhancedPricingTable from "@/core/components/layout/Pricing";
+import Features from '@/core/components/layout/Features';
+import EnhancedPricingTable from '@/core/components/layout/Pricing';
+import Link from 'next/link';
+
+import Hero from './HeroSection';
 
 export default function Component() {
   return (

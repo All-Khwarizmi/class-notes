@@ -1,11 +1,13 @@
-import { QUERY_KEYS } from "@/core/query/ query-keys";
-import { useMutation } from "@tanstack/react-query";
-import { complementUsecases } from "../../usecases/complement-usecases";
-import { Complement } from "@/features/complement/domain/complement-schemas";
+import { QUERY_KEYS } from '@/core/query/ query-keys';
+import { Complement } from '@/features/complement/domain/complement-schemas';
+import { useMutation } from '@tanstack/react-query';
+
+import { complementUsecases } from '../../usecases/complement-usecases';
+
 export interface AddComplementBaseOptions {
   complementBaseOptions: Pick<
     Complement,
-    "name" | "description" | "type" | "publish" | "contentType"
+    'name' | 'description' | 'type' | 'publish' | 'contentType'
   >;
   coursId: string;
 }
@@ -28,7 +30,7 @@ export default function useAddRessource() {
           publish: complement.complementBaseOptions.publish,
           contentType: complement.complementBaseOptions.contentType,
           coursId: complement.coursId,
-          body: "",
+          body: '',
         },
       }),
   });

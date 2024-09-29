@@ -1,15 +1,15 @@
-import { faker } from "@faker-js/faker";
+import { faker } from '@faker-js/faker';
 
-describe("Signed in", () => {
+describe('Signed in', () => {
   beforeEach(() => {
-    cy.session("signed-in", () => {
+    cy.session('signed-in', () => {
       cy.signIn();
     });
   });
   // const baseUrl = Cypress.env("CYPRESS_BASE_URL");
 
-  context("Should be able to create a class", () => {
-    it("should create a class", () => {
+  context('Should be able to create a class', () => {
+    it('should create a class', () => {
       // open classes page
       cy.visit(`/classes`, {
         timeout: 10000,
@@ -18,32 +18,32 @@ describe("Signed in", () => {
       const className = faker.airline.airline().name;
       const classDescription = faker.lorem.sentence();
 
-      cy.getByTestId("add-class").should("exist").click();
-      const classNameInput = cy.getByTestId("class-name-input");
-      classNameInput.should("exist").type(className);
-      classNameInput.should("have.value", className);
+      cy.getByTestId('add-class').should('exist').click();
+      const classNameInput = cy.getByTestId('class-name-input');
+      classNameInput.should('exist').type(className);
+      classNameInput.should('have.value', className);
 
-      const classDescriptionInput = cy.getByTestId("class-description-input");
-      classDescriptionInput.should("exist").clear().type(classDescription);
-      classDescriptionInput.should("have.value", classDescription);
+      const classDescriptionInput = cy.getByTestId('class-description-input');
+      classDescriptionInput.should('exist').clear().type(classDescription);
+      classDescriptionInput.should('have.value', classDescription);
 
-      const classImageUrlInput = cy.getByTestId("class-image-url-input");
+      const classImageUrlInput = cy.getByTestId('class-image-url-input');
       classImageUrlInput
-        .should("exist")
+        .should('exist')
         .clear()
-        .type("https://picsum.photos/200/300");
-      classImageUrlInput.should("have.value", "https://picsum.photos/200/300");
+        .type('https://picsum.photos/200/300');
+      classImageUrlInput.should('have.value', 'https://picsum.photos/200/300');
 
-      const submitButton = cy.getByTestId("submit-class");
-      submitButton.should("exist").click();
+      const submitButton = cy.getByTestId('submit-class');
+      submitButton.should('exist').click();
 
       cy.visit(`/classes`, {
         timeout: 10000,
         failOnStatusCode: false,
       });
-      const table = cy.get("table");
-      table.should("exist");
-      table.find("tr").eq(-1).should("contain", className);
+      const table = cy.get('table');
+      table.should('exist');
+      table.find('tr').eq(-1).should('contain', className);
     });
   });
 

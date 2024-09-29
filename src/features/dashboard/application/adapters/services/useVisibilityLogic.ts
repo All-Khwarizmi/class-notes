@@ -1,14 +1,14 @@
-import { toastWrapper } from "@/core/utils/toast-wrapper";
-import useGetVisibility from "@/features/classe/application/adapters/services/useGetVisibility";
-import useUpdateVisibility from "@/features/classe/application/adapters/services/useUpdateVisibility";
+import { toastWrapper } from '@/core/utils/toast-wrapper';
+import useGetVisibility from '@/features/classe/application/adapters/services/useGetVisibility';
+import useUpdateVisibility from '@/features/classe/application/adapters/services/useUpdateVisibility';
 import {
   FlatVisibilityType,
   flatVisibilityType,
   structuredVisibilityType,
   toggleVisibility,
-} from "@/features/classe/domain/visibility-schema";
-import { isLeft, isRight } from "fp-ts/lib/Either";
-import { useState, useEffect } from "react";
+} from '@/features/classe/domain/visibility-schema';
+import { isLeft, isRight } from 'fp-ts/lib/Either';
+import { useState, useEffect } from 'react';
 
 export function useVisibilityLogic(options: { userId: string }) {
   const [visibilityState, setVisibilityState] = useState<FlatVisibilityType>();
@@ -30,7 +30,7 @@ export function useVisibilityLogic(options: { userId: string }) {
     }
   }, [visibility, isLoading, isError, error]);
   const toggleStateVisibility = (args: {
-    type: "classe" | "sequence" | "cours" | "complement";
+    type: 'classe' | 'sequence' | 'cours' | 'complement';
     typeId: string;
     publish: boolean;
   }) => {

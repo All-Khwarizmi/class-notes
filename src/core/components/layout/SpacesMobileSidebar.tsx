@@ -1,11 +1,12 @@
-import { useState, useEffect } from "react";
-import { Sheet, SheetContent, SheetTrigger } from "@/core/components/ui/sheet";
-import MenuIcon from "../icons/MenuIcon";
-import { NavItem } from "@/lib/types";
-import { ModeToggle } from "../common/ModeToggle";
-import { SpacesSideNav } from "./SpacesSideNav";
-import { GoBackButton } from "../common/navigation/GoBackButton";
-import Title from "../common/Title";
+import { Sheet, SheetContent, SheetTrigger } from '@/core/components/ui/sheet';
+import { NavItem } from '@/lib/types';
+import { useState, useEffect } from 'react';
+
+import { ModeToggle } from '../common/ModeToggle';
+import Title from '../common/Title';
+import { GoBackButton } from '../common/navigation/GoBackButton';
+import MenuIcon from '../icons/MenuIcon';
+import { SpacesSideNav } from './SpacesSideNav';
 
 export const SpacesMobileSidebar = (props: { navItems?: NavItem[] }) => {
   const [open, setOpen] = useState(false);

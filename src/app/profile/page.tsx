@@ -1,10 +1,6 @@
-import ProfileLayout from "./ProfileLayout";
+import ProfileLayout from './ProfileLayout';
 
-export const dynamic = "force-dynamic";
+export const dynamic = 'force-dynamic';
 export default async function Page() {
-  return (
-    
-      <ProfileLayout />
-  
-  );
+  return <ProfileLayout />;
 }

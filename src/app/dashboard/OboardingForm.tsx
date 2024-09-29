@@ -1,33 +1,6 @@
-"use client";
+'use client';
 
-import { UserButton } from "@clerk/nextjs";
-import {
-  CalendarDaysIcon,
-  CoinsIcon,
-  ArrowRight,
-  ArrowLeft,
-  CheckCircle,
-  XCircle,
-} from "lucide-react";
-import { UserType } from "@/features/user/domain/entities/user-schema";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/core/components/ui/form";
-import { Input } from "@/core/components/ui/input";
-import { Button } from "@/core/components/ui/button";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/core/components/ui/select";
+import { Button } from '@/core/components/ui/button';
 import {
   Card,
   CardContent,
@@ -35,14 +8,40 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/core/components/ui/card";
-import { Separator } from "@/core/components/ui/separator";
-import { Progress } from "@/core/components/ui/progress";
-import { countryOptions } from "@/features/user/domain/entities/user-schema";
-import { educationSystemOptions } from "@/features/user/domain/entities/education-systems/education-system";
-
-import { checkUserCredits } from "@/features/profile/presentation/helpers/helpers";
-import { useUserOnboarding } from "@/features/user/presentation/hooks/useUserOnboarding";
+} from '@/core/components/ui/card';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/core/components/ui/form';
+import { Input } from '@/core/components/ui/input';
+import { Progress } from '@/core/components/ui/progress';
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/core/components/ui/select';
+import { Separator } from '@/core/components/ui/separator';
+import { checkUserCredits } from '@/features/profile/presentation/helpers/helpers';
+import { educationSystemOptions } from '@/features/user/domain/entities/education-systems/education-system';
+import { UserType } from '@/features/user/domain/entities/user-schema';
+import { countryOptions } from '@/features/user/domain/entities/user-schema';
+import { useUserOnboarding } from '@/features/user/presentation/hooks/useUserOnboarding';
+import { UserButton } from '@clerk/nextjs';
+import {
+  CalendarDaysIcon,
+  CoinsIcon,
+  ArrowRight,
+  ArrowLeft,
+  CheckCircle,
+  XCircle,
+} from 'lucide-react';
 
 export default function OnboardingProcess({ user }: { user: UserType }) {
   const {
@@ -80,7 +79,7 @@ export default function OnboardingProcess({ user }: { user: UserType }) {
           {steps.map((step, index) => (
             <div
               key={step.id}
-              className={index <= currentStep ? "text-primary" : ""}
+              className={index <= currentStep ? 'text-primary' : ''}
             >
               {step.title}
             </div>
@@ -257,7 +256,7 @@ export default function OnboardingProcess({ user }: { user: UserType }) {
                       <p className="text-2xl font-semibold flex items-center">
                         <CalendarDaysIcon className="w-5 h-5 mr-2" />
                         {user.endsOn
-                          ? new Date(user.endsOn).toLocaleDateString("fr-FR")
+                          ? new Date(user.endsOn).toLocaleDateString('fr-FR')
                           : "Pas d'abonnement"}
                       </p>
                     </div>
@@ -316,7 +315,7 @@ export default function OnboardingProcess({ user }: { user: UserType }) {
             disabled={isPending}
             data-testid="next-step-btn"
           >
-            {isPending ? "Mise à jour..." : "Suivant"}{" "}
+            {isPending ? 'Mise à jour...' : 'Suivant'}{' '}
             <ArrowRight className="ml-2 h-4 w-4" />
           </Button>
         ) : (

@@ -1,5 +1,6 @@
-import { PropsWithChildren, createContext, useContext } from "react";
-import { NavItem } from "@/lib/types";
+import { NavItem } from '@/lib/types';
+import { PropsWithChildren, createContext, useContext } from 'react';
+
 export type SpacesLayoutContextType = PropsWithChildren & {
   readonly children?: React.ReactNode;
 
@@ -15,7 +16,7 @@ export const useSpacesLayoutContext = () => {
   const context = useContext(SpacesLayoutContext);
   if (!context) {
     throw new Error(
-      "useSpacesLayoutContext must be used within a <SpacesLayoutProvider></SpacesLayoutProvider>"
+      'useSpacesLayoutContext must be used within a <SpacesLayoutProvider></SpacesLayoutProvider>'
     );
   }
   return context;

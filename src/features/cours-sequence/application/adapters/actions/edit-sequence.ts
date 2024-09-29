@@ -1,21 +1,23 @@
-"use server";
+'use server';
 
-import Failure from "@/core/failures/failures";
-import { compCatUsecases } from "@/features/comp-cat/application/usecases/comp-cat-usecases";
-import { Competence } from "@/features/comp-cat/domain/entities/schemas";
+import Failure from '@/core/failures/failures';
+import { compCatUsecases } from '@/features/comp-cat/application/usecases/comp-cat-usecases';
+import { Competence } from '@/features/comp-cat/domain/entities/schemas';
 import {
   Sequence,
   SequenceSchema,
-} from "@/features/cours-sequence/domain/entities/cours-schemas";
-import { isLeft, Either } from "fp-ts/lib/Either";
-import { revalidateTag } from "next/cache";
-import { coursUsecases } from "../../usecases/cours-usecases";
+} from '@/features/cours-sequence/domain/entities/cours-schemas';
+import { isLeft, Either } from 'fp-ts/lib/Either';
+import { revalidateTag } from 'next/cache';
+
+import { coursUsecases } from '../../usecases/cours-usecases';
+
 async function editSequence(options: {
   userId: string;
   slug: string;
-  type: "sequence" | "template";
+  type: 'sequence' | 'template';
 }) {
-  revalidateTag("sequence-edit");
+  revalidateTag('sequence-edit');
   const batch = await Promise.allSettled([
     compCatUsecases.getCompetences({
       userId: options.userId,
@@ -30,7 +32,7 @@ async function editSequence(options: {
   let sequence: Sequence | null = null;
   let failures: Failure<string>[] = [];
   const isFailure = batch.some((result, index) => {
-    if (result.status === "rejected") {
+    if (result.status === 'rejected') {
       failures.push(result.reason);
       return true;
     }

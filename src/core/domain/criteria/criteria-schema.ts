@@ -1,6 +1,7 @@
-import { z } from "zod";
-import { GradeTypeEnum } from "../grades/grade-schema";
-import { DynamicFieldSchema } from "../dynamic-field/dynamic-field-schema";
+import { z } from 'zod';
+
+import { DynamicFieldSchema } from '../dynamic-field/dynamic-field-schema';
+import { GradeTypeEnum } from '../grades/grade-schema';
 
 const GradedCriteria = z.object({
   isGraded: z.literal(true),
@@ -29,5 +30,5 @@ export const CriteriaSchema = z
   })
   .and(GradedCriteria.or(NonGradedCriteria)); // Combine base with graded or non-graded extensions
 
-  export const CriteriaSchemaArray = z.array(CriteriaSchema);
+export const CriteriaSchemaArray = z.array(CriteriaSchema);
 export type CriteriaType = z.infer<typeof CriteriaSchema>;

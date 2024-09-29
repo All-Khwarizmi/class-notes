@@ -1,13 +1,13 @@
-import { QUERY_KEYS } from "@/core/query/ query-keys";
-import checkAuthAndRedirect from "@/data-access/auth/check-and-redirect";
-import getEvaluations from "@/features/evaluation/application/adapters/actions/get-evaluations";
-import EvaluationTableView from "@/features/evaluation/presentation/views/EvaluationTableView";
+import { QUERY_KEYS } from '@/core/query/ query-keys';
+import checkAuthAndRedirect from '@/data-access/auth/check-and-redirect';
+import getEvaluations from '@/features/evaluation/application/adapters/actions/get-evaluations';
+import EvaluationTableView from '@/features/evaluation/presentation/views/EvaluationTableView';
 import {
   dehydrate,
   HydrationBoundary,
   QueryClient,
-} from "@tanstack/react-query";
-import React from "react";
+} from '@tanstack/react-query';
+import React from 'react';
 
 async function EvaluationsServerLayer() {
   const { userId } = await checkAuthAndRedirect();

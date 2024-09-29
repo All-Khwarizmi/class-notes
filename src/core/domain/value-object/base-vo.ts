@@ -1,19 +1,20 @@
-import { Either, getOrElseW, isRight, left, right } from "fp-ts/lib/Either";
-import { pipe } from "fp-ts/lib/function";
-import { isArray, isEmpty, isEqual, isString } from "lodash";
-import Failure from "../../failures/failures";
-import { CustomError } from "../../errors/error";
-import { ValueObject as immutableVO } from "immutable";
+import { Either, getOrElseW, isRight, left, right } from 'fp-ts/lib/Either';
+import { pipe } from 'fp-ts/lib/function';
+import { ValueObject as immutableVO } from 'immutable';
+import { isArray, isEmpty, isEqual, isString } from 'lodash';
+
+import { CustomError } from '../../errors/error';
+import Failure from '../../failures/failures';
 
 /**
  * @description An immutable type that is distinguishable only by the state of its properties
  */
 export abstract class ValueObject<T> implements immutableVO {
   equals(other: unknown): boolean {
-    throw new Error("Method not implemented.");
+    throw new Error('Method not implemented.');
   }
   hashCode(): number {
-    throw new Error("Method not implemented.");
+    throw new Error('Method not implemented.');
   }
   /**
    *
@@ -43,9 +44,9 @@ export abstract class ValueObject<T> implements immutableVO {
       getOrElseW(() => {
         throw new CustomError(
           this.value,
-          "Crash",
-          "Unexpected error occured accessing value object value",
-          "Value object"
+          'Crash',
+          'Unexpected error occured accessing value object value',
+          'Value object'
         );
       })
     );
@@ -68,7 +69,7 @@ export abstract class ValueObject<T> implements immutableVO {
       ? left(
           Failure.invalidValue({
             invalidValue: value,
-            message: "A String must not be empty",
+            message: 'A String must not be empty',
           })
         )
       : right(value);
@@ -78,7 +79,7 @@ export abstract class ValueObject<T> implements immutableVO {
       ? left(
           Failure.invalidValue({
             invalidValue: value,
-            message: "A String must be at least 10 chars long",
+            message: 'A String must be at least 10 chars long',
           })
         )
       : right(value);
@@ -88,7 +89,7 @@ export abstract class ValueObject<T> implements immutableVO {
       ? left(
           Failure.invalidValue({
             invalidValue: value,
-            message: "An ID must be at least 5 chars long",
+            message: 'An ID must be at least 5 chars long',
           })
         )
       : right(value);
@@ -98,7 +99,7 @@ export abstract class ValueObject<T> implements immutableVO {
       ? left(
           Failure.invalidValue({
             invalidValue: value,
-            message: "A number must be greater than 0",
+            message: 'A number must be greater than 0',
           })
         )
       : right(value);
@@ -112,7 +113,7 @@ export abstract class ValueObject<T> implements immutableVO {
       ? left(
           Failure.invalidValue({
             invalidValue: value,
-            message: "A list of strings must not be empty",
+            message: 'A list of strings must not be empty',
           })
         )
       : right(value);

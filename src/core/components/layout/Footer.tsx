@@ -1,4 +1,4 @@
-import Title from "@/core/components/common/Title";
+import Title from '@/core/components/common/Title';
 
 export default function Footer() {
   return (

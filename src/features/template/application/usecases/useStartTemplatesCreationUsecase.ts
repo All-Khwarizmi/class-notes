@@ -1,4 +1,4 @@
-import { useTemplateCreationStore } from "../../common/template-store";
+import { useTemplateCreationStore } from '../../common/template-store';
 
 export default function useStartTemplateCreationUsecase() {
   const setIsCreating = useTemplateCreationStore(

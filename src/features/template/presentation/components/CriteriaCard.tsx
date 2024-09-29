@@ -1,12 +1,13 @@
-"use client";
-import { ScrollArea } from "@/core/components/ui/scroll-area";
+'use client';
+
+import useGetCriterias from '@/core/application/criteria/useGetCriterias';
 import {
   Card,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/core/components/ui/card";
-import useGetCriterias from "@/core/application/criteria/useGetCriterias";
+} from '@/core/components/ui/card';
+import { ScrollArea } from '@/core/components/ui/scroll-area';
 
 export default function Criteria() {
   const { criteriaList: criterias, loading } = useGetCriterias();
@@ -23,7 +24,7 @@ export default function Criteria() {
             <Card key={criteria._id} className="mb-2">
               <CardHeader>
                 <CardTitle>
-                  {" "}
+                  {' '}
                   {index + 1}- {criteria.name}
                 </CardTitle>
                 <CardDescription>{criteria.description}</CardDescription>

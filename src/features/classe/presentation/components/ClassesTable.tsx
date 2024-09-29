@@ -1,14 +1,24 @@
-"use client";
+'use client';
 
-import React from "react";
-import Link from "next/link";
-import { Plus, Loader2 } from "lucide-react";
-import { useClassesTableLogic } from "../services/hooks/useClassesTableLogic";
-import { Button } from "@/core/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/core/components/ui/card";
-import { Alert, AlertDescription, AlertTitle } from "@/core/components/ui/alert";
-import CoursSequenceCard from "@/features/cours-sequence/presentation/components/CoursSequenceCard";
-import { BASE_IMAGE_URL } from "@/core/constants/image";
+import {
+  Alert,
+  AlertDescription,
+  AlertTitle,
+} from '@/core/components/ui/alert';
+import { Button } from '@/core/components/ui/button';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from '@/core/components/ui/card';
+import { BASE_IMAGE_URL } from '@/core/constants/image';
+import CoursSequenceCard from '@/features/cours-sequence/presentation/components/CoursSequenceCard';
+import { Plus, Loader2 } from 'lucide-react';
+import Link from 'next/link';
+import React from 'react';
+
+import { useClassesTableLogic } from '../services/hooks/useClassesTableLogic';
 
 interface ClassesTableProps {
   userId: string;
@@ -33,7 +43,7 @@ export default function ClassesTable({ userId }: ClassesTableProps) {
       <Alert variant="destructive">
         <AlertTitle>Erreur</AlertTitle>
         <AlertDescription>
-          Une erreur s&apos;est produite lors du chargement des classes.{" "}
+          Une erreur s&apos;est produite lors du chargement des classes.{' '}
           {error?.message}
         </AlertDescription>
       </Alert>
@@ -52,14 +62,14 @@ export default function ClassesTable({ userId }: ClassesTableProps) {
               deleteSequence={() => {
                 if (
                   window.confirm(
-                    "Êtes-vous sûr de vouloir supprimer cette classe ?"
+                    'Êtes-vous sûr de vouloir supprimer cette classe ?'
                   )
                 ) {
                   handleDelete(classe.id);
                 }
               }}
               title={classe.name}
-              description={classe.description ?? ""}
+              description={classe.description ?? ''}
               imageUrl={classe.imageUrl ?? BASE_IMAGE_URL}
               tags={classe.educationLevel}
               showViewButton={true}
@@ -76,8 +86,8 @@ export default function ClassesTable({ userId }: ClassesTableProps) {
           </CardHeader>
           <CardContent>
             <p className="text-muted-foreground">
-              Vous n&apos;avez pas encore ajouté de classe. Commencez par en ajouter
-              une.
+              Vous n&apos;avez pas encore ajouté de classe. Commencez par en
+              ajouter une.
             </p>
           </CardContent>
         </Card>
