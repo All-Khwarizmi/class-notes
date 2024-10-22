@@ -1,6 +1,5 @@
 'use client';
 
-import { UserAuth } from '@/core/auth/i-auth';
 import ErrorDialog from '@/core/components/common/ErrorDialog';
 import { Competence } from '@/features/comp-cat/domain/entities/schemas';
 import { useState } from 'react';

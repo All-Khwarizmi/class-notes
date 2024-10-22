@@ -1,12 +1,7 @@
 'use client';
 
 import { Button } from '@/core/components/ui/button';
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from '@/core/components/ui/card';
+import { Card, CardContent } from '@/core/components/ui/card';
 import {
   Form,
   FormControl,
@@ -44,13 +39,16 @@ import CollapsibleCriteriaList from '../components/CollapsibleCriteriaList';
 import GradeTypeSelectGroup from '../components/GradeTypeSelectGroup';
 import useCreateEvaluationBaseFormLogic from '../hooks/useCreateEvaluationBaseFormLogic';
 
+interface EvaluationBaseFormProps {
+  userId: string;
+  evaluation?: EvaluationBaseType;
+}
+
 export default function EvaluationBaseForm({
   userId,
   evaluation,
-}: {
-  userId: string;
-  evaluation?: EvaluationBaseType;
-}) {
+}: EvaluationBaseFormProps) {
+  const router = useRouter();
   const {
     form,
     criterias,
@@ -67,20 +65,13 @@ export default function EvaluationBaseForm({
 
   const { data } = useGetCompCat({ userId });
   const { competences, categories } = useMemo(() => {
-    if (!data || isLeft(data))
-      return {
-        competences: [],
-        categories: [],
-      };
+    if (!data || isLeft(data)) return { competences: [], categories: [] };
     return {
       competences: groupCompetencesByCategory(data.right.competences),
       categories: data.right.categories,
     };
   }, [data]);
-  const router = useRouter();
-  function goToEvaluations() {
-    router.push('/evaluations');
-  }
+
   useEffect(() => {
     if (isSuccess) {
       toastWrapper.success('Évaluation créée avec succès !');
@@ -91,19 +82,25 @@ export default function EvaluationBaseForm({
     }
   }, [isSuccess, isUpdateSuccess, form]);
 
+  const goToEvaluations = () => router.push('/evaluations');
+
   return (
-    <div className="container mx-auto py-6">
-      <Button variant="ghost" onClick={goToEvaluations} className="mb-4">
-        <ArrowLeft className="mr-2 h-4 w-4" />
-        Retour aux évaluations
-      </Button>
-      <Card className="w-full max-w-2xl mx-auto">
-        <CardHeader>
-          <CardTitle>
-            {evaluation ? "Modifier l'évaluation" : 'Créer une évaluation'}
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
+    <div className="container mx-auto py-6 max-w-4xl">
+      <div className="flex justify-between items-center mb-6">
+        <Button
+          variant="ghost"
+          onClick={goToEvaluations}
+          className="flex items-center"
+        >
+          <ArrowLeft className="mr-2 h-4 w-4" />
+          Retour aux évaluations
+        </Button>
+        <h1 className="text-2xl font-bold">
+          {evaluation ? "Modifier l'évaluation" : 'Créer une évaluation'}
+        </h1>
+      </div>
+      <Card>
+        <CardContent className="pt-6">
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
               <FormField

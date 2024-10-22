@@ -6,13 +6,7 @@ import {
   AlertTitle,
 } from '@/core/components/ui/alert';
 import { Button } from '@/core/components/ui/button';
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  CardFooter,
-} from '@/core/components/ui/card';
+import { Card, CardContent, CardFooter } from '@/core/components/ui/card';
 import {
   Dialog,
   DialogContent,
@@ -54,7 +48,11 @@ import { useGetCategories } from '../../application/usecases/services/useGetCate
 import { Competence, competenceSchema } from '../../domain/entities/schemas';
 import CategoryForm from '../components/CategoryForm';
 
-export default function CompetenceForm({ userId }: { userId: string }) {
+interface CompetenceFormProps {
+  userId: string;
+}
+
+export default function CompetenceForm({ userId }: CompetenceFormProps) {
   const router = useRouter();
   const {
     data: eitherCategories,
@@ -62,6 +60,7 @@ export default function CompetenceForm({ userId }: { userId: string }) {
     isLoading,
     isError,
   } = useGetCategories({ userId });
+  // eslint-disable-next-line no-unused-vars
   const [category, setCategory] = useState<string>('');
   const [open, setOpen] = useState(false);
   const { mutate: createCompetence, isPending } = useCreateCompetence();
@@ -75,10 +74,6 @@ export default function CompetenceForm({ userId }: { userId: string }) {
     },
   });
 
-  function goToCompetences() {
-    router.push('/competences');
-  }
-
   const categories = useMemo(() => {
     if (!eitherCategories || !isRight(eitherCategories)) return [];
     return eitherCategories.right;
@@ -91,7 +86,7 @@ export default function CompetenceForm({ userId }: { userId: string }) {
     }
   }, [categories, form]);
 
-  function onSubmit(data: Competence) {
+  const onSubmit = (data: Competence) => {
     if (data.name === '' || data.description === '' || data.category === '') {
       return toastWrapper.error('Veuillez remplir tous les champs');
     }
@@ -110,7 +105,9 @@ export default function CompetenceForm({ userId }: { userId: string }) {
         },
       }
     );
-  }
+  };
+
+  const goToCompetences = () => router.push('/competences');
 
   if (isLoading) {
     return <div>Chargement des catégories...</div>;
@@ -131,16 +128,20 @@ export default function CompetenceForm({ userId }: { userId: string }) {
   if (!eitherCategories || !isRight(eitherCategories)) return null;
 
   return (
-    <div className="container mx-auto py-6">
-      <Button variant="ghost" onClick={goToCompetences} className="mb-4">
-        <ArrowLeft className="mr-2 h-4 w-4" />
-        Retour aux compétences
-      </Button>
-      <Card className="w-full max-w-2xl mx-auto">
-        <CardHeader>
-          <CardTitle>Créer une compétence</CardTitle>
-        </CardHeader>
-        <CardContent>
+    <div className="container mx-auto py-6 max-w-4xl">
+      <div className="flex justify-between items-center mb-6">
+        <Button
+          variant="ghost"
+          onClick={goToCompetences}
+          className="flex items-center"
+        >
+          <ArrowLeft className="mr-2 h-4 w-4" />
+          Retour aux compétences
+        </Button>
+        <h1 className="text-2xl font-bold">Créer une compétence</h1>
+      </div>
+      <Card>
+        <CardContent className="pt-6">
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
               <FormField
@@ -251,9 +252,7 @@ export default function CompetenceForm({ userId }: { userId: string }) {
             className="w-full"
             disabled={isPending}
             size="lg"
-            onClick={() => {
-              onSubmit(form.getValues());
-            }}
+            onClick={() => onSubmit(form.getValues())}
           >
             {isPending ? (
               <>Création en cours...</>

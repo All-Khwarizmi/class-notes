@@ -83,7 +83,10 @@ export default function SequencesListView({
     <div className="container mx-auto px-4 py-8">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold">Séquences</h1>
-        <Button asChild>
+        <Button
+          className="dark:text-gray-400 hover:bg-transparent  bg-gray-800 dark:bg-gray-800 text-black bg-transparent"
+          asChild
+        >
           <Link
             href={
               sequenceType === 'sequence'

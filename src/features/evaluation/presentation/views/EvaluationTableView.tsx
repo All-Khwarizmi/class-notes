@@ -131,7 +131,10 @@ export default function EvaluationTableView({
         </Card>
       )}
       <div className="flex justify-center mt-8">
-        <Button asChild>
+        <Button
+          className="dark:text-gray-400 hover:bg-transparent  bg-gray-800 dark:bg-gray-800 text-black bg-transparent"
+          asChild
+        >
           <Link href="/evaluations/add">
             <Plus className="mr-2 h-4 w-4" />
             Ajouter une évaluation

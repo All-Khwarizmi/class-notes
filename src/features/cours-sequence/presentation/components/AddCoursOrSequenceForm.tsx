@@ -2,12 +2,7 @@
 
 import { GoBackButton } from '@/core/components/common/navigation/GoBackButton';
 import { Button } from '@/core/components/ui/button';
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from '@/core/components/ui/card';
+import { Card, CardContent } from '@/core/components/ui/card';
 import {
   Form,
   FormControl,
@@ -28,7 +23,7 @@ import {
 import { Textarea } from '@/core/components/ui/textarea';
 import { toastWrapper } from '@/core/utils/toast-wrapper';
 import { Competence } from '@/features/comp-cat/domain/entities/schemas';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { UseFormReturn } from 'react-hook-form';
 
 import { CoursSequenceForm } from '../views/AddCoursView';
@@ -39,12 +34,15 @@ interface AddCoursOrSequenceFormProps {
   form: UseFormReturn<CoursSequenceForm>;
   competences: Competence[];
   selectedCompetences: Competence[];
+  // eslint-disable-next-line no-unused-vars
   setSelectedCompetences: (params: {
     competence: Competence;
     remove?: boolean;
   }) => void;
   open: boolean;
+  // eslint-disable-next-line no-unused-vars
   setOpen: (open: boolean) => void;
+  // eslint-disable-next-line no-unused-vars
   onSubmit: (data: CoursSequenceForm) => void;
   title: string;
   imageUrl?: string;
@@ -65,36 +63,34 @@ export default function AddCoursOrSequenceForm({
     imageUrl ?? '/images/mos-design-jzFbbG2WXv0-unsplash.jpg'
   );
 
+  const handleSubmit = (data: CoursSequenceForm) => {
+    if (data.name.length < 3) {
+      toastWrapper.error('Le nom doit contenir au moins 3 caractères');
+      return;
+    }
+    if (data.description.length < 3) {
+      toastWrapper.error('La description doit contenir au moins 3 caractères');
+      return;
+    }
+
+    onSubmit({
+      ...data,
+      competences: selectedCompetences.map((c) => c._id),
+      imageUrl: localImageUrl,
+    });
+  };
+
   return (
-    <div className="container mx-auto py-6">
-      <GoBackButton />
-      <Card className="w-full max-w-2xl mx-auto">
-        <CardHeader>
-          <CardTitle>{title}</CardTitle>
-        </CardHeader>
-        <CardContent>
+    <div className="container mx-auto py-6 max-w-4xl">
+      <div className="flex justify-between items-center mb-6">
+        <GoBackButton />
+        <h1 className="text-2xl font-bold">{title}</h1>
+      </div>
+      <Card>
+        <CardContent className="pt-6">
           <Form {...form}>
             <form
-              onSubmit={form.handleSubmit((data) => {
-                if (data.name.length < 3) {
-                  toastWrapper.error(
-                    'Le nom de la classe doit contenir au moins 3 caractères'
-                  );
-                  return;
-                }
-                if (data.description.length < 3) {
-                  toastWrapper.error(
-                    'La description doit contenir au moins 3 caractères'
-                  );
-                  return;
-                }
-
-                onSubmit({
-                  ...data,
-                  competences: selectedCompetences.map((c) => c._id),
-                  imageUrl: localImageUrl,
-                });
-              })}
+              onSubmit={form.handleSubmit(handleSubmit)}
               className="space-y-6"
             >
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
