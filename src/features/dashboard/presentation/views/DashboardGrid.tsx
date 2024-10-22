@@ -44,10 +44,12 @@ const externalLinks = [
     href: 'https://www.notion.so/Notre-Mission-Notre-Histoire-Notre-Vision-10732b247fd380b2b951de6d2cd86b5f?pvs=21',
   },
 ];
+
 type DashboardProps = {
   userId: string;
   hostname: string;
 };
+
 export default function Dashboard({ userId, hostname }: DashboardProps) {
   const quickActions = useMemo(() => {
     return [
@@ -55,116 +57,133 @@ export default function Dashboard({ userId, hostname }: DashboardProps) {
       { name: 'Nouvelle séquence', icon: FileText, href: '/sequences/add' },
       { name: 'Nouvelle évaluation', icon: BookOpen, href: '/evaluations/add' },
       { name: 'Gérer les élèves', icon: Users, href: '/classes' },
-      // { name: "Mon Blog", icon: Rss, href: `/${hostname}/blog` },
       { name: 'Mon Espace', icon: Store, href: `/${hostname}` },
     ];
   }, [hostname]);
-  return (
-    <div className="container mx-auto p-4 space-y-6 mb-12">
-      <h1 className="text-3xl font-bold">Tableau de bord</h1>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <Card className="md:col-span-2">
-          <CardHeader>
-            <CardTitle>Actions rapides</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-              {quickActions.map((action) => (
-                <Button
-                  key={action.name}
-                  variant="outline"
-                  asChild
-                  className="h-24 flex flex-col items-center justify-center"
-                >
-                  <Link href={action.href}>
-                    <action.icon className="h-6 w-6 mb-2" />
-                    {action.name}
-                  </Link>
-                </Button>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
+  return (
+    <div className="w-full max-w-full overflow-x-hidden">
+      <div className="container mx-auto px-4 py-6 space-y-6 mb-12">
+        <h1 className="text-2xl sm:text-3xl font-bold">Tableau de bord</h1>
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <Card className="lg:col-span-2">
+            <CardHeader>
+              <CardTitle>Actions rapides</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                {quickActions.map((action) => (
+                  <Button
+                    key={action.name}
+                    variant="outline"
+                    asChild
+                    className="h-20 sm:h-24 flex flex-col items-center justify-center text-sm sm:text-base"
+                  >
+                    <Link href={action.href}>
+                      <action.icon className="h-5 w-5 sm:h-6 sm:w-6 mb-2" />
+                      <span className="text-center">{action.name}</span>
+                    </Link>
+                  </Button>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle>Ressources</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <ScrollArea className="h-[200px]">
+                {externalLinks.map((link) => (
+                  <Button
+                    key={link.name}
+                    variant="ghost"
+                    asChild
+                    className="w-full justify-start mb-2 text-sm sm:text-base"
+                  >
+                    <Link
+                      href={link.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <ExternalLink className="mr-2 h-4 w-4 flex-shrink-0" />
+                      <span className="truncate">{link.name}</span>
+                    </Link>
+                  </Button>
+                ))}
+              </ScrollArea>
+            </CardContent>
+          </Card>
+        </div>
+
+        <Tabs defaultValue="visibility" className="w-full">
+          <TabsList className="w-full flex flex-wrap justify-start">
+            <TabsTrigger
+              value="visibility"
+              className="flex-grow text-sm sm:text-base"
+            >
+              Gestion de la visibilité
+            </TabsTrigger>
+            <TabsTrigger
+              value="quicklinks"
+              className="flex-grow text-sm sm:text-base"
+            >
+              Liens rapides
+            </TabsTrigger>
+            <TabsTrigger
+              value="resources"
+              className="flex-grow text-sm sm:text-base"
+            >
+              Ressources pédagogiques
+            </TabsTrigger>
+          </TabsList>
+          <TabsContent className="hidden md:block" value="visibility">
+            <Card>
+              <CardContent className="overflow-x-auto">
+                <VisibilityManagementComponent userId={userId} />
+              </CardContent>
+            </Card>
+          </TabsContent>
+          <TabsContent value="quicklinks">
+            <QuickLinksCard />
+          </TabsContent>
+          <TabsContent value="resources">
+            <RessourceLinksCard userId={userId} />
+          </TabsContent>
+        </Tabs>
 
         <Card>
           <CardHeader>
-            <CardTitle>Ressources</CardTitle>
+            <CardTitle>Besoin d&apos;aide ?</CardTitle>
           </CardHeader>
           <CardContent>
-            <ScrollArea className="h-[200px]">
-              {externalLinks.map((link) => (
-                <Button
-                  key={link.name}
-                  variant="ghost"
-                  asChild
-                  className="w-full justify-start mb-2"
+            <p className="mb-4 text-sm sm:text-base">
+              Si vous avez des questions ou rencontrez des difficultés,
+              n&apos;hésitez pas à nous contacter :
+            </p>
+            <div className="flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0">
+              <Button variant="outline" asChild className="w-full sm:w-auto">
+                <Link href="mailto:jason@laclasse.app">
+                  <HelpCircle className="mr-2 h-4 w-4" />
+                  <span className="truncate">Contacter le support</span>
+                </Link>
+              </Button>
+              <Button variant="outline" asChild className="w-full sm:w-auto">
+                <Link
+                  href="https://www.notion.so/Comment-commencer-avec-La-Classe-10732b247fd380a7adbee274e3d12c51?pvs=21"
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
-                  <Link
-                    href={link.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <ExternalLink className="mr-2 h-4 w-4" />
-                    {link.name}
-                  </Link>
-                </Button>
-              ))}
-            </ScrollArea>
+                  <BookOpen className="mr-2 h-4 w-4" />
+                  <span className="truncate">Consulter le guide</span>
+                </Link>
+              </Button>
+            </div>
           </CardContent>
         </Card>
       </div>
-
-      <Tabs defaultValue="visibility" className="w-full truncate  ">
-        <TabsList>
-          <TabsTrigger value="visibility">Gestion de la visibilité</TabsTrigger>
-          <TabsTrigger value="quicklinks">Liens rapides</TabsTrigger>
-          <TabsTrigger value="resources">Ressources pédagogiques</TabsTrigger>
-        </TabsList>
-        <TabsContent value="visibility">
-          <Card>
-            <CardContent>
-              <VisibilityManagementComponent userId={userId} />
-            </CardContent>
-          </Card>
-        </TabsContent>
-        <TabsContent value="quicklinks">
-          <QuickLinksCard />
-        </TabsContent>
-        <TabsContent value="resources">
-          <RessourceLinksCard userId={userId} />
-        </TabsContent>
-      </Tabs>
-
-      <Card>
-        <CardHeader>
-          <CardTitle>Besoin d&apos;aide ?</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p className="mb-4">
-            Si vous avez des questions ou rencontrez des difficultés,
-            n&apos;hésitez pas à nous contacter :
-          </p>
-          <div className="flex flex-col md:flex-row space-y-4 md:space-x-4 md:space-y-0">
-            <Button variant="outline" asChild>
-              <Link href="mailto:jason@laclasse.app">
-                <HelpCircle className="mr-2 h-4 w-4" />
-                Contacter le support
-              </Link>
-            </Button>
-            <Button variant="outline" asChild>
-              <Link
-                href="https://www.notion.so/Comment-commencer-avec-La-Classe-10732b247fd380a7adbee274e3d12c51?pvs=21"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <BookOpen className="mr-2 h-4 w-4" />
-                Consulter le guide
-              </Link>
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
     </div>
   );
 }

@@ -22,9 +22,9 @@ import { ScrollArea } from '@/core/components/ui/scroll-area';
 import { Skeleton } from '@/core/components/ui/skeleton';
 import { Switch } from '@/core/components/ui/switch';
 import {
-  BookOpen,
-  BookText,
   Building,
+  BookText,
+  BookOpen,
   CheckSquare,
   ChevronRight,
   ChevronDown,
@@ -72,11 +72,13 @@ export default function VisibilityManagementComponent({
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <ScrollArea className=" pr-4 overflow-x-auto">
+        <ScrollArea className="h-[60vh] pr-4">
           {visibilityState.classes.map((item) => (
             <CollapsibleItem
               key={item.id}
-              icon={<Building className="h-4 w-4 text-blue-500" />}
+              icon={
+                <Building className="h-4 w-4 text-blue-500 flex-shrink-0" />
+              }
               name={item.name}
               description={item.description}
               isPublished={item.publish}
@@ -92,7 +94,9 @@ export default function VisibilityManagementComponent({
               {item.sequences.map((sequence) => (
                 <CollapsibleItem
                   key={sequence.id}
-                  icon={<BookText className="h-4 w-4 text-green-500" />}
+                  icon={
+                    <BookText className="h-4 w-4 text-green-500 flex-shrink-0" />
+                  }
                   name={sequence.name}
                   description={sequence.description}
                   isPublished={sequence.publish}
@@ -108,7 +112,9 @@ export default function VisibilityManagementComponent({
                   {sequence.courses.map((course) => (
                     <CollapsibleItem
                       key={course.id}
-                      icon={<BookOpen className="h-4 w-4 text-orange-500" />}
+                      icon={
+                        <BookOpen className="h-4 w-4 text-orange-500 flex-shrink-0" />
+                      }
                       name={course.name}
                       description={course.description}
                       isPublished={course.publish}
@@ -125,7 +131,7 @@ export default function VisibilityManagementComponent({
                         <CollapsibleItem
                           key={complement.id}
                           icon={
-                            <CheckSquare className="h-4 w-4 text-red-500" />
+                            <CheckSquare className="h-4 w-4 text-red-500 flex-shrink-0" />
                           }
                           name={complement.name}
                           description={complement.description}
@@ -179,21 +185,26 @@ function CollapsibleItem({
       onOpenChange={setIsOpen}
       className="mb-4 border rounded-md p-2"
     >
-      <div className="flex items-center justify-between py-2">
+      <div className="flex items-center justify-between py-2 flex-wrap gap-2">
         <CollapsibleTrigger className="flex items-center space-x-2 hover:text-primary">
           {isOpen ? (
-            <ChevronDown className="h-4 w-4" />
+            <ChevronDown className="h-4 w-4 flex-shrink-0" />
           ) : (
-            <ChevronRight className="h-4 w-4" />
+            <ChevronRight className="h-4 w-4 flex-shrink-0" />
           )}
           {icon}
-          <div>
-            <h3 className="text-sm font-medium">{name}</h3>
-            <p className="text-xs text-muted-foreground">{description}</p>
+          <div className="min-w-0 flex-1">
+            <h3 className="text-sm font-medium truncate">{name}</h3>
+            <p className="text-xs text-muted-foreground truncate">
+              {description}
+            </p>
           </div>
         </CollapsibleTrigger>
-        <div className="flex items-center space-x-2">
-          <Badge variant={isPublished ? 'default' : 'secondary'}>
+        <div className="flex items-center space-x-2 flex-shrink-0">
+          <Badge
+            variant={isPublished ? 'default' : 'secondary'}
+            className="whitespace-nowrap"
+          >
             {isPublished ? 'Publié' : 'Non publié'}
           </Badge>
           <Switch

@@ -76,9 +76,9 @@ function Layout({
         hostname,
       }}
     >
-      <div className="flex h-screen overflow-hidden">
+      <div className="flex w-full h-screen overflow-hidden">
         {!isLandingPage && (
-          <div className="hidden md:block fixed left-0 top-0 h-full w-72 z-10">
+          <div className="hidden md:block  fixed left-0 top-0 h-full w-72 z-10">
             {loading ? (
               <div className="h-full w-full flex items-center justify-center">
                 <Layout.Loader />
@@ -100,7 +100,9 @@ function Layout({
               )}
             </div>
           )}
-          <main className="flex-1 overflow-y-auto pt-8 px-4">{children}</main>
+          <section className="flex-1 overflow-y-auto overflow-x-hidden pt-8 px-4">
+            {children}
+          </section>
         </div>
       </div>
     </LayoutContext.Provider>
