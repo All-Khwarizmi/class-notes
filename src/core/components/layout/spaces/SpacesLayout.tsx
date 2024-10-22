@@ -15,7 +15,6 @@ import SpacesLayoutContext, {
   SpacesLayoutContextType,
 } from './SpacesLayoutCtx';
 import { SpacesMobileSidebar } from './SpacesMobileSidebar';
-import SpacesSidebar from './SpacesSidebar';
 
 function SpacesLayout({
   children,
@@ -47,8 +46,6 @@ function SpacesLayout({
       <div className="relative">
         <Nav />
         <section className="flex h-full w-full border-collapse overflow-hidden">
-          <SpacesSidebar />
-
           <section className="h-full flex-1  pt-8 px-4 overflow-x-hidden">
             {children}
           </section>

@@ -6,7 +6,7 @@ import ClassesServerLayer from './ClassesServerLayer';
 export default async function Home() {
   return (
     <Suspense fallback={<LoadingSkeleton />}>
-      <ClassesServerLayer slug="slug" />
+      <ClassesServerLayer />
     </Suspense>
   );
 }

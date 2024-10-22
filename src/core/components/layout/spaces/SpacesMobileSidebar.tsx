@@ -1,14 +1,19 @@
+'use client';
+
+import { ModeToggle } from '@/core/components/common/ModeToggle';
+import { GoBackButton } from '@/core/components/common/navigation/GoBackButton';
 import { Sheet, SheetContent, SheetTrigger } from '@/core/components/ui/sheet';
 import { NavItem } from '@/lib/types';
-import { useState, useEffect } from 'react';
+import { MenuIcon } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
 
-import { ModeToggle } from '../../common/ModeToggle';
-import { GoBackButton } from '../../common/navigation/GoBackButton';
-import MenuIcon from '../../icons/MenuIcon';
 import { SpacesSideNav } from './SpacesSideNav';
 
-// eslint-disable-next-line no-unused-vars
-export const SpacesMobileSidebar = (props: { navItems?: NavItem[] }) => {
+interface SpacesMobileSidebarProps {
+  navItems?: NavItem[];
+}
+
+export const SpacesMobileSidebar: React.FC<SpacesMobileSidebarProps> = () => {
   const [open, setOpen] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
 
@@ -21,35 +26,24 @@ export const SpacesMobileSidebar = (props: { navItems?: NavItem[] }) => {
   }
 
   return (
-    <>
-      <Sheet open={open} onOpenChange={setOpen}>
-        <SheetTrigger asChild>
-          <div className="flex items-center  gap-2">
-            <MenuIcon />
-          </div>
-        </SheetTrigger>
-        <SheetContent side="left" className="w-72">
-          <div className=" py-6 pt-16">
+    <Sheet open={open} onOpenChange={setOpen}>
+      <SheetTrigger asChild>
+        <button className="flex items-center gap-2 p-2 rounded-md hover:bg-accent">
+          <MenuIcon className="h-6 w-6" />
+          <span className="sr-only">Open menu</span>
+        </button>
+      </SheetTrigger>
+      <SheetContent side="left" className="w-72 p-0">
+        <div className="flex flex-col h-full">
+          <div className="flex-grow py-6 pt-16 overflow-y-auto">
             <SpacesSideNav setOpen={setOpen} />
           </div>
-          {/* <section className="flex items-center justify-center">
+          <div className="flex  items-center justify-center gap-4 p-4 border-t">
             <ModeToggle />
-          </section> */}
-          <section className="flex flex-col items-center justify-center">
-            <SpacesMobileSidebarNavigation />
-
-            <ModeToggle />
-          </section>
-        </SheetContent>
-      </Sheet>
-    </>
+            <GoBackButton />
+          </div>
+        </div>
+      </SheetContent>
+    </Sheet>
   );
 };
-
-export function SpacesMobileSidebarNavigation() {
-  return (
-    <div className="flex  ">
-      <GoBackButton />
-    </div>
-  );
-}
