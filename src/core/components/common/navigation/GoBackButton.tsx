@@ -12,7 +12,7 @@ export function GoBackButton({ onClick, label }: GoBackButtonProps) {
     router.back();
   }
   return (
-    <Button variant="ghost" onClick={onClick ?? goBack} className="">
+    <Button variant="ghost" onClick={onClick ?? goBack} className="mb-4">
       <ArrowLeft className=" h-4 w-4" />
       {label ?? 'Retour'}
     </Button>

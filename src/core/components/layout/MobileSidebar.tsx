@@ -1,12 +1,12 @@
 import { SideNav } from '@/core/components/layout/SideNav';
 import { Sheet, SheetContent, SheetTrigger } from '@/core/components/ui/sheet';
 import { NavItem } from '@/lib/types';
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect } from 'react';
 
 import { ModeToggle } from '../common/ModeToggle';
 import MenuIcon from '../icons/MenuIcon';
-import { SpacesMobileSidebarNavigation } from './spaces/SpacesMobileSidebar';
 
+// eslint-disable-next-line no-unused-vars
 export const MobileSidebar = (props: { navItems?: NavItem[] }) => {
   const [open, setOpen] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
@@ -32,8 +32,6 @@ export const MobileSidebar = (props: { navItems?: NavItem[] }) => {
             <SideNav setOpen={setOpen} />
           </div>
           <section className="flex flex-col items-center ">
-            <SpacesMobileSidebarNavigation />
-
             <ModeToggle />
           </section>
         </SheetContent>

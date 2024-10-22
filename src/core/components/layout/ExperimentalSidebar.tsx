@@ -48,13 +48,13 @@ export default function Sidebar() {
 
       <div className="flex items-center justify-between p-4 border-t">
         <ModeToggle />
-        <button
+        {/* <button
           onClick={handleToggle}
           className="p-2 rounded-full hover:bg-sidebar-accent hover:text-sidebar-accent-foreground transition-colors"
           aria-label={isOpen ? 'Close sidebar' : 'Open sidebar'}
         >
           {isOpen ? <ChevronLeft size={20} /> : <ChevronRight size={20} />}
-        </button>
+        </button> */}
       </div>
     </nav>
   );
