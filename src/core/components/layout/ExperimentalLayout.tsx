@@ -78,7 +78,7 @@ function Layout({
     >
       <div className="flex h-screen overflow-hidden">
         {!isLandingPage && (
-          <div className="fixed left-0 top-0 h-full w-72 z-10">
+          <div className="hidden md:block fixed left-0 top-0 h-full w-72 z-10">
             {loading ? (
               <div className="h-full w-full flex items-center justify-center">
                 <Layout.Loader />
@@ -88,7 +88,7 @@ function Layout({
             )}
           </div>
         )}
-        <div className="flex flex-col flex-1 ml-72">
+        <div className="flex flex-col flex-1 md:ml-72">
           {!isLandingPage && (
             <div className="sticky top-0 z-20 bg-background">
               {loading ? (
