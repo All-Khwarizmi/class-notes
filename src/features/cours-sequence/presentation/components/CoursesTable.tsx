@@ -75,7 +75,7 @@ function CoursesTable({
             className="max-w-sm"
           />
         </div>
-        <ScrollArea className="h-[400px] rounded-md border">
+        <ScrollArea className="h-[400px] rounded-md border px-4">
           <Table>
             <TableCaption>Ajoutez des cours à votre séquence</TableCaption>
             <TableHeader>

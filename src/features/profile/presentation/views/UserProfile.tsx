@@ -39,6 +39,7 @@ import {
 } from '@/features/user/domain/entities/user-schema';
 import { countryOptions } from '@/features/user/domain/entities/user-schema';
 import { useUserOnboarding } from '@/features/user/presentation/hooks/useUserOnboarding';
+import { UserProfile as ClerkUserProfile } from '@clerk/nextjs';
 import { UserButton } from '@clerk/nextjs';
 import {
   CalendarDaysIcon,
@@ -54,6 +55,11 @@ import React, { useEffect, useState } from 'react';
 import { checkUserCredits } from '../helpers/helpers';
 
 const tabs = [
+  {
+    id: 'account',
+    label: 'Compte utilisateur',
+    icon: User,
+  },
   {
     id: 'personal',
     label: 'Informations personnelles',
@@ -90,12 +96,10 @@ export default function UserProfile({ user }: { user: UserType }) {
       saveUser,
     },
   } = useUserOnboarding({ user });
-  console.log(currentTab);
   return (
     <div className="container mx-auto py-10">
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-3xl font-bold">Profil utilisateur</h1>
-        <UserButton appearance={{ elements: { rootBox: 'w-16 h-16' } }} />
       </div>
       <div className="">
         <Tabs defaultValue={currentTab} className="w-full">
@@ -125,6 +129,9 @@ export default function UserProfile({ user }: { user: UserType }) {
                 <CardTitle>Informations du profil</CardTitle>
               </CardHeader>
               <CardContent>
+                <TabsContent value="account">
+                  <ClerkUserProfile />
+                </TabsContent>
                 <TabsContent value="personal">
                   <Form {...form}>
                     <form
