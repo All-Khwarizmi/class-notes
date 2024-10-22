@@ -100,13 +100,13 @@ function NotesTableView({
             Add Note
           </Button>
         </div>
-        <ScrollArea className="h-[400px]">
+        <ScrollArea className="h-[400px] px-4">
           <Table>
             <TableHeader>
               <TableRow>
                 <TableHead>Name</TableHead>
                 <TableHead>Description</TableHead>
-                <TableHead>Last Modified</TableHead>
+                <TableHead>Modifié</TableHead>
                 <TableHead className="text-right">Actions</TableHead>
               </TableRow>
             </TableHeader>

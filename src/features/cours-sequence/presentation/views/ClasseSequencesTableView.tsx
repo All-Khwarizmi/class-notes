@@ -107,7 +107,7 @@ function ClasseSequencesTableView({
             className="max-w-sm"
           />
         </div>
-        <ScrollArea className="h-[400px] rounded-md border">
+        <ScrollArea className="h-[400px] rounded-md border px-4">
           <Table>
             <TableHeader>
               <TableRow>
@@ -119,7 +119,7 @@ function ClasseSequencesTableView({
                 <TableHead className="w-[200px]">Actions</TableHead>
               </TableRow>
             </TableHeader>
-            <TableBody>
+            <TableBody >
               {filteredSequences.map((sequence) => {
                 const classeSequence = classeSequences.right.find(
                   (classeSequence) =>
@@ -128,9 +128,11 @@ function ClasseSequencesTableView({
                 return (
                   <TableRow
                     key={sequence._id}
-                    className="cursor-pointer hover:bg-muted/50 transition-colors"
+                    className="cursor-pointer hover:bg-muted/50 transition-colors "
                   >
-                    <TableCell className="w-[200px]">{sequence.name}</TableCell>
+                    <TableCell className="w-[200px] ">
+                      {sequence.name}
+                    </TableCell>
                     <TableCell className="w-[200px]">
                       {sequence.coursIds.length}
                     </TableCell>
