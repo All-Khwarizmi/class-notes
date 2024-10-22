@@ -1,6 +1,6 @@
 'use client';
 
-import { useSpacesLayoutContext } from '@/core/components/layout/SpacesLayoutCtx';
+import { useSpacesLayoutContext } from '@/core/components/layout/spaces/SpacesLayoutCtx';
 import { AspectRatio } from '@/core/components/ui/aspect-ratio';
 import { Badge } from '@/core/components/ui/badge';
 import { Button } from '@/core/components/ui/button';

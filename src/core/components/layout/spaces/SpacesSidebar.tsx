@@ -5,8 +5,7 @@ import { NavItem } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import React, { useState } from 'react';
 
-import ArrowLeft from '../icons/ArrowLeft';
-import { SpacesMobileSidebarNavigation } from './SpacesMobileSidebar';
+import ArrowLeft from '../../icons/ArrowLeft';
 import { SpacesSideNav } from './SpacesSideNav';
 
 export interface SidebarProps {

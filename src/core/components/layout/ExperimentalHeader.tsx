@@ -4,7 +4,6 @@ import Title from '@/core/components/common/Title';
 import { cn } from '@/lib/utils';
 import { usePathname } from 'next/navigation';
 
-import { ModeToggle } from '../common/ModeToggle';
 import { useLayoutContext } from './ExperimentalLayoutCtx';
 import { MobileSidebar } from './MobileSidebar';
 

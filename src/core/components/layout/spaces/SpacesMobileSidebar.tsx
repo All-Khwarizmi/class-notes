@@ -2,12 +2,12 @@ import { Sheet, SheetContent, SheetTrigger } from '@/core/components/ui/sheet';
 import { NavItem } from '@/lib/types';
 import { useState, useEffect } from 'react';
 
-import { ModeToggle } from '../common/ModeToggle';
-import Title from '../common/Title';
-import { GoBackButton } from '../common/navigation/GoBackButton';
-import MenuIcon from '../icons/MenuIcon';
+import { ModeToggle } from '../../common/ModeToggle';
+import { GoBackButton } from '../../common/navigation/GoBackButton';
+import MenuIcon from '../../icons/MenuIcon';
 import { SpacesSideNav } from './SpacesSideNav';
 
+// eslint-disable-next-line no-unused-vars
 export const SpacesMobileSidebar = (props: { navItems?: NavItem[] }) => {
   const [open, setOpen] = useState(false);
   const [isMounted, setIsMounted] = useState(false);

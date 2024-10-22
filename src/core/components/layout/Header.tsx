@@ -6,9 +6,9 @@ import { usePathname } from 'next/navigation';
 
 import { ModeToggle } from '../common/ModeToggle';
 import { MobileSidebar } from './MobileSidebar';
-import { SidebarProps } from './SpacesSidebar';
+import { SidebarProps } from './spaces/SpacesSidebar';
 
-export default function Header({ className, navItems }: SidebarProps) {
+export default function Header({ navItems }: SidebarProps) {
   const pathName = usePathname();
 
   return (

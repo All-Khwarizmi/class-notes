@@ -1,5 +1,6 @@
 import { NavItem } from '@/lib/types';
 import { PropsWithChildren, createContext, useContext } from 'react';
+import React from 'react';
 
 export type SpacesLayoutContextType = PropsWithChildren & {
   readonly children?: React.ReactNode;
@@ -8,6 +9,7 @@ export type SpacesLayoutContextType = PropsWithChildren & {
   notFound?: boolean;
   nothingToShow?: boolean;
   spacesNavItems?: NavItem[];
+  // eslint-disable-next-line no-unused-vars
   setSpacesNavItems?: (navItems: NavItem[]) => void;
 };
 

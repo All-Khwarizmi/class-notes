@@ -8,9 +8,9 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 
-import { mainMenu } from '../../../../menu.config';
-import NothingToShow from '../common/editor/NothingToShow';
-import { Button } from '../ui/button';
+import { mainMenu } from '../../../../../menu.config';
+import NothingToShow from '../../common/editor/NothingToShow';
+import { Button } from '../../ui/button';
 import SpacesLayoutContext, {
   SpacesLayoutContextType,
 } from './SpacesLayoutCtx';

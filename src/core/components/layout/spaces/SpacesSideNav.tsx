@@ -17,11 +17,12 @@ import { useEffect, useMemo, useState } from 'react';
 import { useSpacesLayoutContext } from './SpacesLayoutCtx';
 
 interface SideNavProps {
+  // eslint-disable-next-line no-unused-vars
   setOpen?: (open: boolean) => void;
   className?: string;
 }
 
-export function SpacesSideNav({ setOpen, className }: SideNavProps) {
+export function SpacesSideNav({ setOpen }: SideNavProps) {
   const { spacesNavItems } = useSpacesLayoutContext();
   const items = useMemo(() => spacesNavItems || [], [spacesNavItems]);
 

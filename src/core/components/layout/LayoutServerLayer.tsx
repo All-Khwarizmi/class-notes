@@ -48,7 +48,7 @@ async function LayoutServerLayer({ children }: { children: React.ReactNode }) {
     }),
   ];
   // Since the prefetchQuery method does not throw an error, we no need to handle it here by using allSettled or try/catch
-  const result = await Promise.allSettled(batch);
+  await Promise.allSettled(batch);
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>

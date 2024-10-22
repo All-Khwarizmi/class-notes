@@ -80,7 +80,7 @@ export function SideNav({ setOpen, className }: SideNavProps) {
           <Accordion
             type="single"
             collapsible
-            className="py-0 "
+            className=""
             key={item.title}
             value={openItem}
             onValueChange={handleOpenItem}
@@ -88,7 +88,7 @@ export function SideNav({ setOpen, className }: SideNavProps) {
             <AccordionItem value={item.title} className="border-none ">
               <AccordionTrigger
                 className={cn(
-                  'p-0 m-0',
+                  '',
                   buttonVariants({ variant: 'ghost' }),
                   pathIsActive({ path: item.href, liveHref }) && 'bg-muted',
                   `dark:${item.color} hover:bg-muted`,

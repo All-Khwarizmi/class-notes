@@ -5,7 +5,7 @@ import { useState, useEffect, useMemo } from 'react';
 
 import { ModeToggle } from '../common/ModeToggle';
 import MenuIcon from '../icons/MenuIcon';
-import { SpacesMobileSidebarNavigation } from './SpacesMobileSidebar';
+import { SpacesMobileSidebarNavigation } from './spaces/SpacesMobileSidebar';
 
 export const MobileSidebar = (props: { navItems?: NavItem[] }) => {
   const [open, setOpen] = useState(false);

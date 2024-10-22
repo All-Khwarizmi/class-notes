@@ -7,6 +7,7 @@ import { Analytics } from '@vercel/analytics/react';
 import { Metadata } from 'next';
 import { Inter as FontSans } from 'next/font/google';
 import NextTopLoader from 'nextjs-toploader';
+import React from 'react';
 
 import './globals.css';
 import { Providers } from './providers';

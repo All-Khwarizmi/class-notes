@@ -1,12 +1,12 @@
 'use client';
 
-import Features from '@/core/components/layout/Features';
-import EnhancedPricingTable from '@/core/components/layout/Pricing';
+import Features from '@/core/components/layout/landing/Features';
+import EnhancedPricingTable from '@/core/components/layout/landing/Pricing';
 import Link from 'next/link';
 
 import Hero from './HeroSection';
 
-export default function Component() {
+export default function LandingPage() {
   return (
     <div className="flex flex-col min-h-[100dvh]">
       <main className="flex-1">

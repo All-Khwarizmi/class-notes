@@ -1,4 +1,4 @@
-import SpacesLayout from '@/core/components/layout/SpacesLayout';
+import SpacesLayout from '@/core/components/layout/spaces/SpacesLayout';
 import React from 'react';
 
 function Layout({ children }: { children: React.ReactNode }) {

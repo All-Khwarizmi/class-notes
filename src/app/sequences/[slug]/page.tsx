@@ -1,6 +1,5 @@
 import ErrorDialog from '@/core/components/common/ErrorDialog';
 import LoadingSkeleton from '@/core/components/common/LoadingSkeleton';
-import LayoutWithProps from '@/core/components/layout/LayoutWithProps';
 import React, { Suspense } from 'react';
 
 import SequenceLayout from './SequenceLayout';

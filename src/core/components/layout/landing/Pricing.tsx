@@ -12,7 +12,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Check, X, Zap, Book, Brain, Info } from 'lucide-react';
 import React, { useState } from 'react';
 
-import { PricingCard } from './landing/PricingCard';
+import { PricingCard } from './PricingCard';
 
 interface PricingFeature {
   name: string;

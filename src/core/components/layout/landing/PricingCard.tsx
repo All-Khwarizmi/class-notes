@@ -14,7 +14,7 @@ import { SignedIn, SignedOut, SignInButton, useSession } from '@clerk/nextjs';
 import { ArrowRight } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
-import { pricingTiers } from '../Pricing';
+import { pricingTiers } from './Pricing';
 
 export const PricingCard: React.FC<{
   tier: (typeof pricingTiers)[0];

@@ -1,4 +1,4 @@
-import EnhancedPricingTable from '@/core/components/layout/Pricing';
+import EnhancedPricingTable from '@/core/components/layout/landing/Pricing';
 import React from 'react';
 
 const PricingPage = () => {

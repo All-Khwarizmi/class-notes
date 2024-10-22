@@ -20,7 +20,6 @@ import {
   Users,
   FileText,
   ExternalLink,
-  Rss,
   HelpCircle,
   Store,
 } from 'lucide-react';

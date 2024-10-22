@@ -1,7 +1,13 @@
 import { NavItem } from '@/lib/types';
 import { PropsWithChildren, createContext, useContext } from 'react';
+import React from 'react';
 
-import { ErrorDialogProps } from './LayoutWithProps';
+export interface ErrorDialogProps {
+  message: string;
+  path?: string;
+  code?: string;
+  description?: string;
+}
 
 export type LayoutWithPropsProps = PropsWithChildren & {
   readonly children?: React.ReactNode;
@@ -15,10 +21,13 @@ export type LayoutWithPropsProps = PropsWithChildren & {
   readonly userId: string;
   readonly hostname: string;
   readonly isLandingPage?: boolean;
+  // eslint-disable-next-line no-unused-vars
   setIsLandingPage?: (isLandingPage: boolean) => void;
   spacesNavItems?: NavItem[];
+  // eslint-disable-next-line no-unused-vars
   setSpacesNavItems?: (navItems: NavItem[]) => void;
   isSpaces?: boolean;
+  // eslint-disable-next-line no-unused-vars
   setIsSpaces?: (isSpaces: boolean) => void;
 };
 const LayoutContext = createContext<LayoutWithPropsProps | null>(null);

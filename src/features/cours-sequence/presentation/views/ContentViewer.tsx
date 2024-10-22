@@ -1,7 +1,7 @@
 'use client';
 
 import { EXTENSIONS } from '@/core/components/constants/editor-extenstions';
-import { useSpacesLayoutContext } from '@/core/components/layout/SpacesLayoutCtx';
+import { useSpacesLayoutContext } from '@/core/components/layout/spaces/SpacesLayoutCtx';
 import { Button } from '@/core/components/ui/button';
 import {
   Card,

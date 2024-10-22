@@ -1,4 +1,4 @@
-import SpacesLayoutServerLayer from '@/core/components/layout/SpacesLayoutServerLayer';
+import SpacesLayoutServerLayer from '@/core/components/layout/spaces/SpacesLayoutServerLayer';
 import React from 'react';
 
 export const dynamic = 'force-dynamic';

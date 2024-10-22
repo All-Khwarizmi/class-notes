@@ -9,13 +9,7 @@ import {
   CardTitle,
 } from '@/core/components/ui/card';
 import { motion, AnimatePresence } from 'framer-motion';
-import {
-  BookMarked,
-  BookOpen,
-  Brain,
-  LucideIcon,
-  ArrowRight,
-} from 'lucide-react';
+import { LucideIcon, ArrowRight } from 'lucide-react';
 import { Zap, Layout, Share2 } from 'lucide-react';
 import React, { useState } from 'react';
 import { useInView } from 'react-intersection-observer';

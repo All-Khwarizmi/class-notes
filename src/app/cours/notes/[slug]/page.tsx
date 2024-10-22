@@ -1,6 +1,5 @@
 import NotesServerLayer from '@/app/profile/notes/[slug]/NotesServerLayer';
 import LoadingSkeleton from '@/core/components/common/LoadingSkeleton';
-import LayoutWithProps from '@/core/components/layout/LayoutWithProps';
 import React, { Suspense } from 'react';
 
 async function Page({

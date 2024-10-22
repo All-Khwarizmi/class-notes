@@ -1,5 +1,4 @@
 import LoadingSkeleton from '@/core/components/common/LoadingSkeleton';
-import Layout from '@/core/components/layout/Layout';
 import ComplementAddBaseForm from '@/features/complement/presentation/views/ComplementAddBase';
 import React, { Suspense } from 'react';
 
