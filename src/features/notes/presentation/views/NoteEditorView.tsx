@@ -87,7 +87,7 @@ function NoteEditorView({ note }: { note: Note }) {
             >
               Contenu de la note
             </label>
-            <div className="mt-1  border rounded-md" id="note-content">
+            <div className=" rounded-md" id="note-content">
               <FloatingEditor
                 content={note.content}
                 debounceUpdateFn={debounceSaveNote}

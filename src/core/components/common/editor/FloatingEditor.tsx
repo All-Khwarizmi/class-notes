@@ -10,6 +10,7 @@ import {
   CardTitle,
 } from '@/core/components/ui/card';
 import { ScrollArea } from '@/core/components/ui/scroll-area';
+import { cn } from '@/lib/utils';
 import { EditorContent, FloatingMenu, useEditor } from '@tiptap/react';
 import { DebouncedFunc } from 'lodash';
 import { Maximize2, Minimize2 } from 'lucide-react';
@@ -40,6 +41,7 @@ function FloatingEditor({
   const editor = useEditor({
     extensions: EXTENSIONS,
     content: contentOrPlaceholder,
+    injectCSS: true,
     onUpdate: ({ editor }) => {
       const content = editor.getHTML();
       debounceUpdateFn(content);
@@ -72,7 +74,13 @@ function FloatingEditor({
   }
 
   return (
-    <Card className="w-full max-w-4xl mx-auto my-8" ref={editorRef}>
+    <Card
+      className={cn(
+        'w-full mx-auto my-4',
+        isFullScreen && 'h-screen w-screen m-0'
+      )}
+      ref={editorRef}
+    >
       <CardHeader className="flex flex-row items-center justify-between">
         {title && <CardTitle>{title}</CardTitle>}
         <Button
@@ -90,13 +98,14 @@ function FloatingEditor({
           )}
         </Button>
       </CardHeader>
-      <CardContent>
-        <ScrollArea
-          className={
-            isFullScreen ? 'h-[calc(100vh-100px)]' : 'h-[calc(80vh-200px)]'
-          }
-        >
-          <div className="prose prose-sm sm:prose lg:prose-lg xl:prose-xl max-w-none">
+      <CardContent className={cn(isFullScreen && 'h-[calc(100vh-80px)]')}>
+        <ScrollArea className="h-full w-full">
+          <div
+            className={cn(
+              'prose prose-sm sm:prose lg:prose-lg xl:prose-xl max-w-none',
+              isFullScreen && 'max-w-full w-full px-4'
+            )}
+          >
             <FloatingMenu
               editor={editor}
               tippyOptions={{
@@ -114,7 +123,13 @@ function FloatingEditor({
             >
               <FloatingMenuBar editor={editor} />
             </FloatingMenu>
-            <EditorContent editor={editor} />
+            <EditorContent
+              editor={editor}
+              className={cn(
+                'min-h-[300px]',
+                isFullScreen && 'min-h-[calc(100vh-120px)]'
+              )}
+            />
           </div>
         </ScrollArea>
       </CardContent>

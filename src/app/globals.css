@@ -144,6 +144,10 @@ body {
   }
 }
 
+.editor-content-full-screen {
+  height: 100%;
+  width: 100%;
+}
 .youtube-embed {
   position: relative;
   padding-top: 10px;
