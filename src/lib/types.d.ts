@@ -1,4 +1,6 @@
-type NavProps = {
+import React from 'react';
+
+export type NavProps = {
   className?: string;
   children?: React.ReactNode;
   id?: string;

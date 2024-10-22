@@ -1,185 +1,120 @@
 'use client';
 
-import { useSidebar } from '@/core/application/common/useSidebar';
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from '@/core/components/layout/SubNavAccordion';
-import { buttonVariants } from '@/core/components/ui/button';
-import { cn } from '@/lib/utils';
-import { ChevronDownIcon } from '@radix-ui/react-icons';
+} from '@/core/components/ui/accordion';
+import { ScrollArea } from '@/core/components/ui/scroll-area';
+import { NavItem } from '@/lib/types';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { useEffect, useMemo, useState } from 'react';
+import * as React from 'react';
 
 import { useLayoutContext } from './ExperimentalLayoutCtx';
 
 interface SideNavProps {
-  setOpen?: (open: boolean) => void;
   className?: string;
+  // eslint-disable-next-line no-unused-vars
+  setOpen?: (open: boolean) => void;
 }
+// function pathIsActive(props: { path: string; liveHref: string }) {
+//   let { path, liveHref } = props;
 
-export function SideNav({ setOpen, className }: SideNavProps) {
+//   // Check if the path is nested and return false if it is
+//   if (path.split('/').length > 2) return false;
+
+//   // Check if there are search params in the path and remove them
+//   if (path.includes('?')) {
+//     path = path.split('?')[0];
+//   }
+
+//   return liveHref.split('/')[1] === path.split('/')[1];
+// }
+
+export function SideNav({ setOpen }: SideNavProps) {
   const { navItems, spacesNavItems, isSpaces } = useLayoutContext();
-  const items = useMemo(() => {
-    if (isSpaces === true && spacesNavItems) {
-      return spacesNavItems;
-    } else {
-      return navItems;
+  const items = React.useMemo(
+    () => (isSpaces ? spacesNavItems : navItems),
+    [isSpaces, spacesNavItems, navItems]
+  );
+  const [openItem, setOpenItem] = React.useState('');
+
+  const handleOpenItem = (itemTitle: string) => {
+    setOpenItem(itemTitle);
+  };
+
+  const NavItem = ({ item }: { item: NavItem }) => {
+    const hasChildren = item.children && item.children.length > 0;
+
+    if (hasChildren) {
+      return (
+        <Accordion
+          type="single"
+          collapsible
+          className="w-full"
+          key={item.title}
+          value={openItem}
+          onValueChange={handleOpenItem}
+        >
+          <AccordionItem value={item.title} className="border-none">
+            <AccordionTrigger className="flex w-full text-muted-foreground py-2 items-center underline justify-between px-3 text-sm hover:bg-sidebar-accent hover:text-sidebar-accent-foreground rounded-md transition-colors">
+              <div className="flex items-center">
+                {item.icon && (
+                  <span className="mr-3 h-4 w-4 text-sidebar-primary">
+                    {item.icon}
+                  </span>
+                )}
+                <span>{item.title}</span>
+              </div>
+            </AccordionTrigger>
+            <AccordionContent className="pt-0.5 pb-0.5">
+              {item.children?.map((child) => (
+                <Link
+                  key={child.title}
+                  href={child.href}
+                  onClick={() => {
+                    if (setOpen) setOpen(false);
+                  }}
+                  className="flex items-center py-2 px-6 underline text-sm hover:bg-sidebar-accent hover:text-sidebar-accent-foreground rounded-md transition-colors"
+                >
+                  {child.icon && (
+                    <span className="mr-3 h-4 w-4 text-sidebar-primary">
+                      {child.icon}
+                    </span>
+                  )}
+                  <span>{child.title}</span>
+                </Link>
+              ))}
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
+      );
     }
-  }, [isSpaces, spacesNavItems, navItems]);
 
-  const path = usePathname();
-  const { isOpen, toggle } = useSidebar();
-  const [openItem, setOpenItem] = useState('');
-  const [lastOpenItem, setLastOpenItem] = useState('');
-  const [liveHref, setLiveHref] = useState(path);
-  useEffect(() => {
-    if (isOpen) {
-      setOpenItem(lastOpenItem);
-    } else {
-      setLastOpenItem(openItem);
-      setOpenItem('');
-    }
-  }, [isOpen]);
+    return (
+      <Link
+        key={item.title}
+        href={item.href}
+        onClick={() => {
+          if (setOpen) setOpen(false);
+        }}
+        className="flex w-full items-center px-3 py-2 text-sm hover:bg-sidebar-accent hover:text-sidebar-accent-foreground rounded-md transition-colors"
+        tabIndex={0}
+      >
+        {item.icon && (
+          <span className="mr-3 h-4 w-4 text-sidebar-primary">{item.icon}</span>
+        )}
+        <span>{item.title}</span>
+      </Link>
+    );
+  };
 
-  useEffect(() => {
-    setLiveHref(path);
-  }, [path]);
-
-  function handleOpenItem(value: string) {
-    if (!isOpen) {
-      toggle(true);
-      setTimeout(() => {
-        setOpenItem(value);
-      }, 250);
-    } else {
-      setOpenItem(value);
-    }
-  }
-
-  function pathIsActive(props: { path: string; liveHref: string }) {
-    let { path, liveHref } = props;
-
-    // Check if the path is nested and return false if it is
-    if (path.split('/').length > 2) return false;
-
-    // Check if there are search params in the path and remove them
-    if (path.includes('?')) {
-      path = path.split('?')[0];
-    }
-
-    return liveHref.split('/')[1] === path.split('/')[1];
-  }
   return (
-    <nav className=" ">
-      {items.map((item) =>
-        item.isChidren ? (
-          <Accordion
-            type="single"
-            collapsible
-            className=""
-            key={item.title}
-            value={openItem}
-            onValueChange={handleOpenItem}
-          >
-            <AccordionItem value={item.title} className="border-none ">
-              <AccordionTrigger
-                className={cn(
-                  '',
-                  buttonVariants({ variant: 'ghost' }),
-                  pathIsActive({ path: item.href, liveHref }) && 'bg-muted',
-                  `dark:${item.color} hover:bg-muted`,
-                  'group relative flex  justify-between w-full px-4 text-base duration-200 hover:bg-muted hover:no-underline'
-                )}
-              >
-                <div
-                  className={cn(
-                    !isOpen && 'flex w-full justify-center items-center'
-                  )}
-                >
-                  {/* {item.icon} */}
-                </div>
-                <div
-                  className={cn(
-                    'absolute left-12 text-base duration-200 ',
-                    !isOpen && className
-                  )}
-                >
-                  {item.title}
-                </div>
-
-                {isOpen && (
-                  <ChevronDownIcon className="h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-200" />
-                )}
-              </AccordionTrigger>
-              <AccordionContent className=" ">
-                {' '}
-                {item.children?.map((child) => (
-                  <Link
-                    key={child.title}
-                    href={child.href}
-                    onClick={() => {
-                      if (setOpen) setOpen(false);
-                    }}
-                    className={cn(
-                      buttonVariants({ variant: 'ghost' }),
-                      'group relative flex h-12 justify-start gap-x-3 ml-4',
-                      `dark:${child.color} hover:bg-muted`,
-                      pathIsActive({ path: child.href, liveHref }) &&
-                        'bg-muted font-bold hover:bg-muted'
-                    )}
-                  >
-                    {/* {child.icon} */}
-                    <div
-                      className={cn(
-                        'absolute left-12 text-base duration-200',
-                        !isOpen && className
-                      )}
-                    >
-                      {child.title}
-                    </div>
-                  </Link>
-                ))}
-              </AccordionContent>
-            </AccordionItem>
-          </Accordion>
-        ) : (
-          <Link
-            key={item.title}
-            href={item.href}
-            onClick={() => {
-              if (setOpen) setOpen(false);
-            }}
-            className={cn(
-              buttonVariants({ variant: 'ghost' }),
-              'group relative flex w-full gap-1 h-12 justify-start',
-              `dark:${item.color} hover:bg-muted`,
-
-              pathIsActive({ path: item.href, liveHref: liveHref }) &&
-                'bg-secondary font-bold hover:bg-muted'
-            )}
-          >
-            <div
-              className={cn(
-                !isOpen && 'flex w-full justify-center items-center'
-              )}
-            >
-              {/* {item.icon} */}
-            </div>
-            <span
-              className={cn(
-                'absolute left-12 text-base duration-200 ',
-                !isOpen && className
-              )}
-            >
-              {item.title}
-            </span>
-          </Link>
-        )
-      )}
-    </nav>
+    <ScrollArea className="h-full font-sans">
+      <nav className="w-full text-foreground ">
+        {items?.map((item) => <NavItem key={item.href} item={item} />)}
+      </nav>
+    </ScrollArea>
   );
 }
