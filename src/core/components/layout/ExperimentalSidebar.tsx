@@ -7,11 +7,11 @@ import {
 import { SideNav } from '@/core/components/layout/SideNav';
 import { NavItem } from '@/lib/types';
 import { cn } from '@/lib/utils';
-import React, { useEffect, useState } from 'react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+import React, { useEffect } from 'react';
 
 import { ModeToggle } from '../common/ModeToggle';
 import Title from '../common/Title';
-import ArrowLeft from '../icons/ArrowLeft';
 
 export type SidebarProps = {
   navItems?: NavItem[];
@@ -19,7 +19,6 @@ export type SidebarProps = {
 
 export default function Sidebar() {
   const { isOpen, toggle } = useSidebar();
-  const [status, setStatus] = useState(false);
   const { get, set } = useSidebarPreference();
 
   useEffect(() => {
@@ -27,39 +26,35 @@ export default function Sidebar() {
   }, []);
 
   const handleToggle = () => {
-    setStatus(false);
-    toggle(!isOpen);
-    set(!isOpen ? 'true' : 'false');
-    setTimeout(() => setStatus(false), 500);
+    const newState = !isOpen;
+    toggle(newState);
+    set(newState ? 'true' : 'false');
   };
 
   return (
     <nav
       className={cn(
-        `relative hidden h-screen border-r pt-10 md:block overflow-scroll`,
-        status && 'duration-500',
+        'relative hidden h-screen border-r md:flex flex-col transition-all duration-300 ease-in-out',
         isOpen ? 'w-60' : 'w-[78px]'
       )}
     >
-      <section className="flex items-center justify-center">
+      <div className="flex items-center justify-center h-16 border-b">
         {isOpen && <Title />}
-      </section>
-      <ArrowLeft
-        className={cn(
-          'absolute right-3 bottom-20 cursor-pointer rounded-full border bg-background text-3xl text-foreground',
-          !isOpen && 'rotate-180'
-        )}
-        onClick={handleToggle}
-      />
-      <section className="absolute right-2 bottom-5">
+      </div>
+
+      <div className="flex-grow overflow-y-auto py-8">
+        <SideNav />
+      </div>
+
+      <div className="flex items-center justify-between p-4 border-t">
         <ModeToggle />
-      </section>
-      <div className="space-y-4 py-4 ">
-        <div className="px-3 py-2">
-          <div className="mt-3 ">
-            <SideNav className="text-background overflow-scroll opacity-0 transition-all duration-300 group-hover:z-50 group-hover:ml-4 group-hover:rounded group-hover:bg-foreground group-hover:p-2 group-hover:opacity-100" />
-          </div>
-        </div>
+        <button
+          onClick={handleToggle}
+          className="p-2 rounded-full hover:bg-sidebar-accent hover:text-sidebar-accent-foreground transition-colors"
+          aria-label={isOpen ? 'Close sidebar' : 'Open sidebar'}
+        >
+          {isOpen ? <ChevronLeft size={20} /> : <ChevronRight size={20} />}
+        </button>
       </div>
     </nav>
   );
