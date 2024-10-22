@@ -17,19 +17,6 @@ import LayoutContext, {
 import Sidebar from './ExperimentalSidebar';
 import useExperimentalLayoutLogic from './useExperimentalLayoutLogic';
 
-/**
- * Renders the layout component with the provided props.
- *
- * @param {LayoutWithPropsProps} props - The props for the layout component.
- * @param {React.ReactNode} props.children - The content to be rendered inside the layout.
- * @param {NavItem[]} props.navItems - The navigation items to be displayed in the header and sidebar.
- * @param {boolean} [props.isEmpty=false] - Indicates whether the layout is empty.
- * @param {boolean} [props.notFound=false] - Indicates whether the layout represents a not found page.
- * @param {boolean} [props.nothingToShow=false] - Indicates whether there is nothing to show in the layout.
- * @param {boolean} props.isError - Indicates whether an error occurred.
- * @param {boolean} props.isLoading - Indicates whether the layout is in a loading state.
- * @returns {React.ReactNode} The rendered layout component.
- */
 function Layout({
   children,
   isEmpty = false,
@@ -47,6 +34,7 @@ function Layout({
   const [isLandingPage, setIsLandingPage] = useState(false);
   const [isSpaces, setIsSpaces] = useState(false);
   const path = usePathname();
+
   useEffect(() => {
     const isLandingPage = path === '/';
     if (isLandingPage === true) {
@@ -55,7 +43,6 @@ function Layout({
       setSpacesNavItems([]);
       setIsSpaces(false);
     } else {
-      // Path contains /spaces/
       if (path.includes('/spaces/')) {
         setIsLandingPage(false);
         setNavItems([]);
@@ -69,6 +56,7 @@ function Layout({
       }
     }
   }, [experimentalNavItems, path]);
+
   return (
     <LayoutContext.Provider
       value={{
@@ -88,26 +76,32 @@ function Layout({
         hostname,
       }}
     >
-      <div className="relative">
-        {loading ? (
-          <div className="h-fit w-full overflow-hidden flex items-center justify-center py-4">
-            <Layout.Loader />
+      <div className="flex h-screen overflow-hidden">
+        {!isLandingPage && (
+          <div className="fixed left-0 top-0 h-full w-72 z-10">
+            {loading ? (
+              <div className="h-full w-full flex items-center justify-center">
+                <Layout.Loader />
+              </div>
+            ) : (
+              <Sidebar />
+            )}
           </div>
-        ) : (
-          <>{!isLandingPage && <Header />}</>
         )}
-        <section className="flex h-full w-full border-collapse overflow-hidden ">
-          {loading ? (
-            <div className="h-full w-72 px-4 overflow-hidden flex items-center justify-center py-4">
-              <Layout.Loader />
+        <div className="flex flex-col flex-1 ml-72">
+          {!isLandingPage && (
+            <div className="sticky top-0 z-20 bg-background">
+              {loading ? (
+                <div className="h-16 w-full flex items-center justify-center">
+                  <Layout.Loader />
+                </div>
+              ) : (
+                <Header />
+              )}
             </div>
-          ) : (
-            <>{!isLandingPage && <Sidebar />}</>
           )}
-          <section className="h-full flex-1  pt-8 px-4 overflow-x-hidden">
-            {children}
-          </section>
-        </section>
+          <main className="flex-1 overflow-y-auto pt-8 px-4">{children}</main>
+        </div>
       </div>
     </LayoutContext.Provider>
   );
