@@ -2,12 +2,7 @@
 
 import { GoBackButton } from '@/core/components/common/navigation/GoBackButton';
 import { Button } from '@/core/components/ui/button';
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from '@/core/components/ui/card';
+import { Card, CardContent } from '@/core/components/ui/card';
 import {
   Form,
   FormControl,
@@ -36,9 +31,9 @@ import {
   getHumanReadableGrade,
 } from '@/features/user/domain/entities/education-systems/niveaux/niveaux';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { ArrowLeft, Loader2 } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import React from 'react';
 import { useForm } from 'react-hook-form';
 
 import useAddClasse from '../../application/adapters/services/useAddClasse';
@@ -51,15 +46,13 @@ type FormValues = Pick<
 export default function AddClassForm({ userId }: { userId: string }) {
   const router = useRouter();
   const { mutate: setClasse, isPending } = useAddClasse();
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitting, setIsSubmitting] = React.useState(false);
 
   const form = useForm<FormValues>({
     resolver: zodResolver(classSchema),
     defaultValues: {
       name: '',
-      description: `${new Date().getFullYear()} - ${
-        new Date().getFullYear() + 1
-      }`,
+      description: `${new Date().getFullYear()} - ${new Date().getFullYear() + 1}`,
       imageUrl: BASE_IMAGE_URL,
       educationLevel: 'Cinquieme',
       educationSystem: 'French',
@@ -76,8 +69,7 @@ export default function AddClassForm({ userId }: { userId: string }) {
       setIsSubmitting(false);
       return;
     }
-    const { name, description, imageUrl, educationLevel, educationSystem } =
-      values;
+    const { name } = values;
     if (name.length < 3) {
       toastWrapper.error(
         'Le nom de la classe doit contenir au moins 3 caractères'
@@ -97,17 +89,19 @@ export default function AddClassForm({ userId }: { userId: string }) {
       }
     );
   }
+
   const goToClasses = () => {
     router.push('/classes');
   };
+
   return (
-    <div className="container mx-auto py-6">
-      <GoBackButton label="Retour aux classes" onClick={goToClasses} />
-      <Card className="w-full max-w-2xl mx-auto">
-        <CardHeader>
-          <CardTitle>Ajouter une classe</CardTitle>
-        </CardHeader>
-        <CardContent>
+    <div className="container mx-auto py-6 max-w-4xl">
+      <div className="flex justify-between items-center mb-6">
+        <GoBackButton label="Retour aux classes" onClick={goToClasses} />
+        <h1 className="text-2xl font-bold">Ajouter une classe</h1>
+      </div>
+      <Card>
+        <CardContent className="pt-6">
           <Form {...form}>
             <form className="space-y-6" onSubmit={form.handleSubmit(onSubmit)}>
               <FormField
