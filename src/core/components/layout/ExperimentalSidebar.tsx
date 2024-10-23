@@ -7,7 +7,6 @@ import {
 import { SideNav } from '@/core/components/layout/SideNav';
 import { NavItem } from '@/lib/types';
 import { cn } from '@/lib/utils';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
 import React, { useEffect } from 'react';
 
 import { ModeToggle } from '../common/ModeToggle';
@@ -19,17 +18,11 @@ export type SidebarProps = {
 
 export default function Sidebar() {
   const { isOpen, toggle } = useSidebar();
-  const { get, set } = useSidebarPreference();
+  const { get } = useSidebarPreference();
 
   useEffect(() => {
     toggle(get());
   }, []);
-
-  const handleToggle = () => {
-    const newState = !isOpen;
-    toggle(newState);
-    set(newState ? 'true' : 'false');
-  };
 
   return (
     <nav
