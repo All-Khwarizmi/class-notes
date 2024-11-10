@@ -9,7 +9,7 @@
 - **Backend** : **Convex** comme Backend As A Service (BAAS), assurant une gestion robuste des données avec une intégration facile de logiques d'application complexes.
 - **Typage** : **TypeScript** pour un code sûr et maintenable, renforçant la qualité du développement avec des types statiques.
 - **Tests** :
-  - **UnitTest** avec **VipTest** et **React Testing Library** pour des tests unitaires rigoureux.
+  - **UnitTest** avec **ViTest** et **React Testing Library** pour des tests unitaires rigoureux.
   - **End-to-End Testing** avec **Cypress**, garantissant que toutes les fonctionnalités fonctionnent comme prévu à travers différents scénarios utilisateur.
 - **Programmation Fonctionnelle** : Utilisée pour la gestion d'erreur et le traitement des retours de fonctions, améliorant la fiabilité et la prévisibilité du code.
 
